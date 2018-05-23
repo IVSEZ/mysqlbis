@@ -1,0 +1,80 @@
+-- SET SESSION sql_mode = '';
+
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-01102016-31122016.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-16032018.csv' 
+-- REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
+REPLACE INTO TABLE `rcbill`.`rcb_ipusage` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
+OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
+-- IGNORE 1 LINES 
+IGNORE 2 LINES 
+(
+@USAGEID ,
+@DEVICEID ,
+@USAGEDATE ,
+@TRAFFICTYPE ,
+@CLIENTIP ,
+@USAGEDIRECTION ,
+@ZONEID ,
+@TIMEZONEID ,
+@INVNO ,
+@OCTETS ,
+@COST ,
+@CURRENCY ,
+@CID ,
+@CSID ,
+@SERVICEID ,
+@COSTOLD 
+
+
+) 
+SET
+
+USAGEID=@USAGEID ,
+DEVICEID=@DEVICEID ,
+USAGEDATE=@USAGEDATE ,
+TRAFFICTYPE=@TRAFFICTYPE ,
+CLIENTIP=@CLIENTIP ,
+USAGEDIRECTION=@USAGEDIRECTION ,
+ZONEID=@ZONEID ,
+TIMEZONEID=@TIMEZONEID ,
+INVNO=@INVNO ,
+OCTETS=@OCTETS ,
+COST=@COST ,
+CURRENCY=@CURRENCY ,
+CID=@CID ,
+CSID=@CSID ,
+SERVICEID=@SERVICEID ,
+COSTOLD=@COSTOLD ,
+
+INSERTEDON=now()
+
+;
+
+
+
+-- CREATE INDEX IDXipu1
+-- ON rcb_ipusage (cid);
+
+
+/*
+CREATE INDEX IDXtick5
+ON rcb_ticketcomments (CID);
+
+drop index IDXtc4 on rcb_comments;
+
+*/
+-- show index from rcb_ipusage;
+CREATE INDEX IDXipu1
+ON rcb_ipusage (cid);
+
+
+CREATE INDEX IDXipu2
+ON rcb_ipusage (csid);
+
+
+CREATE INDEX IDXipu3
+ON rcb_ipusage (usagedate);
+select count(*) from rcb_ipusage;
+
+-- select * from rcbill.rcb_ipusage;
+-- where `comment` like '%intelba93%' ;

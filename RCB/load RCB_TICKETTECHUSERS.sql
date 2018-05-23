@@ -1,0 +1,49 @@
+-- SET SESSION sql_mode = '';
+
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketTechUsers-17092017.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketTechUsers-14052018.csv' 
+REPLACE INTO TABLE `rcbill`.`rcb_tickettechusers` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
+IGNORE 1 LINES 
+(
+@ID,
+@KOD,
+@NAME,
+@EMAIL,
+@PHONE,
+@RCBUSERID,
+@TECHGROUPID,
+@TECHREGIONID,
+@NOTIFY,
+@USERID,
+@ID_OLD,
+@UPDDATE,
+@SUPERUSER
+
+) 
+set 
+ID=@ID,
+KOD=@KOD,
+NAME=@NAME,
+EMAIL=@EMAIL,
+PHONE=@PHONE,
+RCBUSERID=@RCBUSERID,
+TECHGROUPID=@TECHGROUPID,
+TECHREGIONID=@TECHREGIONID,
+NOTIFY=@NOTIFY,
+USERID=@USERID,
+ID_OLD=@ID_OLD,
+UPDDATE=@UPDDATE,
+SUPERUSER=@SUPERUSER,
+
+
+INSERTEDON=now()
+
+;
+
+
+select count(*) from rcb_tickettechusers;
+
+select * from rcbill.rcb_tickettechusers;
+
+

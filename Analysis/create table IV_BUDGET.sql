@@ -1,0 +1,27 @@
+use rcbill_my;
+
+drop table iv_budget;
+
+
+
+CREATE TABLE `iv_budget` (
+`B_VERSION` int(11) DEFAULT NULL ,
+`B_YEAR` int(11) DEFAULT NULL ,
+`B_MONTH` int(11) DEFAULT NULL ,
+`B_REGION` varchar(255) DEFAULT NULL ,
+`B_NETWORK` varchar(255) DEFAULT NULL ,
+`B_SERVICE` varchar(255) DEFAULT NULL ,
+`B_CATEGORY` varchar(255) DEFAULT NULL ,
+`B_CLIENTCLASS` varchar(255) DEFAULT NULL ,
+`B_CONTRACTCLASS` varchar(255) DEFAULT NULL ,
+`B_PACKAGE` varchar(255) DEFAULT NULL ,
+`B_COUNT` int(11) DEFAULT NULL ,
+`B_REVENUEGENERATING` int(11) DEFAULT NULL ,
+`INSERTEDON` datetime DEFAULT NULL	
+) ENGINE=InnoDB CHARSET UTF8;
+
+/*
+CREATE INDEX IDXbudget
+ON iv_budget (ID);
+
+*/
