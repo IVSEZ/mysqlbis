@@ -19,6 +19,8 @@ with rollup
 
 ;
 
+-- some comments here
+
 -- select * from information_schema.TABLES;
 
 select * from information_schema.columns
