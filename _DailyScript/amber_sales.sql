@@ -1,4 +1,4 @@
-
+  
 -- TO AMBER
 select ORIGINALSERVICETYPE, servicetype, count(*) from rcbill_my.sales where 
 -- ordermonth='January' and 
