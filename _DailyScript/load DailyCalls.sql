@@ -329,3 +329,17 @@ create table rcbill_my.callstats as
 ;
 
 select * from rcbill_my.callstats;
+
+select a.*, b.CCAGENTNAME
+from 
+rcbill_my.callstats a 
+left join 
+rcbill_my.ccagents b 
+on 
+a.calldate=b.ccdate
+and
+a.shift=b.ccshift
+and 
+a.callagent=b.callagent
+order by a.calldate desc
+;
