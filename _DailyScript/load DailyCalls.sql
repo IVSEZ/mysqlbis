@@ -296,31 +296,36 @@ order by 1 desc
 
 
 
-
-SELECT call_date, `SHIFT`, CALLAGENT, CALLEVENTNAME, count(*) as callcount
-FROM 
+drop table if exists rcbill_my.callstats;
+create table rcbill_my.callstats as 
 (
--- rcbill_my.dailycalls
-   select date(calldate) as call_date, hour(CALLDATE) as call_hour
-   ,
-	   case
-		   when hour(calldate)>=0 and hour(calldate)<6 then 'NOC'
-		   when hour(calldate)>=6 and hour(calldate)<8 then 'REMOTE'
-		   when hour(calldate)>=8 and hour(calldate)<16 then 'DAY'
-		   when hour(CALLDATE)=16 and (rcbill_my.GetWeekdayName(weekday(date(calldate)))<>'SUNDAY' and rcbill_my.GetWeekdayName(weekday(date(calldate)))<>'SATURDAY') then 'DAY'
-		   when hour(CALLDATE)=16 and (rcbill_my.GetWeekdayName(weekday(date(calldate)))='SUNDAY' or rcbill_my.GetWeekdayName(weekday(date(calldate)))='SATURDAY') then 'EVENING'
-		   when hour(CALLDATE)=17 then 'EVENING'
-		   when hour(calldate)>=18 and hour(calldate)<23 then 'EVENING'
-		   when hour(calldate)>=23 then 'NOC'
-	   end as `SHIFT`
-   , CALLAGENT
-   , CALLEVENTNAME
-   from 
-   rcbill_my.dailycalls
-   -- where date(CALLDATE)='2018-02-09'
+	SELECT call_date as CALLDATE, `SHIFT`, CALLAGENT, CALLEVENTNAME, count(*) as CALLCOUNT
+	FROM 
+	(
+	-- rcbill_my.dailycalls
+	   select date(calldate) as call_date, hour(CALLDATE) as call_hour
+	   ,
+		   case
+			   when hour(calldate)>=0 and hour(calldate)<6 then 'NOC'
+			   when hour(calldate)>=6 and hour(calldate)<8 then 'REMOTE'
+			   when hour(calldate)>=8 and hour(calldate)<16 then 'DAY'
+			   when hour(CALLDATE)=16 and (rcbill_my.GetWeekdayName(weekday(date(calldate)))<>'SUNDAY' and rcbill_my.GetWeekdayName(weekday(date(calldate)))<>'SATURDAY') then 'DAY'
+			   when hour(CALLDATE)=16 and (rcbill_my.GetWeekdayName(weekday(date(calldate)))='SUNDAY' or rcbill_my.GetWeekdayName(weekday(date(calldate)))='SATURDAY') then 'EVENING'
+			   when hour(CALLDATE)=17 then 'EVENING'
+			   when hour(calldate)>=18 and hour(calldate)<23 then 'EVENING'
+			   when hour(calldate)>=23 then 'NOC'
+		   end as `SHIFT`
+	   , CALLAGENT
+	   , CALLEVENTNAME
+	   from 
+	   rcbill_my.dailycalls
+	   -- where date(CALLDATE)='2018-02-09'
 
-) a
--- where CALLEVENTNAME='ANSWERED'
-GROUP BY 1, 2, 3, 4
-order by 1 desc
+	) a
+	-- where CALLEVENTNAME='ANSWERED'
+	GROUP BY 1, 2, 3, 4
+	order by 1 desc
+)
 ;
+
+select * from rcbill_my.callstats;
