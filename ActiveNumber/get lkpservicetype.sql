@@ -80,7 +80,13 @@ insert into rcbill_my.lkpservicetype
 values
 ('MultiView','MultiView');
 
+insert into rcbill_my.lkpservicetype
+values
+('VOD::=VOD','VOD');
 
+insert into rcbill_my.lkpservicetype
+values
+('VOD','VOD');
 
 SET SQL_SAFE_UPDATES = 0;
 

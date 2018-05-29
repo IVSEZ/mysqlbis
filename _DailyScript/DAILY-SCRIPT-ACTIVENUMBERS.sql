@@ -797,6 +797,7 @@ create table rcbill_my.clientpackagestats as
 	ifnull(sum(`Dedicated Custom`),0) as `Dedicated Custom`,
 	ifnull(sum(`Dedicated Plus`),0) as `Dedicated Plus`,
 	ifnull(sum(`DualView`),0) as `DualView`,
+	ifnull(sum(`MultiView`),0) as `MultiView`,
 	ifnull(sum(Elite),0) as `Elite`,
 	ifnull(sum(Executive),0) as `Executive`,
 	ifnull(sum(Extravagance),0) as `Extravagance`,

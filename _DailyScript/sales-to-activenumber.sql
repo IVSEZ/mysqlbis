@@ -414,7 +414,7 @@ ac_clientclass in ('Residential')
  and 
 firstactivedateforcontract is not null
 group by 1,2, 3,4
-order by  2 desc, 3 desc,4,1
+order by  3 desc, 2 desc,4,1
 ;
 
 /*
