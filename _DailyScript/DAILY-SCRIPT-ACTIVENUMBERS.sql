@@ -5,11 +5,11 @@ use rcbill_my;
 ## change date in call sp_ActiveNumber(
 
 -- use rcbill_my;
- SET @rundate='2018-05-28';
+ SET @rundate='2018-05-29';
 -- SET @rundate='2017-12-26';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-05052018-06052018.csv'
 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-28052018.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-29052018.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -158,8 +158,8 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2018-05-25'; SET @perioddate=str_to_date('2018-05-25','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201805/2018-05-25;2018-05-25.csv'
 -- 	SET @rundate='2018-05-26'; SET @perioddate=str_to_date('2018-05-26','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201805/2018-05-26;2018-05-26.csv'
 -- 	SET @rundate='2018-05-27'; SET @perioddate=str_to_date('2018-05-27','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201805/2018-05-27;2018-05-27.csv'
- 	SET @rundate='2018-05-28'; SET @perioddate=str_to_date('2018-05-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201805/2018-05-28;2018-05-28.csv'
--- 	SET @rundate='2018-05-29'; SET @perioddate=str_to_date('2018-05-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201805/2018-05-29;2018-05-29.csv'
+-- 	SET @rundate='2018-05-28'; SET @perioddate=str_to_date('2018-05-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201805/2018-05-28;2018-05-28.csv'
+ 	SET @rundate='2018-05-29'; SET @perioddate=str_to_date('2018-05-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201805/2018-05-29;2018-05-29.csv'
 -- 	SET @rundate='2018-05-30'; SET @perioddate=str_to_date('2018-05-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201805/2018-05-30;2018-05-30.csv'
 -- 	SET @rundate='2018-05-31'; SET @perioddate=str_to_date('2018-05-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201805/2018-05-31;2018-05-31.csv'
 
@@ -847,6 +847,7 @@ create table rcbill_my.clientpackagestats as
 		case when package='Dedicated Plus' then packagecount end as `Dedicated Plus`,
         
 		case when package='DualView' then packagecount end as `DualView`,
+        case when package='MultiView' then packagecount end as `MultiView`,
         
 		case when package='Elite' then packagecount end as `Elite`,
 		case when package='Executive' then packagecount end as `Executive`,
@@ -1071,7 +1072,7 @@ call sp_ActiveNumber(08,04,2018,'','');
 call sp_GetActiveNumberFromTo('2018-04-02','2018-04-08');
 */
 
-call sp_ActiveNumber(28,05,2018,'','');
+call sp_ActiveNumber(29,05,2018,'','');
 
-call sp_GetActiveNumberFromTo('2018-05-28','2018-05-28');
+call sp_GetActiveNumberFromTo('2018-05-28','2018-05-29');
 

@@ -2,7 +2,7 @@ use rcbill_my;
 
 -- DURATION 13.438 sec / 22818.187 sec
 
-set @period = '2018-05-27';
+set @period = '2018-05-28';
 
 drop temporary table if exists a;
 create temporary table a (INDEX idxa1 (CL_CLIENTCODE), INDEX idxa2 (CON_CONTRACTCODE), INDEX idxa3 (S_SERVICENAME), INDEX idxa4 (VPNR_SERVICETYPE)) as 
