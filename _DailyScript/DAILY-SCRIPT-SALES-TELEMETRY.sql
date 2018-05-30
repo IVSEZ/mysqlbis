@@ -294,7 +294,9 @@ a.CLIENTCODE=b.clientcode
 and 
 a.CONTRACTCODE=b.contractcode
 and
-date(a.paymentdate)=b.period;
+date(a.paymentdate)=b.period
+order by a.paymentdate desc
+;
 
 select date(PAYMENTDATE) as paymentdate, rcbill_my.GetWeekdayName(weekday(PAYMENTDATE)) as weekday,
 salestype, cashpoint, sum(paymentamount) as PAYMENT, (round((sum(paymentamount))/57.5)) as GB_ADDON, count(*) as Transactions
