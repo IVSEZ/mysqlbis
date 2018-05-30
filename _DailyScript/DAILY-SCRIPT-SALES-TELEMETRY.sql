@@ -202,6 +202,7 @@ group by 1,2,3,4,5,6
 order by 1 desc;
 */
 
+-- PREPAID AND CAMERA REPORT FOR LYNSEY
 select distinct date(entrydate) as entrydate, rcbill_my.GetWeekdayName(weekday(entrydate)) as weekday
 , clientname
 , trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 1),'/',-1)) as PrepaidType
@@ -284,6 +285,7 @@ SET SQL_SAFE_UPDATES = 1;
 select count(*) as dailyaddonsales from rcbill_my.dailyaddonsales;
 -- select * from rcbill_my.dailyaddonsales order by PAYMENTDATE desc;
 
+-- ADDON REPORT FOR LYNSEY
 select a.*, b.clientclass, b.clienttype 
 from 
 rcbill_my.dailyaddonsales a
