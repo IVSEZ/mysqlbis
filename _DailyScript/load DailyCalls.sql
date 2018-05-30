@@ -16,8 +16,8 @@ use rcbill_my;
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-23052017.csv'  
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-24052017.csv'  
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-25052017.csv' 
-SET @date1='2018-05-27';
-SET @date2='2018-05-28';
+SET @date1='2018-05-29';
+SET @date2='2018-05-30';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-26052017-29052017.csv'  
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-30052017.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-02062017.csv' 
@@ -28,7 +28,7 @@ SET @date2='2018-05-28';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-15062017.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-16062017.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-11052018-12052018.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-28052018.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-29052018.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-27062017.csv' 
 
 REPLACE INTO TABLE `rcbill_my`.`dailycalls` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
@@ -66,7 +66,7 @@ INSERTEDON=now()
 select * from rcbill_my.dailycalls order by calldate desc;
 
 -- SET SQL_SAFE_UPDATES = 0;
--- delete from rcbill_my.dailycalls where date(insertedon)='2018-05-13'
+-- delete from rcbill_my.dailycalls where date(insertedon)='2018-05-29'
 -- select * from rcbill_my.dailycalls where date(insertedon)='2018-02-12' order by CALL_DATE, CALL_TIME;
 
 -- drop table if exists rcbill_my.callingclients;
@@ -134,9 +134,12 @@ order by a.calldate
 ;*/
 
 -- SET SQL_SAFE_UPDATES = 0;
--- delete from rcbill_my.callingclients where call_date in ('2018-05-13');
+-- delete from rcbill_my.callingclients where call_date in ('2018-05-28');
 -- select * from rcbill_my.dailycalls where date(insertedon)='2018-02-12' order by CALL_DATE, CALL_TIME;
 select * from rcbill_my.callingclients order by CALL_DATE, CALL_TIME;
+
+select CALL_DATE, count(*) from rcbill_my.callingclients group by CALL_DATE order by CALL_DATE desc;
+
 -- select * from rcbill_my.callingclients where call_date in ('2018-02-09');
 
 -- select * from rcbill.rcb_tclients;
@@ -330,16 +333,16 @@ create table rcbill_my.callstats as
 
 select * from rcbill_my.callstats;
 
-select a.*, b.CCAGENTNAME
+select a.*, b.CCAGENT
 from 
 rcbill_my.callstats a 
 left join 
-rcbill_my.ccagents b 
+rcbill_my.ccrota b 
 on 
 a.calldate=b.ccdate
 and
 a.shift=b.ccshift
 and 
-a.callagent=b.callagent
+a.callagent=b.ccnumber
 order by a.calldate desc
 ;
