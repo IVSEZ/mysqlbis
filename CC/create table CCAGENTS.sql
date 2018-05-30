@@ -1,13 +1,14 @@
 use rcbill_my;
 
-drop table if exists ccagents;
 
-CREATE TABLE `ccagents` (
-`CCDATE` date DEFAULT NULL ,
-`CCSHIFT` varchar(255) DEFAULT NULL ,
-`CALLAGENT` varchar(255) DEFAULT NULL ,
-`CCAGENTNAME` varchar(255) DEFAULT NULL 
--- ,
--- `INSERTEDON` datetime DEFAULT NULL 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+drop table if exists rcbill_my.lkpccagents;
 
+create table rcbill_my.lkpccagents as 
+(
+select distinct ccagent as CCAGENT from rcbill_my.ccrota order by ccagent
+
+);
+
+select * from lkpccagents;
+-- SET SQL_SAFE_UPDATES=0;
+-- delete from rcbill_my.lkpccagents where CCAGENT='Kiren/faulty'

@@ -1,7 +1,7 @@
 
 
-insert into rcbill_my.ccagents
-(ccdate,ccshift,callagent,ccagentname)
+insert into rcbill_my.ccrota
+(ccdate,ccshift,ccnumber,ccagent)
 values
 
 (date_add(date('1899-12-30'), interval 43147 day),'DAY','SIP/219','Nisa')	,
@@ -737,6 +737,6 @@ values
 ;
 
 
-select date_add(date('1899-12-30'), interval 43240 day);
+-- select date_add(date('1899-12-30'), interval 43240 day);
 
-select * from rcbill_my.ccagents;
+select * from rcbill_my.ccrota;

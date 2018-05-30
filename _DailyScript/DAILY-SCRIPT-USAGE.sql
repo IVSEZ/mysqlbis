@@ -218,6 +218,8 @@ select count(*) from rcbill_my.dailyusage;
 
 -- select * from rcbill_my.dailyusage where clientcode='I.000011750';
 
+-- select * from rcbill_my.dailyusage where clientcode='I22694';
+
 -- select * from rcbill_my.dailyusage;
 select distinct datestart, dateend, date(INSERTEDON) as insertedon, count(*) as records from rcbill_my.dailyusage group by 1,2,3 order by datestart desc;
 
