@@ -118,7 +118,7 @@ select servicecategory, servicecategory2, service, package, servicetype, service
 
 select * from rcbill_my.activenumber where period=@rundate and reported='Y' and decommissioned='N';
 
-select period, count(*) from rcbill_my.activenumber group by period order by period desc;
+select period, count(1) from rcbill_my.activenumber group by period order by period desc;
 
 -- select * from rcbill_my.activenumber where period=@rundate and reported='Y';
 -- delete from rcbill_my.activenumber where period=@rundate;
@@ -274,7 +274,7 @@ delete from rcbill_my.dailyactivenumber where period in ('2018-04-02','2018-04-0
 */
 
 
-select period, count(*) from rcbill_my.dailyactivenumber group by period order by period desc;
+select period, count(1) from rcbill_my.dailyactivenumber group by period order by period desc;
 
 ##Client and Active Contracts per location
 drop table if exists rcbill_my.activeccl; 
@@ -378,7 +378,7 @@ CREATE INDEX IDXaccl6
 ON rcbill_my.activeccl (cl_longitude);
 
 
-select count(*) from rcbill_my.customercontractactivity;
+select count(1) from rcbill_my.customercontractactivity;
 #now insert the daily activity table into the customer contract activity table. 
 insert into rcbill_my.customercontractactivity
 (
@@ -394,11 +394,11 @@ delete from rcbill_my.customercontractactivity where period in ('2018-04-02','20
 
 */
 
-select count(*) from rcbill_my.customercontractactivity;
+select count(1) from rcbill_my.customercontractactivity;
 
 -- select * from rcbill_my.customercontractactivity where period=@rundate and clientcode='I.000011750';
 
-select period, count(*) from rcbill_my.customercontractactivity group by period order by period desc;
+select period, count(1) from rcbill_my.customercontractactivity group by period order by period desc;
 
 -- CREATE A CUSTOMER CONTRACT SNAPSHOT TABLE
 drop table if exists rcbill_my.customercontractsnapshot;
@@ -416,7 +416,7 @@ create table rcbill_my.customercontractsnapshot as
 		, min(period) as firstcontractdate, max(period) as lastcontractdate 
 		-- , (sum(ACTIVECOUNT)/count(period)) as activecount
 		, (datediff(max(period),min(period))+1) as DurationForContract
-        , count(*) as ActiveDaysForContract
+        , count(1) as ActiveDaysForContract
 		-- , count(distinct a.period) as activedays 
 		-- , rcbill_my.GetActiveDaysForContract(a.clientcode,a.contractcode,a.package) as ActiveDaysForContract
         -- , DEVICESCOUNT
@@ -623,7 +623,7 @@ order by package
 
 
 select clientcode, contractcode, clientname, clientclass, clienttype, region, servicecategory
-, count(*)
+, count(1)
 -- servicesubcategory, 
 , GetNetwork(@rundate,contractcode) as Network
 from rcbill_my.customercontractactivity 
@@ -881,7 +881,7 @@ create table rcbill_my.clientpackagestats as
 		from 
 		(
 			/*
-			select period, clientcode, clientname, package, region, GetNetwork(@rundate,contractcode) as network, count(*) as packagecount from rcbill_my.customercontractactivity where period=@rundate and clientcode in 
+			select period, clientcode, clientname, package, region, GetNetwork(@rundate,contractcode) as network, count(1) as packagecount from rcbill_my.customercontractactivity where period=@rundate and clientcode in 
 			(
             select clientcode from rcbill_my.clientnetworkservicestats 
             -- where services = 'TV & Internet' 
@@ -892,7 +892,7 @@ create table rcbill_my.clientpackagestats as
             */
             -- select * from rcbill_my.clientnetworkservicepkg
             
-            select period, clientcode, clientname, package, region, network, count(*) as packagecount from rcbill_my.clientnetworkservicepkg where period=@rundate
+            select period, clientcode, clientname, package, region, network, count(1) as packagecount from rcbill_my.clientnetworkservicepkg where period=@rundate
             group by period, clientcode, clientname, package, region, network
 			
         ) a

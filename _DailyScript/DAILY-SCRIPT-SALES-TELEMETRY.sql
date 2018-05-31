@@ -69,7 +69,7 @@ INSERTEDON=now()
 
 ;
 
-select count(*) as dailysales from rcbill_my.dailysales;
+select count(1) as dailysales from rcbill_my.dailysales;
 
 -- select * from rcbill_my.dailysales;
 
@@ -97,7 +97,7 @@ from rcbill_my.dailysales order by orderdate desc
 )
 ;
 
-select count(*) as sales from rcbill_my.sales;
+select count(1) as sales from rcbill_my.sales;
 
 -- CREATE TABLE SALES LIST
 drop table if exists rcbill_my.saleslist;
@@ -111,10 +111,10 @@ group by salescenter, region, salestype, state, clientclass, contracttype, servi
 order by salescenter, region, salestype, state, clientclass, contracttype, servicetype
 );
 
-select count(*) as saleslist from rcbill_my.saleslist;
+select count(1) as saleslist from rcbill_my.saleslist;
 
 
-select orderday, rcbill_my.GetWeekdayName(weekday(orderdate)) as weekday, region, salestype, state, count(*) as salesorders from rcbill_my.sales
+select orderday, rcbill_my.GetWeekdayName(weekday(orderdate)) as weekday, region, salestype, state, count(1) as salesorders from rcbill_my.sales
 where 
 -- ordermonth='January' and 
 --  salestype='New Sales' 
@@ -126,7 +126,7 @@ order by orderday desc, region, salestype
 ;
 
 
-select orderday, rcbill_my.GetWeekdayName(weekday(orderdate)) as weekday, region, salestype, state, count(*) as salesorders from rcbill_my.sales
+select orderday, rcbill_my.GetWeekdayName(weekday(orderdate)) as weekday, region, salestype, state, count(1) as salesorders from rcbill_my.sales
 where 
 -- ordermonth='January' and 
 salestype='New Sales' 
@@ -189,14 +189,14 @@ INSERTEDON=now()
 
 
 
-select count(*) as dailysinglesales from rcbill_my.dailysinglesales;
+select count(1) as dailysinglesales from rcbill_my.dailysinglesales;
 /*
 select distinct date(entrydate) as entrydate, rcbill_my.GetWeekdayName(weekday(entrydate)) as weekday
 , clientname
 , trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 1),'/',-1)) as PrepaidType
 , trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 2),',',-1)) as ValidityPeriod
 , place
-, count(*) as salescount, sum(amount) as salesamount
+, count(1) as salescount, sum(amount) as salesamount
 from rcbill_my.dailysinglesales 
 group by 1,2,3,4,5,6
 order by 1 desc;
@@ -209,7 +209,7 @@ select distinct date(entrydate) as entrydate, rcbill_my.GetWeekdayName(weekday(e
 , trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 2),',',-1)) as ValidityPeriod
 , place
 , cashpoint
-, count(*) as salescount, sum(amount) as salesamount
+, count(1) as salescount, sum(amount) as salesamount
 
 from rcbill_my.dailysinglesales 
 group by 1,2,3,4,5,6, 7
@@ -282,7 +282,7 @@ delete from rcbill_my.dailyaddonsales where paymentdate is null;
 SET SQL_SAFE_UPDATES = 1;
 */
 
-select count(*) as dailyaddonsales from rcbill_my.dailyaddonsales;
+select count(1) as dailyaddonsales from rcbill_my.dailyaddonsales;
 -- select * from rcbill_my.dailyaddonsales order by PAYMENTDATE desc;
 
 -- ADDON REPORT FOR LYNSEY
@@ -301,7 +301,7 @@ order by a.paymentdate desc
 ;
 
 select date(PAYMENTDATE) as paymentdate, rcbill_my.GetWeekdayName(weekday(PAYMENTDATE)) as weekday,
-salestype, cashpoint, sum(paymentamount) as PAYMENT, (round((sum(paymentamount))/57.5)) as GB_ADDON, count(*) as Transactions
+salestype, cashpoint, sum(paymentamount) as PAYMENT, (round((sum(paymentamount))/57.5)) as GB_ADDON, count(1) as Transactions
 from rcbill_my.dailyaddonsales 
 group by 1,2,3,4
 order by 1 desc;
@@ -378,7 +378,7 @@ INSERTEDON=now()
 ;
 
 
-select count(*) as onlinepayments from rcbill_my.onlinepayments;
+select count(1) as onlinepayments from rcbill_my.onlinepayments;
 
 -- select * from rcbill_my.onlinepayments order by paymentdate desc;
 
@@ -386,7 +386,7 @@ select count(*) as onlinepayments from rcbill_my.onlinepayments;
 
 select * from 
 (
-select date(paymentdate) as paymentdate, count(*) as onlinepayments, sum(paymentamount) as onlinepaymentamount 
+select date(paymentdate) as paymentdate, count(1) as onlinepayments, sum(paymentamount) as onlinepaymentamount 
 from rcbill_my.onlinepayments
 group by 1
 with rollup
@@ -397,7 +397,7 @@ order by 1 desc
 
 select * from 
 (
-select year(paymentdate) as paymentyear, month(paymentdate) as paymentmonth, count(*) as onlinepayments, sum(paymentamount) as onlinepaymentamount 
+select year(paymentdate) as paymentyear, month(paymentdate) as paymentmonth, count(1) as onlinepayments, sum(paymentamount) as onlinepaymentamount 
 from rcbill_my.onlinepayments
 group by 1, 2
 with rollup
@@ -451,9 +451,9 @@ INSERTEDON=now()
 
 ;
 
-select count(*) as vodtelemetry from rcb_vodtelemetry;
+select count(1) as vodtelemetry from rcb_vodtelemetry;
 
-select date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(*) from rcbill.rcb_vodtelemetry
+select date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) from rcbill.rcb_vodtelemetry
 group by 1
 order by 1 desc;
 
@@ -508,10 +508,10 @@ INSERTEDON=now()
 
 ;
 
-select count(*) as tstelemetry from rcb_tstelemetry;
+select count(1) as tstelemetry from rcb_tstelemetry;
 
 
-select date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(*) from rcbill.rcb_tstelemetry
+select date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) from rcbill.rcb_tstelemetry
 group by 1
 order by 1 desc;
 ##############################################################################

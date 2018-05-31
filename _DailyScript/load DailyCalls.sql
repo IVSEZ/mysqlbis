@@ -138,7 +138,7 @@ order by a.calldate
 -- select * from rcbill_my.dailycalls where date(insertedon)='2018-02-12' order by CALL_DATE, CALL_TIME;
 select * from rcbill_my.callingclients order by CALL_DATE, CALL_TIME;
 
-select CALL_DATE, count(*) from rcbill_my.callingclients group by CALL_DATE order by CALL_DATE desc;
+select CALL_DATE, count(1) from rcbill_my.callingclients group by CALL_DATE order by CALL_DATE desc;
 
 -- select * from rcbill_my.callingclients where call_date in ('2018-02-09');
 
@@ -148,7 +148,7 @@ select *,date(calldate) as CALL_DATE, time(calldate) as CALL_TIME  from rcbill_m
 
 
 select distinct date(calldate) as CAll_DATE,
-CALLEVENTNAME, count(*) as CALLCOUNT
+CALLEVENTNAME, count(1) as CALLCOUNT
 from rcbill_my.dailycalls
 group by 1, 
 -- CALLEVENT, 
@@ -159,7 +159,7 @@ order by 1 desc;
 
 select distinct date(calldate) as CAll_DATE,CALLQUEUENAME, 
 -- CALLEVENT, 
-CALLEVENTNAME, count(*) as CALLCOUNT
+CALLEVENTNAME, count(1) as CALLCOUNT
 from rcbill_my.dailycalls
 group by 1, CALLQUEUENAME, 
 -- CALLEVENT, 
@@ -170,7 +170,7 @@ select distinct date(calldate) as CAll_DATE
 -- ,CALLQUEUENAME, 
 -- CALLEVENT, 
 , CALLEVENTNAME
-, count(*) as CALLCOUNT
+, count(1) as CALLCOUNT
 from rcbill_my.dailycalls
 group by 1, CALLEVENTNAME
 -- , 
@@ -179,7 +179,7 @@ group by 1, CALLEVENTNAME
 order by 1 desc;
 
 /*
-select distinct callnumber, firm, kod, GetCallEventName(callevent) as CallEventName, count(*) as callcount from rcbill_my.callingclients where call_date=@date1
+select distinct callnumber, firm, kod, GetCallEventName(callevent) as CallEventName, count(1) as callcount from rcbill_my.callingclients where call_date=@date1
 group by callnumber, firm, kod, CallEventName
 ;
 */
@@ -237,7 +237,7 @@ order by a.notanswered desc, a.callnumber
 
 ;
 
-SELECT date(calldate) as call_date, rcbill_my.GetWeekdayName(weekday(date(calldate))) as Weekday, hour(calldate) as call_hour, calleventname, CALLQUEUENAME, count(*) as callcount
+SELECT date(calldate) as call_date, rcbill_my.GetWeekdayName(weekday(date(calldate))) as Weekday, hour(calldate) as call_hour, calleventname, CALLQUEUENAME, count(1) as callcount
 -- , count(distinct CALLAGENT) as agentcount
 FROM rcbill_my.dailycalls
 GROUP BY date(calldate), hour( calldate ) , calleventname, CALLQUEUENAME
@@ -254,7 +254,7 @@ from
 	case when calleventname = 'NOT ANSWERED' then callcount end as `NOTANSWERED`
 	FROM 
 	(
-	SELECT date(calldate) as call_date, hour(calldate) as call_hour, calleventname, count(*) as callcount
+	SELECT date(calldate) as call_date, hour(calldate) as call_hour, calleventname, count(1) as callcount
 	FROM rcbill_my.dailycalls
 	GROUP BY date(calldate), hour( calldate ) , calleventname
 	-- rcbill_my.dailycalls
@@ -269,7 +269,7 @@ order by 2 desc, 3 asc
 
 
 
-SELECT call_date, call_hour, `SHIFT`, CALLAGENT, CALLEVENTNAME, count(*) as callcount
+SELECT call_date, call_hour, `SHIFT`, CALLAGENT, CALLEVENTNAME, count(1) as callcount
 FROM 
 (
 -- rcbill_my.dailycalls
@@ -302,7 +302,7 @@ order by 1 desc
 drop table if exists rcbill_my.callstats;
 create table rcbill_my.callstats as 
 (
-	SELECT call_date as CALLDATE, `SHIFT`, CALLAGENT, CALLEVENTNAME, count(*) as CALLCOUNT
+	SELECT call_date as CALLDATE, `SHIFT`, CALLAGENT, CALLEVENTNAME, count(1) as CALLCOUNT
 	FROM 
 	(
 	-- rcbill_my.dailycalls

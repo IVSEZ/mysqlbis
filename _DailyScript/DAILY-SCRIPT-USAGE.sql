@@ -210,7 +210,7 @@ INSERTEDON=now()
 ;
 
 
-select count(*) from rcbill_my.dailyusage;
+select count(1) from rcbill_my.dailyusage;
 
 -- select * from rcbill_my.dailyusage;
 
@@ -221,7 +221,7 @@ select count(*) from rcbill_my.dailyusage;
 -- select * from rcbill_my.dailyusage where clientcode='I22694';
 
 -- select * from rcbill_my.dailyusage;
-select distinct datestart, dateend, date(INSERTEDON) as insertedon, count(*) as records from rcbill_my.dailyusage group by 1,2,3 order by datestart desc;
+select distinct datestart, dateend, date(INSERTEDON) as insertedon, count(1) as records from rcbill_my.dailyusage group by 1,2,3 order by datestart desc;
 
 /*
 
@@ -236,4 +236,4 @@ where
 date(INSERTEDON)='2018-03-18';
 */
 -- select distinct datestart, dateend from rcbill_my.dailyusage where date(INSERTEDON)='2018-02-12';
--- select distinct datestart, dateend, date(INSERTEDON) as insertedon, count(*) as records from rcbill_my.dailyusage group by 1,2,3 order by 3 desc where date(INSERTEDON)='2018-02-12';
+-- select distinct datestart, dateend, date(INSERTEDON) as insertedon, count(1) as records from rcbill_my.dailyusage group by 1,2,3 order by 3 desc where date(INSERTEDON)='2018-02-12';

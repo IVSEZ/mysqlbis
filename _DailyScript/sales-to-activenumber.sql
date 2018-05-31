@@ -384,7 +384,7 @@ order by o_clientcode, o_orderday,firstactivedateforclient, firstactivedateforco
 
 
 
-select  o_ordermonth, o_orderday, o_region,  o_ordertype, o_servicetype, o_clientclass, ac_clientclass, ac_servicesubcategory, ac_servicecategory, ac_package,  count(*) as allcount, count(distinct o_clientcode) as distclient, sum(ac_activecount) as activenos 
+select  o_ordermonth, o_orderday, o_region,  o_ordertype, o_servicetype, o_clientclass, ac_clientclass, ac_servicesubcategory, ac_servicecategory, ac_package,  count(1) as allcount, count(distinct o_clientcode) as distclient, sum(ac_activecount) as activenos 
 from rcbill_my.salestoactive 
 -- where 
 -- ac_clientclass in ('Residential')
@@ -395,7 +395,7 @@ order by  o_orderday desc, o_clientcode, firstactivedateforcontract
 ;
 
 
-select  o_ordermonth, o_orderday, ac_clientclass, o_region,  o_ordertype, ac_servicesubcategory, ac_servicecategory, ac_package,  count(*) as allcount, count(distinct o_clientcode) as distclient, sum(ac_activecount) as activenos 
+select  o_ordermonth, o_orderday, ac_clientclass, o_region,  o_ordertype, ac_servicesubcategory, ac_servicecategory, ac_package,  count(1) as allcount, count(distinct o_clientcode) as distclient, sum(ac_activecount) as activenos 
 from rcbill_my.salestoactive 
 where 
 ac_clientclass in ('Residential')
@@ -407,7 +407,7 @@ order by  o_orderday desc, o_clientcode, firstactivedateforcontract
 
 
 select o_region, month(o_orderdate) as o_month, year(o_orderdate) as o_year, ac_package
-,  count(*) as allcount, count(distinct o_clientcode) as distclient, sum(ac_activecount) as activenos 
+,  count(1) as allcount, count(distinct o_clientcode) as distclient, sum(ac_activecount) as activenos 
 from rcbill_my.salestoactive 
 where 
 ac_clientclass in ('Residential')
@@ -418,7 +418,7 @@ order by  3 desc, 2 desc,4,1
 ;
 
 /*
-select o_region, month(o_orderdate) as o_month, year(o_orderdate) as o_year, ac_package,  count(*) as allcount, count(distinct o_clientcode) as distclient, sum(ac_activecount) as activenos 
+select o_region, month(o_orderdate) as o_month, year(o_orderdate) as o_year, ac_package,  count(1) as allcount, count(distinct o_clientcode) as distclient, sum(ac_activecount) as activenos 
 from rcbill_my.salestoactive 
 where 
 ac_clientclass in ('Residential')
