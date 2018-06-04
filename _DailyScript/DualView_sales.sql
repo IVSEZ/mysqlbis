@@ -249,6 +249,7 @@ select *, rcbill_my.GetNetwork(rcbill_my.GetLastActiveDateForClient(cl_clientcod
 
  from rcbill.clientcontractssubs where cl_clientid 
 in (select cl_clientid from rcbill.clientcontractssubs where VPNR_SERVICETYPE='DUALVIEW' and cl_clclassname not in ('INTELVISION OFFICE'))
+-- and VPNR_SERVICETYPE='DUALVIEW'
 ;
 
 -- select rcbill_my.GetLastActiveDateForClient('I22164');
