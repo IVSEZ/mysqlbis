@@ -818,7 +818,7 @@ on a.ServiceId=d.Id
 
 /*UPDATED 3/5/2018*/
 select 
-a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address
+a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, a.NATIP
 , b.id as ContractId,b.kod as ContractCode, b.ContractType
 , cs.ID as CSID
  , d.ID as ServiceId, d.Name as ServiceType
