@@ -51,4 +51,16 @@ a.clientcode=b.cl_clientcode
 order by a.tickets desc
 ;
 
-select * from rcbill.clientextendedreport where CL_CLIENTCODE in ('I.000015579');
+select a.*,b.* 
+from 
+rcbill.clientextendedreport a 
+left join
+rcbill_my.clientstats b 
+on a.CL_CLIENTCODE=b.clientcode
+where a.CL_CLIENTCODE in ('I.000015579');
+
+select * from rcbill_my.clientticketjourney 
+where ticketid in (select ticketid from rcbill_my.clientticketsnapshot_irs) 
+and ((comment like '%done by%') or (comment like '%by%') or (comment like '%installation done%') or (comment like '%attended%' and comment not like '%not attended%'))
+order by closedate
+;
