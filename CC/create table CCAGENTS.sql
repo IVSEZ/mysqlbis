@@ -5,7 +5,7 @@ drop table if exists rcbill_my.lkpccagents;
 
 create table rcbill_my.lkpccagents as 
 (
-select distinct ccagent as CCAGENT from rcbill_my.ccrota order by ccagent
+select distinct upper(trim(CCAGENT)) as CCAGENT from rcbill_my.ccrota order by ccagent
 
 );
 
