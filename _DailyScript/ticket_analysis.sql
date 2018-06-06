@@ -329,12 +329,15 @@ select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and o
 
 -- SURVEY
 select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='SURVEY' order by opendate ;
+-- TECH AUDIT SURVEY
+select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (clientcode='I6') order by opendate;
 
 -- ADDITIONAL SERVICE INSTALLATIONS
 select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='INSTALLATION' and stageregion='TECHNICAL - ADDITIONAL SERVICE INSTALLATIONS' order by opendate ;
 
 -- FAULT - PRASLIN
 select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (StageRegion='PRASLIN TECH - SERVICE' or OpenRegion='PRASLIN TECH - SERVICE') order by opendate ;
+
 
 
 /*
