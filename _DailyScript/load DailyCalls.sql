@@ -333,7 +333,7 @@ create table rcbill_my.callstats as
 
 select * from rcbill_my.callstats;
 
-select a.*, b.CCAGENT
+select a.*, upper(b.CCAGENT) as CCAGENT
 from 
 rcbill_my.callstats a 
 left join 
