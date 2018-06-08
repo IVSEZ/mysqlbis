@@ -328,7 +328,7 @@ select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and o
 select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='RELOCATION' order by opendate ;
 
 -- SURVEY
-select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='SURVEY' order by opendate ;
+select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and (openreason='SURVEY' or StageRegion='TECHNICAL - SURVEY') order by opendate ;
 -- TECH AUDIT SURVEY
 select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (clientcode='I6') order by opendate;
 
