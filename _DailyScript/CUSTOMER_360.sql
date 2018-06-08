@@ -25,7 +25,8 @@ callingclients (gives possible client matches based on numbers that have called 
 
 use rcbill;
 -- set @clientcode='I.000011750';
-set @clientcode='I.000013630';
+-- set @clientcode='I.000013630';
+set @clientcode='I.000012237';
 -- set @clientcode='I.000016982';
 -- set @clientcode='I3231';
 
