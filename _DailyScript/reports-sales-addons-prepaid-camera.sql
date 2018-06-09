@@ -1,21 +1,50 @@
 use rcbill_my;
 
+
+drop table if exists rcbill_my.rep_prepaid_camera;
+
+create table rcbill_my.rep_prepaid_camera as 
+(
 -- PREPAID AND CAMERA REPORT FOR LYNSEY
-	select distinct date(entrydate) as entrydate, rcbill_my.GetWeekdayName(weekday(entrydate)) as weekday
-	, clientname
-	, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 1),'/',-1)) as PrepaidType
-	, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 2),',',-1)) as ValidityPeriod
-	, place
-	, cashpoint
-	, count(*) as salescount, sum(amount) as salesamount
+	select distinct date(entrydate) as PAYMENT_DATE, rcbill_my.GetWeekdayName(weekday(entrydate)) as WEEKDAY
+	, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 1),'/',-1)) as SALE_TYPE
+	, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 2),',',-1)) as VALIDITY_PERIOD
+	, PLACE as SALE_MEDIUM
+	, CASHPOINT as SALE_POINT
+	, count(*) as SALES_COUNT
+    , sum(amount) as PAYMENT_AMOUNT    
+	, CLIENTCODE AS CLIENT_CODE
+    , CLIENTNAME as CLIENT_NAME
+
 
 	from rcbill_my.dailysinglesales 
 	group by 1,2,3,4,5,6, 7
-	order by 1 desc;
+	order by 1 desc
+    
+);
 
 
+drop table if exists rcbill_my.rep_addon;
+
+create table rcbill_my.rep_addon as 
+(
 -- ADDON REPORT FOR LYNSEY
-	select a.*, b.clientclass, b.clienttype 
+	select 
+    date(a.paymentdate) as PAYMENT_DATE
+    ,rcbill_my.GetWeekdayName(weekday(a.paymentdate)) as WEEKDAY
+    ,a.salestype as SALES_TYPE
+    ,a.place as SALE_MEDIUM
+    ,a.cashpoint as SALE_POINT
+    ,a.paymentamount as PAYMENT_AMOUNT
+    ,a.clientcode as CLIENT_CODE
+    ,upper(a.clientname) as CLIENT_NAME
+    ,a.contractcode as CONTRACT_CODE
+    ,b.clientclass as CLIENT_CLASS
+    , b.clienttype as CLIENT_TYPE
+    ,a.salescomment as SALE_COMMENT
+    ,a.CANCELLATIONREASON as CANCELLATION_REASON
+    ,a.RECEIPTID as RECEIPT_ID
+
 	from 
 	rcbill_my.dailyaddonsales a
 	left join 
@@ -27,4 +56,10 @@ use rcbill_my;
 	and
 	date(a.paymentdate)=b.period
 	order by a.paymentdate desc
-	;
+);
+
+
+
+select * from rcbill_my.rep_prepaid_camera;
+select * from rcbill_my.rep_addon;
+
