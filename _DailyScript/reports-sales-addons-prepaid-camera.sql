@@ -32,7 +32,7 @@ create table rcbill_my.rep_addon as
 	select 
     date(a.paymentdate) as PAYMENT_DATE
     ,rcbill_my.GetWeekdayName(weekday(a.paymentdate)) as WEEKDAY
-    ,a.salestype as SALES_TYPE
+    ,a.salestype as SALE_TYPE
     ,a.place as SALE_MEDIUM
     ,a.cashpoint as SALE_POINT
     ,a.paymentamount as PAYMENT_AMOUNT
