@@ -11,11 +11,11 @@ create table rcbill_my.rep_prepaid_camera as
 	, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 2),',',-1)) as VALIDITY_PERIOD
 	, PLACE as SALE_MEDIUM
 	, CASHPOINT as SALE_POINT
-	, count(*) as SALES_COUNT
-    , sum(amount) as PAYMENT_AMOUNT    
+ 
 	, CLIENTCODE AS CLIENT_CODE
     , CLIENTNAME as CLIENT_NAME
-
+	, count(*) as SALES_COUNT
+    , sum(amount) as PAYMENT_AMOUNT  
 
 	from rcbill_my.dailysinglesales 
 	group by 1,2,3,4,5,6, 7
