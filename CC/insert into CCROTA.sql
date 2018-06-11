@@ -897,4 +897,4 @@ values
 
 -- select date_add(date('1899-12-30'), interval 43240 day);
 
-select * from rcbill_my.ccrota;
+select * from rcbill_my.ccrota order by CCROTAID desc;
