@@ -240,9 +240,6 @@ a.vpnr_servicetype=b.vpnr_servicetype
 order by cl_clclassname, CL_CLIENTNAME
 ;
 
-
-select * from rcbill.clientcontractssubs where VPNR_SERVICETYPE=@package and cl_clclassname not in ('INTELVISION OFFICE');
-
 -- set @rundate='2018-05-16';
 select *, rcbill_my.GetNetwork(rcbill_my.GetLastActiveDateForClient(cl_clientcode), CON_CONTRACTCODE) as Network
 ,upper(rcbill_my.GetServiceCategory2(S_SERVICENAME)) as CATEGORY
@@ -250,6 +247,11 @@ select *, rcbill_my.GetNetwork(rcbill_my.GetLastActiveDateForClient(cl_clientcod
  from rcbill.clientcontractssubs where cl_clientid 
 in (select cl_clientid from rcbill.clientcontractssubs where VPNR_SERVICETYPE=@package and cl_clclassname not in ('INTELVISION OFFICE'))
 ;
+
+
+-- MULTIVIEW SALES
+select * from rcbill.clientcontractssubs where VPNR_SERVICETYPE=@package and cl_clclassname not in ('INTELVISION OFFICE');
+
 
 -- select rcbill_my.GetLastActiveDateForClient('I22164');
 -- select rcbill_my.GetNetwork(rcbill_my.GetLastActiveDateForClient('I22164'), 'I.000317449');

@@ -21,17 +21,7 @@ group by ORIGINALSERVICETYPE, servicetype
 -- with rollup
 ;
 
-select  *
-from rcbill_my.salestoactive 
-where o_servicetype='Amber'
--- where 
-and o_clientclass not in ('Employee','Intelvision Office')
-and o_saleschannel in ('Sales')
--- and 
--- firstactivedateforcontract is not null
--- group by o_ordermonth, o_orderday, o_region,  o_ordertype, o_servicetype, o_clientclass, ac_clientclass, ac_servicesubcategory, ac_servicecategory, ac_package
-order by  o_orderday desc, o_clientcode, firstactivedateforcontract
-;
+
 
 
 
@@ -78,6 +68,20 @@ and clientclass not in ('Employee','Intelvision Office')
 order by clientcode
 ;
 
+
+
+-- AMBER SALES
+select  *
+from rcbill_my.salestoactive 
+where o_servicetype='Amber'
+-- where 
+and o_clientclass not in ('Employee','Intelvision Office')
+and o_saleschannel in ('Sales')
+-- and 
+-- firstactivedateforcontract is not null
+-- group by o_ordermonth, o_orderday, o_region,  o_ordertype, o_servicetype, o_clientclass, ac_clientclass, ac_servicesubcategory, ac_servicecategory, ac_package
+order by  o_orderday desc, o_clientcode, firstactivedateforcontract
+;
 -- ======================================================
 
 /*
