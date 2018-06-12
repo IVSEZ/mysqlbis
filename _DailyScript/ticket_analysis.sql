@@ -336,11 +336,77 @@ select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (cl
 select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='INSTALLATION' and stageregion='TECHNICAL - ADDITIONAL SERVICE INSTALLATIONS' order by opendate ;
 
 -- FAULT - PRASLIN
-select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (StageRegion='PRASLIN TECH - SERVICE' or OpenRegion='PRASLIN TECH - SERVICE') order by opendate ;
+select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (StageRegion='PRASLIN TECH - SERVICE' or OpenRegion='PRASLIN TECH - SERVICE' or OpenRegion='PRASLIN - MAINTENANCE') order by opendate ;
 
 
+-- FAULT - MAHE
+select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (StageRegion='TECHNICAL - NEW SERVICE' or StageRegion='TECHNICAL - PENDING SERVICE') order by opendate ;
+
+-- MAINTENANCE - MAHE
+select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (StageRegion='TECHNICAL - MAINTENANCE') order by opendate ;
+
+
+-- OPEN SURVEY TICKETS
+drop table if exists rcbill_my.rep_surveytickets;
+create table rcbill_my.rep_surveytickets as 
+(
+
+	SELECT reportdate as REPORT_DATE, TICKETID AS TICKET_ID, CLIENTCODE AS CLIENT_CODE, CONTRACTCODE AS CONTRACT_CODE, TICKETTYPE AS TICKET_TYPE, OPENREASON AS OPEN_REASON
+	-- , CLOSEREASON AS CLOSE_REASON
+	, OPENREGION AS OPEN_REGION, STAGEREGION AS STAGE_REGION
+	-- , CLOSEREGION AS CLOSE_REGION
+	, opendate as OPEN_DATE 
+	-- , CLOSEDATE AS CLOSE_DATE
+	, FIRSTCOMMENTDATE AS FIRST_COMMENT_DATE
+	, LASTCOMMENTDATE AS LAST_COMMENT_DATE
+	, FIRSTCOMMENT AS FIRST_COMMENT
+	, LASTCOMMENT AS LAST_COMMENT
+
+	FROM 
+	(
+		(
+		select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and (openreason='SURVEY' or StageRegion='TECHNICAL - SURVEY') order by opendate 
+		)
+		UNION ALL
+		(
+		select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (clientcode='I6') order by opendate
+		)
+	) A
+
+);
+
+select * from rcbill_my.rep_surveytickets;
 
 /*
+SELECT reportdate as REPORT_DATE, TICKETID AS TICKET_ID, CLIENTCODE AS CLIENT_CODE, CONTRACTCODE AS CONTRACT_CODE, TICKETTYPE AS TICKET_TYPE, OPENREASON AS OPEN_REASON
+-- , CLOSEREASON AS CLOSE_REASON
+, OPENREGION AS OPEN_REGION, STAGEREGION AS STAGE_REGION
+-- , CLOSEREGION AS CLOSE_REGION
+, opendate as OPEN_DATE 
+-- , CLOSEDATE AS CLOSE_DATE
+, FIRSTCOMMENTDATE AS FIRST_COMMENT_DATE
+, LASTCOMMENTDATE AS LAST_COMMENT_DATE
+, FIRSTCOMMENT AS FIRST_COMMENT
+, LASTCOMMENT AS LAST_COMMENT
+
+FROM 
+(
+	(
+	select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and (openreason='SURVEY' or StageRegion='TECHNICAL - SURVEY') order by opendate 
+	)
+	UNION ALL
+	(
+	select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (clientcode='I6') order by opendate
+	)
+) A;
+
+select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='INSTALLATION' 
+and (StageRegion='TECHNICAL - NEW INSTALLATIONS') order by opendate ;
+
+select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='INSTALLATION' 
+and (StageRegion='TECHNICAL - PENDING INSTALLATIONS') order by opendate ;
+
+
 select tickettype, openreason, StageRegion, date(opendate) as opendate, count(*) as tktcount from rcbill_my.clientticketsnapshot_irs where tickettype='Installation' and CloseReason is null 
 group by tickettype, openreason, StageRegion, 4
 order by 4	;
