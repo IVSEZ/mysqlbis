@@ -1020,6 +1020,117 @@ select count(*) as tickets from rcb_tickets;
 
 ##############################################
 
+
+##############################################################
+
+
+#TICKET ASSIGNMENTS
+
+use rcbill;
+
+drop table if exists rcb_ticketassignments;
+
+
+CREATE TABLE `rcb_ticketassignments` (
+`ID` int(11) DEFAULT NULL ,
+`TICKETID` int(11) DEFAULT NULL ,
+`TECHLEVELID` int(11) DEFAULT NULL ,
+`TECHDEPTID` int(11) DEFAULT NULL ,
+`TECHREGIONID` int(11) DEFAULT NULL ,
+`TECHGROUPID` int(11) DEFAULT NULL ,
+`TECHUSERID` int(11) DEFAULT NULL ,
+`REQUIRED` int(11) DEFAULT NULL ,
+`PARTICIPATION` int(11) DEFAULT NULL ,
+`STATE` varchar(255) DEFAULT NULL ,
+`COMMENT` varchar(255) DEFAULT NULL ,
+`COMPLETE` int(11) DEFAULT NULL ,
+`OPENDATE` datetime DEFAULT NULL ,
+`CLOSEDATE` datetime DEFAULT NULL ,
+`CLOSEREASONID` int(11) DEFAULT NULL ,
+`WORKTIME` decimal(12,5) DEFAULT NULL ,
+`USERID` int(11) DEFAULT NULL ,
+`ID_OLD` int(11) DEFAULT NULL ,
+`UPDDATE` datetime DEFAULT NULL ,
+`SEVERITYID` int(11) DEFAULT NULL ,
+`DURATION_HOUR` decimal(12,5) DEFAULT NULL ,
+
+
+`INSERTEDON` datetime DEFAULT NULL	,
+`REPORTDATE` date DEFAULT NULL	
+) ENGINE=InnoDB CHARSET UTF8;
+
+
+CREATE INDEX IDXtxtass1
+ON rcb_ticketassignments (TICKETID);
+
+
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketAssignments-11062018.csv' 
+-- REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
+REPLACE INTO TABLE `rcbill`.`rcb_ticketassignments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
+OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
+-- IGNORE 1 LINES 
+IGNORE 2 LINES 
+(
+@ID ,
+@TicketID ,
+@TechLevelID ,
+@TechDeptID ,
+@TechRegionID ,
+@TechGroupID ,
+@TechUserID ,
+@Required ,
+@Participation ,
+@State ,
+@Comment ,
+@Complete ,
+@OpenDate ,
+@CloseDate ,
+@CloseReasonID ,
+@WorkTime ,
+@UserID ,
+@ID_OLD ,
+@UpdDate ,
+@SeverityID ,
+@Duration_Hour 
+
+) 
+set 
+ID=@ID ,
+TICKETID=@TicketID ,
+TECHLEVELID=@TechLevelID ,
+TECHDEPTID=@TechDeptID ,
+TECHREGIONID=@TechRegionID ,
+TECHGROUPID=@TechGroupID ,
+TECHUSERID=@TechUserID ,
+REQUIRED=@Required ,
+PARTICIPATION=@Participation ,
+STATE=@State ,
+COMMENT=@Comment ,
+COMPLETE=@Complete ,
+OPENDATE=@OpenDate ,
+CLOSEDATE=@CloseDate ,
+CLOSEREASONID=@CloseReasonID ,
+WORKTIME=@WorkTime ,
+USERID=@UserID ,
+ID_OLD=@ID_OLD ,
+UPDDATE=@UpdDate ,
+SEVERITYID=@SeverityID ,
+DURATION_HOUR=@Duration_Hour ,
+
+
+INSERTEDON=now(),
+REPORTDATE=@REPORTDATE
+
+;
+
+
+
+select count(*) as ticketassignments from rcbill.rcb_ticketassignments;
+
+
+
+##############################################
+
 # TICKET COMMENTS
 
 use rcbill;

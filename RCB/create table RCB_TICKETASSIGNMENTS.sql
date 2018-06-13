@@ -1,0 +1,38 @@
+use rcbill;
+
+drop table if exists rcb_ticketassignments;
+
+
+CREATE TABLE `rcb_ticketassignments` (
+`ID` int(11) DEFAULT NULL ,
+`TICKETID` int(11) DEFAULT NULL ,
+`TECHLEVELID` int(11) DEFAULT NULL ,
+`TECHDEPTID` int(11) DEFAULT NULL ,
+`TECHREGIONID` int(11) DEFAULT NULL ,
+`TECHGROUPID` int(11) DEFAULT NULL ,
+`TECHUSERID` int(11) DEFAULT NULL ,
+`REQUIRED` int(11) DEFAULT NULL ,
+`PARTICIPATION` int(11) DEFAULT NULL ,
+`STATE` varchar(255) DEFAULT NULL ,
+`COMMENT` varchar(255) DEFAULT NULL ,
+`COMPLETE` int(11) DEFAULT NULL ,
+`OPENDATE` datetime DEFAULT NULL ,
+`CLOSEDATE` datetime DEFAULT NULL ,
+`CLOSEREASONID` int(11) DEFAULT NULL ,
+`WORKTIME` decimal(12,5) DEFAULT NULL ,
+`USERID` int(11) DEFAULT NULL ,
+`ID_OLD` int(11) DEFAULT NULL ,
+`UPDDATE` datetime DEFAULT NULL ,
+`SEVERITYID` int(11) DEFAULT NULL ,
+`DURATION_HOUR` decimal(12,5) DEFAULT NULL ,
+
+
+`INSERTEDON` datetime DEFAULT NULL	,
+`REPORTDATE` date DEFAULT NULL	
+) ENGINE=InnoDB CHARSET UTF8;
+
+
+CREATE INDEX IDXtxtass1
+ON rcb_ticketassignments (TICKETID);
+-- drop index IDXinvoiceheader on rcb_tickets;
+
