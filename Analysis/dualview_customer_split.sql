@@ -16,19 +16,59 @@ select * from rcbill.clientcontractdevices where ServiceType in ('MOBILE TV','NE
 
 select * from rcbill.rcb_devices where ContractID = ;
 
-select * from rcbill_my.clientstats where dualview>0 and `Starter`>0;
-select * from rcbill_my.clientstats where dualview>0 and `Value`>0;
-select * from rcbill_my.clientstats where dualview>0 and `Elite`>0;
-select * from rcbill_my.clientstats where dualview>0 and `Extreme`>0;
-select * from rcbill_my.clientstats where dualview>0 and `Extreme Plus`>0;
-select * from rcbill_my.clientstats where dualview>0 and `Performance`>0;
-select * from rcbill_my.clientstats where dualview>0 and `Performance Plus`>0;
-
-select * from rcbill_my.clientstats where dualview>0 and `Intel Data 10`>0;
-select * from rcbill_my.clientstats where dualview>0 and `Crimson`>0;
-select * from rcbill_my.clientstats where dualview>0 and `Crimson Corporate`>0;
-select * from rcbill_my.clientstats where dualview>0 and `Amber`>0;
-
+set @package='dualview';
+set @package='multiview';
+set @clientclass="'Intelvision Office','Employee'";
 
 select * from rcbill_my.clientstats where dualview>0;
 select * from rcbill_my.clientstats where multiview>0;
+
+
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and dualview>0 and `Starter`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and dualview>0 and `Value`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and dualview>0 and `Elite`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and dualview>0 and `Extreme`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and dualview>0 and `Extreme Plus`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and dualview>0 and `Performance`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and dualview>0 and `Performance Plus`>0;
+
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and dualview>0 and `Intel Data 10`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and dualview>0 and `Crimson`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and dualview>0 and `Crimson Corporate`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and dualview>0 and `Amber`>0;
+
+
+-- HOW MANY DUALVIEW CUSTOMERS HAD 2 TV PACKAGES BEFORE
+select * from rcbill.clientcontractssubs where VPNR_SERVICETYPE='DUALVIEW' and cl_clclassname not in ('INTELVISION OFFICE');
+select * from rcbill_my.customercontractactivity where clientcode='I.000011269';
+
+
+
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and multiview>0 and `Starter`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and multiview>0 and `Value`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and multiview>0 and `Elite`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and multiview>0 and `Extreme`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and multiview>0 and `Extreme Plus`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and multiview>0 and `Performance`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and multiview>0 and `Performance Plus`>0;
+
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and multiview>0 and `Intel Data 10`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and multiview>0 and `Crimson`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and multiview>0 and `Crimson Corporate`>0;
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and multiview>0 and `Amber`>0;
+
+
+
+
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and `Extravagance Corporate`>0;
+
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and `Extravagance Corporate`>0 and services in ('All','TV & Internet');
+
+
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and `Extravagance Corporate`>0 and services in ('All','TV & Internet') and network='GPON';
+
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and `Extravagance Corporate`>0 and services in ('All','TV & Internet') and network='HFC';
+
+
+
+
