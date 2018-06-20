@@ -6,7 +6,7 @@ use rcbill_my;
 ## change all csv dates 6 files
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\SalesReport-05052018-06052018-1.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\SalesReport-16062018-1.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\SalesReport-19062018-1.csv' 
  
 REPLACE INTO TABLE `rcbill_my`.`dailysales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -144,7 +144,7 @@ order by orderday desc, region, salestype
 use rcbill_my;
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\PrepaidCardSales-05052018-06052018-P1.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\PrepaidCardSales-16062018-P1.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\PrepaidCardSales-19062018-P1.csv' 
 
 REPLACE INTO TABLE `rcbill_my`.`dailysinglesales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -203,6 +203,7 @@ order by 1 desc;
 */
 
 -- PREPAID AND CAMERA REPORT FOR LYNSEY
+/*
 select distinct date(entrydate) as entrydate, rcbill_my.GetWeekdayName(weekday(entrydate)) as weekday
 , clientname
 , trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 1),'/',-1)) as PrepaidType
@@ -214,6 +215,8 @@ select distinct date(entrydate) as entrydate, rcbill_my.GetWeekdayName(weekday(e
 from rcbill_my.dailysinglesales 
 group by 1,2,3,4,5,6, 7
 order by 1 desc;
+*/
+
 
 /*
 SELECT trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 1),'/',-1)) as PrepaidType,
@@ -229,7 +232,7 @@ use rcbill_my;
 
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\Sales-Addon-05052018-06052018.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\Sales-Addon-16062018.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\Sales-Addon-19062018.csv'
 
 REPLACE INTO TABLE `rcbill_my`.`dailyaddonsales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -286,6 +289,7 @@ select count(1) as dailyaddonsales from rcbill_my.dailyaddonsales;
 -- select * from rcbill_my.dailyaddonsales order by PAYMENTDATE desc;
 
 -- ADDON REPORT FOR LYNSEY
+/*
 select a.*, b.clientclass, b.clienttype 
 from 
 rcbill_my.dailyaddonsales a
@@ -299,6 +303,7 @@ and
 date(a.paymentdate)=b.period
 order by a.paymentdate desc
 ;
+*/
 
 select date(PAYMENTDATE) as paymentdate, rcbill_my.GetWeekdayName(weekday(PAYMENTDATE)) as weekday,
 salestype, cashpoint, sum(paymentamount) as PAYMENT, (round((sum(paymentamount))/57.5)) as GB_ADDON, count(1) as Transactions
@@ -321,7 +326,7 @@ order by 3 desc
 # ONLINE PAYMENTS
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\eBarclays-PaymentsList-05052018-06052018.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\eBarclays-PaymentsList-16062018.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\eBarclays-PaymentsList-19062018.csv' 
 REPLACE INTO TABLE `rcbill_my`.`onlinepayments` CHARACTER SET Latin1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 1 LINES 
@@ -414,10 +419,10 @@ order by 1 desc, 2 desc
 use rcbill;
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-11052018-12052018.csv' 
--- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-16062018.csv'
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-19062018.csv'
 -- REPLACE INTO TABLE `rcbill`.`rcb_vodtelemetry` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 -- OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-16062018.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-19062018.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_vodtelemetry` CHARACTER SET UTF8 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 1 LINES 
@@ -470,11 +475,11 @@ use rcbill;
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-14092017.csv'
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-11052018-12052018.csv'
 
--- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-16062018.csv'
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-19062018.csv'
 -- REPLACE INTO TABLE `rcbill`.`rcb_tstelemetry` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 -- OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-16062018.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-19062018.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_tstelemetry` CHARACTER SET UTF8 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 1 LINES 
@@ -508,7 +513,7 @@ INSERTEDON=now()
 
 ;
 
-select count(1) as tstelemetry from rcb_tstelemetry;
+select count(1) as tstelemetry from rcbill.rcb_tstelemetry;
 
 
 select date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) from rcbill.rcb_tstelemetry
