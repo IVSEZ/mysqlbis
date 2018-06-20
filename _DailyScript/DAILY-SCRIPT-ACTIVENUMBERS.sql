@@ -481,109 +481,6 @@ select * from rcbill_my.activeccl_clsum;
 select * from rcbill_my.activeccl_consum;
 
 
-##RETENTION CUSTOMER REPORT
-drop table if exists rcbill_my.retentioncustomeractivity;
-
-create table rcbill_my.retentioncustomeractivity as
-(
-
-
-select distinct
-@rundate as ReportDate,
-count(distinct a.contractcode) as ContractCount,
-count(distinct a.period) as DaysActive,
-min(a.period) as FirstActiveDate,
-max(a.period) as LastActiveDate,
-a.clientid as ClientId,
-a.clientcode as ClientCode,
-a.clientclass as ClientClass, 
-a.clienttype as ClientType,
-/*
-b.firm as ClientName,
-b.mphone as ClientPhone, 
-b.memail as ClientEmail,
-b.passno as ClientPassport,
-b.Danno as ClientNIN,
-b.moladdress as ClientAddress,
-b.molregistrationaddress as RegistrationAddress,
-*/
-
-b.ClientName,
-b.ClientPhone, 
-b.ClientEmail,
-b.ClientPassport,
-b.ClientNIN,
-b.ClientAddress,
-b.RegistrationAddress,
-
-now() as InsertedOn
-/*
-a.devicescount,
-a.servicecategory,
-a.servicesubcategory,
-a.servicetype,
-a.region,
-a.address as ContractAddress,
-
-count(a.period) as daysactive,
-max(a.period) as lastactivedate,
-@rundate as ReportDate,
-now() as InsertedOn,
-
-rcbill_my.GetIsContractActiveOnDate(a.CONTRACTCODE,@rundate) as IsContractActiveOnReportDate
-*/
-
-from 
-
-rcbill_my.dailyactivenumber a 
-
-inner join
-(
-	select id,
-	firm as ClientName,
-	mphone as ClientPhone, 
-	memail as ClientEmail,
-	passno as ClientPassport,
-	Danno as ClientNIN,
-	moladdress as ClientAddress,
-	molregistrationaddress as RegistrationAddress
-	from rcbill.rcb_tclients
-	where 
-	upper(firm) like '%RETENTION%'
-) b
--- rcbill.rcb_tclients b
-
-on a.clientid=b.id
-
-group by
-a.clientid,
-a.clientcode,
-a.clientclass, a.clienttype,
-b.ClientName,
-b.ClientPhone, 
-b.ClientEmail,
-b.ClientPassport,
-b.ClientNIN,
-b.ClientAddress,
-b.RegistrationAddress
-/*
-a.contractid, 
-a.contractcode,
-a.activecount,
-a.devicescount,
-a.servicecategory,
-a.servicesubcategory,
-a.servicetype,
-a.region,
-a.address
-*/
-order by max(a.period) asc
-
-
-)
-;
-
-select * from rcbill_my.retentioncustomeractivity;
 
 ##############################################################
 
@@ -1076,3 +973,110 @@ call sp_ActiveNumber(19,06,2018,'','');
 
 call sp_GetActiveNumberFromTo('2018-06-13','2018-06-19');
 
+#####################################################################
+
+
+
+##RETENTION CUSTOMER REPORT
+drop table if exists rcbill_my.retentioncustomeractivity;
+
+create table rcbill_my.retentioncustomeractivity as
+(
+
+
+select distinct
+@rundate as ReportDate,
+count(distinct a.contractcode) as ContractCount,
+count(distinct a.period) as DaysActive,
+min(a.period) as FirstActiveDate,
+max(a.period) as LastActiveDate,
+a.clientid as ClientId,
+a.clientcode as ClientCode,
+a.clientclass as ClientClass, 
+a.clienttype as ClientType,
+/*
+b.firm as ClientName,
+b.mphone as ClientPhone, 
+b.memail as ClientEmail,
+b.passno as ClientPassport,
+b.Danno as ClientNIN,
+b.moladdress as ClientAddress,
+b.molregistrationaddress as RegistrationAddress,
+*/
+
+b.ClientName,
+b.ClientPhone, 
+b.ClientEmail,
+b.ClientPassport,
+b.ClientNIN,
+b.ClientAddress,
+b.RegistrationAddress,
+
+now() as InsertedOn
+/*
+a.devicescount,
+a.servicecategory,
+a.servicesubcategory,
+a.servicetype,
+a.region,
+a.address as ContractAddress,
+
+count(a.period) as daysactive,
+max(a.period) as lastactivedate,
+@rundate as ReportDate,
+now() as InsertedOn,
+
+rcbill_my.GetIsContractActiveOnDate(a.CONTRACTCODE,@rundate) as IsContractActiveOnReportDate
+*/
+
+from 
+
+rcbill_my.dailyactivenumber a 
+
+inner join
+(
+	select id,
+	firm as ClientName,
+	mphone as ClientPhone, 
+	memail as ClientEmail,
+	passno as ClientPassport,
+	Danno as ClientNIN,
+	moladdress as ClientAddress,
+	molregistrationaddress as RegistrationAddress
+	from rcbill.rcb_tclients
+	where 
+	upper(firm) like '%RETENTION%'
+) b
+-- rcbill.rcb_tclients b
+
+on a.clientid=b.id
+
+group by
+a.clientid,
+a.clientcode,
+a.clientclass, a.clienttype,
+b.ClientName,
+b.ClientPhone, 
+b.ClientEmail,
+b.ClientPassport,
+b.ClientNIN,
+b.ClientAddress,
+b.RegistrationAddress
+/*
+a.contractid, 
+a.contractcode,
+a.activecount,
+a.devicescount,
+a.servicecategory,
+a.servicesubcategory,
+a.servicetype,
+a.region,
+a.address
+*/
+order by max(a.period) asc
+
+
+)
+;
+
+select * from rcbill_my.retentioncustomeractivity;
