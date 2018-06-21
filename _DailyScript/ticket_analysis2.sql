@@ -294,3 +294,35 @@ create table rcbill_my.clientticket_assgnjourney as
 select * from rcbill_my.clientticket_cmmtjourney;
 select * from rcbill_my.clientticket_assgnjourney;
 
+
+select * from rcbill_my.clientticket_cmmtjourney where ticketid in (882293);
+select * from rcbill_my.clientticket_assgnjourney where ticketid in (882293);
+
+
+select * from rcbill_my.clientticket_cmmtjourney 
+where 
+tickettype='fault'
+and closedate is not null
+and
+(comment like '%attended%' and (comment like '%11.6.18%' or comment like '%11.06.18%' or comment like '%11/6/18%' or comment like '%11.06.18%')) 
+order by ticketid;
+
+select distinct ticketid from rcbill_my.clientticket_cmmtjourney 
+where 
+tickettype='fault'
+and closedate is not null
+and
+(comment like '%attended%' and (comment like '%11.6.18%' or comment like '%11.06.18%' or comment like '%11/6/18%' or comment like '%11.06.18%')) 
+order by ticketid;
+
+
+select distinct clientcode from rcbill_my.clientticket_cmmtjourney 
+where
+tickettype='fault'
+and closedate is not null
+and
+ (comment like '%attended%' and (comment like '%11.6.18%' or comment like '%11.06.18%' or comment like '%11/6/18%' or comment like '%11.06.18%')) 
+order by ticketid;
+
+select * from rcbill_my.clientticket_assgnjourney where ticketid in (882293);
+
