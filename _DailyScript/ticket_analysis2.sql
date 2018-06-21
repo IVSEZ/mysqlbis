@@ -1,3 +1,4 @@
+use rcbill;
 
 set @startdate='2018-01-01';
 
@@ -153,6 +154,16 @@ order by ticketid, a.ASSGN_OPENDATE, commentdate
 
 
 
+*/
+
+select openreason, tickettype, opentechregion, stagetechregion, closetechregion, count(distinct ticketid) from rcbill_my.clientticketjourney where date(OPENDATE)>=@startdate
+group by openreason, tickettype, opentechregion, stagetechregion, closetechregion
+-- order by 2 desc
+-- with rollup
+;
+
+
+
 select a.id as ticketid, a.opendate
 , (select name from rcb_tickettechusers where id in (a.openuserid)) as openuser
 , (select OPENREASONNAME from rcb_ticketopenreasons where torid in (a.OPENREASONID)) as openreason
@@ -192,9 +203,9 @@ from
 	on 
 	a.ID=b.TICKETID
 	where 
-    a.id in (865626)
-    and 
-    date(a.OPENDATE)>'2016-12-31'
+    -- a.id in (865626)
+    -- and 
+    date(a.OPENDATE)>=@startdate
 	order by a.id, b.UPDDATE
 ) a
 order by ticketid, a.commentdate
@@ -263,18 +274,10 @@ from
     a.ID=c.TICKETID
  
 	where 
-    a.id in (865626)
-    and 
-    date(a.OPENDATE)>'2016-12-31'
+    -- a.id in (865626)
+    -- and 
+    date(a.OPENDATE)>=@startdate
 	order by a.id, c.OPENDATE
 ) a
 order by ticketid, a.ASSGN_OPENDATE
-;
-
-*/
-
-select openreason, tickettype, opentechregion, stagetechregion, closetechregion, count(distinct ticketid) from rcbill_my.clientticketjourney where date(OPENDATE)>=@startdate
-group by openreason, tickettype, opentechregion, stagetechregion, closetechregion
--- order by 2 desc
--- with rollup
 ;
