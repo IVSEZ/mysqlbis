@@ -1,6 +1,17 @@
 
 set @startdate='2018-01-01';
 
+set @clientcode='I.000014096';
+
+select * from rcbill_my.clientticketsnapshot_f;
+
+select * from rcbill_my.clientticketsnapshot_f where clientcode=@clientcode;
+
+select ticketid, openreason, count(*) from rcbill_my.clientticketsnapshot_f where clientcode=@clientcode
+group by ticketid, openreason
+;
+
+
 -- select date(opendate) as OPEN_DATE from rcbill_my.clientticketjourney;
 
 

@@ -1,0 +1,1 @@
+mysql -u root -piv@1234 -h localhost "source C:\Workspace\IV\Work\Reports\_sql\_DailyScript\load DailyCalls.sql"
