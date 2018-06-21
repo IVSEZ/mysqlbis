@@ -38,9 +38,30 @@ select * from rcbill_my.clientstats where clientclass not in ('Intelvision Offic
 select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and dualview>0 and `Amber`>0;
 
 
+select * from rcbill_my.clientstats where clientclass not in ('Intelvision Office','Employee') and (`Extravagance`>1 or `Extravagance Corporate`>1);
+
 -- HOW MANY DUALVIEW CUSTOMERS HAD 2 TV PACKAGES BEFORE
 select * from rcbill.clientcontractssubs where VPNR_SERVICETYPE='DUALVIEW' and cl_clclassname not in ('INTELVISION OFFICE');
-select * from rcbill_my.customercontractactivity where clientcode='I.000011269';
+
+
+select * from rcbill.clientcontractssubs where VPNR_SERVICETYPE='DUALVIEW' and cl_clclassname not in ('INTELVISION OFFICE');
+
+select period, clientcode, package from rcbill_my.customercontractactivity where servicecategory='TV'
+and clientcode in 
+(
+select cl_clientcode from rcbill.clientcontractssubs where VPNR_SERVICETYPE='DUALVIEW' and cl_clclassname not in ('INTELVISION OFFICE')
+)
+;
+
+
+select clientcode, package, min(period), max(period) from rcbill_my.customercontractactivity where servicecategory='Internet'
+and clientcode in 
+(
+select cl_clientcode from rcbill.clientcontractssubs where VPNR_SERVICETYPE='DUALVIEW' and cl_clclassname not in ('INTELVISION OFFICE')
+)
+group by clientcode, package
+order by 3,4
+;
 
 
 
