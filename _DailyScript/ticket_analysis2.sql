@@ -258,9 +258,7 @@ from
 	order by a.id, c.OPENDATE
 ) a
 order by ticketid, a.ASSGN_OPENDATE
-
-
-    ;
+;
 
 */
 
