@@ -5,11 +5,11 @@ use rcbill_my;
 ## change date in call sp_ActiveNumber(
 
 -- use rcbill_my;
- SET @rundate='2018-06-20';
+ SET @rundate='2018-06-26';
 -- SET @rundate='2017-12-26';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-05052018-06052018.csv'
 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-20062018.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-26062018.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -150,13 +150,13 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2018-06-17'; SET @perioddate=str_to_date('2018-06-17','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-17;2018-06-17.csv'
 -- 	SET @rundate='2018-06-18'; SET @perioddate=str_to_date('2018-06-18','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-18;2018-06-18.csv'
 -- 	SET @rundate='2018-06-19'; SET @perioddate=str_to_date('2018-06-19','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-19;2018-06-19.csv'
- 	SET @rundate='2018-06-20'; SET @perioddate=str_to_date('2018-06-20','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-20;2018-06-20.csv'
+-- 	SET @rundate='2018-06-20'; SET @perioddate=str_to_date('2018-06-20','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-20;2018-06-20.csv'
 -- 	SET @rundate='2018-06-21'; SET @perioddate=str_to_date('2018-06-21','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-21;2018-06-21.csv'
 -- 	SET @rundate='2018-06-22'; SET @perioddate=str_to_date('2018-06-22','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-22;2018-06-22.csv'
 -- 	SET @rundate='2018-06-23'; SET @perioddate=str_to_date('2018-06-23','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-23;2018-06-23.csv'
 -- 	SET @rundate='2018-06-24'; SET @perioddate=str_to_date('2018-06-24','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-24;2018-06-24.csv'
 -- 	SET @rundate='2018-06-25'; SET @perioddate=str_to_date('2018-06-25','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-25;2018-06-25.csv'
--- 	SET @rundate='2018-06-26'; SET @perioddate=str_to_date('2018-06-26','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-26;2018-06-26.csv'
+ 	SET @rundate='2018-06-26'; SET @perioddate=str_to_date('2018-06-26','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-26;2018-06-26.csv'
 -- 	SET @rundate='2018-06-27'; SET @perioddate=str_to_date('2018-06-27','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-27;2018-06-27.csv'
 -- 	SET @rundate='2018-06-28'; SET @perioddate=str_to_date('2018-06-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-28;2018-06-28.csv'
 -- 	SET @rundate='2018-06-29'; SET @perioddate=str_to_date('2018-06-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201806/2018-06-29;2018-06-29.csv'
@@ -969,9 +969,9 @@ call sp_ActiveNumber(08,04,2018,'','');
 call sp_GetActiveNumberFromTo('2018-04-02','2018-04-08');
 */
 
-call sp_ActiveNumber(20,06,2018,'','');
+call sp_ActiveNumber(26,06,2018,'','');
 
-call sp_GetActiveNumberFromTo('2018-06-20','2018-06-20');
+call sp_GetActiveNumberFromTo('2018-06-21','2018-06-26');
 
 #####################################################################
 
