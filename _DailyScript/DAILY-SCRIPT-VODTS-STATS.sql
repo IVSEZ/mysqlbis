@@ -204,7 +204,7 @@ on a.device=b.mac and a.device=b.phoneno
 select month(sessionstart) as view_month, year(sessionstart) as view_year, clientcode, clientname, resource, sum(duration) as duration, count(*) from 
 rcbill.clienttsstats
 group by 1,2,3,4,5
-order by 2,1;
+order by 2 desc,1 desc;
 
 -- MOST TS LOYAL CUSTOMERS
 select distinct clientcode, clientname, contractcode, sum(duration) as TimeSpent, count(*) as TimesWatched, count(distinct resource) as UniqueChannels, min(date(sessionstart)) as fromdate, max(date(sessionstart)) as todate
@@ -218,7 +218,7 @@ order by 2, 4 desc;
 select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, resource, count(*)
 from rcbill.clienttsstats
 group by 1,2,3,4
-order by 3,2,1,5 desc
+order by 3 desc,2 desc,1 desc,5 desc
 ;
 
 select 
