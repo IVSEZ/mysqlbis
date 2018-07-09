@@ -93,3 +93,11 @@ order by 1 desc, region, SALESCENTER, ordertype, state;
 		from 
 		rcbill_my.anreport
 		where reported='Y' and decommissioned='N';
+        
+        
+select * from rcbill_my.dailysales where date(orderdate)>='2018-05-01' and date(orderdate)<='2018-05-31'
+and service in ('Subscription gVOICE','Subscription VOICE')
+and ordertype in ('New Contracts::80','Adding Contracts::81')
+;
+
+select count(*) from rcbill_my.dailysales;
