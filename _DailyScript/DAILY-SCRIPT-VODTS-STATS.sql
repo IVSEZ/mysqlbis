@@ -3,11 +3,15 @@ use rcbill;
 
 -- ENSURE THAT CLIENTSTATS TABLE IS READY 
 
+set @rundate = '2018-07-08';
+
 
 -- select * from rcbill.clientcontractdevices;
 -- select * from rcbill.rcb_vodtelemetry;
 
 -- create temporary table vodstats as 
+
+/*
 drop table if exists rcbill.tempvod;
 CREATE TEMPORARY TABLE rcbill.tempvod 
 (INDEX idxtv1 (device)) as 
@@ -28,7 +32,25 @@ select a.device,a.duration,a.resource,a.sessionstart,a.subscriber,b.originaltitl
 show index from rcbill.tempvod;
 
 select * from tempvod;
+*/
 
+insert into rcbill.tempvod
+(
+select a.device,a.duration,a.resource,a.sessionstart,a.subscriber,b.originaltitle,b.imdbtitleref
+	from
+	rcbill.rcb_vodtelemetry a 
+	inner join 
+	rcbill.rcb_vodtitles b 
+	on 
+	a.resource=b.IMDBTITLEREF
+	where 
+	date(a.SessionStart)>=@rundate
+	order by a.device
+)
+;
+
+-- FIRST TIME
+/*
 drop table if exists rcbill.clientvodstats;
 
 create table rcbill.clientvodstats
@@ -42,6 +64,21 @@ rcbill.clientcontractdevices b
 on a.device=b.mac and a.device=b.phoneno
 )
 ;
+*/
+
+insert into rcbill.clientvodstats
+(
+select a.*, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
+from 
+rcbill.tempvod a 
+inner join 
+rcbill.clientcontractdevices b 
+on a.device=b.mac and a.device=b.phoneno
+where 
+date(a.SessionStart)>=@rundate
+)
+;
+
 
 -- select * from rcbill.clientvodstats ;
 -- select distinct date(sessionstart), count(distinct clientcode) from rcbill.clientvodstats group by 1;
@@ -49,11 +86,61 @@ on a.device=b.mac and a.device=b.phoneno
 
 -- select * from rcbill.clientvodstats where clientname like '%rahul%' order by sessionstart;
 
-
-select month(sessionstart) as view_month, year(sessionstart) as view_year, clientcode, clientname, originaltitle, sum(duration) as duration, count(*) from 
+/*
+select month(sessionstart) as view_month, year(sessionstart) as view_year, clientcode, clientname, originaltitle
+, sum(duration) as duration
+, count(*) from 
 rcbill.clientvodstats
 group by 1,2,3,4,5
 order by 2 desc,1 desc;
+*/
+
+drop table if exists rcbill_my.rep_vodstats;
+
+create table rcbill_my.rep_vodstats as
+(
+
+select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, clientcode, clientname, originaltitle, resource
+, sum(duration) as duration_sec
+-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
+, TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
+, count(*) as sessions from 
+rcbill.clientvodstats
+group by 1,2,3,4,5,6,7
+order by 3 desc, 2 desc,1 desc
+)
+;
+
+select * from rcbill_my.rep_vodstats;
+
+select view_day, view_month, view_year, originaltitle
+, count(*) as sessions
+, sum(duration_sec) as duration_sec
+-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
+-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
+from rcbill_my.rep_vodstats
+group by 1,2,3,4
+order by 3 desc,2 desc,1 desc,5 desc
+;
+
+-- MOST WATCHED VOD TITLES PER DAY
+/*
+select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, originaltitle, resource, count(*)
+from rcbill.clientvodstats
+group by 1,2,3,4,5
+order by 3,2,1,6 desc
+;
+*/
+
+select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, originaltitle, resource, count(*) as sessions
+, sum(duration) as duration_sec
+-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
+-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
+from rcbill.clientvodstats
+group by 1,2,3,4,5
+order by 3 desc,2 desc,1 desc,5 desc
+;
+
 
 -- MOST VOD LOYAL CUSTOMERS
 select distinct clientcode, clientname, contractcode, sum(duration) as TimeSpent, count(*) as TimesWatched, count(distinct originaltitle) as UniqueMovies, min(date(sessionstart)) as fromdate, max(date(sessionstart)) as todate
@@ -62,12 +149,7 @@ from rcbill.clientvodstats
 group by clientcode, clientname, contractcode
 order by 5 desc;
 
--- MOST WATCHED VOD TITLES PER DAY
-select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, originaltitle, resource, count(*)
-from rcbill.clientvodstats
-group by 1,2,3,4,5
-order by 3,2,1,6 desc
-;
+
 
 ##TOP VOD TITLES
 select 
@@ -159,6 +241,8 @@ use rcbill;
 
 -- ENSURE THAT CLIENTSTATS TABLE IS READY 
 
+-- first time
+/*
 drop table if exists rcbill.tempts;
 CREATE TEMPORARY TABLE rcbill.tempts 
 (INDEX idxtv1 (device)) as 
@@ -180,7 +264,26 @@ select a.device,a.duration,a.resource,a.sessionstart,a.subscriber
 show index from rcbill.tempts;
 
 select * from tempts;
+*/
 
+insert into rcbill.tempts
+(
+select a.device,a.duration,a.resource,a.sessionstart,a.subscriber
+-- ,b.originaltitle,b.imdbtitleref
+	from
+	rcbill.rcb_tstelemetry a 
+	-- inner join 
+	-- rcbill.rcb_vodtitles b 
+	-- on 
+	-- a.resource=b.IMDBTITLEREF
+	where 
+	date(a.SessionStart)>=@rundate
+	order by a.device
+)
+;
+
+-- first time
+/*
 drop table if exists rcbill.clienttsstats;
 
 create table rcbill.clienttsstats
@@ -194,6 +297,20 @@ rcbill.clientcontractdevices b
 on a.device=b.mac and a.device=b.phoneno
 )
 ;
+*/
+
+insert into rcbill.clienttsstats
+(
+select a.*, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
+from 
+rcbill.tempts a 
+inner join 
+rcbill.clientcontractdevices b 
+on a.device=b.mac and a.device=b.phoneno
+where 
+date(a.SessionStart)>=@rundate
+)
+;
 
 -- select * from rcbill.clientvodstats ;
 -- select distinct date(sessionstart), count(distinct clientcode) from rcbill.clientvodstats group by 1;
@@ -204,7 +321,12 @@ on a.device=b.mac and a.device=b.phoneno
 select month(sessionstart) as view_month, year(sessionstart) as view_year, clientcode, clientname, resource, sum(duration) as duration, count(*) from 
 rcbill.clienttsstats
 group by 1,2,3,4,5
-order by 2,1;
+order by 2 desc,1 desc;
+
+
+
+
+
 
 -- MOST TS LOYAL CUSTOMERS
 select distinct clientcode, clientname, contractcode, sum(duration) as TimeSpent, count(*) as TimesWatched, count(distinct resource) as UniqueChannels, min(date(sessionstart)) as fromdate, max(date(sessionstart)) as todate
@@ -218,7 +340,7 @@ order by 2, 4 desc;
 select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, resource, count(*)
 from rcbill.clienttsstats
 group by 1,2,3,4
-order by 3,2,1,5 desc
+order by 3 desc,2 desc,1 desc,5 desc
 ;
 
 select 

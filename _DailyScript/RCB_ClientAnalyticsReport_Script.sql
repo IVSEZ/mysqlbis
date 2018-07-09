@@ -363,6 +363,20 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
 		select * from rcbill.clientextendedreport;
         
+        drop table if exists rcbill_my.rep_allcust;
+        create table rcbill_my.rep_allcust as 
+        (
+			select 
+				REPORTDATE as reportdate, CLIENTDEBT_REPORTDATE as currentdebt, CL_CLIENTCODE as clientcode, cl_clientname as clientname
+				, ActiveContracts as activecontracts, ActiveSubscriptions as activesubscriptions, firstcontractdate, FirstInvoiceDate as firstinvoicedate, LastInvoiceDate as lastinvoicedate
+				, FirstPaymentDate as firstpaymentdate, LastPaymentDate as lastpaymentdate, TotalPayments as totalpayments, TotalPaymentAmount as totalpaymentamount
+				, ClassName as clientclass, CL_NIN as clientnin, CL_PassNo as clientpassport, CL_MPhone as clientphone, clientaddress as clientaddress
+				, cl_location as clientlocation, cl_area as clientarea 
+			from rcbill.clientextendedreport
+		
+        );
+        
+        
 		#Extended ClientContracts table
         /*
 		select a.*, 
