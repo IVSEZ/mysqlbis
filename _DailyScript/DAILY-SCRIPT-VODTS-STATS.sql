@@ -3,7 +3,7 @@ use rcbill;
 
 -- ENSURE THAT CLIENTSTATS TABLE IS READY 
 
-set @rundate = '2018-07-06';
+set @rundate = '2018-07-08';
 
 
 -- select * from rcbill.clientcontractdevices;
@@ -95,14 +95,33 @@ group by 1,2,3,4,5
 order by 2 desc,1 desc;
 */
 
-select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, clientcode, clientname, originaltitle
+drop table if exists rcbill_my.rep_vodstats;
+
+create table rcbill_my.rep_vodstats as
+(
+
+select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, clientcode, clientname, originaltitle, resource
 , sum(duration) as duration_sec
 -- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
 , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
 , count(*) as sessions from 
 rcbill.clientvodstats
-group by 1,2,3,4,5,6
-order by 3 desc, 2 desc,1 desc;
+group by 1,2,3,4,5,6,7
+order by 3 desc, 2 desc,1 desc
+)
+;
+
+select * from rcbill_my.rep_vodstats;
+
+select view_day, view_month, view_year, originaltitle
+, count(*) as sessions
+, sum(duration_sec) as duration_sec
+-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
+-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
+from rcbill_my.rep_vodstats
+group by 1,2,3,4
+order by 3 desc,2 desc,1 desc,5 desc
+;
 
 -- MOST WATCHED VOD TITLES PER DAY
 /*
