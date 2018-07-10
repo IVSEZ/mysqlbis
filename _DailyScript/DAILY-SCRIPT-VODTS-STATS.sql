@@ -3,7 +3,7 @@ use rcbill;
 
 -- ENSURE THAT CLIENTSTATS TABLE IS READY 
 
-set @rundate = '2018-07-08';
+set @rundate = '2018-07-09';
 
 
 -- select * from rcbill.clientcontractdevices;
@@ -49,6 +49,8 @@ select a.device,a.duration,a.resource,a.sessionstart,a.subscriber,b.originaltitl
 )
 ;
 
+
+-- delete from rcbill.tempvod where date(SessionStart)>=@rundate
 -- FIRST TIME
 /*
 drop table if exists rcbill.clientvodstats;
@@ -282,6 +284,10 @@ select a.device,a.duration,a.resource,a.sessionstart,a.subscriber
 )
 ;
 
+-- select * from rcbill.tempts where date(SessionStart)>=@rundate
+-- delete from rcbill.tempts where date(SessionStart)>=@rundate
+-- delete from rcbill.tempts where date(SessionStart)>=@rundate
+
 -- first time
 /*
 drop table if exists rcbill.clienttsstats;
@@ -311,6 +317,10 @@ where
 date(a.SessionStart)>=@rundate
 )
 ;
+
+
+-- select * from rcbill.clienttsstats where date(SessionStart)>=@rundate
+-- delete from rcbill.clienttsstats where date(SessionStart)>=@rundate
 
 -- select * from rcbill.clientvodstats ;
 -- select distinct date(sessionstart), count(distinct clientcode) from rcbill.clientvodstats group by 1;
