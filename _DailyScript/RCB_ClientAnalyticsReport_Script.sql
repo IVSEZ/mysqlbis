@@ -366,6 +366,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         drop table if exists rcbill_my.rep_allcust;
         create table rcbill_my.rep_allcust as 
         (
+			/*
 			select 
 			REPORTDATE as reportdate, CLIENTDEBT_REPORTDATE as currentdebt, CL_CLIENTCODE as clientcode, cl_clientname as clientname
 			, ActiveContracts as activecontracts, ActiveSubscriptions as activesubscriptions, firstcontractdate, FirstInvoiceDate as firstinvoicedate, LastInvoiceDate as lastinvoicedate
@@ -373,9 +374,33 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 			, ClassName as clientclass, CL_NIN as clientnin, CL_PassNo as clientpassport, CL_MPhone as clientphone, CL_MEMAIL as clientemail
 			, clientaddress as clientaddress, cl_location as clientlocation, cl_area as clientarea 
 			from rcbill.clientextendedreport
-		
+			*/
+            
+                    select a.*, b.firstactivedate, b.lastactivedate
+        from 
+        (
+			select 
+				REPORTDATE as reportdate, CLIENTDEBT_REPORTDATE as currentdebt, CL_CLIENTCODE as clientcode, cl_clientname as clientname
+				, ActiveContracts as activecontracts, ActiveSubscriptions as activesubscriptions, firstcontractdate, FirstInvoiceDate as firstinvoicedate, LastInvoiceDate as lastinvoicedate
+				, FirstPaymentDate as firstpaymentdate, LastPaymentDate as lastpaymentdate, TotalPayments as totalpayments, TotalPaymentAmount as totalpaymentamount
+				, ClassName as clientclass, CL_NIN as clientnin, CL_PassNo as clientpassport, CL_MPhone as clientphone, CL_MEMAIL as clientemail
+				, clientaddress as clientaddress, cl_location as clientlocation, cl_area as clientarea 
+				
+			from rcbill.clientextendedreport
+			) a
+			left join
+			(
+				select clientcode, min(period) as firstactivedate, max(period) as lastactivedate
+				from 
+				rcbill_my.customercontractactivity 
+				group by clientcode
+			) b
+			on a.clientcode=b.clientcode
+        
+            
         );
         
+        select count(*) as allcust from rcbill_my.rep_allcust;
         
 		#Extended ClientContracts table
         /*
