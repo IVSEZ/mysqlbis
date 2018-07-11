@@ -201,7 +201,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		CREATE INDEX IDXcch3
 		ON clientcontracthistory (CL_CLIENTID);
 
-		select * from clientcontracthistory order by cl_clientname;
+		-- select * from clientcontracthistory order by cl_clientname;
         
 		drop table if exists clientcontractinvpmt;
 		#QUERY Takes 53 minutes
@@ -275,7 +275,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 #3. Create ClientReport table
 		-- select * from clientcontracts where cl_clientcode='I.000011750';
         -- select * from clientcontracthistory where cl_clientcode='I.000011750';
-         select * from clientcontractinvpmt where cl_clientcode='I.000011750';
+        -- select * from clientcontractinvpmt where cl_clientcode='I.000011750';
 
 		#for file clientreport-ddmmyyyy-n.csv
 		DROP TABLE IF EXISTS clientreport;
@@ -308,7 +308,8 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		;
 
 		#Final Report Table
-		select * from clientreport;
+		-- select * from clientreport;
+        select count(*) as clientreport from clientreport;
         
         
         #Extended Report Table
@@ -361,7 +362,8 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         )
         ;
 
-		select * from rcbill.clientextendedreport;
+		-- select * from rcbill.clientextendedreport;
+        select count(*) as clientextendedreport from rcbill.clientextendedreport;
         
         drop table if exists rcbill_my.rep_allcust;
         create table rcbill_my.rep_allcust as 
@@ -376,32 +378,30 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 			from rcbill.clientextendedreport
 			*/
             
-                    select a.*, b.firstactivedate, b.lastactivedate
-        from 
-        (
-			select 
-				REPORTDATE as reportdate, CLIENTDEBT_REPORTDATE as currentdebt, CL_CLIENTCODE as clientcode, cl_clientname as clientname
-				, ActiveContracts as activecontracts, ActiveSubscriptions as activesubscriptions, firstcontractdate, FirstInvoiceDate as firstinvoicedate, LastInvoiceDate as lastinvoicedate
-				, FirstPaymentDate as firstpaymentdate, LastPaymentDate as lastpaymentdate, TotalPayments as totalpayments, TotalPaymentAmount as totalpaymentamount
-				, ClassName as clientclass, CL_NIN as clientnin, CL_PassNo as clientpassport, CL_MPhone as clientphone, CL_MEMAIL as clientemail
-				, clientaddress as clientaddress, cl_location as clientlocation, cl_area as clientarea 
-				
-			from rcbill.clientextendedreport
+			select a.*, b.firstactivedate, b.lastactivedate
+			from 
+			(
+				select 
+					REPORTDATE as reportdate, CLIENTDEBT_REPORTDATE as currentdebt, CL_CLIENTCODE as clientcode, cl_clientname as clientname
+					, ActiveContracts as activecontracts, ActiveSubscriptions as activesubscriptions, firstcontractdate, FirstInvoiceDate as firstinvoicedate, LastInvoiceDate as lastinvoicedate
+					, FirstPaymentDate as firstpaymentdate, LastPaymentDate as lastpaymentdate, TotalPayments as totalpayments, TotalPaymentAmount as totalpaymentamount
+					, ClassName as clientclass, CL_NIN as clientnin, CL_PassNo as clientpassport, CL_MPhone as clientphone, CL_MEMAIL as clientemail
+					, clientaddress as clientaddress, cl_location as clientlocation, cl_area as clientarea 
+					
+				from rcbill.clientextendedreport
 			) a
 			left join
 			(
-				select clientcode, min(period) as firstactivedate, max(period) as lastactivedate
-				from 
-				rcbill_my.customercontractactivity 
-				group by clientcode
+					select clientcode, min(period) as firstactivedate, max(period) as lastactivedate
+					from 
+					rcbill_my.customercontractactivity 
+					group by clientcode
 			) b
 			on a.clientcode=b.clientcode
-        
-            
         );
         
         select count(*) as allcust from rcbill_my.rep_allcust;
-        
+        -- select * from rcbill_my.rep_allcust;
 		#Extended ClientContracts table
         /*
 		select a.*, 
@@ -469,7 +469,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         )
 		;
 
-		select * from loyaltylist5000;
+		-- select * from loyaltylist5000;
 		
         /*
 		select cl_clientname, cl_clientcode from 
@@ -571,7 +571,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         )
 		;
 
-		select * from retentionlist5000;
+		-- select * from retentionlist5000;
         
         /*
         select * from clientextendedreport;
@@ -592,8 +592,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         */
         
         
-        select classname, count(*) as activeclients, sum(activecontracts) as activecontracts , sum(ActiveSubscriptions) as ActiveSubscriptions from clientextendedreport where activecontracts>0
-        group by classname;
+        -- select classname, count(*) as activeclients, sum(activecontracts) as activecontracts , sum(ActiveSubscriptions) as ActiveSubscriptions from clientextendedreport where activecontracts>0 group by classname;
         
         /*
         select * from clientextendedreport where classname is null and activecontracts>0;

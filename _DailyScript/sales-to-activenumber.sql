@@ -329,6 +329,7 @@ order by o_orderday, o_clientcode, firstactivedateforcontract;
 */
 
 -- SALES TO ACTIVE JOINED WITH TICKET SNAPSHOT
+/*
 select 
 a.*,
 b.*
@@ -344,7 +345,9 @@ a.o_contractcode=b.contractcode
 order by o_orderdate desc
 ;
 
+*/
 
+/*
 select *
  from rcbill_my.salestoactive 
 -- where firstactivedateforcontract is not null
@@ -355,7 +358,7 @@ select *
  from rcbill_my.salestoactive 
 where firstactivedateforcontract is not null
 order by o_orderday, o_clientcode, firstactivedateforcontract;
-
+*/
 
 /*
 select a.*, b.* from 
@@ -375,6 +378,7 @@ order by a.o_orderdate
 ;
 */
 
+/*
 select *
 -- datediff(firstactivedate,orderday) as diffalldays,
 -- (5 * (DATEDIFF(firstactivedate, orderday) DIV 7) + MID('0123444401233334012222340111123400001234000123440', 7 * WEEKDAY(orderday) + WEEKDAY(firstactivedate) + 1, 1)) as diffworkdays
@@ -416,6 +420,7 @@ firstactivedateforcontract is not null
 group by 1,2, 3,4
 order by  3 desc, 2 desc,4,1
 ;
+*/
 
 /*
 select o_region, month(o_orderdate) as o_month, year(o_orderdate) as o_year, ac_package,  count(1) as allcount, count(distinct o_clientcode) as distclient, sum(ac_activecount) as activenos 

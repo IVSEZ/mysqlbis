@@ -60,6 +60,6 @@ create table rcbill_my.rep_addon as
 
 
 
-select * from rcbill_my.rep_prepaid_camera;
-select * from rcbill_my.rep_addon;
+select count(*) as rep_prepaid_camera from rcbill_my.rep_prepaid_camera;
+select count(*) as rep_addon from rcbill_my.rep_addon;
 

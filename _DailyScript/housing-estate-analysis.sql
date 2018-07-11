@@ -24,6 +24,7 @@ Perseverance Phase 6
 
 use rcbill_my;
 
+/*
 select a.*, 
 case 
 when a.clientaddress like '%remis%' or a.clientaddress like '%remiz%' then 'REMIS'
@@ -112,6 +113,8 @@ from
 ) a
 
 ;
+
+*/
 
 -- SET @rundate='2018-06-08';
 
@@ -285,7 +288,7 @@ order by 9 desc
 )
 ;
 
-SELECT * from rcbill_my.rep_housingestates;
+SELECT count(*) as rep_housingestates from rcbill_my.rep_housingestates;
 
 /*
 

@@ -282,14 +282,14 @@ order by a.opendate
 
 
 
-select * from  rcbill_my.clientticketjourney;
-select * from  rcbill_my.clientticketsnapshot_irs ;
-select * from rcbill_my.clientticketsnapshot_f;
+-- select * from  rcbill_my.clientticketjourney;
+-- select * from  rcbill_my.clientticketsnapshot_irs ;
+-- select * from rcbill_my.clientticketsnapshot_f;
 
 -- select * from rcbill_my.clientticketsnapshot_irs where tickettype='Installation' and CloseReason is null order by opendate	;
 
 
-
+/*
 select tickettype, openreason, OpenRegion, StageRegion, date(opendate) as opendate, count(*) as tktcount 
 from rcbill_my.clientticketsnapshot_irs 
 -- where tickettype='Installation' 
@@ -313,37 +313,37 @@ from rcbill_my.clientticketsnapshot_f
 -- and CloseReason is null 
 group by tickettype, openreason, OpenRegion, StageRegion, 5
 order by 5 desc	;
-
+*/
 
 
 -- OPEN TICKETS 
 
 -- INSTALLATIONS - MAHE
-select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='INSTALLATION' and (StageRegion<>'TECHNICAL - ADDITIONAL SERVICE INSTALLATIONS' and StageRegion<>'PRASLIN - INSTALLATIONS' and OpenRegion<>'PRASLIN TECH - SERVICE') order by opendate ;
+-- select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='INSTALLATION' and (StageRegion<>'TECHNICAL - ADDITIONAL SERVICE INSTALLATIONS' and StageRegion<>'PRASLIN - INSTALLATIONS' and OpenRegion<>'PRASLIN TECH - SERVICE') order by opendate ;
 
 -- INSTALLATIONS - PRASLIN
-select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='INSTALLATION' and (StageRegion='PRASLIN - INSTALLATIONS' or OpenRegion='PRASLIN TECH - SERVICE') order by opendate ;
+-- select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='INSTALLATION' and (StageRegion='PRASLIN - INSTALLATIONS' or OpenRegion='PRASLIN TECH - SERVICE') order by opendate ;
 
 -- RELOCATIONS
-select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='RELOCATION' order by opendate ;
+-- select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='RELOCATION' order by opendate ;
 
 -- SURVEY
-select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and (openreason='SURVEY' or StageRegion='TECHNICAL - SURVEY') order by opendate ;
+-- select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and (openreason='SURVEY' or StageRegion='TECHNICAL - SURVEY') order by opendate ;
 -- TECH AUDIT SURVEY
-select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (clientcode='I6') order by opendate;
+-- select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (clientcode='I6') order by opendate;
 
 -- ADDITIONAL SERVICE INSTALLATIONS
-select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='INSTALLATION' and stageregion='TECHNICAL - ADDITIONAL SERVICE INSTALLATIONS' order by opendate ;
+-- select * from rcbill_my.clientticketsnapshot_irs where CloseReason is null and openreason='INSTALLATION' and stageregion='TECHNICAL - ADDITIONAL SERVICE INSTALLATIONS' order by opendate ;
 
 -- FAULT - PRASLIN
-select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (StageRegion='PRASLIN TECH - SERVICE' or OpenRegion='PRASLIN TECH - SERVICE' or OpenRegion='PRASLIN - MAINTENANCE') order by opendate ;
+-- select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (StageRegion='PRASLIN TECH - SERVICE' or OpenRegion='PRASLIN TECH - SERVICE' or OpenRegion='PRASLIN - MAINTENANCE') order by opendate ;
 
 
 -- FAULT - MAHE
-select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (StageRegion='TECHNICAL - NEW SERVICE' or StageRegion='TECHNICAL - PENDING SERVICE') order by opendate ;
+-- select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (StageRegion='TECHNICAL - NEW SERVICE' or StageRegion='TECHNICAL - PENDING SERVICE') order by opendate ;
 
 -- MAINTENANCE - MAHE
-select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (StageRegion='TECHNICAL - MAINTENANCE') order by opendate ;
+-- select * from rcbill_my.clientticketsnapshot_f where CloseReason is null and (StageRegion='TECHNICAL - MAINTENANCE') order by opendate ;
 
 
 -- OPEN SURVEY TICKETS
@@ -375,7 +375,7 @@ create table rcbill_my.rep_surveytickets as
 
 );
 
-select * from rcbill_my.rep_surveytickets;
+-- select * from rcbill_my.rep_surveytickets;
 
 /*
 SELECT reportdate as REPORT_DATE, TICKETID AS TICKET_ID, CLIENTCODE AS CLIENT_CODE, CONTRACTCODE AS CONTRACT_CODE, TICKETTYPE AS TICKET_TYPE, OPENREASON AS OPEN_REASON
