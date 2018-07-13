@@ -3,7 +3,7 @@ use rcbill;
 
 -- ENSURE THAT CLIENTSTATS TABLE IS READY 
 
-set @rundate = '2018-07-10';
+set @rundate = '2018-07-12';
 
 -- select distinct date(sessionstart) from rcbill.rcb_livetvtelemetry;
 -- select distinct date(sessionstart), count(*) from rcbill.templivetv group by 1 order by 1 desc;

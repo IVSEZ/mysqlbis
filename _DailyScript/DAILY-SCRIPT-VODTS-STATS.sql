@@ -3,7 +3,7 @@ use rcbill;
 
 -- ENSURE THAT CLIENTSTATS TABLE IS READY 
 
-set @rundate = '2018-07-10';
+set @rundate = '2018-07-12';
 
 
 -- select * from rcbill.clientcontractdevices;
