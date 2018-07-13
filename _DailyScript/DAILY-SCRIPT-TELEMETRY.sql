@@ -2,35 +2,37 @@
 
 # VOD TELEMETRY
 
+
 use rcbill;
 
 LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-12072018.csv' 
-REPLACE INTO TABLE `rcbill`.`rcb_vodtelemetry` CHARACTER SET UTF8 FIELDS TERMINATED BY '|' 
+REPLACE INTO TABLE `rcbill`.`rcb_vodtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 2 LINES 
 ( 
- @ID,
- @Device,
- @Type1,
- @Resource,
- @StartPosition,
- @EndTime,
- @Duration,
- @Subscriber,
- @SessionStart,
- @SessionEnd
+@﻿ID ,
+@Device ,
+@Type ,
+@Resource ,
+@StartPosition ,
+@EndTime ,
+@Duration ,
+@Subscriber ,
+@SessionStart ,
+@SessionEnd 
 )
-set
-ID=@ID,
-DEVICE=@Device,
-`TYPE`=@Type1,
-RESOURCE=upper(trim(@Resource)),
-STARTPOSITION=@StartPosition,
-ENDTIME=@EndTime,
-DURATION=@Duration,
-SUBSCRIBER=@Subscriber,
-SESSIONSTART=@SessionStart,
-SESSIONEND=@SessionEnd,
+set 
+﻿ID=@﻿ID ,
+DEVICE=@Device ,
+TYPE=@Type ,
+RESOURCE=@Resource ,
+STARTPOSITION=@StartPosition ,
+ENDTIME=@EndTime ,
+DURATION=@Duration ,
+SUBSCRIBER=@Subscriber ,
+SESSIONSTART=@SessionStart ,
+SESSIONEND=@SessionEnd ,
+
 INSERTEDON=now()
 ;
 
