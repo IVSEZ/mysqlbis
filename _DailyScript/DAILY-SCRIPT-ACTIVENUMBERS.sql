@@ -5,11 +5,11 @@ use rcbill_my;
 ## change date in call sp_ActiveNumber(
 
 -- use rcbill_my;
- SET @rundate='2018-07-12';
+ SET @rundate='2018-07-14';
 -- SET @rundate='2017-12-26';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-05052018-06052018.csv'
 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-12072018.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-14072018.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -118,7 +118,9 @@ servicecategory
 
 -- select * from rcbill_my.activenumber where period=@rundate and reported='Y' and decommissioned='N';
 
-select period, count(1) from rcbill_my.activenumber group by period order by period desc;
+select period, count(1) from rcbill_my.activenumber group by period order by period desc
+limit 5
+;
 
 -- select * from rcbill_my.activenumber where period=@rundate and reported='Y';
 -- delete from rcbill_my.activenumber where period=@rundate;
@@ -142,9 +144,9 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2018-07-09'; SET @perioddate=str_to_date('2018-07-09','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-09;2018-07-09.csv'
 -- 	SET @rundate='2018-07-10'; SET @perioddate=str_to_date('2018-07-10','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-10;2018-07-10.csv'
 -- 	SET @rundate='2018-07-11'; SET @perioddate=str_to_date('2018-07-11','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-11;2018-07-11.csv'
- 	SET @rundate='2018-07-12'; SET @perioddate=str_to_date('2018-07-12','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-12;2018-07-12.csv'
+-- 	SET @rundate='2018-07-12'; SET @perioddate=str_to_date('2018-07-12','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-12;2018-07-12.csv'
 -- 	SET @rundate='2018-07-13'; SET @perioddate=str_to_date('2018-07-13','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-13;2018-07-13.csv'
--- 	SET @rundate='2018-07-14'; SET @perioddate=str_to_date('2018-07-14','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-14;2018-07-14.csv'
+ 	SET @rundate='2018-07-14'; SET @perioddate=str_to_date('2018-07-14','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-14;2018-07-14.csv'
 -- 	SET @rundate='2018-07-15'; SET @perioddate=str_to_date('2018-07-15','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-15;2018-07-15.csv'
 -- 	SET @rundate='2018-07-16'; SET @perioddate=str_to_date('2018-07-16','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-16;2018-07-16.csv'
 -- 	SET @rundate='2018-07-17'; SET @perioddate=str_to_date('2018-07-17','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-17;2018-07-17.csv'
@@ -274,7 +276,9 @@ delete from rcbill_my.dailyactivenumber where period in ('2018-04-02','2018-04-0
 */
 
 
-select period, count(1) from rcbill_my.dailyactivenumber group by period order by period desc;
+select period, count(1) from rcbill_my.dailyactivenumber group by period order by period desc
+limit 5
+;
 
 ##Client and Active Contracts per location
 drop table if exists rcbill_my.activeccl; 
@@ -398,7 +402,9 @@ select count(1) from rcbill_my.customercontractactivity;
 
 -- select * from rcbill_my.customercontractactivity where period=@rundate and clientcode='I.000011750';
 
-select period, count(1) as customercontractactivity from rcbill_my.customercontractactivity group by period order by period desc;
+select period, count(1) as customercontractactivity from rcbill_my.customercontractactivity group by period order by period desc
+limit 5
+;
 
 -- CREATE A CUSTOMER CONTRACT SNAPSHOT TABLE
 drop table if exists rcbill_my.customercontractsnapshot;
