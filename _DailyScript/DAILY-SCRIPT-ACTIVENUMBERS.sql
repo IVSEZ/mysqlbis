@@ -5,11 +5,11 @@ use rcbill_my;
 ## change date in call sp_ActiveNumber(
 
 -- use rcbill_my;
- SET @rundate='2018-07-14';
+ SET @rundate='2018-07-19';
 -- SET @rundate='2017-12-26';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-05052018-06052018.csv'
 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-14072018.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-19072018.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -146,12 +146,12 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2018-07-11'; SET @perioddate=str_to_date('2018-07-11','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-11;2018-07-11.csv'
 -- 	SET @rundate='2018-07-12'; SET @perioddate=str_to_date('2018-07-12','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-12;2018-07-12.csv'
 -- 	SET @rundate='2018-07-13'; SET @perioddate=str_to_date('2018-07-13','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-13;2018-07-13.csv'
- 	SET @rundate='2018-07-14'; SET @perioddate=str_to_date('2018-07-14','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-14;2018-07-14.csv'
+-- 	SET @rundate='2018-07-14'; SET @perioddate=str_to_date('2018-07-14','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-14;2018-07-14.csv'
 -- 	SET @rundate='2018-07-15'; SET @perioddate=str_to_date('2018-07-15','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-15;2018-07-15.csv'
 -- 	SET @rundate='2018-07-16'; SET @perioddate=str_to_date('2018-07-16','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-16;2018-07-16.csv'
 -- 	SET @rundate='2018-07-17'; SET @perioddate=str_to_date('2018-07-17','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-17;2018-07-17.csv'
 -- 	SET @rundate='2018-07-18'; SET @perioddate=str_to_date('2018-07-18','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-18;2018-07-18.csv'
--- 	SET @rundate='2018-07-19'; SET @perioddate=str_to_date('2018-07-19','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-19;2018-07-19.csv'
+ 	SET @rundate='2018-07-19'; SET @perioddate=str_to_date('2018-07-19','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-19;2018-07-19.csv'
 -- 	SET @rundate='2018-07-20'; SET @perioddate=str_to_date('2018-07-20','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-20;2018-07-20.csv'
 -- 	SET @rundate='2018-07-21'; SET @perioddate=str_to_date('2018-07-21','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-21;2018-07-21.csv'
 -- 	SET @rundate='2018-07-22'; SET @perioddate=str_to_date('2018-07-22','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-22;2018-07-22.csv'
