@@ -16,8 +16,8 @@ use rcbill_my;
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-23052017.csv'  
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-24052017.csv'  
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-25052017.csv' 
-SET @date1='2018-07-19';
-SET @date2='2018-07-20';
+SET @date1='2018-07-23';
+SET @date2='2018-07-24';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-26052017-29052017.csv'  
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-30052017.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-02062017.csv' 
@@ -28,7 +28,7 @@ SET @date2='2018-07-20';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-15062017.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-16062017.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-11052018-12052018.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-19072018.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-23072018.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-27062017.csv' 
 
 REPLACE INTO TABLE `rcbill_my`.`dailycalls` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
@@ -302,6 +302,24 @@ order by 1 desc
 
 
 
+
+select a.*, upper(b.CCAGENT) as CCAGENT
+from 
+rcbill_my.callstats a 
+left join 
+rcbill_my.ccrota b 
+on 
+a.calldate=b.ccdate
+and
+a.shift=b.ccshift
+and 
+a.callagent=b.ccnumber
+order by a.calldate desc
+;
+
+*/
+
+
 drop table if exists rcbill_my.callstats;
 create table rcbill_my.callstats as 
 (
@@ -335,19 +353,3 @@ create table rcbill_my.callstats as
 ;
 
 select * from rcbill_my.callstats;
-
-select a.*, upper(b.CCAGENT) as CCAGENT
-from 
-rcbill_my.callstats a 
-left join 
-rcbill_my.ccrota b 
-on 
-a.calldate=b.ccdate
-and
-a.shift=b.ccshift
-and 
-a.callagent=b.ccnumber
-order by a.calldate desc
-;
-
-*/

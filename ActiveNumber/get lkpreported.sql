@@ -89,4 +89,9 @@ where ServiceNewType='Turquoise High Tide';
 update rcbill_my.lkpreported
 set Reported='Y'
 where ServiceNewType='MultiView';
+
+
+update rcbill_my.lkpreported
+set Reported='Y'
+where ServiceNewType='VOD';
 */

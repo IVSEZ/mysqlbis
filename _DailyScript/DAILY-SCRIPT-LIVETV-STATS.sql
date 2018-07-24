@@ -3,7 +3,7 @@ use rcbill;
 
 -- ENSURE THAT CLIENTSTATS TABLE IS READY 
 
-set @rundate = '2018-07-12';
+set @rundate = '2018-07-21';
 
 -- select distinct date(sessionstart) from rcbill.rcb_livetvtelemetry;
 -- select distinct date(sessionstart), count(*) from rcbill.templivetv group by 1 order by 1 desc;
@@ -95,6 +95,7 @@ date(a.SessionStart)>=@rundate
 
 -- select * from rcbill.clientlivetvstats limit 1000;
 -- select * from rcbill.clientlivetvstats where clientname like '%rahul%' and resource='IVSE01' order by sessionstart desc;
+-- select * from rcbill.clientlivetvstats where clientname like '%rahul%' order by sessionstart desc;
 
 /*
 select month(sessionstart) as view_month, year(sessionstart) as view_year, clientcode, clientname, resource

@@ -6,14 +6,13 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@# 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20180719_3.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20180724_1.out
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-CREATE-LOAD.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\ticket_analysis.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\load DailyCalls.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-USAGE.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-SALES-TELEMETRY.sql
-
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-ACTIVENUMBERS.sql
 
@@ -22,10 +21,16 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\housing-estate-analysis.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\sales-to-activenumber.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\RCB_ClientAnalyticsReport_Script.sql
 
-exit 
-
 
 exit
+
+
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-LIVETV-STATS.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-VODTS-STATS.sql
+
+
+exit 
+
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@# 
@@ -63,9 +68,9 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\amber_sales.sql
 
 use rcbill_my;
 
-call sp_ActiveNumber(12,07,2018,'','');
+call sp_ActiveNumber(20,07,2018,'','');
 
-call sp_GetActiveNumberFromTo('2018-07-10','2018-07-12');
+call sp_GetActiveNumberFromTo('2018-07-10','2018-07-22');
 
 exit
 

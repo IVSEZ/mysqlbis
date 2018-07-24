@@ -3,7 +3,7 @@ use rcbill;
 
 -- ENSURE THAT CLIENTSTATS TABLE IS READY 
 
-set @rundate = '2018-07-12';
+set @rundate = '2018-07-21';
 
 
 -- select * from rcbill.clientcontractdevices;
@@ -19,8 +19,9 @@ CREATE TEMPORARY TABLE rcbill.tempvod
 select a.device,a.duration,a.resource,a.sessionstart,a.subscriber,b.originaltitle,b.imdbtitleref
 	from
 	rcbill.rcb_vodtelemetry a 
-	inner join 
-	rcbill.rcb_vodtitles b 
+	-- inner join 
+	left join
+    rcbill.rcb_vodtitles b 
 	on 
 	a.resource=b.IMDBTITLEREF
 	where 
@@ -83,7 +84,7 @@ date(a.SessionStart)>=@rundate
 ;
 
 
--- select * from rcbill.clientvodstats ;
+-- select * from rcbill.clientvodstats order by sessionstart desc;
 -- select distinct date(sessionstart), count(distinct clientcode) from rcbill.clientvodstats group by 1;
 
 
