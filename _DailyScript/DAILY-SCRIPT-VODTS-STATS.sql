@@ -5,6 +5,7 @@ use rcbill;
 
 set @rundate = '2018-07-21';
 
+-- select max(date(sessionstart)) from rcbill.clientvodstats;
 
 -- select * from rcbill.clientcontractdevices;
 -- select * from rcbill.rcb_vodtelemetry;
@@ -25,8 +26,9 @@ select a.device,a.duration,a.resource,a.sessionstart,a.subscriber,b.originaltitl
 	on 
 	a.resource=b.IMDBTITLEREF
 	where 
-	date(a.SessionStart)>=@rundate
-	order by a.device
+	-- date(a.SessionStart)>=@rundate
+    date(a.SessionStart)>(select max(date(sessionstart)) from rcbill.clientvodstats)
+	order by a.sessionstart desc, a.device
 )
 ;
 
@@ -68,6 +70,15 @@ rcbill.clientcontractdevices b
 on a.device=b.mac and a.device=b.phoneno
 )
 ;
+
+-- show index from rcbill.clientvodstats;
+CREATE INDEX IDXclts1
+ON rcbill.clientvodstats(clientcode);
+CREATE INDEX IDXclts2
+ON rcbill.clientvodstats (opendate);
+CREATE INDEX IDXclts3
+ON rcbill.clientvodstats (ticketid);
+
 */
 
 insert into rcbill.clientvodstats
@@ -79,16 +90,19 @@ inner join
 rcbill.clientcontractdevices b 
 on a.device=b.mac and a.device=b.phoneno
 where 
-date(a.SessionStart)>=@rundate
+-- date(a.SessionStart)>=@rundate
+date(a.SessionStart)> (select max(date(sessionstart)) from rcbill.clientvodstats)
 )
 ;
 
-
+-- SET SQL_SAFE_UPDATES=0;
+-- delete from rcbill.clientvodstats where date(sessionstart)>='2018-07-24';
 -- select * from rcbill.clientvodstats order by sessionstart desc;
 -- select distinct date(sessionstart), count(distinct clientcode) from rcbill.clientvodstats group by 1;
 
 
--- select * from rcbill.clientvodstats where clientname like '%rahul%' order by sessionstart;
+-- select * from rcbill.clientvodstats where clientname like '%rahul%' order by sessionstart desc;
+-- select * from rcbill.clientvodstats where clientname like '%cindy%' order by sessionstart desc;
 
 /*
 select month(sessionstart) as view_month, year(sessionstart) as view_year, clientcode, clientname, originaltitle
@@ -125,7 +139,7 @@ select count(*) as rep_vodstats from rcbill_my.rep_vodstats;
 use rcbill;
 
 -- ENSURE THAT CLIENTSTATS TABLE IS READY 
-
+-- (select max(date(sessionstart)) from rcbill.clienttsstats);
 -- first time
 
 drop table if exists rcbill.tempts;
@@ -141,14 +155,15 @@ select a.device,a.duration,a.resource,a.sessionstart,a.subscriber
 	-- on 
 	-- a.resource=b.IMDBTITLEREF
 	where 
-	date(a.SessionStart)>=@rundate
+	-- date(a.SessionStart)>=@rundate
+    date(a.SessionStart)>(select max(date(sessionstart)) from rcbill.clienttsstats)
 	order by a.device
 )
 ;
 
 show index from rcbill.tempts;
 
--- select * from tempts;
+-- select * from rcbill.tempts;
 
 /*
 insert into rcbill.tempts
@@ -198,7 +213,8 @@ inner join
 rcbill.clientcontractdevices b 
 on a.device=b.mac and a.device=b.phoneno
 where 
-date(a.SessionStart)>=@rundate
+-- date(a.SessionStart)>=@rundate
+date(a.SessionStart)>(select max(date(sessionstart)) from rcbill.clienttsstats)
 )
 ;
 

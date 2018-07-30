@@ -14,30 +14,24 @@ use rcbill;
 -- FIRST TIME
 
 
-drop table if exists rcbill.templivetv;
-CREATE TEMPORARY TABLE rcbill.templivetv 
-(INDEX idxtv1 (device)) as 
+drop table if exists rcbill.tempradio;
+CREATE TEMPORARY TABLE rcbill.tempradio
+(INDEX idxrad1 (device)) as 
 (
 select a.device,a.duration,trim(upper(a.resource)) as resource,a.sessionstart,a.subscriber
 -- ,b.originaltitle,b.imdbtitleref
 	from
-	rcbill.rcb_livetvtelemetry a 
-	-- inner join 
-	-- rcbill.rcb_vodtitles b 
-	-- on 
-	-- a.resource=b.IMDBTITLEREF
-	where 
--- 	date(a.SessionStart)>'2017-05-31'
-	-- date(a.SessionStart)>=@rundate
-    date(a.SessionStart)> (select max(date(sessionstart)) from rcbill.clientlivetvstats)
+	rcbill.rcb_radiotelemetry a 
+	-- where 
+    -- date(a.SessionStart)> (select max(date(sessionstart)) from rcbill.clientradiostats)
 	order by a.device
 )
 ;
 
 
-show index from rcbill.templivetv;
+show index from rcbill.tempradio;
 
--- select * from rcbill.templivetv limit 100;
+-- select * from rcbill.tempradio;
 
 
 
@@ -65,48 +59,40 @@ select a.device,a.duration,a.resource,a.sessionstart,a.subscriber
 
 -- FIRST TIME
 /*
-drop table if exists rcbill.clientlivetvstats;
+drop table if exists rcbill.clientradiostats;
 
-create table rcbill.clientlivetvstats
-(INDEX idxcvs1 (clientcode), INDEX idxcvs2(contractcode)) as
+create table rcbill.clientradiostats
+(INDEX idxcrad1 (clientcode), INDEX idxcrad2(contractcode)) as
 (
 select a.*, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
 from 
-rcbill.templivetv a 
+rcbill.tempradio a 
 inner join 
 rcbill.clientcontractdevices b 
 on a.device=b.mac and a.device=b.phoneno
 )
 ;
 
--- show index from rcbill.clientlivetvstats;
-CREATE INDEX IDXclts1
-ON rcbill.clientlivetvstats(clientcode);
-CREATE INDEX IDXclts2
-ON rcbill.clientlivetvstats (opendate);
-CREATE INDEX IDXclts3
-ON rcbill.clientlivetvstats (ticketid);
-
+-- show index from rcbill.clientradiostats;
 */
 
-insert into rcbill.clientlivetvstats
+insert into rcbill.clientradiostats
 (
 select a.*, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
 from 
-rcbill.templivetv a 
+rcbill.tempradio a 
 inner join 
 rcbill.clientcontractdevices b 
 on a.device=b.mac and a.device=b.phoneno
 where 
--- date(a.SessionStart)>=@rundate
-date(a.SessionStart)>(select max(date(sessionstart)) from rcbill.clientlivetvstats)
+date(a.SessionStart)>(select max(date(sessionstart)) from rcbill.clientradiostats)
 );
 
 
 -- select * from rcbill.clientlivetvstats ;
 -- select distinct date(sessionstart), count(distinct clientcode) from rcbill.clientlivetvstats group by 1;
 
--- select * from rcbill.clientlivetvstats limit 1000;
+-- select * from rcbill.clientradiostats limit 1000;
 -- select * from rcbill.clientlivetvstats where clientname like '%rahul%' and resource='IVSE01' order by sessionstart desc;
 -- select * from rcbill.clientlivetvstats where clientname like '%rahul%' order by sessionstart desc;
 
@@ -130,25 +116,24 @@ group by clientcode, clientname, contractcode
 order by 2, 4 desc;
 */
 
--- MOST WATCHED TS CHANNELS PER DAY
-drop table if exists rcbill_my.rep_livetvstats;
+-- MOST LISTENED RADIO CHANNELS
+drop table if exists rcbill_my.rep_radiostats;
 
-create table rcbill_my.rep_livetvstats as
+create table rcbill_my.rep_radiostats as
 (
 
-	select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, trim(upper(resource)) as resource, count(*) as sessions
+	select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, resource, count(*) as sessions
 	, sum(duration) as duration_sec
 	-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
 	-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
-	from rcbill.clientlivetvstats
+	from rcbill.clientradiostats
 	group by 1,2,3,4
 	order by 3 desc,2 desc,1 desc,5 desc
 )
 ;
 
-select count(*) as rep_livetvstats from rcbill_my.rep_livetvstats;
--- select * from rcbill_my.rep_livetvstats where view_month=7 and view_year=2018;
--- select * from rcbill.clientlivetvstats order by sessionstart desc limit 100;
+select count(*) as rep_radiostats from rcbill_my.rep_radiostats;
+-- select * from rcbill_my.rep_radiostats;
 
 /*
 select 

@@ -89,6 +89,14 @@ order by ticketid, commentdate
 )
 ;
 
+-- show index from rcbill_my.clientticketjourney;
+CREATE INDEX IDXctj1
+ON rcbill_my.clientticketjourney (clientcode);
+CREATE INDEX IDXctj2
+ON rcbill_my.clientticketjourney (opendate);
+CREATE INDEX IDXctj3
+ON rcbill_my.clientticketjourney (ticketid);
+
 -- select * from  rcbill_my.clientticketjourney;
 
 -- CREATE TABLE FOR CLIENTTICKET SNAPSHOT FOR INSTALLATION , RELOCATION, SURVEY

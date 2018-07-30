@@ -86,5 +86,5 @@ INSERTEDON=now()
 
 ;
 
-select * from rcb_vodtitles;
-select * from rcb_vodtitles where testing=0;
+select * from rcbill.rcb_vodtitles;
+select * from rcbill.rcb_vodtitles where testing=0;

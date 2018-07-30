@@ -31,4 +31,10 @@ CREATE TABLE `dailyusage` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
+show index from rcbill_my.dailyusage;
+
+create index IDXdu1 on rcbill_my.dailyusage (clientcode);
+create index IDXdu2 on rcbill_my.dailyusage (datestart);
+create index IDXdu3 on rcbill_my.dailyusage (dateend);
+
 

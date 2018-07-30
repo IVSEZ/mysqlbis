@@ -6,7 +6,7 @@ use rcbill_my;
 ## change all csv dates 6 files
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\SalesReport-05052018-06052018-1.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\SalesReport-23072018-1.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\SalesReport-29072018-1.csv' 
  
 REPLACE INTO TABLE `rcbill_my`.`dailysales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -71,7 +71,9 @@ INSERTEDON=now()
 
 select count(1) as dailysales from rcbill_my.dailysales;
 
--- select * from rcbill_my.dailysales;
+-- select * from rcbill_my.dailysales order by insertedon desc;
+-- set SQL_SAFE_UPDATES=0;
+-- delete from rcbill_my.dailysales where insertedon='2018-07-26 11:23:00';
 
 drop table if exists rcbill_my.sales;
 
@@ -145,7 +147,7 @@ order by orderday desc, region, salestype
 use rcbill_my;
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\PrepaidCardSales-05052018-06052018-P1.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\PrepaidCardSales-23072018-P1.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\PrepaidCardSales-29072018-P1.csv' 
 
 REPLACE INTO TABLE `rcbill_my`.`dailysinglesales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -191,6 +193,9 @@ INSERTEDON=now()
 
 
 select count(1) as dailysinglesales from rcbill_my.dailysinglesales;
+
+-- select * from rcbill_my.dailysinglesales order by insertedon desc;
+-- delete from rcbill_my.dailysinglesales where insertedon='2018-07-26 11:23:15';
 /*
 select distinct date(entrydate) as entrydate, rcbill_my.GetWeekdayName(weekday(entrydate)) as weekday
 , clientname
@@ -233,7 +238,7 @@ use rcbill_my;
 
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\Sales-Addon-05052018-06052018.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\Sales-Addon-23072018.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\Sales-Addon-29072018.csv'
 
 REPLACE INTO TABLE `rcbill_my`.`dailyaddonsales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -283,6 +288,11 @@ INSERTEDON=now()
 SET SQL_SAFE_UPDATES = 0;
 -- delete from rcbill_my.dailyaddonsales where paymentdate = '2017-11-08 00:00:00';
 delete from rcbill_my.dailyaddonsales where paymentdate is null;
+
+
+select * from rcbill_my.dailyaddonsales order by insertedon desc;
+delete from rcbill_my.dailyaddonsales where insertedon='2018-07-26 11:23:15';
+
 SET SQL_SAFE_UPDATES = 1;
 */
 
@@ -307,7 +317,7 @@ order by a.paymentdate desc
 */
 
 /*
--- commented on 23072018
+-- commented on 29072018
 select date(PAYMENTDATE) as paymentdate, rcbill_my.GetWeekdayName(weekday(PAYMENTDATE)) as weekday,
 salestype, cashpoint, sum(paymentamount) as PAYMENT, (round((sum(paymentamount))/57.5)) as GB_ADDON, count(1) as Transactions
 from rcbill_my.dailyaddonsales 
@@ -329,7 +339,7 @@ order by 3 desc
 # ONLINE PAYMENTS
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\eBarclays-PaymentsList-05052018-06052018.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\eBarclays-PaymentsList-23072018.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\eBarclays-PaymentsList-29072018.csv' 
 REPLACE INTO TABLE `rcbill_my`.`onlinepayments` CHARACTER SET Latin1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 1 LINES 
@@ -391,6 +401,12 @@ select count(1) as onlinepayments from rcbill_my.onlinepayments;
 -- select * from rcbill_my.onlinepayments order by paymentdate desc;
 
 -- select * from rcbill_my.onlinepayments where clientname like '%rahul%';
+
+/*
+
+select * from rcbill_my.onlinepayments order by insertedon desc;
+delete from rcbill_my.onlinepayments where insertedon='2018-07-26 11:23:15';
+*/
 
 select * from 
 (
