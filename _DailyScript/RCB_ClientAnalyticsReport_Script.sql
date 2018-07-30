@@ -314,7 +314,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         
         #Extended Report Table
 		DROP TABLE IF EXISTS clientextendedreport;
-		create table clientextendedreport as (
+		create table clientextendedreport (INDEX idxcer1 (CL_CLIENTCODE), INDEX idxcer2 (CL_CLIENTNAME), INDEX idxcer3 (CL_NIN)) as (
         select a.*, 
 		b.danno as CL_NIN,
 		b.PASSNo as CL_PassNo,

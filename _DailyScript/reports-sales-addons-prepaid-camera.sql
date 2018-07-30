@@ -26,7 +26,7 @@ create table rcbill_my.rep_prepaid_camera as
 
 drop table if exists rcbill_my.rep_addon;
 
-create table rcbill_my.rep_addon as 
+create table rcbill_my.rep_addon (INDEX IDXrepadd1(CLIENT_CODE)) as 
 (
 -- ADDON REPORT FOR LYNSEY
 	select 
