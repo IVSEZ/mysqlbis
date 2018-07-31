@@ -5,11 +5,11 @@ use rcbill_my;
 ## change date in call sp_ActiveNumber(
 
 -- use rcbill_my;
- SET @rundate='2018-07-29';
+ SET @rundate='2018-07-30';
 -- SET @rundate='2017-12-26';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-05052018-06052018.csv'
 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-29072018.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-30072018.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -161,8 +161,8 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2018-07-26'; SET @perioddate=str_to_date('2018-07-26','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-26;2018-07-26.csv'
 -- 	SET @rundate='2018-07-27'; SET @perioddate=str_to_date('2018-07-27','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-27;2018-07-27.csv'
 -- 	SET @rundate='2018-07-28'; SET @perioddate=str_to_date('2018-07-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-28;2018-07-28.csv'
- 	SET @rundate='2018-07-29'; SET @perioddate=str_to_date('2018-07-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-29;2018-07-29.csv'
--- 	SET @rundate='2018-07-30'; SET @perioddate=str_to_date('2018-07-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-30;2018-07-30.csv'
+-- 	SET @rundate='2018-07-29'; SET @perioddate=str_to_date('2018-07-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-29;2018-07-29.csv'
+ 	SET @rundate='2018-07-30'; SET @perioddate=str_to_date('2018-07-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-30;2018-07-30.csv'
 -- 	SET @rundate='2018-07-31'; SET @perioddate=str_to_date('2018-07-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201807/2018-07-31;2018-07-31.csv'
 
 
@@ -652,6 +652,8 @@ from rcbill_my.clientnetworkservicepkg
 group by period, clientcode, clientname, clientclass, clienttype, region, network
 );
 
+
+
 -- select * from rcbill_my.clientnetworkservicesum;
 
 -- select distinct package from rcbill_my.clientnetworkservicesum;
@@ -835,14 +837,24 @@ order by b.clientcode
 select count(*) as clientstats from rcbill_my.clientstats;
 
 
-select coalesce(services,"GRAND TOTAL") as services, sum(activecount) as activecount, count(clientcode) as allaccounts
-, count(distinct clientcode) as uniqueaccounts 
-, sum(contractcount) as uniquecontracts
-from
-rcbill_my.clientstats
-group by services
- with rollup 
+drop table if exists rcbill_my.rep_clientstats1;
+
+create table rcbill_my.rep_clientstats1 as 
+(
+	select * from 
+    (
+		select coalesce(services,"GRAND TOTAL") as services, sum(activecount) as activecount, count(clientcode) as allaccounts
+		, count(distinct clientcode) as uniqueaccounts 
+		, sum(contractcount) as uniquecontracts
+		from
+		rcbill_my.clientstats
+		group by services
+		 with rollup 
+	) a
+)
 ;
+
+select * from rcbill_my.rep_clientstats1;
 
 select coalesce(network,"GRAND TOTAL") as network, sum(activecount) as activecount, count(clientcode) as allaccounts, count(distinct clientcode) as uniqueaccounts
 , sum(contractcount) as uniquecontracts
@@ -861,14 +873,25 @@ group by network, services
  with rollup
 ;
 
-select coalesce(region,"GRAND TOTAL") as region, coalesce(network,"Network Total") as network, coalesce(services,"Services Total") as services, sum(activecount) as activecount
-, count(clientcode) as allaccounts, count(distinct clientcode) as uniqueaccounts 
-, sum(contractcount) as uniquecontracts
-from
-rcbill_my.clientstats
-group by region, network, services
- with rollup
+drop table if exists rcbill_my.rep_clientstats2;
+
+create table rcbill_my.rep_clientstats2 as 
+(
+	select * from 
+    (
+		select coalesce(region,"GRAND TOTAL") as region, coalesce(network,"Network Total") as network, coalesce(services,"Services Total") as services, sum(activecount) as activecount
+		, count(clientcode) as allaccounts, count(distinct clientcode) as uniqueaccounts 
+		, sum(contractcount) as uniquecontracts
+		from
+		rcbill_my.clientstats
+		group by region, network, services
+		 with rollup
+	) a
+)
 ;
+
+
+select * from rcbill_my.rep_clientstats2;
 
 ##CREATE ACTIVE CUSTOMER CONTRACT DISCOUNTS
 drop table if exists rcbill_my.activediscounts;

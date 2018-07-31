@@ -74,5 +74,52 @@ ON rcbill_my.anreport (clienttype);
 CREATE INDEX IDXan5
 ON rcbill_my.anreport (clientclass);
 
+
+
+drop table if exists rcbill_my.rep_anreport_all;
+
+create table rcbill_my.rep_anreport_all as 
+(
+select period, periodday, periodmth, periodyear, sum(open_s) as activecount from rcbill_my.anreport 
+where reported='Y' and decommissioned='N'
+group by period, periodday, periodmth, periodyear
+order by period, periodday, periodmth, periodyear
+)
+;
+
+drop table if exists rcbill_my.rep_anreport_i;
+
+create table rcbill_my.rep_anreport_i as 
+(
+select period, periodday, periodmth, periodyear, sum(open_s) as activecount from rcbill_my.anreport 
+where upper(servicecategory)='INTERNET' and reported='Y' and decommissioned='N'
+group by period, periodday, periodmth, periodyear
+order by period, periodday, periodmth, periodyear
+)
+;
+
+drop table if exists rcbill_my.rep_anreport_t;
+
+create table rcbill_my.rep_anreport_t as 
+(
+select period, periodday, periodmth, periodyear, sum(open_s) as activecount from rcbill_my.anreport 
+where upper(servicecategory)='TV' and reported='Y' and decommissioned='N'
+group by period, periodday, periodmth, periodyear
+order by period, periodday, periodmth, periodyear
+)
+;
+
+drop table if exists rcbill_my.rep_anreport_v;
+
+create table rcbill_my.rep_anreport_v as 
+(
+select period, periodday, periodmth, periodyear, sum(open_s) as activecount from rcbill_my.anreport 
+where upper(servicecategory)='VOICE' and reported='Y' and decommissioned='N'
+group by period, periodday, periodmth, periodyear
+order by period, periodday, periodmth, periodyear
+)
+;
+
+
 END$$
 DELIMITER ;
