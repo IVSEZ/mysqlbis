@@ -6,7 +6,7 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@# 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20180802_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20180804_1.out
 
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-LIVETV-STATS.sql
@@ -81,7 +81,7 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\amber_sales.sql
 
 use rcbill_my;
 
-call sp_ActiveNumber(20,07,2018,'','');
+call sp_ActiveNumber(02,08,2018,'','');
 
 call sp_GetActiveNumberFromTo('2018-07-28','2018-07-31');
 
