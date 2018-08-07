@@ -17,3 +17,9 @@ CREATE TABLE `rcb_livetvtelemetry` (
 `INSERTEDON` datetime DEFAULT NULL	
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+show columns from rcb_livetvtelemetry;
+
+CREATE INDEX IDXlivetvtel1
+ON rcb_livetvtelemetry (ID);
