@@ -1,8 +1,7 @@
 # INTELENOVELA as per New Sales #
 set @startdate='2018-07-01';
 set @enddate='2018-07-31';
-set @package='INTELENOVELA';
-SET @row_number = 0;
+set @package='VOD';
 
 select *,rcbill.GetClientName(clientcode) as ClientName from rcbill_my.sales where orderday>=@startdate and orderday<=@enddate
 and salestype='New Sales'
