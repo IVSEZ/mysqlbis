@@ -1,8 +1,7 @@
 set @startdate='2018-01-01';
-set @enddate='2018-08-15';
-set @package='DUALVIEW';
-set @category='INTERNET';
-
+set @enddate='2018-08-07';
+set @package='EXTRAVAGANCE';
+set @category='TV';
 
 
 #FOR CATEGORY#
@@ -46,3 +45,4 @@ select a.*, rcbill.GetClientName(a.clientcode) as clientname from
 ) a
 where a.firstactiveforpackage>=@startdate
 ;
+

@@ -1,6 +1,6 @@
 # INTELENOVELA as per New Sales #
-set @startdate='2018-07-01';
-set @enddate='2018-07-31';
+set @startdate='2018-01-01';
+set @enddate='2018-08-09';
 set @package='DUALVIEW';
 
 select *,rcbill.GetClientName(clientcode) as ClientName from rcbill_my.sales where orderday>=@startdate and orderday<=@enddate
@@ -43,7 +43,7 @@ select a.*, rcbill.GetClientName(a.clientcode) as clientname from
 	and upper(package)=@package)
 
 
-	and upper(package)=@package
+	and upper(package)=@package 
 
 	group by clientcode
 	order by 4 desc

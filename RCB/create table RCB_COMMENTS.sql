@@ -26,3 +26,5 @@ CREATE TABLE `rcb_comments` (
 
 -- drop index IDXinvoiceheader on rcb_ticketcomments;
 
+show index from rcbill.rcb_comments;
+

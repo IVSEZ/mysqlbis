@@ -1,6 +1,6 @@
 # INTELENOVELA as per New Sales #
-set @startdate='2018-07-01';
-set @enddate='2018-07-31';
+set @startdate='2018-01-01';
+set @enddate='2018-08-14';
 set @package='INTELENOVELA';
 SET @row_number = 0;
 
