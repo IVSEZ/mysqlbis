@@ -122,13 +122,14 @@ drop table if exists rcbill_my.rep_radiostats;
 create table rcbill_my.rep_radiostats as
 (
 
-	select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, resource, count(*) as sessions
+	select date(sessionstart) as view_date, day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, upper(trim(resource)), count(*) as sessions
 	, sum(duration) as duration_sec
 	-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
 	-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
 	from rcbill.clientradiostats
-	group by 1,2,3,4
-	order by 3 desc,2 desc,1 desc,5 desc
+	group by 1,2,3,4,5
+	-- order by 3 desc,2 desc,1 desc,5 desc
+    order by 1 asc
 )
 ;
 

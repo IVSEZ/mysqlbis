@@ -3,7 +3,19 @@ select * from rcbill_my.rep_vodstats;
 select * from rcbill_my.rep_tsstats;
 select * from rcbill_my.rep_radiostats;
 
+
+
+select distinct resource from rcbill_my.rep_livetvstats order by resource;
+select duration_sec from rcbill_my.rep_livetvstats where resource='ACTIONFR' and view_day=17 and view_month=8 and view_year=2018;
+select rcbill_my.GetLiveTVDurationForResource('ACTIONFR',17,8,2018);
+
+select duration_sec from rcbill_my.rep_livetvstats where resource='1TVRUSSIA' and view_day=17 and view_month=8 and view_year=2018;
 /*
+show index from rcbill.rcb_livetvtelemetry;
+show index from rcbill_my.rep_livetvstats ;
+
+select * from rcbill.rcb_livetvtelemetry where resource='ABMOTEURS' and date(sessionstart)='2018-08-17' limit 100;
+
 
 set @ccode='I.000002576';
 

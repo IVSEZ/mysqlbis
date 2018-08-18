@@ -102,11 +102,12 @@ where
 date(a.SessionStart)>(select max(date(sessionstart)) from rcbill.clientlivetvstats)
 );
 
-
+-- show index from rcbill.clientlivetvstats;
 -- select * from rcbill.clientlivetvstats ;
 -- select distinct date(sessionstart), count(distinct clientcode) from rcbill.clientlivetvstats group by 1;
 
 -- select * from rcbill.clientlivetvstats limit 1000;
+-- select * from rcbill.clientlivetvstats where clientcode in ('I.000011750') order by sessionstart desc;
 -- select * from rcbill.clientlivetvstats where clientname like '%rahul%' and resource='IVSE01' order by sessionstart desc;
 -- select * from rcbill.clientlivetvstats where clientname like '%rahul%' order by sessionstart desc;
 
@@ -136,19 +137,20 @@ drop table if exists rcbill_my.rep_livetvstats;
 create table rcbill_my.rep_livetvstats as
 (
 
-	select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, trim(upper(resource)) as resource, count(*) as sessions
+	select date(sessionstart) as view_date, day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, upper(trim(resource)) as resource, count(*) as sessions
 	, sum(duration) as duration_sec
 	-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
 	-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
 	from rcbill.clientlivetvstats
-	group by 1,2,3,4
-	order by 3 desc,2 desc,1 desc,5 desc
+	group by 1,2,3,4,5
+	-- order by 3 desc,2 desc,1 desc,5 desc
+    order by 1 asc
 )
 ;
 
 select count(*) as rep_livetvstats from rcbill_my.rep_livetvstats;
 -- select * from rcbill_my.rep_livetvstats where view_month=7 and view_year=2018;
--- select * from rcbill.clientlivetvstats order by sessionstart desc limit 100;
+-- select * from rcbill_my.rep_livetvstats;
 
 /*
 select 

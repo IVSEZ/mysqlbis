@@ -118,14 +118,18 @@ drop table if exists rcbill_my.rep_vodstats;
 create table rcbill_my.rep_vodstats as
 (
 
-	select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, clientcode, clientname, originaltitle, resource
+	select date(sessionstart) as view_date, day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year
+    -- , clientcode, clientname
+    , upper(trim(originaltitle)), upper(trim(resource))
 	, sum(duration) as duration_sec
 	-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
 	-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
 	, count(*) as sessions from 
 	rcbill.clientvodstats
-	group by 1,2,3,4,5,6,7
-	order by 3 desc, 2 desc,1 desc
+	group by 1,2,3,4,5, 6
+    -- ,6,7
+	-- order by 3 desc, 2 desc,1 desc
+    order by 1 asc
 )
 ;
 
@@ -225,10 +229,10 @@ drop table if exists rcbill_my.rep_tsstats;
 
 create table rcbill_my.rep_tsstats as
 (
-	select day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, resource, count(*)
+	select date(sessionstart) as view_date, day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year, upper(trim(resource)) as resource, count(*) as sessions
 	from rcbill.clienttsstats
-	group by 1,2,3,4
-	order by 3 desc,2 desc,1 desc,5 desc
+	group by 1,2,3,4,5
+	order by 1 asc
 )
 ;
 

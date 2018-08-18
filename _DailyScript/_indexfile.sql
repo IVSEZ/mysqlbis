@@ -5,15 +5,18 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 ####################################################################################
+#RUN DAILY-SCRIPT-TELEMETRY.sql first#
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@# 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20180817_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20180818_1.out
 
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-LIVETV-STATS.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-VODTS-STATS.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-RADIO-STATS.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY_SCRIPT_TELEMETRY_PIVOT.sql
+
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-CREATE-LOAD.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\ticket_analysis.sql
