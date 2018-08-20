@@ -120,7 +120,7 @@ create table rcbill_my.rep_vodstats as
 
 	select date(sessionstart) as view_date, day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year
     -- , clientcode, clientname
-    , upper(trim(originaltitle)), upper(trim(resource))
+    , upper(trim(originaltitle)) as originaltitle, upper(trim(resource)) as resource
 	, sum(duration) as duration_sec
 	-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
 	-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
