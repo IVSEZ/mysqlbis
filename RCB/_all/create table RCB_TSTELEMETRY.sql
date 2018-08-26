@@ -17,3 +17,10 @@ CREATE TABLE `rcb_tstelemetry` (
 `INSERTEDON` datetime DEFAULT NULL	
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE INDEX IDXtstel2
+ON rcb_tstelemetry (DEVICE);
+
+
+CREATE INDEX IDXtstel3
+ON rcb_tstelemetry (SESSIONSTART);

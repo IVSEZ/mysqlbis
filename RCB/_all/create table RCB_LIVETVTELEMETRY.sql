@@ -20,6 +20,14 @@ CREATE TABLE `rcb_livetvtelemetry` (
 
 
 show columns from rcb_livetvtelemetry;
-
+/*
 CREATE INDEX IDXlivetvtel1
 ON rcb_livetvtelemetry (ID);
+*/
+
+CREATE INDEX IDXlivetvtel2
+ON rcb_livetvtelemetry (DEVICE);
+
+
+CREATE INDEX IDXlivetvtel3
+ON rcb_livetvtelemetry (SESSIONSTART);

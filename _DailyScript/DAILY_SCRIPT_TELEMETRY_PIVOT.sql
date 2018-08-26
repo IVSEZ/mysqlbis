@@ -110,7 +110,9 @@ create table rcbill_my.rep_tspivot2018 as
 
 
 -- select * from rcbill_my.rep_livetvpivot2018 order by total_duration desc ;
+/*
 select * from rcbill_my.rep_livetvpivot2018;
 select * from rcbill_my.rep_vodpivot2018;
 select * from rcbill_my.rep_radiopivot2018;
 select * from rcbill_my.rep_tspivot2018;
+*/

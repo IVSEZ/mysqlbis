@@ -17,3 +17,10 @@ CREATE TABLE `rcb_vodtelemetry` (
 `INSERTEDON` datetime DEFAULT NULL	
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE INDEX IDXvodtel2
+ON rcb_vodtelemetry (DEVICE);
+
+
+CREATE INDEX IDXvodtel3
+ON rcb_vodtelemetry (SESSIONSTART);

@@ -34,7 +34,7 @@ select a.device,a.duration,trim(upper(a.resource)) as resource,a.sessionstart,a.
 )
 ;
 
-
+-- show index from rcbill.rcb_livetvtelemetry;
 show index from rcbill.templivetv;
 
 -- select * from rcbill.templivetv limit 100;

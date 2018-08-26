@@ -17,3 +17,11 @@ CREATE TABLE `rcb_radiotelemetry` (
 `INSERTEDON` datetime DEFAULT NULL	
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE INDEX IDXradiotel2
+ON rcb_radiotelemetry (DEVICE);
+
+
+CREATE INDEX IDXradiotel3
+ON rcb_radiotelemetry (SESSIONSTART);
