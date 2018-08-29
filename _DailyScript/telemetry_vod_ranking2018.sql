@@ -7,7 +7,7 @@ drop table if exists rcbill_my.rep_vodranking2018;
 
 create table rcbill_my.rep_vodranking2018 as
 (
-	select a.resource as `RESOURCE`
+	select a.title as `TITLE`, a.resource as `RESOURCE`
 	, a.`JAN_RANK` as `JAN`
 	, b.`FEB_RANK` as `FEB`
 	, c.`MAR_RANK` as `MAR`
@@ -23,7 +23,7 @@ create table rcbill_my.rep_vodranking2018 as
 	, m.`OVERALL_RANK` as `OVERALL`
 	from 
 	(
-	select resource, JAN,
+	select title, resource, JAN,
 		  -- @rownum1 := @rownum1 + 1 as `JAN_RANK`
 		  case when JAN = 0 then NULL else @rownum1 := @rownum1 + 1 end as `JAN_RANK`
 	from rcbill_my.rep_vodpivot2018
@@ -174,4 +174,6 @@ create table rcbill_my.rep_vodranking2018 as
 )
 ;
 
-select * from rcbill_my.rep_vodranking2018 order by overall asc;
+-- select * from rcbill_my.rep_vodranking2018 order by overall asc;
+-- select * from rcbill_my.rep_vodranking2018 where resource like '2018%' order by overall asc;
+

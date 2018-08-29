@@ -5,7 +5,7 @@
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-24082018.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-28082018.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_vodtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 2 LINES 
@@ -50,13 +50,69 @@ set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_vodtelemetry where InsertedOn = '2018-08-22 09:13:57';
 */
 
+#################################################################
+
+#################################################################
+
+# VOD TELEMETRY MISSING DAILY
+
+
+use rcbill;
+
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-Missing-Daily-28082018.csv' 
+REPLACE INTO TABLE `rcbill`.`rcb_vodtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
+OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
+IGNORE 2 LINES 
+( 
+@﻿ID ,
+@Device ,
+@Type ,
+@Resource ,
+@StartPosition ,
+@EndTime ,
+@Duration ,
+@Subscriber ,
+@SessionStart ,
+@SessionEnd ,
+@SessionStart2 ,
+@SessionEnd2 
+)
+set 
+﻿ID=@﻿ID ,
+DEVICE=@Device ,
+TYPE=@Type ,
+RESOURCE=@Resource ,
+STARTPOSITION=@StartPosition ,
+ENDTIME=@EndTime ,
+DURATION=@Duration ,
+SUBSCRIBER=@Subscriber ,
+SESSIONSTART=@SessionStart2 ,
+SESSIONEND=@SessionEnd2 ,
+
+INSERTEDON=now()
+;
+
+explain select count(1) as vodtelemetry from rcb_vodtelemetry;
+
+/*
+select date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) from rcbill.rcb_vodtelemetry
+group by 1
+order by 1 desc
+limit 5
+;
+
+select * from rcbill.rcb_vodtelemetry order by insertedon desc limit 100;
+set SQL_SAFE_UPDATES=0;
+delete from rcbill.rcb_vodtelemetry where InsertedOn = '2018-08-22 09:13:57';
+*/
+
 ########################################################
 
 # TS TELEMETRY
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-24082018.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-28082018.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_tstelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 2 LINES 
@@ -112,7 +168,7 @@ limit 5
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllLIVETVTelemetry-24082018.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllLIVETVTelemetry-28082018.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_livetvtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 2 LINES 
@@ -166,7 +222,7 @@ delete from rcbill.rcb_livetvtelemetry where InsertedOn = '2018-08-22 09:13:57';
 use rcbill;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllRADIOTelemetry-24082018.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllRADIOTelemetry-28082018.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_radiotelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 2 LINES 

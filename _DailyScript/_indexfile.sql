@@ -9,8 +9,9 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@# 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20180825_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20180829_1.out
 
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\load_RCB_VODTITLES.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-LIVETV-STATS.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-VODTS-STATS.sql
@@ -21,6 +22,8 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_livetv_ranking2018.s
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_radio_ranking2018.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_ts_ranking2018.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2018.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2018_1.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2018_2.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-CREATE-LOAD.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\ticket_analysis.sql

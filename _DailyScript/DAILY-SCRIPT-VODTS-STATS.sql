@@ -8,7 +8,7 @@ set @rundate = '2018-07-21';
 -- select max(date(sessionstart)) from rcbill.clientvodstats;
 
 -- select * from rcbill.clientcontractdevices;
--- select * from rcbill.rcb_vodtelemetry;
+-- select * from rcbill.rcb_vodtelemetry where type='vod';
 
 -- create temporary table vodstats as 
 
@@ -17,7 +17,7 @@ drop table if exists rcbill.tempvod;
 CREATE TEMPORARY TABLE rcbill.tempvod 
 (INDEX idxtv1 (device)) as 
 (
-select a.device,a.duration,a.resource,a.sessionstart,a.subscriber,b.originaltitle,b.imdbtitleref
+	select a.device,a.duration,a.resource,a.sessionstart,a.subscriber,b.TITLE,b.imdbtitleref
 	from
 	rcbill.rcb_vodtelemetry a 
 	-- inner join 
@@ -25,6 +25,7 @@ select a.device,a.duration,a.resource,a.sessionstart,a.subscriber,b.originaltitl
     rcbill.rcb_vodtitles b 
 	on 
 	a.resource=b.IMDBTITLEREF
+    -- or a.resource=b.IMDBTITLEREF
 	where 
 	-- date(a.SessionStart)>=@rundate
     date(a.SessionStart)>(select max(date(sessionstart)) from rcbill.clientvodstats)
@@ -83,15 +84,15 @@ ON rcbill.clientvodstats (ticketid);
 
 insert into rcbill.clientvodstats
 (
-select a.*, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
-from 
-rcbill.tempvod a 
-inner join 
-rcbill.clientcontractdevices b 
-on a.device=b.mac and a.device=b.phoneno
-where 
--- date(a.SessionStart)>=@rundate
-date(a.SessionStart)> (select max(date(sessionstart)) from rcbill.clientvodstats)
+	select a.*, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
+	from 
+	rcbill.tempvod a 
+	inner join 
+	rcbill.clientcontractdevices b 
+	on a.device=b.mac and a.device=b.phoneno
+	where 
+	-- date(a.SessionStart)>=@rundate
+	date(a.SessionStart)> (select max(date(sessionstart)) from rcbill.clientvodstats)
 )
 ;
 

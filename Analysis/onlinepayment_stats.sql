@@ -54,4 +54,15 @@ order by paymentyear desc, paymentmonth desc
 ;
 
 
+select year(lastpaymentdate) as lastpaymentyear, month(lastpaymentdate) as lastpaymentmonth, day(lastpaymentdate) as lastpaymentday,
+onlinepayments, onlinepaymentamount
+from 
+(
+	select 
+	year(paymentdate) as paymentyear, max(PAYMENTDATE) as lastpaymentdate, count(1) as onlinepayments, sum(paymentamount) as onlinepaymentamount 
+	from rcbill_my.onlinepayments
+	group by 1
+	order by 1 desc
+) a
+;
 
