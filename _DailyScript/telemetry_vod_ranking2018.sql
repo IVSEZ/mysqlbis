@@ -1,7 +1,7 @@
 
 -- select resource, jan from rcbill_my.rep_vodpivot2018 order by jan desc;
 
-select * from rcbill_my.rep_vodpivot2018 order by total_duration desc ;
+-- select * from rcbill_my.rep_vodpivot2018 order by total_duration desc ;
 
 drop table if exists rcbill_my.rep_vodranking2018;
 

@@ -15,7 +15,7 @@ use rcbill;
 
 
 drop table if exists rcbill.templivetv;
-CREATE TEMPORARY TABLE rcbill.templivetv 
+CREATE TABLE rcbill.templivetv 
 (INDEX idxtv1 (device)) as 
 (
 	select a.device,a.duration,trim(upper(a.resource)) as resource,a.sessionstart,a.subscriber
@@ -27,7 +27,7 @@ CREATE TEMPORARY TABLE rcbill.templivetv
 	-- on 
 	-- a.resource=b.IMDBTITLEREF
 	where 
--- 	date(a.SessionStart)>'2017-05-31'
+ 	-- date(a.SessionStart)='2018-08-28'
 	-- date(a.SessionStart)>=@rundate
     date(a.SessionStart)> (select max(date(sessionstart)) from rcbill.clientlivetvstats)
 	order by a.device
@@ -98,10 +98,11 @@ insert into rcbill.clientlivetvstats
 	rcbill.clientcontractdevices b 
 	on a.device=b.mac and a.device=b.phoneno
 	where 
-	-- date(a.SessionStart)>=@rundate
+	-- date(a.SessionStart)='2018-08-28'
 	date(a.SessionStart)>(select max(date(sessionstart)) from rcbill.clientlivetvstats)
 );
 
+-- select * from rcbill.clientlivetvstats where date(sessionstart)='2018-08-28'
 
 ## FIRST TIME
 /*
@@ -200,11 +201,13 @@ insert into rcbill_my.rep_livetvhourlystats
     where 
     (date(SESSIONSTART) > (select max(SESSIONDATE) from rcbill_my.rep_livetvhourlystats))
     and (date(SESSIONSTART) is not null)
+    group by 1,2,3
 );
 
 set sql_safe_updates=0;
 delete from rcbill_my.rep_livetvhourlystats where SESSIONDATE is null;
--- select * from rcbill_my.rep_livetvhourlystats
+-- select * from rcbill_my.rep_livetvhourlystats where sessiondate='2018-08-28'
+-- delete from rcbill_my.rep_livetvhourlystats where sessiondate='2018-08-28'
 
 
 insert into rcbill_my.rep_livetvhourlypivot
@@ -272,7 +275,12 @@ insert into rcbill_my.rep_livetvhourlypivot
 ;
 
 -- select *, DAYNAME(SESSIONDATE) as SESSIONDAY from rcbill_my.rep_livetvhourlypivot where DAYNAME(sessiondate)='SUNDAY'
--- select * from rcbill_my.rep_livetvhourlypivot where sessiondate='2018-08-26';
+-- select * from rcbill_my.rep_livetvhourlypivot where sessiondate='2018-08-28';
+-- select * from rcbill_my.rep_livetvhourlystats where resource='SBC';
+/*
+ select * from rcbill_my.rep_livetvhourlypivot;
+ select * from rcbill_my.rep_livetvhourlystats where resource='SBC';
+*/
 
 -- show index from rcbill.clientlivetvstats;
 -- select * from rcbill.clientlivetvstats ;
@@ -308,7 +316,6 @@ drop table if exists rcbill_my.rep_livetvstats;
 
 create table rcbill_my.rep_livetvstats as
 (
-
 	select date(sessionstart) as view_date, day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year
     , upper(trim(resource)) as resource, count(*) as sessions
 	, sum(duration) as duration_sec

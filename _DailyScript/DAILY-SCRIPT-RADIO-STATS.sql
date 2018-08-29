@@ -15,7 +15,7 @@ use rcbill;
 
 
 drop table if exists rcbill.tempradio;
-CREATE TEMPORARY TABLE rcbill.tempradio
+CREATE TABLE rcbill.tempradio
 (INDEX idxrad1 (device)) as 
 (
 select a.device,a.duration,trim(upper(a.resource)) as resource,a.sessionstart,a.subscriber

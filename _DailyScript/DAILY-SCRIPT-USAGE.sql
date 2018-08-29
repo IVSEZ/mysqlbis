@@ -210,7 +210,7 @@ INSERTEDON=now()
 ;
 
 
-select count(1) from rcbill_my.dailyusage;
+select count(1) as dailyusage from rcbill_my.dailyusage;
 
 -- select * from rcbill_my.dailyusage;
 

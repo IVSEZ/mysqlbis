@@ -14,7 +14,7 @@ set @rundate = '2018-07-21';
 
 
 drop table if exists rcbill.tempvod;
-CREATE TEMPORARY TABLE rcbill.tempvod 
+CREATE TABLE rcbill.tempvod 
 (INDEX idxtv1 (device)) as 
 (
 	select a.device,a.duration,a.resource,a.sessionstart,a.subscriber,b.TITLE,b.imdbtitleref
@@ -148,7 +148,7 @@ use rcbill;
 -- first time
 
 drop table if exists rcbill.tempts;
-CREATE TEMPORARY TABLE rcbill.tempts 
+CREATE TABLE rcbill.tempts 
 (INDEX idxtv1 (device)) as 
 (
 select a.device,a.duration,a.resource,a.sessionstart,a.subscriber

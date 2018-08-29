@@ -1,7 +1,7 @@
 
 -- select resource, jan from rcbill_my.rep_tspivot2018 order by jan desc;
 
-select * from rcbill_my.rep_tspivot2018 order by total_sessions desc ;
+-- select * from rcbill_my.rep_tspivot2018 order by total_sessions desc ;
 
 drop table if exists rcbill_my.rep_tsranking2018;
 
@@ -174,4 +174,4 @@ create table rcbill_my.rep_tsranking2018 as
 )
 ;
 
-select * from rcbill_my.rep_tsranking2018 order by overall asc;
+-- select * from rcbill_my.rep_tsranking2018 order by overall asc;

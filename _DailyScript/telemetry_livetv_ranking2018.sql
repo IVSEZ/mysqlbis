@@ -1,7 +1,7 @@
 
 -- select resource, jan from rcbill_my.rep_livetvpivot2018 order by jan desc;
 
-select * from rcbill_my.rep_livetvpivot2018 order by total_duration desc ;
+-- select * from rcbill_my.rep_livetvpivot2018 order by total_duration desc ;
 
 
 drop table if exists rcbill_my.rep_livetvranking2018;
@@ -175,4 +175,4 @@ create table rcbill_my.rep_livetvranking2018 as
 )
 ;
 
-select * from rcbill_my.rep_livetvranking2018 order by overall asc;
+-- select * from rcbill_my.rep_livetvranking2018 order by overall asc;
