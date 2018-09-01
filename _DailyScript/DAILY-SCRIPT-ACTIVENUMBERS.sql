@@ -5,11 +5,11 @@ use rcbill_my;
 ## change date in call sp_ActiveNumber(
 
 -- use rcbill_my;
- SET @rundate='2018-08-28';
+ SET @rundate='2018-08-31';
 -- SET @rundate='2017-12-26';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-05052018-06052018.csv'
 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-28082018.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-31082018.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -160,10 +160,10 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2018-08-25'; SET @perioddate=str_to_date('2018-08-25','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-25;2018-08-25.csv'
 -- 	SET @rundate='2018-08-26'; SET @perioddate=str_to_date('2018-08-26','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-26;2018-08-26.csv'
 -- 	SET @rundate='2018-08-27'; SET @perioddate=str_to_date('2018-08-27','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-27;2018-08-27.csv'
- 	SET @rundate='2018-08-28'; SET @perioddate=str_to_date('2018-08-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-28;2018-08-28.csv'
+-- 	SET @rundate='2018-08-28'; SET @perioddate=str_to_date('2018-08-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-28;2018-08-28.csv'
 -- 	SET @rundate='2018-08-29'; SET @perioddate=str_to_date('2018-08-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-29;2018-08-29.csv'
 -- 	SET @rundate='2018-08-30'; SET @perioddate=str_to_date('2018-08-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-30;2018-08-30.csv'
--- 	SET @rundate='2018-08-31'; SET @perioddate=str_to_date('2018-08-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-31;2018-08-31.csv'
+ 	SET @rundate='2018-08-31'; SET @perioddate=str_to_date('2018-08-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-31;2018-08-31.csv'
 
 
 REPLACE INTO TABLE `rcbill_my`.`dailyactivenumber` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 

@@ -1,4 +1,4 @@
-# INTELENOVELA as per New Sales #
+# VOD as per New Sales #
 set @startdate='2018-07-01';
 set @enddate='2018-07-31';
 set @package='VOD';
