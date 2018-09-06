@@ -1,6 +1,15 @@
 SELECT * FROM rcbill_my.lkpservicetype order by ServiceNewType;
 
 /*
+insert into rcbill_my.lkpservicetype
+values
+('Amber Corporate::=Amber Corporate','Amber Corporate');
+insert into rcbill_my.lkpservicetype
+values
+('Amber Corporate','Amber Corporate');
+
+
+
 
 
 insert into rcbill_my.lkpservicetype

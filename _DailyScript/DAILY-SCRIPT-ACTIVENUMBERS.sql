@@ -5,11 +5,11 @@ use rcbill_my;
 ## change date in call sp_ActiveNumber(
 
 -- use rcbill_my;
- SET @rundate='2018-08-31';
+ SET @rundate='2018-09-05';
 -- SET @rundate='2017-12-26';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-05052018-06052018.csv'
 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-31082018.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-05092018.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -114,6 +114,7 @@ order by
 servicecategory
 );
 
+-- select * from rcbill_my.packagelist;
 -- select servicecategory, servicecategory2, service, package, servicetype, servicesubcategory, packageprice from rcbill_my.packagelist;
 
 -- select * from rcbill_my.activenumber where period=@rundate and reported='Y' and decommissioned='N';
@@ -133,37 +134,37 @@ use rcbill_my;
 SET @@SESSION.sql_mode='ALLOW_INVALID_DATES';
 SET SQL_SAFE_UPDATES = 0;
 
--- 	SET @rundate='2018-08-01'; SET @perioddate=str_to_date('2018-08-01','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-01;2018-08-01.csv'
--- 	SET @rundate='2018-08-02'; SET @perioddate=str_to_date('2018-08-02','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-02;2018-08-02.csv'
--- 	SET @rundate='2018-08-03'; SET @perioddate=str_to_date('2018-08-03','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-03;2018-08-03.csv'
--- 	SET @rundate='2018-08-04'; SET @perioddate=str_to_date('2018-08-04','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-04;2018-08-04.csv'
--- 	SET @rundate='2018-08-05'; SET @perioddate=str_to_date('2018-08-05','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-05;2018-08-05.csv'
--- 	SET @rundate='2018-08-06'; SET @perioddate=str_to_date('2018-08-06','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-06;2018-08-06.csv'
--- 	SET @rundate='2018-08-07'; SET @perioddate=str_to_date('2018-08-07','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-07;2018-08-07.csv'
--- 	SET @rundate='2018-08-08'; SET @perioddate=str_to_date('2018-08-08','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-08;2018-08-08.csv'
--- 	SET @rundate='2018-08-09'; SET @perioddate=str_to_date('2018-08-09','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-09;2018-08-09.csv'
--- 	SET @rundate='2018-08-10'; SET @perioddate=str_to_date('2018-08-10','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-10;2018-08-10.csv'
--- 	SET @rundate='2018-08-11'; SET @perioddate=str_to_date('2018-08-11','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-11;2018-08-11.csv'
--- 	SET @rundate='2018-08-12'; SET @perioddate=str_to_date('2018-08-12','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-12;2018-08-12.csv'
--- 	SET @rundate='2018-08-13'; SET @perioddate=str_to_date('2018-08-13','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-13;2018-08-13.csv'
--- 	SET @rundate='2018-08-14'; SET @perioddate=str_to_date('2018-08-14','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-14;2018-08-14.csv'
--- 	SET @rundate='2018-08-15'; SET @perioddate=str_to_date('2018-08-15','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-15;2018-08-15.csv'
--- 	SET @rundate='2018-08-16'; SET @perioddate=str_to_date('2018-08-16','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-16;2018-08-16.csv'
--- 	SET @rundate='2018-08-17'; SET @perioddate=str_to_date('2018-08-17','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-17;2018-08-17.csv'
--- 	SET @rundate='2018-08-18'; SET @perioddate=str_to_date('2018-08-18','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-18;2018-08-18.csv'
--- 	SET @rundate='2018-08-19'; SET @perioddate=str_to_date('2018-08-19','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-19;2018-08-19.csv'
--- 	SET @rundate='2018-08-20'; SET @perioddate=str_to_date('2018-08-20','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-20;2018-08-20.csv'
--- 	SET @rundate='2018-08-21'; SET @perioddate=str_to_date('2018-08-21','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-21;2018-08-21.csv'
--- 	SET @rundate='2018-08-22'; SET @perioddate=str_to_date('2018-08-22','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-22;2018-08-22.csv'
--- 	SET @rundate='2018-08-23'; SET @perioddate=str_to_date('2018-08-23','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-23;2018-08-23.csv'
--- 	SET @rundate='2018-08-24'; SET @perioddate=str_to_date('2018-08-24','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-24;2018-08-24.csv'
--- 	SET @rundate='2018-08-25'; SET @perioddate=str_to_date('2018-08-25','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-25;2018-08-25.csv'
--- 	SET @rundate='2018-08-26'; SET @perioddate=str_to_date('2018-08-26','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-26;2018-08-26.csv'
--- 	SET @rundate='2018-08-27'; SET @perioddate=str_to_date('2018-08-27','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-27;2018-08-27.csv'
--- 	SET @rundate='2018-08-28'; SET @perioddate=str_to_date('2018-08-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-28;2018-08-28.csv'
--- 	SET @rundate='2018-08-29'; SET @perioddate=str_to_date('2018-08-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-29;2018-08-29.csv'
--- 	SET @rundate='2018-08-30'; SET @perioddate=str_to_date('2018-08-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-30;2018-08-30.csv'
- 	SET @rundate='2018-08-31'; SET @perioddate=str_to_date('2018-08-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201808/2018-08-31;2018-08-31.csv'
+-- 	SET @rundate='2018-09-01'; SET @perioddate=str_to_date('2018-09-01','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-01;2018-09-01.csv'
+-- 	SET @rundate='2018-09-02'; SET @perioddate=str_to_date('2018-09-02','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-02;2018-09-02.csv'
+-- 	SET @rundate='2018-09-03'; SET @perioddate=str_to_date('2018-09-03','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-03;2018-09-03.csv'
+-- 	SET @rundate='2018-09-04'; SET @perioddate=str_to_date('2018-09-04','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-04;2018-09-04.csv'
+ 	SET @rundate='2018-09-05'; SET @perioddate=str_to_date('2018-09-05','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-05;2018-09-05.csv'
+-- 	SET @rundate='2018-09-06'; SET @perioddate=str_to_date('2018-09-06','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-06;2018-09-06.csv'
+-- 	SET @rundate='2018-09-07'; SET @perioddate=str_to_date('2018-09-07','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-07;2018-09-07.csv'
+-- 	SET @rundate='2018-09-08'; SET @perioddate=str_to_date('2018-09-08','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-08;2018-09-08.csv'
+-- 	SET @rundate='2018-09-09'; SET @perioddate=str_to_date('2018-09-09','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-09;2018-09-09.csv'
+-- 	SET @rundate='2018-09-10'; SET @perioddate=str_to_date('2018-09-10','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-10;2018-09-10.csv'
+-- 	SET @rundate='2018-09-11'; SET @perioddate=str_to_date('2018-09-11','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-11;2018-09-11.csv'
+-- 	SET @rundate='2018-09-12'; SET @perioddate=str_to_date('2018-09-12','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-12;2018-09-12.csv'
+-- 	SET @rundate='2018-09-13'; SET @perioddate=str_to_date('2018-09-13','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-13;2018-09-13.csv'
+-- 	SET @rundate='2018-09-14'; SET @perioddate=str_to_date('2018-09-14','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-14;2018-09-14.csv'
+-- 	SET @rundate='2018-09-15'; SET @perioddate=str_to_date('2018-09-15','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-15;2018-09-15.csv'
+-- 	SET @rundate='2018-09-16'; SET @perioddate=str_to_date('2018-09-16','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-16;2018-09-16.csv'
+-- 	SET @rundate='2018-09-17'; SET @perioddate=str_to_date('2018-09-17','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-17;2018-09-17.csv'
+-- 	SET @rundate='2018-09-18'; SET @perioddate=str_to_date('2018-09-18','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-18;2018-09-18.csv'
+-- 	SET @rundate='2018-09-19'; SET @perioddate=str_to_date('2018-09-19','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-19;2018-09-19.csv'
+-- 	SET @rundate='2018-09-20'; SET @perioddate=str_to_date('2018-09-20','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-20;2018-09-20.csv'
+-- 	SET @rundate='2018-09-21'; SET @perioddate=str_to_date('2018-09-21','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-21;2018-09-21.csv'
+-- 	SET @rundate='2018-09-22'; SET @perioddate=str_to_date('2018-09-22','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-22;2018-09-22.csv'
+-- 	SET @rundate='2018-09-23'; SET @perioddate=str_to_date('2018-09-23','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-23;2018-09-23.csv'
+-- 	SET @rundate='2018-09-24'; SET @perioddate=str_to_date('2018-09-24','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-24;2018-09-24.csv'
+-- 	SET @rundate='2018-09-25'; SET @perioddate=str_to_date('2018-09-25','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-25;2018-09-25.csv'
+-- 	SET @rundate='2018-09-26'; SET @perioddate=str_to_date('2018-09-26','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-26;2018-09-26.csv'
+-- 	SET @rundate='2018-09-27'; SET @perioddate=str_to_date('2018-09-27','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-27;2018-09-27.csv'
+-- 	SET @rundate='2018-09-28'; SET @perioddate=str_to_date('2018-09-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-28;2018-09-28.csv'
+-- 	SET @rundate='2018-09-29'; SET @perioddate=str_to_date('2018-09-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-29;2018-09-29.csv'
+-- 	SET @rundate='2018-09-30'; SET @perioddate=str_to_date('2018-09-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-30;2018-09-30.csv'
+-- 	SET @rundate='2018-09-31'; SET @perioddate=str_to_date('2018-09-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201809/2018-09-31;2018-09-31.csv'
 
 
 REPLACE INTO TABLE `rcbill_my`.`dailyactivenumber` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
@@ -639,12 +640,13 @@ drop table if exists rcbill_my.clientnetworkservicesum;
 create table rcbill_my.clientnetworkservicesum as
 (
 select period, clientcode, clientname, clientclass, clienttype, region, network, sum(ActiveCount) as ActiveCount
-,count(distinct contractcode) as contractcount,  ifnull(sum(tv),0) as tv, ifnull(sum(internet),0) as internet, ifnull(sum(voice),0) as voice
+,count(distinct contractcode) as contractcount,  ifnull(sum(tv),0) as tv, ifnull(sum(ott),0) as ott, ifnull(sum(internet),0) as internet, ifnull(sum(voice),0) as voice
 from 
 (
 select period, clientcode, clientname, clientclass, clienttype, region, network, ActiveCount, contractcode,
 -- count(distinct contractcode) as contractcount,
 case when servicecategory='TV' then ServiceCount end as TV,
+case when servicecategory='OTT' then ServiceCount end as OTT,
 case when servicecategory='Internet' then ServiceCount end as Internet,
 case when servicecategory='Voice' then ServiceCount end as Voice
 from rcbill_my.clientnetworkservicepkg
@@ -664,6 +666,7 @@ drop table if exists rcbill_my.clientnetworkservicestats;
 create table rcbill_my.clientnetworkservicestats as
 (
 select period, clientcode, clientname, clientclass, clienttype, region, network, ActiveCount,contractcount,
+/*
 case 
 when tv>0 and internet>0 and voice>0 then 'All' 
 when tv>0 and internet>0 and voice=0 then 'TV & Internet'
@@ -673,6 +676,33 @@ when tv=0 and internet=0 and voice>0 then 'Voice Only'
 when tv>0 and internet=0 and voice>0 then 'TV & Voice'
 when tv=0 and internet>0 and voice>0 then 'Internet & Voice'
 end as Services
+*/
+
+case 
+
+when tv>0 and internet>0 and voice>0 and ott>0 then 'All' 
+when tv>0 and internet>0 and voice>0 and ott=0 then 'TV & Internet & Voice' 
+
+when tv>0 and internet=0 and voice=0 and ott=0 then 'TV Only'
+when tv=0 and internet>0 and voice=0 and ott=0 then 'Internet Only'
+when tv=0 and internet=0 and voice>0 and ott=0 then 'Voice Only'
+
+when tv>0 and internet=0 and voice>0 and ott=0 then 'TV & Voice'
+when tv=0 and internet>0 and voice>0 and ott=0 then 'Internet & Voice'
+when tv>0 and internet>0 and voice=0 and ott=0 then 'TV & Internet'
+
+when tv=0 and internet=0 and voice=0 and ott>0 then 'OTT Only'
+
+when tv>0 and internet=0 and voice=0 and ott>0 then 'TV & OTT'
+when tv=0 and internet>0 and voice=0 and ott>0 then 'Internet & OTT'
+when tv=0 and internet=0 and voice>0 and ott>0 then 'Voice & OTT'
+
+when tv>0 and internet>0 and voice=0 and ott>0 then 'TV & Internet & OTT'
+when tv>0 and internet=0 and voice>0 and ott>0 then 'TV & Voice & OTT'
+when tv=0 and internet>0 and voice>0 and ott>0 then 'Internet & Voice & OTT'
+
+end as Services
+
 from
 rcbill_my.clientnetworkservicesum
 )
@@ -691,6 +721,7 @@ create table rcbill_my.clientpackagestats as
 	ifnull(sum(`20GB`),0) as `20GB`,
 	ifnull(sum(`40GB`),0) as `40GB`,
     ifnull(sum(`Amber`),0) as `Amber`,
+    ifnull(sum(`Amber Corporate`),0) as `Amber Corporate`,
 	ifnull(sum(`Basic`),0) as `Basic`,
 	ifnull(sum(`Business Unlimited-1`),0) as `Business Unlimited-1`,
 	ifnull(sum(`Business Unlimited-2`),0) as `Business Unlimited-2`,
@@ -703,6 +734,7 @@ create table rcbill_my.clientpackagestats as
 	ifnull(sum(`Dedicated Plus`),0) as `Dedicated Plus`,
 	ifnull(sum(`DualView`),0) as `DualView`,
 	ifnull(sum(`MultiView`),0) as `MultiView`,
+	ifnull(sum(`VOD`),0) as `VOD`,
 	ifnull(sum(Elite),0) as `Elite`,
 	ifnull(sum(Executive),0) as `Executive`,
 	ifnull(sum(Extravagance),0) as `Extravagance`,
@@ -740,6 +772,7 @@ create table rcbill_my.clientpackagestats as
 		case when package='20GB' then packagecount end as `20GB`,
 		case when package='40GB' then packagecount end as `40GB`,
 		case when package='Amber' then packagecount end as `Amber`,
+		case when package='Amber Corporate' then packagecount end as `Amber Corporate`,
 		case when package='Basic' then packagecount end as `Basic`,
 		case when package='Business Unlimited-1' then packagecount end as `Business Unlimited-1`,
 		case when package='Business Unlimited-2' then packagecount end as `Business Unlimited-2`,
@@ -753,6 +786,7 @@ create table rcbill_my.clientpackagestats as
         
 		case when package='DualView' then packagecount end as `DualView`,
         case when package='MultiView' then packagecount end as `MultiView`,
+		case when package='VOD' then packagecount end as `VOD`,
         
 		case when package='Elite' then packagecount end as `Elite`,
 		case when package='Executive' then packagecount end as `Executive`,
@@ -835,6 +869,7 @@ order by b.clientcode
 ;
 
 select count(*) as clientstats from rcbill_my.clientstats;
+-- select * from rcbill_my.clientstats;
 
 
 drop table if exists rcbill_my.rep_clientstats1;

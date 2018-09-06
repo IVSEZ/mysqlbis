@@ -22,6 +22,9 @@ insert into rcbill_my.lkpreported
 values
 ('Amber','Y');
 
+insert into rcbill_my.lkpreported
+values
+('Amber Corporate','Y');
 
 insert into rcbill_my.lkpreported
 values

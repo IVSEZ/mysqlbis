@@ -206,6 +206,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		drop table if exists clientcontractinvpmt;
 		#QUERY Takes 53 minutes
 		#now it takes 139 seconds
+        #415 seconds
 -- 		 SET global innodb_buffer_pool_size=12582912;
 
 		CREATE TABLE IF NOT EXISTS clientcontractinvpmt AS (
@@ -235,21 +236,46 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		from rcb_invoicesheader
 		where
 		(hard not in (100, 101, 102) or hard is null)
-		group by clid, cid) as b
+		group by clid, cid
+        ) as b
 
 		on a.CL_CLIENTID=b.clid
 		and a.CON_CONTRACTID=b.cid
 
+		/*
 		left join
 		(
 		select clid, cid, COALESCE(sum(money),0) as TotalPaymentAmount , 
 		max(money) as LastPaidAmount, 
 		COALESCE(count(*),0) as TotalPayments, min(ENTERDATE) as FirstPaymentDate, max(ENTERDATE) as LastPaymentDate
 		from rcb_casa
-		where
-		(hard not in (100, 101, 102) or hard is null)
-		group by clid, cid) as c
-
+		-- where
+		-- (hard not in (100, 101, 102) or hard is null)
+		group by clid, cid
+        ) as c
+		*/
+       left join 
+       (
+			select a.*, (select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=a.clid 
+            and ac.cid=a.cid 
+            and date(ac.enterdate)=date(LastPaymentDate)) as LastPaidAmount
+            from 
+            (
+			select clid
+			 , cid
+			, COALESCE(sum(money),0) as TotalPaymentAmount  
+			-- , sum(money) as LastPaidAmount
+			-- , (select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=clid and date(ac.enterdate)=date(max(EnterDate))) as LastPaidAmount  
+			, COALESCE(count(*),0) as TotalPayments, date(min(ENTERDATE)) as FirstPaymentDate, date(max(ENTERDATE)) as LastPaymentDate
+			from rcb_casa
+			where
+			(hard not in (100, 101, 102) or hard is null)
+			-- and 
+			-- clid=@custid
+			group by clid, cid
+            ) a
+        ) as c 
+        
 		on a.CL_CLIENTID=c.clid
 		and a.CON_CONTRACTID=c.cid
 
@@ -280,30 +306,36 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		#for file clientreport-ddmmyyyy-n.csv
 		DROP TABLE IF EXISTS clientreport;
 		create table clientreport as (
-		select a.*, (select distinct(b.CL_CLCLASSNAME) from clientcontracts b where b.CL_CLIENTID=a.CL_CLIENTID and b.cl_clientname=a.cl_clientname ) as ClassName,
-		-- a.cl_clientname,a.CL_CLIENTCODE, a.CL_CLIENTID,
-		COALESCE(sum(b.TotalInvoices),0) as TotalInvoices, COALESCE(sum(b.TotalInvoiceAmount),0) as TotalInvoiceAmount, 
-		-- max(b.LastInvoiceAmount) as LastInvoiceAmount, 
-		min(b.FirstInvoiceDate) as FirstInvoiceDate, max(b.LastInvoiceDate) as LastInvoiceDate,
-		COALESCE(sum(b.TotalPayments),0) as TotalPayments, COALESCE(sum(b.TotalPaymentAmount),0) as TotalPaymentAmount, 
-		-- max(b.LastPaidAmount) as LastPaidAmount, 
-		min(b.FirstPaymentDate) as FirstPaymentDate, max(b.LastPaymentDate) as LastPaymentDate,
-		-- str_to_date('2017-01-19','%Y-%m-%d') as REPORTDATE,
-		@REPORTDATE as REPORTDATE,
-		COALESCE((sum(b.TotalInvoiceAmount)-sum(b.TotalPaymentAmount)),0) as CLIENTDEBT_REPORTDATE
+        select a.*
+  				,(select sum(cciv.LastPaidAmount) from clientcontractinvpmt cciv where cciv.CL_CLIENTID=a.CL_CLIENTID and date(cciv.LastPaymentDate)=date(a.LastPaymentDate)) as LastPaidAmount
+			from
+            (
 
-		from
-		clientcontracthistory a
-		left join 
-		clientcontractinvpmt b
-		on
-		a.CL_CLIENTID=b.CL_CLIENTID
+				select a.*, (select distinct(b.CL_CLCLASSNAME) from clientcontracts b where b.CL_CLIENTID=a.CL_CLIENTID and b.cl_clientname=a.cl_clientname ) as ClassName,
+				-- a.cl_clientname,a.CL_CLIENTCODE, a.CL_CLIENTID,
+				COALESCE(sum(b.TotalInvoices),0) as TotalInvoices, COALESCE(sum(b.TotalInvoiceAmount),0) as TotalInvoiceAmount, 
+				-- max(b.LastInvoiceAmount) as LastInvoiceAmount, 
+				min(b.FirstInvoiceDate) as FirstInvoiceDate, max(b.LastInvoiceDate) as LastInvoiceDate,
+				COALESCE(sum(b.TotalPayments),0) as TotalPayments, COALESCE(sum(b.TotalPaymentAmount),0) as TotalPaymentAmount 
+				-- max(b.LastPaidAmount) as LastPaidAmount, 
+				, min(b.FirstPaymentDate) as FirstPaymentDate, max(b.LastPaymentDate) as LastPaymentDate,
+				-- str_to_date('2017-01-19','%Y-%m-%d') as REPORTDATE,
+				@REPORTDATE as REPORTDATE,
+				COALESCE((sum(b.TotalInvoiceAmount)-sum(b.TotalPaymentAmount)),0) as CLIENTDEBT_REPORTDATE
 
-		group by a.cl_clientname,a.CL_CLIENTCODE, a.CL_CLIENTID
-		-- , c.CL_CLCLASSNAME
+				from
+				clientcontracthistory a
+				left join 
+				clientcontractinvpmt b
+				on
+				a.CL_CLIENTID=b.CL_CLIENTID
 
-		order by 
-		a.cl_clientname
+				group by a.cl_clientname,a.CL_CLIENTCODE, a.CL_CLIENTID
+				-- , c.CL_CLCLASSNAME
+
+				order by 
+				a.cl_clientname
+			) a
 		)
 		;
 
@@ -384,7 +416,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 				select 
 					REPORTDATE as reportdate, CLIENTDEBT_REPORTDATE as currentdebt, CL_CLIENTCODE as clientcode, cl_clientname as clientname
 					, ActiveContracts as activecontracts, ActiveSubscriptions as activesubscriptions, firstcontractdate, FirstInvoiceDate as firstinvoicedate, LastInvoiceDate as lastinvoicedate
-					, FirstPaymentDate as firstpaymentdate, LastPaymentDate as lastpaymentdate, TotalPayments as totalpayments, TotalPaymentAmount as totalpaymentamount
+					, FirstPaymentDate as firstpaymentdate, LastPaymentDate as lastpaymentdate, LastPaidAmount as lastpaidamount, TotalPayments as totalpayments, TotalPaymentAmount as totalpaymentamount
 					, ClassName as clientclass, CL_NIN as clientnin, CL_PassNo as clientpassport, CL_MPhone as clientphone, CL_MEMAIL as clientemail
 					, clientaddress as clientaddress, cl_location as clientlocation, cl_area as clientarea 
 					
