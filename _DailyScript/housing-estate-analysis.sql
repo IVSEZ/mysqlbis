@@ -116,11 +116,11 @@ from
 
 */
 
--- SET @rundate='2018-06-08';
+-- SET @rundate='2018-09-06';
 
 drop table if exists rcbill_my.rep_housingestates;
 
-create table rcbill_my.rep_housingestates as
+create table rcbill_my.rep_housingestates(index `idxrhe1`(CLIENT_CODE)) as
 (
 
 	select date(@rundate) as REPORT_DATE

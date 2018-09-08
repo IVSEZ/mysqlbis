@@ -9,7 +9,7 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@# 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20180906_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20180908_1.out
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\load_RCB_VODTITLES.sql
 
@@ -40,6 +40,7 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\housing-estate-analysis.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\sales-to-activenumber.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\RCB_ClientAnalyticsReport_Script.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\REVENUE_PER_NODE_MXK.sql
 
 
 exit

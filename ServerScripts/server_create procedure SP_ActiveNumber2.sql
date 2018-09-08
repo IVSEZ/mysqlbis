@@ -120,6 +120,18 @@ order by period, periodday, periodmth, periodyear
 )
 ;
 
+drop table if exists rcbill_my.rep_anreport_o;
+
+create table rcbill_my.rep_anreport_o as 
+(
+select period, periodday, periodmth, periodyear, sum(open_s) as activecount from rcbill_my.anreport 
+where upper(servicecategory)='OTT' and reported='Y' and decommissioned='N'
+group by period, periodday, periodmth, periodyear
+order by period, periodday, periodmth, periodyear
+)
+
+;
+
 
 END$$
 DELIMITER ;

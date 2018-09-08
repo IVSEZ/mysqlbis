@@ -398,7 +398,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         select count(*) as clientextendedreport from rcbill.clientextendedreport;
         
         drop table if exists rcbill_my.rep_allcust;
-        create table rcbill_my.rep_allcust as 
+        create table rcbill_my.rep_allcust (index `idxrac1`(clientcode) ) as 
         (
 			/*
 			select 
