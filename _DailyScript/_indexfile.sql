@@ -9,7 +9,9 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@# 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20180908_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20181003_1.out
+
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\load_RCB_VODTITLES.sql
 
@@ -38,10 +40,10 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-ACTIVENUMBERS.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\reports-sales-addons-prepaid-camera.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\housing-estate-analysis.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\sales-to-activenumber.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\RCB_ClientAnalyticsReport_Script.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\REVENUE_PER_NODE_MXK.sql
 
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\sales-to-activenumber.sql
 
 exit
 
@@ -58,7 +60,7 @@ use rcbill_my;
 
 call sp_ActiveNumber(01,09,2018,'','');
 
-call sp_GetActiveNumberFromTo('2018-09-01','2018-09-01');
+call sp_GetActiveNumberFromTo('2018-09-17','2018-09-30');
 
 ######################################################################################
 

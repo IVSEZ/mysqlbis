@@ -12,7 +12,9 @@
 
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTechRegions-30012017.csv' 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTechRegions-31012017.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTechRegions-31012017.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTechRegions-13092018.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTechRegions-13092018-2.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_techregions` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 1 LINES 
@@ -42,21 +44,14 @@ INSERTEDON=now()
 
 ;
 
-CREATE INDEX IDXTR1
-ON rcb_techregions (INTERFACENAME);
+-- show index from rcbill.rcb_techregions;
 
-CREATE INDEX IDXTR2
-ON rcb_techregions (NODENAME);
 
-CREATE INDEX IDXTR3
-ON rcb_techregions (DISTRICT);
-
-CREATE INDEX IDXTR4
-ON rcb_techregions (SUBDISTRICT);
-
--- select * from rcb_techregions;
+-- select * from rcbill.rcb_techregions;
 
 -- select * from rcb_techregions
+
+-- select distinct interfacename, count(*) from rcbill.rcb_techregions group by interfacename;
 /*
 
 select district, decimallat, decimallong,type,nodename,interfacename,subdistrict

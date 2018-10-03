@@ -98,6 +98,7 @@ create table rcbill_my.tempcustmxk1 as
 				'IPTV',
 				'HOTSPOT ACCESS'
             )
+            and CONTRACT_CODE<>CLIENT_CODE
 			-- FSAN is not null or FSAN <>''
 		) a 
 		left join 
@@ -142,7 +143,8 @@ create table rcbill_my.tempcustmxk2 as
 				'MOBILE TV',
 				'IPTV',
 				'HOTSPOT ACCESS'
-            )            
+            )   
+            and CONTRACT_CODE<>CLIENT_CODE
 		) a 
 		right join 
 		(
@@ -204,6 +206,7 @@ create table rcbill_my.tempcustcmts1 as
 			'PREPAID INTERNET',
 			'PREPAID TRAFFIC'        
         )
+        and CONTRACT_CODE<>CLIENT_CODE
     ) a
     left join
 	(
@@ -250,7 +253,8 @@ create table rcbill_my.tempcustcmts2 as
 			'HOTSPOT ACCESS',
 			'PREPAID INTERNET',
 			'PREPAID TRAFFIC'        
-        )        
+        )
+        and CONTRACT_CODE<>CLIENT_CODE
     ) a
 	right join
 	(
@@ -281,6 +285,57 @@ create table rcbill_my.customers_cmts as
 
 drop table if exists rcbill_my.tempcustcmts1;
 drop table if exists rcbill_my.tempcustcmts2;
+
+
+drop table if exists rcbill_my.customers_cmts_mxk;
+
+create table rcbill_my.customers_cmts_mxk
+(index idxccm1(client_id),index idxccm2(client_code),index idxccm3(contract_id),index idxccm4(contract_code))
+as
+	(
+	select 'HFC' as connection_type ,client_id, client_code, client_name, contract_id, contract_code, contract_type, service_type
+	, fsan as fsan_rcb, null as fsan_mxk, null as mxk_name, null as model_id, null as mxk_interface, null as mxk_date
+	, mac as mac_rcb, uid as uid_rcb
+	, mac_address as mac_cmts, ip_address, hfc_node, cmts_date, interfacename, nodename, date(insertedon) as report_date
+	from rcbill_my.customers_cmts
+	)
+	union
+	(
+	select 'GPON' as connection_type,client_id, client_code, client_name, contract_id, contract_code, contract_type, service_type
+	, fsan as fsan_rcb, serial_num as fsan_mxk, mxk_name, model_id, mxk_interface, mxk_date
+	, mac as mac_rcb, uid as uid_rcb
+	, NULL as mac_cmts, null as ip_address, null as hfc_node, null as cmts_date, null as interfacename, null as nodename, date(insertedon) as report_date
+	from rcbill_my.customers_mxk
+	)
+;
+
+
+
+drop table if exists rcbill_my.customers_contracts_cmts_mxk;
+
+create table rcbill_my.customers_contracts_cmts_mxk
+(index idxccmc1(CL_CLIENTID), index idxccmc2(CL_CLIENTCODE), index idxccmc3(CON_CONTRACTID), index idxccmc4(CON_CONTRACTCODE))
+as
+(
+	select a.*, b.*
+	from 
+	(
+		select CL_CLIENTID, CL_CLIENTNAME, CL_CLIENTCODE, CL_CLCLASSNAME, CON_CONTRACTID, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, VPNR_SERVICEPRICE, CONTRACTCURRENTSTATUS 
+		from rcbill.clientcontracts where s_servicename like 'SUBSCRIPTION%' 
+		-- and CL_CLIENTID=723711
+		group by 
+		CL_CLIENTID, CL_CLIENTNAME, CL_CLIENTCODE, CL_CLCLASSNAME, CON_CONTRACTID, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, VPNR_SERVICEPRICE, CONTRACTCURRENTSTATUS
+	) a
+	left join
+	rcbill_my.customers_cmts_mxk b 
+	on 
+	a.CL_CLIENTID=b.client_id
+	and 
+	a.CON_CONTRACTID=b.contract_id
+)
+;
+
+-- select * from rcbill_my.customers_contracts_cmts_mxk;
 
 /*
 (
@@ -319,6 +374,78 @@ create table rcbill_my.customers_collection (index idxccoll1(ClientCode), index 
 	(hard not in (100, 101, 102) or hard is null)
 	group by clid, cid, 3, 4, 5, 6
 	order by clid, 6 desc, 5 desc
+);
+
+
+
+
+drop table if exists rcbill_my.customers_cmts_mxk_cont_coll;
+
+create table rcbill_my.customers_cmts_mxk_cont_coll
+(index idxccmcc1(CL_CLIENTID), index idxccmcc2(CL_CLIENTCODE), index idxccmcc3(CON_CONTRACTID), index idxccmcc4(CON_CONTRACTCODE))
+as
+(
+	select a.*,b.* 
+	from 
+	rcbill_my.customers_contracts_cmts_mxk a 
+	left join
+	rcbill_my.customers_collection b
+	on 
+	a.CL_CLIENTID=b.clid
+	and
+	a.CON_CONTRACTID=b.cid
+	-- where a.CL_CLIENTID=693929
+)
+;
+
+
+
+drop table if exists rcbill_my.customers_contracts_collection_pivot2018 ;
+create table rcbill_my.customers_contracts_collection_pivot2018 (index idxccp1 (clientcode), index idxccp2(clid), index idxccp3(cid), index idxccp4(contractcode) ) as 
+(
+		select clid, clientcode, cid, contractcode
+		, ifnull(sum(`201801`),0) as `201801` 
+		, ifnull(sum(`201802`),0) as `201802` 
+		, ifnull(sum(`201803`),0) as `201803` 
+		, ifnull(sum(`201804`),0) as `201804` 
+		, ifnull(sum(`201805`),0) as `201805` 
+		, ifnull(sum(`201806`),0) as `201806` 
+		, ifnull(sum(`201807`),0) as `201807` 
+		, ifnull(sum(`201808`),0) as `201808` 
+		, ifnull(sum(`201809`),0) as `201809` 
+		, ifnull(sum(`201810`),0) as `201810` 
+		, ifnull(sum(`201811`),0) as `201811` 
+		, ifnull(sum(`201812`),0) as `201812` 
+		, sum(TotalPayments2018) as TotalPayments2018
+		, sum(TotalPaymentAmount2018) as TotalPaymentAmount2018
+		from 
+		(    
+			select clid, clientcode, cid, contractcode
+				,case when paymonth=1 then ifnull(sum(totalpaymentamount),0) end as `201801`
+				,case when paymonth=2 then ifnull(sum(totalpaymentamount),0) end as `201802`
+				,case when paymonth=3 then ifnull(sum(totalpaymentamount),0) end as `201803`
+				,case when paymonth=4 then ifnull(sum(totalpaymentamount),0) end as `201804`
+				,case when paymonth=5 then ifnull(sum(totalpaymentamount),0) end as `201805`
+				,case when paymonth=6 then ifnull(sum(totalpaymentamount),0) end as `201806`
+				,case when paymonth=7 then ifnull(sum(totalpaymentamount),0) end as `201807`
+				,case when paymonth=8 then ifnull(sum(totalpaymentamount),0) end as `201808`
+				,case when paymonth=9 then ifnull(sum(totalpaymentamount),0) end as `201809`
+				,case when paymonth=10 then ifnull(sum(totalpaymentamount),0) end as `201810`
+				,case when paymonth=11 then ifnull(sum(totalpaymentamount),0) end as `201811`
+				,case when paymonth=12 then ifnull(sum(totalpaymentamount),0) end as `201812`
+				, max(lastpaymentdate) as LastPaymentDate
+				, sum(totalpayments) as TotalPayments2018
+				, sum(totalpaymentamount) as TotalPaymentAmount2018
+
+			from 
+			rcbill_my.customers_collection
+			where year(LastPaymentDate)=2018
+			group by
+			clid, clientcode, cid, contractcode, PAYMONTH, PAYYEAR
+		-- ,3,4,5,6,7,8,9,10,11,12,13,14
+		) a 
+		group by clid, clientcode, cid, contractcode	
+
 );
 
 
@@ -401,7 +528,102 @@ create table rcbill_my.rep_customers_collection2018(index idxrcc20181(client_cod
 );
 
 
+
+
+
+    drop table if exists rcbill_my.tempa;
+	create table rcbill_my.tempa(index idxtempa1(CL_CLIENTCODE), index idxtempa2(CON_CONTRACTCODE)) as
+    (
+		select CL_CLIENTCODE, CON_CONTRACTCODE, connection_type,client_code, contract_code, mxk_name, mxk_interface, hfc_node, nodename
+		from rcbill_my.customers_contracts_cmts_mxk
+		group by CL_CLIENTCODE, CON_CONTRACTCODE,  connection_type,client_code, contract_code, mxk_name,mxk_interface,hfc_node,nodename	
+    );
+
+
+	drop table if exists rcbill_my.tempb;
+    create table rcbill_my.tempb(index idxtempb1(b_clientcode), index idxtempb2(b_contractcode))
+    as
+    (
+		select clientcode as b_clientcode, contractcode as b_contractcode, `201801`, `201802`, `201803`, `201804`, `201805`, `201806`, `201807`, `201808`, `201809`, `201810`, `201811`, `201812`, TotalPayments2018, TotalPaymentAmount2018
+        from rcbill_my.customers_contracts_collection_pivot2018     
+    );
+
+drop table if exists rcbill_my.cust_cont_payment_cmts_mxk;
+
+create table rcbill_my.cust_cont_payment_cmts_mxk 
+(index idxccpcm1(cl_clientcode),index idxccpcm2(CON_CONTRACTCODE),index idxccpcm3(b_clientcode),index idxccpcm4(b_contractcode))
+as
+(
+select a.*, b.*
+from
+rcbill_my.tempa	a 
+left join
+rcbill_my.tempb b
+on a.CL_CLIENTCODE=b.b_clientcode
+and a.CON_CONTRACTCODE=b.b_contractcode      
+)
+union 
+(
+select a.*, b.*
+from
+rcbill_my.tempa a 
+right join
+rcbill_my.tempb b
+on a.CL_CLIENTCODE=b.b_clientcode
+and a.CON_CONTRACTCODE=b.b_contractcode 
+)
+
+;        
+
+drop table if exists rcbill_my.rep_cust_cont_payment_cmts_mxk;
+
+create table rcbill_my.rep_cust_cont_payment_cmts_mxk 
+(index rccpcm1(clientcode),index rccpcm2(clientname))
+as 
+(
+	select a.reportdate, a.currentdebt, a.clientcode, a.clientname, a.clientclass, c.services,c.network, a.activecontracts, a.clientlocation, a.firstactivedate, a.lastactivedate, a.totalpaymentamount
+	,b.*
+    , substring_index(b.mxk_name,'|',-1) as clean_mxk_name
+    , substring_index(b.mxk_interface,'|',-1) as clean_mxk_interface
+    , substring_index(b.hfc_node,'|',-1) as clean_hfc_node
+    , substring_index(b.nodename,'|',-1) as clean_hfc_nodename
+    , substring_index(b.connection_type,'|',-1) as clean_connection_type
+	from 
+	rcbill_my.rep_allcust a
+	left join
+    (
+			select ifnull(cl_clientcode,b_clientcode) as combined_clientcode, cl_clientcode
+			-- , b_clientcode
+			, coalesce(max(b_clientcode)) as b_clientcode
+			, coalesce(group_concat((connection_type) separator '|')) as connection_type, coalesce(group_concat((mxk_name) separator '|')) as mxk_name
+			, coalesce(group_concat((mxk_interface)  separator '|')) as mxk_interface, coalesce(group_concat((hfc_node)  separator '|')) as hfc_node
+			, coalesce(group_concat((nodename) separator '|')) as nodename
+			, sum(`201801`) as `201801`, sum(`201802`) as `201802`, sum(`201803`) as `201803`, sum(`201804`) as `201804`
+			, sum(`201805`) as `201805`, sum(`201806`) as `201806`, sum(`201807`) as `201807`, sum(`201808`) as `201808`
+			, sum(`201809`) as `201809`, sum(`201810`) as `201810`, sum(`201811`) as `201811`, sum(`201812`) as `201812`
+			, sum(`TotalPayments2018`) as `TotalPayments2018`
+			, sum(`TotalPaymentAmount2018`) as `TotalPaymentAmount2018` 
+			from rcbill_my.cust_cont_payment_cmts_mxk 
+			-- where cl_clientcode='I.000011750'
+			group by 1, cl_clientcode 
+    ) b
+    on
+    a.clientcode=b.combined_clientcode
+    
+    left join
+    rcbill_my.clientstats c 
+    on a.clientcode=c.clientcode
+)
+;
+    
+drop table if exists rcbill_my.tempa;
+drop table if exists rcbill_my.tempb;
+
+
+
 /*
+
+select * from rcbill_my.rep_cust_cont_payment_cmts_mxk;
 
 select * from rcbill.rcb_cmts;
 select * from rcbill.rcb_mxk;
@@ -409,6 +631,8 @@ select * from rcbill_my.customers_cmts;
 -- select * from rcbill_my.customers_cmts where NODENAME is null;  
 select * from rcbill.rcb_techregions;
 select * from rcbill_my.customers_mxk;
+select * from rcbill_my.customers_cmts_mxk;
+
 
 select * from rcbill_my.customers_collection;
 
@@ -495,6 +719,13 @@ order by MXK_NAME
 
 
 /*
+
+select * from rcbill_my.customers_mxk;
+select * from rcbill_my.customers_cmts;
+select * from rcbill_my.customers_cmts where client_code=contract_code;
+select * from rcbi
+
+ 
 select *, if(length(replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS',''))=8,substring(replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS',''),2),replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS','')) as FSAN2 from rcbill_my.rep_clientcontractdevices;
 
 

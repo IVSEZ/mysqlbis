@@ -348,6 +348,8 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		DROP TABLE IF EXISTS clientextendedreport;
 		create table clientextendedreport (INDEX idxcer1 (CL_CLIENTCODE), INDEX idxcer2 (CL_CLIENTNAME), INDEX idxcer3 (CL_NIN)) as (
         select a.*, 
+        b.KOD as CL_KOD,
+        b.FIRM as CL_FIRM,
 		b.danno as CL_NIN,
 		b.PASSNo as CL_PassNo,
 		b.MPHONE as CL_MPhone,
@@ -358,6 +360,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         from
         clientreport a 
         inner join
+        -- right join
         rcb_tclients b
         on
         a.CL_CLIENTCODE=b.KOD

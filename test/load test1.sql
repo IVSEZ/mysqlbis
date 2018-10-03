@@ -1,8 +1,11 @@
 -- SET SESSION sql_mode = '';
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20180902-1500.csv'
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20180915-1100.csv' 
-REPLACE INTO TABLE `rcbill`.`rcb_cmts` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
+
+set @filename = 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20180915-1100.csv';
+
+LOAD DATA LOW_PRIORITY LOCAL INFILE @filename 
+REPLACE INTO TABLE `practicedb`.`test1` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
  IGNORE 1 LINES 
 (
@@ -41,13 +44,13 @@ INSERTEDON=now()
 -- update rcbill.rcb_cmts
 -- set mac_address_clean = 
 
-select count(*) as cmts from rcbill.rcb_cmts;
+select count(*) as cmts from practicedb.test1;
 
-select * from rcbill.rcb_cmts;
+select * from practicedb.test1;
 
 
 select hfc_node, date(insertedon) as dateinserted, count(*) as devicecount
-from rcbill.rcb_cmts
+from practicedb.test1
 group by hfc_node, 2;
 
 

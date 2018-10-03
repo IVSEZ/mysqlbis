@@ -16,7 +16,7 @@ use rcbill;
 
 drop table if exists rcbill.tempradio;
 CREATE TABLE rcbill.tempradio
-(INDEX idxrad1 (device)) as 
+(INDEX idxtrad1 (device), index idxtrad2(sessionstart)) as 
 (
 select a.device,a.duration,trim(upper(a.resource)) as resource,a.sessionstart,a.subscriber
 -- ,b.originaltitle,b.imdbtitleref

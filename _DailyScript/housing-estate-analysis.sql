@@ -291,6 +291,7 @@ order by 9 desc
 SELECT count(*) as rep_housingestates from rcbill_my.rep_housingestates;
 
 /*
+select * from rcbill_my.rep_housingestates where housing_estate='EDEN ISLAND';
 
 select a.ClientCode, a.ClientName,a.ClientAddress,a.ClientArea,a.ClientLocation 
 from 

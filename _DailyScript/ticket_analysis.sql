@@ -289,6 +289,150 @@ order by a.opendate
 ;
 
 
+#TICKET ASSIGNMENTS & COMMENTS JOURNEY
+use rcbill;
+
+set @startdate='2018-01-01';
+
+
+drop table if exists rcbill_my.clientticket_cmmtjourney;
+
+create table rcbill_my.clientticket_cmmtjourney as
+(
+
+	select a.id as ticketid, a.opendate
+	, (select name from rcb_tickettechusers where id in (a.openuserid)) as openuser
+	, (select OPENREASONNAME from rcb_ticketopenreasons where torid in (a.OPENREASONID)) as openreason
+
+	, (select name from rcb_tickettechdepts where id in (a.TECHDEPTID)) as opentechdept
+	, (select name from rcb_tickettechregions where id in (a.TECHREGIONID)) as opentechregion
+	, (select name from rcb_tickettechregions where id in (a.STAGETECHREGIONID)) as stagetechregion
+	, a.CLOSEDATE
+	, (select name from rcb_tickettechusers where id in (a.CLOSEUSERID)) as closeuser
+	, (select CLOSEREASONNAME from rcb_ticketclosereasons where TCRID in (a.CLOSEREASONID)) as closereason
+	, (select name from rcb_tickettechdepts where id in (a.CLOSETECHDEPTID)) as closetechdept
+	, (select name from rcb_tickettechregions where id in (a.CLOSETECHREGIONID)) as closetechregion
+	, (select firm from rcb_tclients where id in (a.CLID)) as clientname
+	, (select kod from rcb_tclients where id in (a.CLID)) as clientcode
+	, (select kod from rcb_contracts where id in (a.CID)) as contractcode
+	, (select name from rcb_ticketseverities where id in (a.SEVERITYID)) as ticketseverity
+	, (select name from rcb_tickettechservices where id in (a.SERVICEID)) as service
+	, (select name from rcb_tickettypes where id in (a.TYPEID)) as tickettype
+
+	, a.state as ticketstate
+	, a.visitcount 
+	, a.worktime
+
+
+	, a.comment, a.commentdate, a.commentuserid
+	, (select name from rcb_tickettechusers where RCBUSERID in (a.commentuserid)) as commentuser
+	from 
+	(
+	   select a.*
+		 , b.comment
+		-- , b.techuserid
+		, b.upddate as commentdate,b.userid as commentuserid
+		from 
+		rcbill.rcb_tickets a 
+		inner join
+		rcbill.rcb_ticketcomments b 
+		on 
+		a.ID=b.TICKETID
+		where 
+		-- a.id in (865626)
+		-- and 
+		date(a.OPENDATE)>=@startdate
+		order by a.id, b.UPDDATE
+	) a
+	order by ticketid, a.commentdate
+)
+; 
+
+
+    
+
+drop table if exists rcbill_my.clientticket_assgnjourney;
+
+create table rcbill_my.clientticket_assgnjourney as
+(
+
+	select a.id as ticketid, a.opendate
+	, (select name from rcb_tickettechusers where id in (a.openuserid)) as openuser
+	, (select OPENREASONNAME from rcb_ticketopenreasons where torid in (a.OPENREASONID)) as openreason
+
+	, (select name from rcb_tickettechdepts where id in (a.TECHDEPTID)) as opentechdept
+	, (select name from rcb_tickettechregions where id in (a.TECHREGIONID)) as opentechregion
+	, (select name from rcb_tickettechregions where id in (a.STAGETECHREGIONID)) as stagetechregion
+	, a.CLOSEDATE
+	, (select name from rcb_tickettechusers where id in (a.CLOSEUSERID)) as closeuser
+	, (select CLOSEREASONNAME from rcb_ticketclosereasons where TCRID in (a.CLOSEREASONID)) as closereason
+	, (select name from rcb_tickettechdepts where id in (a.CLOSETECHDEPTID)) as closetechdept
+	, (select name from rcb_tickettechregions where id in (a.CLOSETECHREGIONID)) as closetechregion
+	, (select firm from rcb_tclients where id in (a.CLID)) as clientname
+	, (select kod from rcb_tclients where id in (a.CLID)) as clientcode
+	, (select kod from rcb_contracts where id in (a.CID)) as contractcode
+	, (select name from rcb_ticketseverities where id in (a.SEVERITYID)) as ticketseverity
+	, (select name from rcb_tickettechservices where id in (a.SERVICEID)) as service
+	, (select name from rcb_tickettypes where id in (a.TYPEID)) as tickettype
+
+	, a.state as ticketstate
+	, a.visitcount 
+	, a.worktime
+
+	, (select name from rcb_tickettechdepts where id in (a.ASSGN_TECHDEPTID)) as assgntechdept
+	, (select name from rcb_tickettechregions where id in (a.ASSGN_TECHREGIONID)) as assgntechregion
+	, (select name from rcb_tickettechlevels where ID in (a.ASSGN_TECHLEVELID)) as assgntechlevel
+	, (select name from rcb_tickettechusers where id in (a.ASSGN_TECHUSERID)) as assgntechuser
+	, a.ASSGN_OPENDATE 
+	, a.ASSGN_CLOSEDATE
+
+	, datediff(a.ASSGN_CLOSEDATE,a.ASSGN_OPENDATE) as tkt_alldays
+	, (5 * (DATEDIFF(a.ASSGN_CLOSEDATE,a.ASSGN_OPENDATE) DIV 7) + MID('0123444401233334012222340111123400001234000123440', 7 * WEEKDAY(a.ASSGN_OPENDATE) + WEEKDAY(a.ASSGN_CLOSEDATE) + 1, 1)) as tkt_workdays
+	
+    
+    , (select CLOSEREASONNAME from rcb_ticketclosereasons where TCRID in (a.ASSGN_CLOSEREASONID)) as assgnclosereason
+	, (select name from rcb_tickettechusers where RCBUSERID in (a.ASSGN_USERID)) as assgnuser
+	, a.ASSGN_UPDDATE
+
+	from 
+	(
+	 
+	  select a.*
+		, c.ID AS ASSGN_ID
+		, c.TECHLEVELID AS ASSGN_TECHLEVELID
+		, c.TECHDEPTID AS ASSGN_TECHDEPTID
+		, c.TECHREGIONID AS ASSGN_TECHREGIONID
+		, c.TECHGROUPID AS ASSGN_TECHGROUPID
+		, c.TECHUSERID AS ASSGN_TECHUSERID
+		, c.OPENDATE AS ASSGN_OPENDATE
+		, c.CLOSEDATE AS ASSGN_CLOSEDATE
+		, c.CLOSEREASONID AS ASSGN_CLOSEREASONID
+		, c.USERID AS ASSGN_USERID
+		, c.WORKTIME AS ASSGN_WORKTIME
+		, c.UPDDATE AS ASSGN_UPDDATE
+		from 
+		rcbill.rcb_tickets a 
+		inner join 
+		rcbill.rcb_ticketassignments c
+		on 
+		a.ID=c.TICKETID
+	 
+		where 
+		-- a.id in (865626)
+		-- and 
+		date(a.OPENDATE)>=@startdate
+		order by a.id, c.OPENDATE
+	) a
+	order by ticketid, a.ASSGN_OPENDATE
+)
+;
+
+
+select COUNT(*) as clientticket_cmmtjourney  from rcbill_my.clientticket_cmmtjourney;
+select COUNT(*) as clientticket_assgnjourney from rcbill_my.clientticket_assgnjourney;
+
+
+
 
 -- select * from  rcbill_my.clientticketjourney;
 -- select * from  rcbill_my.clientticketsnapshot_irs ;

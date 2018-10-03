@@ -15,7 +15,7 @@ set @rundate = '2018-07-21';
 
 drop table if exists rcbill.tempvod;
 CREATE TABLE rcbill.tempvod 
-(INDEX idxtv1 (device)) as 
+(INDEX idxtvod1 (device), index idxtvod2(sessionstart)) as 
 (
 	select a.device,a.duration,a.resource,a.sessionstart,a.subscriber,b.TITLE,b.imdbtitleref
 	from
@@ -79,6 +79,9 @@ CREATE INDEX IDXclts2
 ON rcbill.clientvodstats (opendate);
 CREATE INDEX IDXclts3
 ON rcbill.clientvodstats (ticketid);
+
+
+create index IDXclts4 on rcbill.clientvodstats(sessionstart);
 
 */
 
@@ -149,7 +152,7 @@ use rcbill;
 
 drop table if exists rcbill.tempts;
 CREATE TABLE rcbill.tempts 
-(INDEX idxtv1 (device)) as 
+(INDEX idxtts1 (device), index idxtts2(sessionstart)) as 
 (
 select a.device,a.duration,a.resource,a.sessionstart,a.subscriber
 -- ,b.originaltitle,b.imdbtitleref
@@ -207,6 +210,9 @@ rcbill.clientcontractdevices b
 on a.device=b.mac and a.device=b.phoneno
 )
 ;
+
+
+create index IDXcts4 on rcbill.clienttsstats(sessionstart);
 */
 
 insert into rcbill.clienttsstats

@@ -1,0 +1,1611 @@
+    -> 
+    -> mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\load_RCB_VODTITLES.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 1249 rows affected (0.32 sec)
+
+Query OK, 1251 rows affected, 1251 warnings (0.37 sec)
+Records: 1251  Deleted: 0  Skipped: 0  Warnings: 1251
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 2 rows affected (0.26 sec)
+
++-----------+
+| VODTITLES |
++-----------+
+|      1710 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-LIVETV-STATS.sql
+Database changed
+Query OK, 0 rows affected (0.48 sec)
+
+Query OK, 49115 rows affected (9 min 45.29 sec)
+Records: 49115  Duplicates: 0  Warnings: 0
+
++------------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table      | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++------------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| templivetv |          1 | idxtv1   |            1 | device       | A         |       49349 |     NULL | NULL   | YES  | BTREE      |         |               |
+| templivetv |          1 | idxtv2   |            1 | sessionstart | A         |       49349 |     NULL | NULL   | YES  | BTREE      |         |               |
++------------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.03 sec)
+
+Query OK, 48858 rows affected (1 min 14.70 sec)
+Records: 48858  Duplicates: 0  Warnings: 0
+
+Query OK, 2673 rows affected (1.87 sec)
+Records: 2673  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 139 rows affected (0.07 sec)
+Records: 139  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 38859 rows affected (6 min 29.60 sec)
+Records: 38859  Duplicates: 0  Warnings: 0
+
++-----------------+
+| rep_livetvstats |
++-----------------+
+|           38859 |
++-----------------+
+1 row in set (0.02 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-VODTS-STATS.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.15 sec)
+
+Query OK, 562 rows affected (25.03 sec)
+Records: 562  Duplicates: 0  Warnings: 0
+
++---------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table   | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++---------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| tempvod |          1 | idxtvod1 |            1 | device       | A         |         515 |     NULL | NULL   | YES  | BTREE      |         |               |
+| tempvod |          1 | idxtvod2 |            1 | sessionstart | A         |         515 |     NULL | NULL   | YES  | BTREE      |         |               |
++---------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 556 rows affected (0.90 sec)
+Records: 556  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 83919 rows affected (8.58 sec)
+Records: 83919  Duplicates: 0  Warnings: 0
+
++--------------+
+| rep_vodstats |
++--------------+
+|        83919 |
++--------------+
+1 row in set (0.03 sec)
+
+Database changed
+Query OK, 0 rows affected (0.09 sec)
+
+Query OK, 10236 rows affected (4 min 6.44 sec)
+Records: 10236  Duplicates: 0  Warnings: 0
+
++--------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table  | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++--------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| tempts |          1 | idxtts1  |            1 | device       | A         |       10466 |     NULL | NULL   | YES  | BTREE      |         |               |
+| tempts |          1 | idxtts2  |            1 | sessionstart | A         |       10466 |     NULL | NULL   | YES  | BTREE      |         |               |
++--------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 10206 rows affected (13.50 sec)
+Records: 10206  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 11669 rows affected (3 min 8.31 sec)
+Records: 11669  Duplicates: 0  Warnings: 0
+
++-------------+
+| rep_tsstats |
++-------------+
+|       11669 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-RADIO-STATS.sql
+Database changed
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 88066 rows affected (4.10 sec)
+Records: 88066  Duplicates: 0  Warnings: 0
+
++-----------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table     | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-----------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| tempradio |          1 | idxtrad1 |            1 | device       | A         |       88495 |     NULL | NULL   | YES  | BTREE      |         |               |
+| tempradio |          1 | idxtrad2 |            1 | sessionstart | A         |       88495 |     NULL | NULL   | YES  | BTREE      |         |               |
++-----------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 302 rows affected (3.33 sec)
+Records: 302  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 1532 rows affected (0.31 sec)
+Records: 1532  Duplicates: 0  Warnings: 0
+
++----------------+
+| rep_radiostats |
++----------------+
+|           1532 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY_SCRIPT_TELEMETRY_PIVOT.sql
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 169 rows affected (0.54 sec)
+Records: 169  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.14 sec)
+
+Query OK, 1074 rows affected (2.22 sec)
+Records: 1074  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 12 rows affected (0.03 sec)
+Records: 12  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 47 rows affected (0.06 sec)
+Records: 47  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_livetv_ranking2018.sql
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 169 rows affected (0.03 sec)
+Records: 169  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_radio_ranking2018.sql
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 12 rows affected (0.03 sec)
+Records: 12  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_ts_ranking2018.sql
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 47 rows affected (0.04 sec)
+Records: 47  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2018.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 1074 rows affected (0.08 sec)
+Records: 1074  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2018_1.sql
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 1074 rows affected (0.05 sec)
+Records: 1074  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2018_2.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 1074 rows affected (0.05 sec)
+Records: 1074  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-CREATE-LOAD.sql
+Database changed
+Database changed
+Query OK, 0 rows affected (0.16 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Database changed
+Query OK, 64095 rows affected (4.41 sec)
+Records: 64095  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.49 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.51 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.40 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.51 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.13 sec)
+
+Query OK, 81849 rows affected (4.43 sec)
+Records: 81849  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.34 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.39 sec)
+
+Query OK, 64095 rows affected (3.73 sec)
+Records: 64095  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.25 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.36 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.44 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++---------+
+| clients |
++---------+
+|   64095 |
++---------+
+1 row in set (0.02 sec)
+
++---------------+
+| clientaddress |
++---------------+
+|         64095 |
++---------------+
+1 row in set (0.02 sec)
+
+Database changed
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+Database changed
+Query OK, 449237 rows affected, 65535 warnings (25.36 sec)
+Records: 449237  Deleted: 0  Skipped: 0  Warnings: 169220
+
+Query OK, 0 rows affected (2.52 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.63 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 449237 rows affected (1 min 39.26 sec)
+Records: 449237  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.60 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.33 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++-----------+
+| contracts |
++-----------+
+|    449237 |
++-----------+
+1 row in set (0.21 sec)
+
++-----------------+
+| contractaddress |
++-----------------+
+|          449237 |
++-----------------+
+1 row in set (0.14 sec)
+
+Database changed
+Query OK, 0 rows affected (0.56 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 6243 rows affected (0.11 sec)
+Records: 6243  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.15 sec)
+
+Query OK, 6212 rows affected (0.41 sec)
+Records: 6212  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 5121 rows affected (0.05 sec)
+Records: 5121  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++-------------------+
+| contractdiscounts |
++-------------------+
+|              6243 |
++-------------------+
+1 row in set (0.00 sec)
+
++-------------------------+
+| clientcontractdiscounts |
++-------------------------+
+|                    6212 |
++-------------------------+
+1 row in set (0.00 sec)
+
++----------------------------+
+| clientcontractlastdiscount |
++----------------------------+
+|                       5121 |
++----------------------------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.13 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Database changed
+Query OK, 123101 rows affected (4.26 sec)
+Records: 123101  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.69 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.64 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.47 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.55 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.78 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.63 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 1529513 rows affected (4 min 18.92 sec)
+Records: 1529513  Duplicates: 0  Warnings: 0
+
++---------+
+| devices |
++---------+
+|  123101 |
++---------+
+1 row in set (0.07 sec)
+
++-----------------------+
+| clientcontractdevices |
++-----------------------+
+|               1529513 |
++-----------------------+
+1 row in set (0.60 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 122913 rows affected (10.34 sec)
+Records: 122913  Duplicates: 0  Warnings: 0
+
++---------------------------+
+| rep_clientcontractdevices |
++---------------------------+
+|                    122913 |
++---------------------------+
+1 row in set (0.04 sec)
+
+Database changed
+Query OK, 0 rows affected (0.30 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 221028 rows affected (13.09 sec)
+Records: 221028  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.20 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.61 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.72 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.24 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++---------+
+| tickets |
++---------+
+|  221028 |
++---------+
+1 row in set (0.08 sec)
+
+Database changed
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 301 rows affected, 2 warnings (0.01 sec)
+Records: 301  Deleted: 0  Skipped: 0  Warnings: 2
+
++-----------------+
+| tickettechusers |
++-----------------+
+|             301 |
++-----------------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 0 rows affected (0.19 sec)
+
+Query OK, 0 rows affected (0.19 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 446877 rows affected, 38779 warnings (15.83 sec)
+Records: 446877  Deleted: 0  Skipped: 0  Warnings: 38779
+
++-------------------+
+| ticketassignments |
++-------------------+
+|            446877 |
++-------------------+
+1 row in set (0.15 sec)
+
+Database changed
+Query OK, 0 rows affected (0.22 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 941632 rows affected (30.88 sec)
+Records: 941632  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (5.98 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (4.99 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (5.53 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (4.54 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----------------+
+| ticketcomments |
++----------------+
+|         941632 |
++----------------+
+1 row in set (0.60 sec)
+
+Database changed
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 378423 rows affected (44.01 sec)
+Records: 378423  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.97 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----------+
+| comments |
++----------+
+|   378423 |
++----------+
+1 row in set (0.14 sec)
+
+Database changed
+Query OK, 0 rows affected (0.29 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 450387 rows affected, 65535 warnings (1 min 0.12 sec)
+Records: 450387  Deleted: 0  Skipped: 0  Warnings: 450388
+
+Query OK, 0 rows affected (1.84 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.50 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.80 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.46 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.39 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++------------+
+| devicesold |
++------------+
+|     450387 |
++------------+
+1 row in set (0.16 sec)
+
+Database changed
+Query OK, 0 rows affected (0.11 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 1523389 rows affected (37.57 sec)
+Records: 1523389  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (5.35 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (5.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (5.33 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++------------------+
+| contractservices |
++------------------+
+|          1523389 |
++------------------+
+1 row in set (0.53 sec)
+
+Database changed
+Query OK, 0 rows affected (0.23 sec)
+
+Query OK, 0 rows affected (0.18 sec)
+
+Query OK, 3293950 rows affected (3 min 8.01 sec)
+Records: 3293950  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (16.71 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (14.68 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (17.83 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (15.71 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++------------------+
+| invoicescontents |
++------------------+
+|          3293950 |
++------------------+
+1 row in set (1.14 sec)
+
+Database changed
+Query OK, 0 rows affected (0.25 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 2241756 rows affected (5 min 17.20 sec)
+Records: 2241756  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (1 min 32.14 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (26.76 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (26.42 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (25.44 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (26.62 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----------------+
+| invoicesheader |
++----------------+
+|        2241756 |
++----------------+
+1 row in set (2.36 sec)
+
+Database changed
+Query OK, 0 rows affected (0.21 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 2410316 rows affected (1 min 52.35 sec)
+Records: 2410316  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (11.18 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (11.25 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (10.50 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (11.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++---------+
+| casa    |
++---------+
+| 2410316 |
++---------+
+1 row in set (0.87 sec)
+
+Database changed
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Database changed
+Query OK, 36797 rows affected (1.11 sec)
+Records: 36797  Deleted: 0  Skipped: 0  Warnings: 0
+
++-------+
+| users |
++-------+
+| 36797 |
++-------+
+1 row in set (0.02 sec)
+
+Database changed
+Query OK, 0 rows affected (0.09 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+Database changed
+Query OK, 4600349 rows affected (1 min 56.81 sec)
+Records: 4600349  Deleted: 0  Skipped: 0  Warnings: 0
+
++---------+
+| ipusage |
++---------+
+| 4600349 |
++---------+
+1 row in set (2.63 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\ticket_analysis.sql
+Database changed
+Query OK, 0 rows affected (0.09 sec)
+
+Query OK, 302623 rows affected (28.29 sec)
+Records: 302623  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.51 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.85 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.20 sec)
+
+Query OK, 11728 rows affected (6.61 sec)
+Records: 11728  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 41312 rows affected (4.70 sec)
+Records: 41312  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 212942 rows affected (9.70 sec)
+Records: 212942  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 212942 rows affected (9.79 sec)
+Records: 212942  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.29 sec)
+
+Query OK, 41349 rows affected (4.04 sec)
+Records: 41349  Duplicates: 0  Warnings: 0
+
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 130044 rows affected (8.63 sec)
+Records: 130044  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.16 sec)
+
+Query OK, 61562 rows affected (6.39 sec)
+Records: 61562  Duplicates: 0  Warnings: 0
+
++--------------------------+
+| clientticket_cmmtjourney |
++--------------------------+
+|                   130044 |
++--------------------------+
+1 row in set (0.17 sec)
+
++---------------------------+
+| clientticket_assgnjourney |
++---------------------------+
+|                     61562 |
++---------------------------+
+1 row in set (0.03 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 70 rows affected (0.08 sec)
+Records: 70  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\load_DailyCalls.sql
+Database changed
+Query OK, 503 rows affected (0.70 sec)
+Records: 503  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 472 rows affected (0.24 sec)
+Records: 472  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 64978 rows affected (1.98 sec)
+Records: 64978  Duplicates: 0  Warnings: 0
+
+Query OK, 717 rows affected (11.73 sec)
+Records: 717  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 293 rows affected (18.04 sec)
+Records: 293  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 11176 rows affected (1.65 sec)
+Records: 11176  Duplicates: 0  Warnings: 0
+
++-----------+
+| callstats |
++-----------+
+|     11176 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-USAGE.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 2790 rows affected, 8061 warnings (2.51 sec)
+Records: 2790  Deleted: 0  Skipped: 0  Warnings: 8061
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 5876 rows affected, 16943 warnings (3.35 sec)
+Records: 5876  Deleted: 0  Skipped: 0  Warnings: 16943
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 60 rows affected, 214 warnings (0.03 sec)
+Records: 60  Deleted: 0  Skipped: 0  Warnings: 214
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 486 rows affected, 1648 warnings (1.05 sec)
+Records: 486  Deleted: 0  Skipped: 0  Warnings: 1648
+
++------------+
+| dailyusage |
++------------+
+|    2752449 |
++------------+
+1 row in set (9.33 sec)
+
++------------+------------+------------+---------+
+| datestart  | dateend    | insertedon | records |
++------------+------------+------------+---------+
+| 2018-09-28 | 2018-09-28 | 2018-09-29 |    9212 |
+| 2018-09-27 | 2018-09-27 | 2018-09-28 |    9319 |
+| 2018-09-26 | 2018-09-26 | 2018-09-27 |    9288 |
+| 2018-09-25 | 2018-09-25 | 2018-09-26 |    9100 |
+| 2018-09-24 | 2018-09-24 | 2018-09-25 |    9318 |
++------------+------------+------------+---------+
+5 rows in set (2 min 13.72 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-SALES-TELEMETRY.sql
+Database changed
+Query OK, 252 rows affected, 130 warnings (0.42 sec)
+Records: 252  Deleted: 0  Skipped: 0  Warnings: 130
+
++------------+
+| dailysales |
++------------+
+|     123014 |
++------------+
+1 row in set (10.36 sec)
+
+Query OK, 0 rows affected (0.07 sec)
+
+Query OK, 123014 rows affected (11.04 sec)
+Records: 123014  Duplicates: 0  Warnings: 0
+
++--------+
+| sales  |
++--------+
+| 123014 |
++--------+
+1 row in set (0.06 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 2105 rows affected (0.58 sec)
+Records: 2105  Duplicates: 0  Warnings: 0
+
++-----------+
+| saleslist |
++-----------+
+|      2105 |
++-----------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 8 rows affected (0.14 sec)
+Records: 8  Deleted: 0  Skipped: 0  Warnings: 0
+
++------------------+
+| dailysinglesales |
++------------------+
+|             4810 |
++------------------+
+1 row in set (0.11 sec)
+
+Database changed
+Query OK, 21 rows affected (0.13 sec)
+Records: 21  Deleted: 0  Skipped: 0  Warnings: 0
+
++-----------------+
+| dailyaddonsales |
++-----------------+
+|           12849 |
++-----------------+
+1 row in set (1.09 sec)
+
+Query OK, 112 rows affected (0.42 sec)
+Records: 112  Deleted: 0  Skipped: 0  Warnings: 0
+
++----------------+
+| onlinepayments |
++----------------+
+|          32219 |
++----------------+
+1 row in set (0.13 sec)
+
++-------------+----------------+---------------------+
+| paymentdate | onlinepayments | onlinepaymentamount |
++-------------+----------------+---------------------+
+| 2018-09-28  |            112 |         70059.39000 |
+| 2018-09-27  |            126 |         87316.73000 |
+| 2018-09-26  |            115 |         76111.23000 |
+| 2018-09-25  |            134 |         76093.38000 |
+| 2018-09-24  |            132 |         77738.95000 |
++-------------+----------------+---------------------+
+5 rows in set (2.81 sec)
+
++-------------+--------------+----------------+---------------------+
+| paymentyear | paymentmonth | onlinepayments | onlinepaymentamount |
++-------------+--------------+----------------+---------------------+
+|        2018 |            9 |           2323 |       1356594.63000 |
+|        2018 |            8 |           2677 |       1480347.51000 |
+|        2018 |            7 |           2521 |       1406138.40000 |
+|        2018 |            6 |           2465 |       1394365.47000 |
+|        2018 |            5 |           2330 |       1252012.49000 |
++-------------+--------------+----------------+---------------------+
+5 rows in set (0.04 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-ACTIVENUMBERS.sql
+Database changed
+Query OK, 1312 rows affected (1.98 sec)
+Records: 1312  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.11 sec)
+
+Query OK, 86 rows affected (1.83 sec)
+Records: 86  Duplicates: 0  Warnings: 0
+
++------------+----------+
+| period     | count(1) |
++------------+----------+
+| 2018-09-28 |     1312 |
+| 2018-09-27 |     1305 |
+| 2018-09-26 |     1308 |
+| 2018-09-25 |     1302 |
+| 2018-09-24 |     1298 |
++------------+----------+
+5 rows in set (0.01 sec)
+
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 26515 rows affected, 257 warnings (2 min 27.67 sec)
+Records: 26515  Deleted: 0  Skipped: 0  Warnings: 257
+
++------------+----------+
+| period     | count(1) |
++------------+----------+
+| 2018-09-28 |    26515 |
+| 2018-09-27 |    26532 |
+| 2018-09-26 |    26648 |
+| 2018-09-25 |    26498 |
+| 2018-09-24 |    26414 |
++------------+----------+
+5 rows in set (0.22 sec)
+
+Query OK, 0 rows affected (0.35 sec)
+
+Query OK, 25862 rows affected (2 min 57.52 sec)
+Records: 25862  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.54 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.60 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.19 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.49 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.28 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----------+
+| count(1) |
++----------+
+| 20133900 |
++----------+
+1 row in set (1 min 5.31 sec)
+
+Query OK, 25862 rows affected (2 min 1.31 sec)
+Records: 25862  Duplicates: 0  Warnings: 0
+
++----------+
+| count(1) |
++----------+
+| 20159762 |
++----------+
+1 row in set (13.02 sec)
+
++------------+--------------------------+
+| period     | customercontractactivity |
++------------+--------------------------+
+| 2018-09-28 |                    25862 |
+| 2018-09-27 |                    25879 |
+| 2018-09-26 |                    25994 |
+| 2018-09-25 |                    25846 |
+| 2018-09-24 |                    25762 |
++------------+--------------------------+
+5 rows in set (0.07 sec)
+
+Query OK, 0 rows affected (0.31 sec)
+
+Query OK, 185806 rows affected (14 min 39.61 sec)
+Records: 185806  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.44 sec)
+
+Query OK, 241 rows affected (2.58 sec)
+Records: 241  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.05 sec)
+
+Query OK, 2287 rows affected (0.64 sec)
+Records: 2287  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.22 sec)
+
+Query OK, 25854 rows affected (1.52 sec)
+Records: 25854  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.09 sec)
+
+Query OK, 17042 rows affected (0.48 sec)
+Records: 17042  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 17042 rows affected (0.89 sec)
+Records: 17042  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.15 sec)
+
+Query OK, 17042 rows affected (2.54 sec)
+Records: 17042  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.21 sec)
+
+Query OK, 17042 rows affected (56.41 sec)
+Records: 17042  Duplicates: 0  Warnings: 0
+
++-------------+
+| clientstats |
++-------------+
+|       17042 |
++-------------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 13 rows affected, 1 warning (0.13 sec)
+Records: 13  Duplicates: 0  Warnings: 1
+
++-----------------------+-------------+-------------+----------------+-----------------+
+| services              | activecount | allaccounts | uniqueaccounts | uniquecontracts |
++-----------------------+-------------+-------------+----------------+-----------------+
+| All                   |          73 |          16 |             16 |              50 |
+| Internet & Voice      |         538 |         231 |            231 |             455 |
+| Internet Only         |        4121 |        3986 |           3978 |            4062 |
+| OTT Only              |           1 |           1 |              1 |               1 |
+| TV & Internet         |        8791 |        3839 |           3835 |            7805 |
+| TV & Internet & OTT   |        1029 |         303 |            303 |             614 |
+| TV & Internet & Voice |         624 |         176 |            176 |             546 |
+| TV & OTT              |          99 |          31 |             31 |              33 |
+| TV & Voice            |         125 |          54 |             54 |             109 |
+| TV & Voice & OTT      |          11 |           1 |              1 |               3 |
+| TV Only               |       11001 |        8189 |           8181 |            8413 |
+| Voice Only            |         216 |         215 |            214 |             216 |
+| GRAND TOTAL           |       26629 |       17042 |          16984 |           22307 |
++-----------------------+-------------+-------------+----------------+-----------------+
+13 rows in set (0.00 sec)
+
++-------------+-------------+-------------+----------------+-----------------+
+| network     | activecount | allaccounts | uniqueaccounts | uniquecontracts |
++-------------+-------------+-------------+----------------+-----------------+
+| ADDON       |           8 |           4 |              4 |               4 |
+| GPON        |        5728 |        2963 |           2963 |            4444 |
+| HFC         |       20893 |       14075 |          14075 |           17859 |
+| GRAND TOTAL |       26629 |       17042 |          16984 |           22307 |
++-------------+-------------+-------------+----------------+-----------------+
+4 rows in set, 1 warning (0.12 sec)
+
++-------------+-----------------------+-------------+-------------+----------------+-----------------+
+| network     | services              | activecount | allaccounts | uniqueaccounts | uniquecontracts |
++-------------+-----------------------+-------------+-------------+----------------+-----------------+
+| ADDON       | OTT Only              |           1 |           1 |              1 |               1 |
+| ADDON       | TV & OTT              |           4 |           1 |              1 |               1 |
+| ADDON       | TV Only               |           3 |           2 |              2 |               2 |
+| ADDON       | Services Total        |           8 |           4 |              4 |               4 |
+| GPON        | All                   |          14 |           3 |              3 |              10 |
+| GPON        | Internet & Voice      |          52 |          20 |             20 |              42 |
+| GPON        | Internet Only         |         724 |         647 |            647 |             666 |
+| GPON        | TV & Internet         |        2666 |        1094 |           1094 |            2256 |
+| GPON        | TV & Internet & OTT   |         430 |         118 |            118 |             243 |
+| GPON        | TV & Internet & Voice |         153 |          42 |             42 |             131 |
+| GPON        | TV & OTT              |          48 |          12 |             12 |              14 |
+| GPON        | TV & Voice            |          38 |          16 |             16 |              33 |
+| GPON        | TV Only               |        1591 |         999 |            999 |            1037 |
+| GPON        | Voice Only            |          12 |          12 |             12 |              12 |
+| GPON        | Services Total        |        5728 |        2963 |           2963 |            4444 |
+| HFC         | All                   |          59 |          13 |             13 |              40 |
+| HFC         | Internet & Voice      |         486 |         211 |            211 |             413 |
+| HFC         | Internet Only         |        3397 |        3339 |           3339 |            3396 |
+| HFC         | TV & Internet         |        6125 |        2745 |           2745 |            5549 |
+| HFC         | TV & Internet & OTT   |         599 |         185 |            185 |             371 |
+| HFC         | TV & Internet & Voice |         471 |         134 |            134 |             415 |
+| HFC         | TV & OTT              |          47 |          18 |             18 |              18 |
+| HFC         | TV & Voice            |          87 |          38 |             38 |              76 |
+| HFC         | TV & Voice & OTT      |          11 |           1 |              1 |               3 |
+| HFC         | TV Only               |        9407 |        7188 |           7188 |            7374 |
+| HFC         | Voice Only            |         204 |         203 |            203 |             204 |
+| HFC         | Services Total        |       20893 |       14075 |          14075 |           17859 |
+| GRAND TOTAL | Services Total        |       26629 |       17042 |          16984 |           22307 |
++-------------+-----------------------+-------------+-------------+----------------+-----------------+
+28 rows in set, 2 warnings (0.16 sec)
+
+Query OK, 0 rows affected (0.32 sec)
+
+Query OK, 44 rows affected, 3 warnings (0.22 sec)
+Records: 44  Duplicates: 0  Warnings: 3
+
++-------------+---------------+-----------------------+-------------+-------------+----------------+-----------------+
+| region      | network       | services              | activecount | allaccounts | uniqueaccounts | uniquecontracts |
++-------------+---------------+-----------------------+-------------+-------------+----------------+-----------------+
+| Mahe        | ADDON         | OTT Only              |           1 |           1 |              1 |               1 |
+| Mahe        | ADDON         | TV & OTT              |           4 |           1 |              1 |               1 |
+| Mahe        | ADDON         | TV Only               |           2 |           1 |              1 |               1 |
+| Mahe        | ADDON         | Services Total        |           7 |           3 |              3 |               3 |
+| Mahe        | GPON          | All                   |           9 |           2 |              2 |               6 |
+| Mahe        | GPON          | Internet & Voice      |          44 |          16 |             16 |              34 |
+| Mahe        | GPON          | Internet Only         |         537 |         460 |            460 |             479 |
+| Mahe        | GPON          | TV & Internet         |        1683 |         680 |            680 |            1399 |
+| Mahe        | GPON          | TV & Internet & OTT   |         245 |          67 |             67 |             135 |
+| Mahe        | GPON          | TV & Internet & Voice |         119 |          32 |             32 |              99 |
+| Mahe        | GPON          | TV & OTT              |          33 |           7 |              7 |               8 |
+| Mahe        | GPON          | TV & Voice            |          38 |          16 |             16 |              33 |
+| Mahe        | GPON          | TV Only               |        1140 |         680 |            680 |             697 |
+| Mahe        | GPON          | Voice Only            |           8 |           8 |              8 |               8 |
+| Mahe        | GPON          | Services Total        |        3856 |        1968 |           1968 |            2898 |
+| Mahe        | HFC           | All                   |          59 |          13 |             13 |              40 |
+| Mahe        | HFC           | Internet & Voice      |         486 |         211 |            211 |             413 |
+| Mahe        | HFC           | Internet Only         |        3397 |        3339 |           3339 |            3396 |
+| Mahe        | HFC           | TV & Internet         |        6125 |        2745 |           2745 |            5549 |
+| Mahe        | HFC           | TV & Internet & OTT   |         599 |         185 |            185 |             371 |
+| Mahe        | HFC           | TV & Internet & Voice |         471 |         134 |            134 |             415 |
+| Mahe        | HFC           | TV & OTT              |          47 |          18 |             18 |              18 |
+| Mahe        | HFC           | TV & Voice            |          87 |          38 |             38 |              76 |
+| Mahe        | HFC           | TV & Voice & OTT      |          11 |           1 |              1 |               3 |
+| Mahe        | HFC           | TV Only               |        9405 |        7187 |           7187 |            7373 |
+| Mahe        | HFC           | Voice Only            |         204 |         203 |            203 |             204 |
+| Mahe        | HFC           | Services Total        |       20891 |       14074 |          14074 |           17858 |
+| Mahe        | Network Total | Services Total        |       24754 |       16045 |          15988 |           20759 |
+| Praslin     | ADDON         | TV Only               |           1 |           1 |              1 |               1 |
+| Praslin     | ADDON         | Services Total        |           1 |           1 |              1 |               1 |
+| Praslin     | GPON          | All                   |           5 |           1 |              1 |               4 |
+| Praslin     | GPON          | Internet & Voice      |           8 |           4 |              4 |               8 |
+| Praslin     | GPON          | Internet Only         |         187 |         187 |            187 |             187 |
+| Praslin     | GPON          | TV & Internet         |         983 |         414 |            414 |             857 |
+| Praslin     | GPON          | TV & Internet & OTT   |         185 |          51 |             51 |             108 |
+| Praslin     | GPON          | TV & Internet & Voice |          34 |          10 |             10 |              32 |
+| Praslin     | GPON          | TV & OTT              |          15 |           5 |              5 |               6 |
+| Praslin     | GPON          | TV Only               |         451 |         319 |            319 |             340 |
+| Praslin     | GPON          | Voice Only            |           4 |           4 |              4 |               4 |
+| Praslin     | GPON          | Services Total        |        1872 |         995 |            995 |            1546 |
+| Praslin     | HFC           | TV Only               |           2 |           1 |              1 |               1 |
+| Praslin     | HFC           | Services Total        |           2 |           1 |              1 |               1 |
+| Praslin     | Network Total | Services Total        |        1875 |         997 |            996 |            1548 |
+| GRAND TOTAL | Network Total | Services Total        |       26629 |       17042 |          16984 |           22307 |
++-------------+---------------+-----------------------+-------------+-------------+----------------+-----------------+
+44 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 25854 rows affected (1.84 sec)
+Records: 25854  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 1560 rows affected (7.82 sec)
+Records: 1560  Duplicates: 0  Warnings: 0
+
+Query OK, 28 rows affected (2 min 37.12 sec)
+
+Query OK, 0 rows affected (0.12 sec)
+
+Query OK, 411 rows affected (25 min 49.82 sec)
+Records: 411  Duplicates: 0  Warnings: 0
+
++---------------------------+
+| retentioncustomeractivity |
++---------------------------+
+|                       411 |
++---------------------------+
+1 row in set (0.01 sec)
+
+mysql> 
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\reports-sales-addons-prepaid-camera.sql
+Database changed
+Query OK, 0 rows affected (0.33 sec)
+
+Query OK, 2926 rows affected (1.22 sec)
+Records: 2926  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.35 sec)
+
+Query OK, 12858 rows affected (4 min 20.85 sec)
+Records: 12858  Duplicates: 0  Warnings: 0
+
++--------------------+
+| rep_prepaid_camera |
++--------------------+
+|               2926 |
++--------------------+
+1 row in set (0.00 sec)
+
++-----------+
+| rep_addon |
++-----------+
+|     12858 |
++-----------+
+1 row in set (0.01 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\housing-estate-analysis.sql
+Database changed
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 2642 rows affected (54.30 sec)
+Records: 2642  Duplicates: 0  Warnings: 0
+
++--------------------+
+| rep_housingestates |
++--------------------+
+|               2642 |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\RCB_ClientAnalyticsReport_Script.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.57 sec)
+
+Query OK, 1533158 rows affected (4 min 47.95 sec)
+Records: 1533158  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (6.14 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (8.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (15.72 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (10.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (13.20 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (12.87 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 409650 rows affected (27.25 sec)
+Rows matched: 1533158  Changed: 409650  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 26963 rows affected (4.67 sec)
+Records: 26963  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.07 sec)
+
+Query OK, 41067 rows affected (11 min 49.75 sec)
+Records: 41067  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.20 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.40 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.22 sec)
+
+Query OK, 387785 rows affected (14 min 46.03 sec)
+Records: 387785  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.33 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.62 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 41067 rows affected (1 min 31.41 sec)
+Records: 41067  Duplicates: 0  Warnings: 0
+
++--------------+
+| clientreport |
++--------------+
+|        41067 |
++--------------+
+1 row in set (0.13 sec)
+
+Query OK, 0 rows affected (0.13 sec)
+
+Query OK, 41067 rows affected (11.75 sec)
+Records: 41067  Duplicates: 0  Warnings: 0
+
++----------------------+
+| clientextendedreport |
++----------------------+
+|                41067 |
++----------------------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 41067 rows affected (3 min 6.77 sec)
+Records: 41067  Duplicates: 0  Warnings: 0
+
++---------+
+| allcust |
++---------+
+|   41067 |
++---------+
+1 row in set (0.03 sec)
+
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+Query OK, 5000 rows affected (1.09 sec)
+Records: 5000  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 7093 rows affected (2.91 sec)
+Records: 7093  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 5000 rows affected (0.79 sec)
+Records: 5000  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.10 sec)
+
+Query OK, 7377 rows affected (1.09 sec)
+Records: 7377  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\REVENUE_PER_NODE_MXK.sql
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 4506 rows affected (3 min 12.96 sec)
+Records: 4506  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 4402 rows affected (5 min 39.26 sec)
+Records: 4402  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 4705 rows affected (0.40 sec)
+Records: 4705  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 37660 rows affected (2 min 56.50 sec)
+Records: 37660  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 27212 rows affected (1 min 51.66 sec)
+Records: 27212  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.06 sec)
+
+Query OK, 18603 rows affected (1.60 sec)
+Records: 18603  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.14 sec)
+
+Query OK, 0 rows affected (0.07 sec)
+
+Query OK, 0 rows affected (0.67 sec)
+
+Query OK, 23308 rows affected (2.31 sec)
+Records: 23308  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.13 sec)
+
+Query OK, 408535 rows affected (2 min 16.75 sec)
+Records: 408535  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.48 sec)
+
+Query OK, 1458932 rows affected (6 min 31.33 sec)
+Records: 1458932  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.40 sec)
+
+Query OK, 1681283 rows affected (4 min 45.80 sec)
+Records: 1681283  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.14 sec)
+
+Query OK, 59028 rows affected (15.93 sec)
+Records: 59028  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 20628 rows affected (10.45 sec)
+Records: 20628  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 41067 rows affected (5.34 sec)
+Records: 41067  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+Query OK, 382108 rows affected (1 min 15.02 sec)
+Records: 382108  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+Query OK, 59028 rows affected (8.77 sec)
+Records: 59028  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.14 sec)
+
+Query OK, 383952 rows affected (36.27 sec)
+Records: 383952  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.09 sec)
+
+Query OK, 41159 rows affected (16.30 sec)
+Records: 41159  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
++-----------+------------------------------------+------------+-------------+-----------------+------------------+---------------------+-------------------+
+| HFC_NODE  | NODENAME                           | CMTS_DATE  | REPORT_DATE | UNIQUE_ACCOUNTS | UNIQUE_CONTRACTS | UNIQUE_MAC_INRCBOSS | UNIQUE_MAC_INCMTS |
++-----------+------------------------------------+------------+-------------+-----------------+------------------+---------------------+-------------------+
+| NULL      | NULL                               | NULL       | 2018-09-29  |            9466 |            10052 |               10192 |                 0 |
+| C5/0/0/U0 | ANSE-BOILEAU-2                     | 2018-09-15 | 2018-09-29  |              96 |              103 |                  96 |                96 |
+| C5/0/0/U1 | 500-C3-ANSE-BOILEAU                | 2018-09-15 | 2018-09-29  |             212 |              217 |                 211 |               218 |
+| C5/0/1/U0 | 501-C4-LA-MISIERE-LEFT-I           | 2018-09-15 | 2018-09-29  |             181 |              192 |                 181 |               182 |
+| C5/0/1/U1 | 501-C5-LA-MISIERE-RIGHT            | 2018-09-15 | 2018-09-29  |              99 |              104 |                  99 |                99 |
+| C5/0/1/U2 | 501-C7-LA-MISIERE-LEFT-II          | 2018-09-15 | 2018-09-29  |             114 |              116 |                 113 |               113 |
+| C5/0/2/U0 | 502-C8-LA-LOUISE                   | 2018-09-15 | 2018-09-29  |             133 |              134 |                 133 |               134 |
+| C5/0/2/U1 | LA-LOUISE-2                        | 2018-09-15 | 2018-09-29  |             152 |              157 |                 152 |               156 |
+| C5/0/3/U0 | 504-C6-PETIT-PARIS                 | 2018-09-15 | 2018-09-29  |             122 |              124 |                 122 |               123 |
+| C5/0/3/U1 | PETIT-PARIS-23                     | 2018-09-15 | 2018-09-29  |              99 |              101 |                  99 |               101 |
+| C5/1/0/U0 | POINTE-LARUE-AIRPORT-23            | 2018-09-15 | 2018-09-29  |             105 |              115 |                 107 |               108 |
+| C5/1/0/U1 | PPROVIDENCE-23                     | 2018-09-15 | 2018-09-29  |              28 |               32 |                  29 |                29 |
+| C5/1/0/U2 | ROSHE-CAIMAN-23                    | 2018-09-15 | 2018-09-29  |               9 |               10 |                   9 |                 9 |
+| C5/1/0/U3 | HEAD-OFFICE | HO-23                | 2018-09-15 | 2018-09-29  |              22 |               23 |                  24 |                25 |
+| C5/1/1/U1 | C5-UNION-VALE                      | 2018-09-15 | 2018-09-29  |             187 |              194 |                 187 |               190 |
+| C5/1/2/U0 | FOUR-SEASONS                       | 2018-09-15 | 2018-09-29  |               6 |               23 |                  23 |                23 |
+| C5/1/2/U1 | C10-ANCHOR CAFE                    | 2018-09-15 | 2018-09-29  |             201 |              210 |                 200 |               202 |
+| C5/1/2/U2 | ANCHOR-CAFE-23                     | 2018-09-15 | 2018-09-29  |             101 |              102 |                 101 |               101 |
+| C5/1/3/U0 | POINTE-LARUE-AIRPORT-27            | 2018-09-15 | 2018-09-29  |             149 |              151 |                 149 |               149 |
+| C5/1/3/U1 | PPROVIDENCE-27                     | 2018-09-15 | 2018-09-29  |              36 |               37 |                  36 |                36 |
+| C5/1/3/U2 | ROSHE-CAIMAN-27                    | 2018-09-15 | 2018-09-29  |              21 |               21 |                  21 |                21 |
+| C5/1/3/U3 | HEAD-OFFICE | HO-27                | 2018-09-15 | 2018-09-29  |              18 |               19 |                  18 |                22 |
+| C5/1/4/U0 | ANSE-ROYALE-27                     | 2018-09-15 | 2018-09-29  |             184 |              193 |                 185 |               191 |
+| C5/1/4/U1 | GLACIS-2-57                        | 2018-09-15 | 2018-09-29  |             130 |              137 |                 130 |               133 |
+| C5/1/4/U3 | GLACIS-1                           | 2018-09-15 | 2018-09-29  |              81 |               85 |                  81 |                83 |
+| C6/0/1/U0 | SERRET-ROAD-RIGHT/CURIO/PASCAL     | 2018-09-15 | 2018-09-29  |             123 |              128 |                 123 |               124 |
+| C6/0/1/U1 | SERRET-ROAD-LEFT/ST.LOUIS/TOWN     | 2018-09-15 | 2018-09-29  |             136 |              144 |                 136 |               137 |
+| C6/0/1/U2 | SERRET-ROAD-RIGHT/CURIO/PASCAL-2   | 2018-09-15 | 2018-09-29  |             141 |              145 |                 141 |               141 |
+| C6/0/1/U3 | SERRET-ROAD-LEFT/ST.LOUIS/TOWN-2   | 2018-09-15 | 2018-09-29  |             162 |              169 |                 162 |               164 |
+| C6/0/2/U0 | SANS-SOUCIS-I                      | 2018-09-15 | 2018-09-29  |             117 |              121 |                 117 |               119 |
+| C6/0/2/U1 | SANS-SOUCIS-II                     | 2018-09-15 | 2018-09-29  |             114 |              120 |                 113 |               115 |
+| C6/0/2/U2 | BEL-AIR-27                         | 2018-09-15 | 2018-09-29  |             122 |              128 |                 122 |               122 |
+| C6/0/2/U3 | BEL-AIR-38                         | 2018-09-15 | 2018-09-29  |              92 |               96 |                  92 |                92 |
+| C6/0/3/U0 | LES-MAMELLES-23                    | 2018-09-15 | 2018-09-29  |              62 |               64 |                  62 |                62 |
+| C6/0/3/U1 | VICTORIA-23                        | 2018-09-15 | 2018-09-29  |              53 |               57 |                  54 |                56 |
+| C6/0/4/U0 | LES-MAMELLES-27                    | 2018-09-15 | 2018-09-29  |              86 |               87 |                  86 |                86 |
+| C6/0/4/U1 | VICTORIA-27                        | 2018-09-15 | 2018-09-29  |              21 |               26 |                  23 |                24 |
+| C7/1/0/U0 | LA-RETRAITE-23                     | 2018-09-15 | 2018-09-29  |             137 |              146 |                 138 |               140 |
+| C7/1/0/U1 | TEA-FACTORY-23                     | 2018-09-15 | 2018-09-29  |              21 |               28 |                  23 |                23 |
+| C7/1/0/U2 | PAS-23                             | 2018-09-15 | 2018-09-29  |             111 |              121 |                 114 |               116 |
+| C7/1/1/U0 | REEF-ESTATE-23                     | 2018-09-15 | 2018-09-29  |              77 |               79 |                  77 |                78 |
+| C7/1/1/U1 | BEL-OMBRE-NEW-23                   | 2018-09-15 | 2018-09-29  |              65 |               71 |                  68 |                70 |
+| C7/1/2/U0 | LA-RETRAITE-27                     | 2018-09-15 | 2018-09-29  |             105 |              113 |                 105 |               107 |
+| C7/1/2/U1 | TEA-FACTORY-27                     | 2018-09-15 | 2018-09-29  |              23 |               26 |                  24 |                24 |
+| C7/1/2/U2 | PAS-27                             | 2018-09-15 | 2018-09-29  |              91 |               95 |                  91 |                91 |
+| C7/1/3/U0 | MT-BUXTON-27                       | 2018-09-15 | 2018-09-29  |             159 |              163 |                 158 |               160 |
+| C7/1/3/U1 | MT-BUXTON-23                       | 2018-09-15 | 2018-09-29  |              59 |               63 |                  59 |                62 |
+| C7/1/4/U0 | REEF-ESTATE-27                     | 2018-09-15 | 2018-09-29  |              86 |               87 |                  86 |                87 |
+| C7/1/4/U1 | BEL-OMBRE-NEW-27                   | 2018-09-15 | 2018-09-29  |              49 |               54 |                  50 |                50 |
+| C8/0/0/U0 | POLICE-ACADEMY-1-27 - POINTE LARUE | 2018-09-15 | 2018-09-29  |             360 |              370 |                 360 |               365 |
+| C8/0/1/U1 | POLICE-ACADEMY-2-27 - TURTLE BAY   | 2018-09-15 | 2018-09-29  |             260 |              274 |                 262 |               264 |
+| C8/0/2/U0 | BEAU-VALLON-LEFT-1-57              | 2018-09-15 | 2018-09-29  |             161 |              169 |                 160 |               162 |
+| C8/0/3/U1 | BEAU-VALLON-RIGHT-2-57             | 2018-09-15 | 2018-09-29  |             219 |              229 |                 218 |               224 |
+| C8/1/0/U0 | MA-JOIE-NODE-27                    | 2018-09-15 | 2018-09-29  |             141 |              146 |                 141 |               143 |
+| C8/1/0/U1 | BELONIE-27                         | 2018-09-15 | 2018-09-29  |             138 |              142 |                 136 |               136 |
+| C8/1/0/U3 | MA-JOIE-NODE-23                    | 2018-09-15 | 2018-09-29  |             100 |              102 |                 100 |               101 |
+| C8/1/1/U0 | 611-C1-ROJN I                      | 2018-09-15 | 2018-09-29  |             165 |              173 |                 165 |               172 |
+| C8/1/1/U1 | 611-C5-ROJN II                     | 2018-09-15 | 2018-09-29  |              73 |               76 |                  73 |                73 |
+| C8/1/2/U0 | 612-C2-ANSE-ETOILE                 | 2018-09-15 | 2018-09-29  |             175 |              181 |                 174 |               177 |
+| C8/1/2/U1 | ANSE-ETOILE-U2                     | 2018-09-15 | 2018-09-29  |             109 |              113 |                 108 |               109 |
+| C8/1/3/U0 | 613-C3-ANSE-GAULETTE I             | 2018-09-15 | 2018-09-29  |             241 |              253 |                 241 |               244 |
+| C8/1/3/U1 | 613-C7-ANSE-GAULETTE II            | 2018-09-15 | 2018-09-29  |             122 |              131 |                 122 |               124 |
+| C8/1/4/U0 | 614-BEOLIERE-NODE-1                | 2018-09-15 | 2018-09-29  |             126 |              134 |                 126 |               128 |
+| C8/1/4/U1 | 614-BEOLIERE-NODE-2                | 2018-09-15 | 2018-09-29  |              86 |               93 |                  86 |                87 |
++-----------+------------------------------------+------------+-------------+-----------------+------------------+---------------------+-------------------+
+64 rows in set (0.29 sec)
+
++------------------+------------+-------------+-----------------+------------------+----------------------+-------------------+
+| MXK_NAME         | MXK_DATE   | REPORT_DATE | UNIQUE_ACCOUNTS | UNIQUE_CONTRACTS | UNIQUE_FSAN_INRCBOSS | UNIQUE_FSAN_INMXK |
++------------------+------------+-------------+-----------------+------------------+----------------------+-------------------+
+| NULL             | NULL       | 2018-09-29  |             282 |              288 |                  282 |                 0 |
+| MXK-ANSEETOILE   | 2018-09-15 | 2018-09-29  |              49 |               50 |                   50 |                50 |
+| MXK-ANSEROYALE   | 2018-09-15 | 2018-09-29  |              76 |               77 |                   77 |                80 |
+| MXK-BEAUVALLON   | 2018-09-15 | 2018-09-29  |             637 |              647 |                  644 |               656 |
+| MXK-MAHE         | 2018-09-15 | 2018-09-29  |             798 |              827 |                  795 |               882 |
+| MXK-PERSEVERANCE | 2018-09-15 | 2018-09-29  |             958 |              973 |                  970 |               997 |
+| MXK-PRASLIN      | 2018-09-15 | 2018-09-29  |            1316 |             1336 |                 1329 |              1361 |
++------------------+------------+-------------+-----------------+------------------+----------------------+-------------------+
+7 rows in set (0.72 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\sales-to-activenumber.sql
+Database changed
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 10666 rows affected (44 min 45.14 sec)
+Records: 10666  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.29 sec)
+
+Query OK, 32888 rows affected (1 hour 18 min 4.46 sec)
+Records: 32888  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> exit

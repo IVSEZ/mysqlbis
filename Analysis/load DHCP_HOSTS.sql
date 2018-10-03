@@ -5,7 +5,9 @@ use rcbill_my;
  
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\OtherImport\\DHCP-HOSTS-08012018.csv'
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\OtherImport\\DHCP-HOSTS-16012018.csv'
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\OtherImport\\DHCP-HOSTS-16012018.csv'
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\OtherImport\\DHCP-HOSTS-24092018.csv'
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\OtherImport\\DHCP-HOSTS-25092018.csv'
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\OtherImport\\CRIMSON_TO_AMBER-HOSTS-15012018.csv'
 
@@ -48,6 +50,8 @@ INSERTEDON=now()
 select *, REPLACE(IF(LENGTH(CM_MAC)>0, CM_MAC, CPE_MAC), ":", ".") as mac3 from rcbill_my.dhcp_hosts;
 
 select * from rcbill_my.dhcp_hosts where expiry	is null;
+
+select * from rcbill_my.dhcp_hosts where date(INSERTEDON) in (select date(max(INSERTEDON)) from rcbill_my.dhcp_hosts);
 
 -- SET SQL_SAFE_UPDATES = 0;
 -- delete from rcbill_my.dhcp_hosts where date(INSERTEDON)='2018-01-16';

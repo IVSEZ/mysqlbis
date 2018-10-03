@@ -18,3 +18,16 @@ CREATE TABLE `rcb_techregions` (
   
   
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+
+CREATE INDEX IDXTR1
+ON rcb_techregions (INTERFACENAME);
+
+CREATE INDEX IDXTR2
+ON rcb_techregions (NODENAME);
+
+CREATE INDEX IDXTR3
+ON rcb_techregions (DISTRICT);
+
+CREATE INDEX IDXTR4
+ON rcb_techregions (SUBDISTRICT);

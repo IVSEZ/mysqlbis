@@ -16,7 +16,7 @@ use rcbill;
 
 drop table if exists rcbill.templivetv;
 CREATE TABLE rcbill.templivetv 
-(INDEX idxtv1 (device)) as 
+(INDEX idxtv1 (device), index idxtv2(sessionstart)) as 
 (
 	select a.device,a.duration,trim(upper(a.resource)) as resource,a.sessionstart,a.subscriber
 	-- ,b.originaltitle,b.imdbtitleref
@@ -86,6 +86,8 @@ CREATE INDEX IDXclts2
 ON rcbill.clientlivetvstats (opendate);
 CREATE INDEX IDXclts3
 ON rcbill.clientlivetvstats (ticketid);
+
+create index IDXclts4 on rcbill.clientlivetvstats(sessionstart);
 
 */
 
