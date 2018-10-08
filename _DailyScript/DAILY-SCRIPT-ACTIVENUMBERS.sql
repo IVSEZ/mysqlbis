@@ -9,7 +9,7 @@ use rcbill_my;
 -- SET @rundate='2017-12-26';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-05052018-06052018.csv'
 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-02102018.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-07102018.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -99,31 +99,33 @@ decommissioned = (select IsDecom(totalcheck)),
 reported = (select reported from rcbill_my.lkpreported where servicenewtype=servicetype)
 ;
 
+select period, count(1) from rcbill_my.activenumber group by period order by period desc
+limit 5
+;
 
 drop table if exists rcbill_my.packagelist;
 
 create table rcbill_my.packagelist as
 (
-select distinct servicecategory, rcbill_my.GetServiceCategory2(service) as servicecategory2, service
-, rcbill_my.getcleanstring(servicetypeold) as package, servicetype,  servicesubcategory
-, rcbill.GetServicePrice(service,rcbill_my.getcleanstring(servicetypeold)) as packageprice
-from rcbill_my.activenumber
-where reported='Y' and decommissioned='N'
-and period=@rundate
-group by 
-servicecategory, rcbill_my.GetServiceCategory2(servicecategory), service, package, servicetype,  servicesubcategory
-order by 
-servicecategory
+	select distinct servicecategory, rcbill_my.GetServiceCategory2(service) as servicecategory2, service
+	, rcbill_my.getcleanstring(servicetypeold) as package, servicetype,  servicesubcategory
+	, rcbill.GetServicePrice(service,rcbill_my.getcleanstring(servicetypeold)) as packageprice
+	from rcbill_my.activenumber
+	where reported='Y' and decommissioned='N'
+	and period=@rundate
+	group by 
+	servicecategory, rcbill_my.GetServiceCategory2(servicecategory), service, package, servicetype,  servicesubcategory
+	order by 
+	servicecategory
 );
 
+select count(*) as packagelist from rcbill_my.packagelist;
 -- select * from rcbill_my.packagelist;
 -- select servicecategory, servicecategory2, service, package, servicetype, servicesubcategory, packageprice from rcbill_my.packagelist;
 
 -- select * from rcbill_my.activenumber where period=@rundate and reported='Y' and decommissioned='N';
 
-select period, count(1) from rcbill_my.activenumber group by period order by period desc
-limit 5
-;
+
 
 -- select * from rcbill_my.activenumber where period=@rundate and reported='Y';
 -- delete from rcbill_my.activenumber where period=@rundate;
@@ -137,12 +139,12 @@ SET @@SESSION.sql_mode='ALLOW_INVALID_DATES';
 SET SQL_SAFE_UPDATES = 0;
 
 -- 	SET @rundate='2018-10-01'; SET @perioddate=str_to_date('2018-10-01','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201810/2018-10-01;2018-10-01.csv'
- 	SET @rundate='2018-10-02'; SET @perioddate=str_to_date('2018-10-02','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201810/2018-10-02;2018-10-02.csv'
+-- 	SET @rundate='2018-10-02'; SET @perioddate=str_to_date('2018-10-02','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201810/2018-10-02;2018-10-02.csv'
 -- 	SET @rundate='2018-10-03'; SET @perioddate=str_to_date('2018-10-03','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201810/2018-10-03;2018-10-03.csv'
 -- 	SET @rundate='2018-10-04'; SET @perioddate=str_to_date('2018-10-04','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201810/2018-10-04;2018-10-04.csv'
 -- 	SET @rundate='2018-10-05'; SET @perioddate=str_to_date('2018-10-05','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201810/2018-10-05;2018-10-05.csv'
 -- 	SET @rundate='2018-10-06'; SET @perioddate=str_to_date('2018-10-06','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201810/2018-10-06;2018-10-06.csv'
--- 	SET @rundate='2018-10-07'; SET @perioddate=str_to_date('2018-10-07','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201810/2018-10-07;2018-10-07.csv'
+ 	SET @rundate='2018-10-07'; SET @perioddate=str_to_date('2018-10-07','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201810/2018-10-07;2018-10-07.csv'
 -- 	SET @rundate='2018-10-08'; SET @perioddate=str_to_date('2018-10-08','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201810/2018-10-08;2018-10-08.csv'
 -- 	SET @rundate='2018-10-09'; SET @perioddate=str_to_date('2018-10-09','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201810/2018-10-09;2018-10-09.csv'
 -- 	SET @rundate='2018-10-10'; SET @perioddate=str_to_date('2018-10-10','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/ActiveContractsList/201810/2018-10-10;2018-10-10.csv'

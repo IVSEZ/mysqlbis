@@ -9,7 +9,7 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@# 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20181003_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20181008_1.out
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
 
@@ -60,7 +60,7 @@ use rcbill_my;
 
 call sp_ActiveNumber(01,09,2018,'','');
 
-call sp_GetActiveNumberFromTo('2018-09-17','2018-09-30');
+call sp_GetActiveNumberFromTo('2018-10-01','2018-10-07');
 
 ######################################################################################
 
