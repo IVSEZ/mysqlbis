@@ -4,12 +4,13 @@
 -- set @package='INTELENOVELA';
 SET @row_number = 0;
 
-set @startdate='2018-09-01';
+set @startdate='2018-11-01';
+-- set @startdate := subdate(current_date(),1);
 select @enddate := subdate(current_date(),1);
 -- set @package='INTELENOVELA';
 -- set @package='DUALVIEW';
 -- set @package='MULTIVIEW';
--- set @package='VOD';
+ set @package='VOD';
 
 /*
 select *,rcbill.GetClientName(clientcode) as ClientName from rcbill_my.sales where orderday>=@startdate and orderday<=@enddate

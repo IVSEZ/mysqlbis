@@ -1,11 +1,12 @@
-set @ticketid=886444;
+set @ticketid=894059;
 
-select * from rcbill_my.clientticket_cmmtjourney where ticketid=@ticketid order by commentdate;
-select * from rcbill_my.clientticket_assgnjourney where ticketid=@ticketid order by ASSGN_CLOSEDATE;
-select * from rcbill_my.clientticketjourney where ticketid=@ticketid;
-select * from rcbill_my.clientticketsnapshot_f where ticketid=@ticketid;
+-- select * from rcbill_my.clientticket_cmmtjourney where ticketid=@ticketid order by commentdate;
+-- select * from rcbill_my.clientticket_assgnjourney where ticketid=@ticketid order by ASSGN_CLOSEDATE;
+-- select * from rcbill_my.clientticketjourney where ticketid=@ticketid;
+-- select * from rcbill_my.clientticketsnapshot_f where ticketid=@ticketid;
 
 -- select * from rcbill_my.clientticket_assgnjourney where assgntechregion='Approvals' and assgntechuser='Rahul Walavalkar';
+-- select *, TIMESTAMPDIFF(MINUTE, ASSGN_OPENDATE, ASSGN_CLOSEDATE) as assgnduration from rcbill_my.clientticket_assgnjourney where assgntechregion='Approvals' and assgntechuser='Rahul Walavalkar';
 -- select * from rcbill_my.clientticket_assgnjourney where assgntechregion='Approvals' and assgntechuser='Rahul Walavalkar';
 
 
@@ -29,14 +30,23 @@ from
 ) a
 inner join
 (
+
+-- select * from rcbill_my.rep_cust_cont_payment_cmts_mxk;
+-- reportdate, currentdebt, clientcode, clientname, clientclass, services, network, activecontracts, clientlocation, firstactivedate, lastactivedate
+-- , totalpaymentamount, combined_clientcode, cl_clientcode, b_clientcode, connection_type, mxk_name, mxk_interface, hfc_node, nodename
+--  TotalPayments2018, TotalPaymentAmount2018, clean_mxk_name, clean_mxk_interface, clean_hfc_node, clean_hfc_nodename, clean_connection_type
 	select * from 
     (
 		select cl_clientcode, combined_clientcode, reportdate, clientname, services, network, activecontracts, clientlocation
 		, (select clientaddress from rcbill_my.rep_allcust where clientcode=cl_clientcode) as clientaddress
 		, (select clientarea from rcbill_my.rep_allcust where clientcode=cl_clientcode) as clientarea
-		,  firstactivedate, lastactivedate, totalpaymentamount, mxk_name, mxk_interface, clean_mxk_name
-		, hfc_node, nodename, TotalPaymentAmount2018, clean_connection_type
-		from rcbill_my.rep_cust_cont_payment_cmts_mxk 
+		,  firstactivedate, lastactivedate, totalpaymentamount
+        , TotalPaymentAmount2018
+        , mxk_name, mxk_interface
+		, hfc_node, nodename
+        -- , clean_connection_type
+		, clean_mxk_name, clean_mxk_interface, clean_hfc_node, clean_hfc_nodename, clean_connection_type
+        from rcbill_my.rep_cust_cont_payment_cmts_mxk 
 	) a
     where 
 	(
@@ -51,12 +61,21 @@ inner join
 		)
         */
         -- PRASLIN
+        
         and
         (
 			(clientarea like '%PRASLIN%') or (clientaddress like '%PRASLIN%') 
 			or (mxk_name like '%PRASLIN%') or (clean_mxk_name like '%PRASLIN%')
 		)
         
+        /*
+        and
+        (
+			-- (clientarea not like '%PRASLIN%') and (clientaddress not like '%PRASLIN%') 
+			-- and (mxk_name not like '%PRASLIN%') and 
+            (clean_mxk_name not like '%PRASLIN%') or (clean_mxk_name is null)
+		)
+        */
         -- EDEN ISLAND
         /*
         and

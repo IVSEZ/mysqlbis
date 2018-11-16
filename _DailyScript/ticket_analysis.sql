@@ -288,11 +288,12 @@ order by a.opendate
 )
 ;
 
+-- select * from rcbill_my.clientticketsnapshot_f;
 
 #TICKET ASSIGNMENTS & COMMENTS JOURNEY
 use rcbill;
 
-set @startdate='2018-01-01';
+set @startdate='2017-01-01';
 
 
 drop table if exists rcbill_my.clientticket_cmmtjourney;
@@ -432,7 +433,8 @@ select COUNT(*) as clientticket_cmmtjourney  from rcbill_my.clientticket_cmmtjou
 select COUNT(*) as clientticket_assgnjourney from rcbill_my.clientticket_assgnjourney;
 
 
-
+-- select *  from rcbill_my.clientticket_cmmtjourney;
+-- select * from rcbill_my.clientticket_assgnjourney;
 
 -- select * from  rcbill_my.clientticketjourney;
 -- select * from  rcbill_my.clientticketsnapshot_irs ;

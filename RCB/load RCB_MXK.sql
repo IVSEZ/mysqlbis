@@ -13,6 +13,13 @@
 -- set @mxk_name='MXK-PERSEVERANCE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Perseverance_20180915_1.csv'
 -- set @mxk_name='MXK-BEAUVALLON'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_BeauVallon_20180915_1.csv'
 -- set @mxk_name='MXK-PRASLIN'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Praslin_20180915_1.csv' 
+
+-- set @mxk_name='MXK-MAHE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Mahe_20181013_1.csv'
+-- set @mxk_name='MXK-ANSEETOILE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_AnseEtoile_20181013_1.csv'
+-- set @mxk_name='MXK-ANSEROYALE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_AnseRoyale_20181013_1.csv'
+-- set @mxk_name='MXK-PERSEVERANCE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Perseverance_20181013_1.csv'
+-- set @mxk_name='MXK-BEAUVALLON'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_BeauVallon_20181013_1.csv'
+-- set @mxk_name='MXK-PRASLIN'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Praslin_20181013_1.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_mxk` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
  IGNORE 3 LINES 
@@ -58,3 +65,9 @@ select mxk_name, date(insertedon) as dateinserted, count(*) as devicecount
 from rcbill.rcb_mxk
 group by mxk_name, 2;
 
+/*
+
+SET SQL_SAFE_UPDATES = 0;
+delete from rcbill.rcb_mxk where date(insertedon)='2018-10-13';
+
+*/

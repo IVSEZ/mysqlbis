@@ -1,7 +1,8 @@
 -- SET SESSION sql_mode = '';
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20180902-1500.csv'
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20180915-1100.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20180915-1100.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20181013-1400.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_cmts` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
  IGNORE 1 LINES 
@@ -50,4 +51,11 @@ select hfc_node, date(insertedon) as dateinserted, count(*) as devicecount
 from rcbill.rcb_cmts
 group by hfc_node, 2;
 
+
+/*
+
+SET SQL_SAFE_UPDATES = 0;
+delete from rcbill.rcb_cmts where date(insertedon)='2018-10-13';
+
+*/
 

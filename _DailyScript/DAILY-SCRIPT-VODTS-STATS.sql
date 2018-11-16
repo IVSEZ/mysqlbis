@@ -3,7 +3,7 @@ use rcbill;
 
 -- ENSURE THAT CLIENTSTATS TABLE IS READY 
 
-set @rundate = '2018-07-21';
+-- set @rundate = '2018-07-21';
 
 -- select max(date(sessionstart)) from rcbill.clientvodstats;
 

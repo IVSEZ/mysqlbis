@@ -4,7 +4,7 @@ use rcbill_my;
 -- SET @date1='2018-09-21';
 -- SET @date2='2018-09-22';
 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-07102018.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-15112018.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-27062017.csv' 
 
 REPLACE INTO TABLE `rcbill_my`.`dailycalls` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
@@ -43,6 +43,7 @@ INSERTEDON=now()
 
 -- SET SQL_SAFE_UPDATES = 0;
 -- delete from rcbill_my.dailycalls where date(insertedon)='2018-05-29'
+-- delete from rcbill_my.dailycalls where insertedon = '2018-10-18 11:07:48';
 -- select * from rcbill_my.dailycalls where date(insertedon)='2018-02-12' order by CALL_DATE, CALL_TIME;
 
 -- drop table if exists rcbill_my.callingclients;
@@ -67,6 +68,9 @@ select firm, kod, mphone from rcbill.rcb_clientphones a where (a.mphone not in (
 )
 ;
 
+
+select count(*) as callingclientsbefore from rcbill_my.callingclients;
+
 -- create table rcbill_my.callingclients as
 -- create statement on 22/11/2017 took time 4403.156 sec
 insert into rcbill_my.callingclients
@@ -84,7 +88,7 @@ insert into rcbill_my.callingclients
 )
 ;
 
-
+select count(*) as callingclientsafter from rcbill_my.callingclients;
 
 
 /*

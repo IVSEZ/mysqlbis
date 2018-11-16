@@ -335,6 +335,51 @@ as
 )
 ;
 
+/*
+
+UPDATE data_table dt1, data_table dt2 
+SET dt1.VALUE = dt2.VALUE 
+WHERE dt1.NAME = dt2.NAME AND dt1.VALUE = '' AND dt2.VALUE != '' 
+;
+*/
+
+set sql_safe_updates=0;
+
+UPDATE rcbill_my.customers_contracts_cmts_mxk a, rcbill_my.customers_contracts_cmts_mxk b 
+SET 
+a.hfc_node=b.hfc_node
+,a.cmts_date=b.cmts_date
+,a.interfacename=b.interfacename
+,a.nodename=b.nodename
+,a.mxk_name=b.mxk_name
+,a.mxk_interface=b.mxk_interface
+,a.mxk_date=b.mxk_date
+,a.report_date=b.report_date
+where 
+-- a.cl_clientid=723711
+-- and
+a.contractcurrentstatus='ACTIVE'
+and
+a.cl_clientid=b.cl_clientid
+and 
+(
+	(a.mxk_name is null and b.mxk_name is not null)
+	or
+    (a.mxk_interface is null and b.mxk_interface is not null)
+    or
+    (a.mxk_date is null and b.mxk_date is not null)
+    or
+    (a.hfc_node is null and b.hfc_node is not null)
+    or 
+    (a.cmts_date is null and b.cmts_date is not null)
+    or 
+    (a.interfacename is null and b.interfacename is not null)
+    or
+    (a.nodename is null and b.nodename is not null)
+);
+
+
+
 -- select * from rcbill_my.customers_contracts_cmts_mxk;
 
 /*

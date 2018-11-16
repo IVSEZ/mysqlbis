@@ -6,7 +6,7 @@ drop table if exists rcb_ipusage;
 CREATE TABLE `rcb_ipusage` (
 `USAGEID` int(11) DEFAULT NULL ,
 `DEVICEID` int(11) DEFAULT NULL ,
-`USAGEDATE` datetime DEFAULT NULL ,
+`USAGEDATE` date DEFAULT NULL ,
 `TRAFFICTYPE` int(11) DEFAULT NULL ,
 `CLIENTIP` bigint(25) DEFAULT NULL ,
 `USAGEDIRECTION` varchar(255) DEFAULT NULL ,
@@ -26,8 +26,25 @@ CREATE TABLE `rcb_ipusage` (
 
 
 
+show index from rcbill.rcb_ipusage;
+-- select * from rcbill.rcb_ipusage limit 100
+
+
+	CREATE INDEX idxrcbipu1
+	ON rcbill.rcb_ipusage (deviceid);
+
+	CREATE INDEX idxrcbipu2
+	ON rcbill.rcb_ipusage (cid);
+
+	CREATE INDEX idxrcbipu3
+	ON rcbill.rcb_ipusage (csid);
+
+	CREATE INDEX idxrcbipu4
+	ON rcbill.rcb_ipusage (usagedate);
+    
+    
 
 -- drop index IDXinvoiceheader on rcb_ticketcomments;
 
--- 
+
 

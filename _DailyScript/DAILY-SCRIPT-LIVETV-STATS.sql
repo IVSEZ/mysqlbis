@@ -208,7 +208,8 @@ insert into rcbill_my.rep_livetvhourlystats
 
 set sql_safe_updates=0;
 delete from rcbill_my.rep_livetvhourlystats where SESSIONDATE is null;
--- select * from rcbill_my.rep_livetvhourlystats where sessiondate='2018-08-28'
+-- select * from rcbill.templivetv where sessiondate='2018-11-11'
+-- select * from rcbill_my.rep_livetvhourlystats where sessiondate='2018-11-11'
 -- delete from rcbill_my.rep_livetvhourlystats where sessiondate='2018-08-28'
 
 

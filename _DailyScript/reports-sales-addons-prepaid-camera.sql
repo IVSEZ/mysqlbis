@@ -23,6 +23,8 @@ create table rcbill_my.rep_prepaid_camera as
     
 );
 
+-- select * from rcbill_my.rep_prepaid_camera;
+-- select * from rcbill_my.dailysinglesales ;
 
 drop table if exists rcbill_my.rep_addon;
 

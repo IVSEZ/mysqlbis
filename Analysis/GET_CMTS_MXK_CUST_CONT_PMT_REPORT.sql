@@ -3,10 +3,10 @@
 ### GET CMTS MXK REPORT
 
 use rcbill_my;
-## RUN THIS ONLY AFTER THE CMTS AND MXK HAVE BEEN UPDATED 
+## RUN THIS ONLY AFTER THE CMTS AND MXK HAVE BEEN UPDATED and REVENUE_PER_NODE_MXK has been run
 /*
-insert into rep_cust_cont_payment_cmts_mxk_trail
-select * from rep_cust_cont_payment_cmts_mxk
+insert into rcbill_my.rep_cust_cont_payment_cmts_mxk_trail
+select * from rcbill_my.rep_cust_cont_payment_cmts_mxk
 ;
 
 select * from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail;

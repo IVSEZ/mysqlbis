@@ -1,6 +1,6 @@
 use rcbill_my;
-set @reportdate='2018-01-04';
-SET @rundate='2018-01-04';
+set @reportdate='2018-10-15';
+SET @rundate='2018-10-15';
 
 /*
 -- All
@@ -51,10 +51,11 @@ where b.lastactivedate
 ;
 */
 
-drop table if exists rcbill_my.customers_north;
+-- drop table if exists rcbill_my.customers_north;
 -- duration 573.422 sec
 
-create table rcbill_my.customers_north as
+-- create table rcbill_my.customers_north as
+insert into rcbill_my.customers_north
 (
 	-- NORTH Customers with Client Stats
 	select @reportdate as ReportDate, a.*
@@ -101,7 +102,8 @@ create table rcbill_my.customers_north as
 						a.clientaddress like '%maca%' or a.clientaddress like '%mach%'
 				)
 				and network is not null
-				group by clientcode, network
+				group by clientcode
+                , network
 			) b
 			right join
 			(
@@ -125,8 +127,10 @@ create table rcbill_my.customers_north as
 	) a 
 	left join 
 	(
-	select clientcode as clientcode_b, services, clientclass, clienttype, `Elite`, `Extreme`, `Extreme Plus`, `Crimson`, `Performance`, `Performance Plus`, `Intel Data 10`,`Basic`,`Executive`,`Prestige`,`Extravagance`,`Extravagance Corporate`
-	 from rcbill_my.clientstats
+		select clientcode as clientcode_b, services, clientclass, clienttype
+		, `Elite`, `Extreme`, `Extreme Plus`, `Crimson`, `Performance`, `Performance Plus`, `Intel Data 10`,`Basic`,`Executive`,`Prestige`,`Extravagance`,`Extravagance Corporate`
+		, `Amber`, `Amber Corporate`, `Crimson Corporate`, `DualView`, `MultiView`, `VOD`, `Starter`, `Value`
+		 from rcbill_my.clientstats
 	) b 
 	on a.ClientCode=b.clientcode_b
 )
@@ -135,6 +139,9 @@ create table rcbill_my.customers_north as
 select * from rcbill_my.customers_north order by clientname;
 
 select * from rcbill_my.customers_north where clientisactive='Active' and activitystatus not in ('1. Alive');
+
+select * from rcbill_my.customers_north where clientisactive='Active' and activitystatus not in ('1. Alive');
+
 /*
 select period, periodday, periodmth, periodyear, clientcode, clientname, contractcode, count(contractcode) as contractactivedays from rcbill_my.customercontractactivity 
 -- limit 1000 
@@ -142,3 +149,21 @@ where clientcode in (select clientcode from rcbill_my.customers_north) and perio
 group by period, periodday, periodmth, periodyear, clientcode, clientname, contractcode
 ;
 */
+
+
+set sql_safe_updates=0;
+
+-- delete from rcbill_my.customers_north where reportdate=@reportdate;
+
+-- update rcbill_my.customers_north
+-- set network=NULL where network='NULL'
+-- set firstactivedate=NULL where firstactivedate='0000-00-00'
+-- set lastactivedate=NULL where lastactivedate='0000-00-00'
+-- set ActivityStatus=NULL where ActivityStatus='NULL'
+-- set clientcode_b=NULL where clientcode_b='NULL'
+-- set services=NULL where services='NULL'
+-- set clientclass=NULL where clientclass='NULL'
+-- set clienttype=NULL where clienttype='NULL'
+-- set clienttype=NULL where clienttype='NULL'
+
+;
