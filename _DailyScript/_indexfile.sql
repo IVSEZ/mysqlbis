@@ -60,7 +60,7 @@ use rcbill_my;
 
 call sp_ActiveNumber(31,10,2018,'','');
 
-call sp_GetActiveNumberFromTo('2018-11-12','2018-11-13');
+call sp_GetActiveNumberFromTo('2018-11-14','2018-11-15');
 
 
 select * from rcbill_my.clientstats where VOD>0 and DualView>0
