@@ -4,13 +4,91 @@
 -- set @package='INTELENOVELA';
 SET @row_number = 0;
 
-set @startdate='2018-11-01';
--- set @startdate := subdate(current_date(),1);
+SET @startdate='2018-11-01';
+-- select @startdate := subdate(current_date(),1);
 select @enddate := subdate(current_date(),1);
 -- set @package='INTELENOVELA';
 -- set @package='DUALVIEW';
 -- set @package='MULTIVIEW';
- set @package='VOD';
+SET @package='VOD';
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.firstactive from 
+(
+	select clientcode, clientclass, clienttype, min(period) as firstactive
+	from rcbill_my.customercontractactivity 
+	where 
+	clientcode in 
+    (
+		select distinct clientcode from rcbill_my.customercontractactivity where reported='Y' and period>=@startdate and period<=@enddate
+		and upper(package)=@package
+    )
+	and upper(package)=@package
+
+	group by clientcode
+	order by 4 desc
+) a
+where a.firstactive>=@startdate
+;
+
+SET @package='INTELENOVELA';
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.firstactive from 
+(
+	select clientcode, clientclass, clienttype, min(period) as firstactive
+	from rcbill_my.customercontractactivity 
+	where 
+	clientcode in 
+    (
+		select distinct clientcode from rcbill_my.customercontractactivity where reported='Y' and period>=@startdate and period<=@enddate
+		and upper(package)=@package
+    )
+	and upper(package)=@package
+
+	group by clientcode
+	order by 4 desc
+) a
+where a.firstactive>=@startdate
+;
+
+SET @package='DUALVIEW';
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.firstactive from 
+(
+	select clientcode, clientclass, clienttype, min(period) as firstactive
+	from rcbill_my.customercontractactivity 
+	where 
+	clientcode in 
+    (
+		select distinct clientcode from rcbill_my.customercontractactivity where reported='Y' and period>=@startdate and period<=@enddate
+		and upper(package)=@package
+    )
+	and upper(package)=@package
+
+	group by clientcode
+	order by 4 desc
+) a
+where a.firstactive>=@startdate
+;
+
+SET @package='MULTIVIEW';
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.firstactive from 
+(
+	select clientcode, clientclass, clienttype, min(period) as firstactive
+	from rcbill_my.customercontractactivity 
+	where 
+	clientcode in 
+    (
+		select distinct clientcode from rcbill_my.customercontractactivity where reported='Y' and period>=@startdate and period<=@enddate
+		and upper(package)=@package
+    )
+	and upper(package)=@package
+
+	group by clientcode
+	order by 4 desc
+) a
+where a.firstactive>=@startdate
+;
+
+
+
+
 
 /*
 select *,rcbill.GetClientName(clientcode) as ClientName from rcbill_my.sales where orderday>=@startdate and orderday<=@enddate
@@ -46,6 +124,7 @@ and upper(package)=@package
 ;
 */
 
+/*
 select @package as Package, a.*, rcbill.GetClientName(a.clientcode) as clientname from 
 (
 	select clientcode, clientclass, clienttype, min(period) as firstactive
@@ -63,6 +142,7 @@ select @package as Package, a.*, rcbill.GetClientName(a.clientcode) as clientnam
 ) a
 where a.firstactive>=@startdate
 ;
+*/
 
 /*
 select * from rcbill_my.sales where clientcode in (select distinct clientcode from rcbill_my.customercontractactivity where reported='Y' and period>=@startdate and period<=@enddate
