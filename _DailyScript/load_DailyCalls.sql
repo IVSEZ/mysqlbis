@@ -4,7 +4,7 @@ use rcbill_my;
 -- SET @date1='2018-09-21';
 -- SET @date2='2018-09-22';
 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-18112018.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-19112018.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-27062017.csv' 
 
 REPLACE INTO TABLE `rcbill_my`.`dailycalls` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
