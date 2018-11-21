@@ -1,0 +1,1176 @@
+    -> 
+    -> mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\load_RCB_VODTITLES.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 1882 rows affected (0.29 sec)
+
+Query OK, 2160 rows affected, 2160 warnings (0.06 sec)
+Records: 2160  Deleted: 0  Skipped: 0  Warnings: 2160
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 2 rows affected (0.00 sec)
+
++-----------+
+| VODTITLES |
++-----------+
+|      2619 |
++-----------+
+1 row in set (0.00 sec)
+
++-----------+-----------+
+| titletype | typecount |
++-----------+-----------+
+| E         |      1438 |
+| T         |       720 |
+| NULL      |      2158 |
++-----------+-----------+
+3 rows in set (0.07 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-LIVETV-STATS.sql
+Database changed
+Query OK, 0 rows affected (0.15 sec)
+
+Query OK, 55194 rows affected (12 min 40.02 sec)
+Records: 55194  Duplicates: 0  Warnings: 0
+
++------------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table      | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++------------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| templivetv |          1 | idxtv1   |            1 | device       | A         |       55764 |     NULL | NULL   | YES  | BTREE      |         |               |
+| templivetv |          1 | idxtv2   |            1 | sessionstart | A         |       55764 |     NULL | NULL   | YES  | BTREE      |         |               |
++------------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.02 sec)
+
+Query OK, 54688 rows affected (1 min 9.64 sec)
+Records: 54688  Duplicates: 0  Warnings: 0
+
+Query OK, 2670 rows affected (2.92 sec)
+Records: 2670  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 140 rows affected (0.08 sec)
+Records: 140  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.23 sec)
+
+Query OK, 46308 rows affected (8 min 10.59 sec)
+Records: 46308  Duplicates: 0  Warnings: 0
+
++-----------------+
+| rep_livetvstats |
++-----------------+
+|           46308 |
++-----------------+
+1 row in set (0.02 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-VODTS-STATS.sql
+Database changed
+Query OK, 0 rows affected (0.05 sec)
+
+Query OK, 2437 rows affected (33.51 sec)
+Records: 2437  Duplicates: 0  Warnings: 0
+
++---------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table   | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++---------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| tempvod |          1 | idxtvod1 |            1 | device       | A         |        2461 |     NULL | NULL   | YES  | BTREE      |         |               |
+| tempvod |          1 | idxtvod2 |            1 | sessionstart | A         |        2461 |     NULL | NULL   | YES  | BTREE      |         |               |
++---------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 2388 rows affected (1.27 sec)
+Records: 2388  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 99829 rows affected (9.87 sec)
+Records: 99829  Duplicates: 0  Warnings: 0
+
++--------------+
+| rep_vodstats |
++--------------+
+|        99829 |
++--------------+
+1 row in set (0.04 sec)
+
+Database changed
+Query OK, 0 rows affected (0.17 sec)
+
+Query OK, 11950 rows affected (4 min 16.18 sec)
+Records: 11950  Duplicates: 0  Warnings: 0
+
++--------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table  | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++--------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| tempts |          1 | idxtts1  |            1 | device       | A         |       12076 |     NULL | NULL   | YES  | BTREE      |         |               |
+| tempts |          1 | idxtts2  |            1 | sessionstart | A         |       12076 |     NULL | NULL   | YES  | BTREE      |         |               |
++--------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 11940 rows affected (14.80 sec)
+Records: 11940  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 13391 rows affected (2 min 32.34 sec)
+Records: 13391  Duplicates: 0  Warnings: 0
+
++-------------+
+| rep_tsstats |
++-------------+
+|       13391 |
++-------------+
+1 row in set (0.02 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-RADIO-STATS.sql
+Database changed
+Query OK, 0 rows affected (0.18 sec)
+
+Query OK, 102080 rows affected (3.96 sec)
+Records: 102080  Duplicates: 0  Warnings: 0
+
++-----------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table     | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-----------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| tempradio |          1 | idxtrad1 |            1 | device       | A         |      102313 |     NULL | NULL   | YES  | BTREE      |         |               |
+| tempradio |          1 | idxtrad2 |            1 | sessionstart | A         |      102313 |     NULL | NULL   | YES  | BTREE      |         |               |
++-----------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.02 sec)
+
+Query OK, 243 rows affected (4.14 sec)
+Records: 243  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 1807 rows affected (0.26 sec)
+Records: 1807  Duplicates: 0  Warnings: 0
+
++----------------+
+| rep_radiostats |
++----------------+
+|           1807 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY_SCRIPT_TELEMETRY_PIVOT.sql
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 169 rows affected (0.29 sec)
+Records: 169  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 1661 rows affected (0.55 sec)
+Records: 1661  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 12 rows affected (0.02 sec)
+Records: 12  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 47 rows affected (0.32 sec)
+Records: 47  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_livetv_ranking2018.sql
+Query OK, 0 rows affected (0.05 sec)
+
+Query OK, 169 rows affected (0.20 sec)
+Records: 169  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_radio_ranking2018.sql
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 12 rows affected (0.04 sec)
+Records: 12  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_ts_ranking2018.sql
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 47 rows affected (0.07 sec)
+Records: 47  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2018.sql
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 1661 rows affected (0.39 sec)
+Records: 1661  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2018_1.sql
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 1661 rows affected (0.07 sec)
+Records: 1661  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2018_2.sql
+Query OK, 0 rows affected (0.34 sec)
+
+Query OK, 1661 rows affected (0.22 sec)
+Records: 1661  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-CREATE-LOAD.sql
+Database changed
+Database changed
+Query OK, 0 rows affected (0.12 sec)
+
+Query OK, 0 rows affected (0.07 sec)
+
+Database changed
+Query OK, 64392 rows affected (6.45 sec)
+Records: 64392  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.30 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.52 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.32 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.49 sec)
+
+Query OK, 82489 rows affected (4.76 sec)
+Records: 82489  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.35 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 64392 rows affected (3.71 sec)
+Records: 64392  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.33 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.91 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++---------+
+| clients |
++---------+
+|   64392 |
++---------+
+1 row in set (0.03 sec)
+
++---------------+
+| clientaddress |
++---------------+
+|         64392 |
++---------------+
+1 row in set (0.02 sec)
+
+Database changed
+Query OK, 0 rows affected (0.16 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Database changed
+Query OK, 455313 rows affected, 65535 warnings (35.50 sec)
+Records: 455313  Deleted: 0  Skipped: 0  Warnings: 172571
+
+Query OK, 0 rows affected (3.83 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.18 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.29 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.34 sec)
+
+Query OK, 455313 rows affected (1 min 32.48 sec)
+Records: 455313  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.77 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.27 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++-----------+
+| contracts |
++-----------+
+|    455313 |
++-----------+
+1 row in set (0.33 sec)
+
++-----------------+
+| contractaddress |
++-----------------+
+|          455313 |
++-----------------+
+1 row in set (0.15 sec)
+
+Database changed
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 6337 rows affected (0.18 sec)
+Records: 6337  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 6306 rows affected (0.57 sec)
+Records: 6306  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.33 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 5202 rows affected (0.05 sec)
+Records: 5202  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++-------------------+
+| contractdiscounts |
++-------------------+
+|              6337 |
++-------------------+
+1 row in set (0.00 sec)
+
++-------------------------+
+| clientcontractdiscounts |
++-------------------------+
+|                    6306 |
++-------------------------+
+1 row in set (0.00 sec)
+
++----------------------------+
+| clientcontractlastdiscount |
++----------------------------+
+|                       5202 |
++----------------------------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (1.09 sec)
+
+Query OK, 0 rows affected (0.26 sec)
+
+Database changed
+Query OK, 124543 rows affected (4.57 sec)
+Records: 124543  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.59 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.32 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.75 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.29 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.62 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.22 sec)
+
+Query OK, 1552448 rows affected (4 min 17.18 sec)
+Records: 1552448  Duplicates: 0  Warnings: 0
+
++---------+
+| devices |
++---------+
+|  124543 |
++---------+
+1 row in set (0.06 sec)
+
++-----------------------+
+| clientcontractdevices |
++-----------------------+
+|               1552448 |
++-----------------------+
+1 row in set (0.60 sec)
+
+Query OK, 0 rows affected (0.31 sec)
+
+Query OK, 124429 rows affected (9.03 sec)
+Records: 124429  Duplicates: 0  Warnings: 0
+
++---------------------------+
+| rep_clientcontractdevices |
++---------------------------+
+|                    124429 |
++---------------------------+
+1 row in set (0.08 sec)
+
+Database changed
+Query OK, 0 rows affected (0.15 sec)
+
+Query OK, 0 rows affected (0.09 sec)
+
+Query OK, 226352 rows affected (11.74 sec)
+Records: 226352  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.22 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.42 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.79 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.92 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++---------+
+| tickets |
++---------+
+|  226352 |
++---------+
+1 row in set (0.07 sec)
+
+Database changed
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+ERROR 2 (HY000): File 'C:\ProgramData\MySQL\MySQL Server 5.7\Uploads\rcbill\AllTicketTechUsers-20112018.csv' not found (Errcode: 2 - No such file or directory)
++-----------------+
+| tickettechusers |
++-----------------+
+|               0 |
++-----------------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 459709 rows affected, 39661 warnings (14.88 sec)
+Records: 459709  Deleted: 0  Skipped: 0  Warnings: 39661
+
++-------------------+
+| ticketassignments |
++-------------------+
+|            459709 |
++-------------------+
+1 row in set (0.16 sec)
+
+Database changed
+Query OK, 0 rows affected (0.14 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 967615 rows affected (24.12 sec)
+Records: 967615  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.69 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.34 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (4.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.58 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----------------+
+| ticketcomments |
++----------------+
+|         967615 |
++----------------+
+1 row in set (0.33 sec)
+
+Database changed
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 383084 rows affected (44.65 sec)
+Records: 383084  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.57 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----------+
+| comments |
++----------+
+|   383084 |
++----------+
+1 row in set (0.14 sec)
+
+Database changed
+Query OK, 0 rows affected (0.15 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 523843 rows affected, 65535 warnings (1 min 1.12 sec)
+Records: 523843  Deleted: 0  Skipped: 0  Warnings: 523844
+
+Query OK, 0 rows affected (1.96 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.38 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.28 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.22 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++------------+
+| devicesold |
++------------+
+|     523843 |
++------------+
+1 row in set (0.17 sec)
+
+Database changed
+Query OK, 0 rows affected (0.06 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+ERROR 2 (HY000): File 'C:\ProgramData\MySQL\MySQL Server 5.7\Uploads\rcbill\AllContractServices-20112018.csv' not found (Errcode: 2 - No such file or directory)
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++------------------+
+| contractservices |
++------------------+
+|                0 |
++------------------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.09 sec)
+
+Query OK, 0 rows affected (0.19 sec)
+
+ERROR 2 (HY000): File 'C:\ProgramData\MySQL\MySQL Server 5.7\Uploads\rcbill\AllInvoicesContents-20112018.csv' not found (Errcode: 2 - No such file or directory)
+Query OK, 0 rows affected (0.42 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.28 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.30 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++------------------+
+| invoicescontents |
++------------------+
+|                0 |
++------------------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.09 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 2293158 rows affected (4 min 36.16 sec)
+Records: 2293158  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (28.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (16.80 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (13.43 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (14.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (14.87 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----------------+
+| invoicesheader |
++----------------+
+|        2293158 |
++----------------+
+1 row in set (0.88 sec)
+
+Database changed
+Query OK, 0 rows affected (0.60 sec)
+
+Query OK, 0 rows affected (0.05 sec)
+
+ERROR 2 (HY000): File 'C:\ProgramData\MySQL\MySQL Server 5.7\Uploads\rcbill\AllCASA-20112018.csv' not found (Errcode: 2 - No such file or directory)
+Query OK, 0 rows affected (0.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.14 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++------+
+| casa |
++------+
+|    0 |
++------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.29 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++--------------------+
+| rep_paycol_channel |
++--------------------+
+|                  0 |
++--------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----------------+
+| rep_paycol_pos |
++----------------+
+|              0 |
++----------------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Database changed
+ERROR 2 (HY000): File 'C:\ProgramData\MySQL\MySQL Server 5.7\Uploads\rcbill\AllUsers-20112018.csv' not found (Errcode: 2 - No such file or directory)
++-------+
+| users |
++-------+
+|     0 |
++-------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.05 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Database changed
+ERROR 2 (HY000): File 'C:\ProgramData\MySQL\MySQL Server 5.7\Uploads\rcbill\AllIPUSAGE-20112018.csv' not found (Errcode: 2 - No such file or directory)
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----------+
+| ipusage1 |
++----------+
+|        0 |
++----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.05 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++---------+
+| ipusage |
++---------+
+|       0 |
++---------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\ticket_analysis.sql
+Database changed
+Query OK, 0 rows affected (0.07 sec)
+
+Query OK, 328605 rows affected (37.95 sec)
+Records: 328605  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.42 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.54 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.25 sec)
+
+Query OK, 12689 rows affected (7.25 sec)
+Records: 12689  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 44970 rows affected (5.85 sec)
+Records: 44970  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 231794 rows affected (11.47 sec)
+Records: 231794  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 231794 rows affected (12.75 sec)
+Records: 231794  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.06 sec)
+
+Query OK, 45008 rows affected (3.94 sec)
+Records: 45008  Duplicates: 0  Warnings: 0
+
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 328605 rows affected (30.23 sec)
+Records: 328605  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 152262 rows affected (14.77 sec)
+Records: 152262  Duplicates: 0  Warnings: 0
+
++--------------------------+
+| clientticket_cmmtjourney |
++--------------------------+
+|                   328605 |
++--------------------------+
+1 row in set (0.52 sec)
+
++---------------------------+
+| clientticket_assgnjourney |
++---------------------------+
+|                    152262 |
++---------------------------+
+1 row in set (1.02 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 76 rows affected (0.52 sec)
+Records: 76  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\load_DailyCalls.sql
+Database changed
+Query OK, 418 rows affected (0.29 sec)
+Records: 418  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 409 rows affected (0.03 sec)
+Records: 409  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 65438 rows affected (1.73 sec)
+Records: 65438  Duplicates: 0  Warnings: 0
+
++----------------------+
+| callingclientsbefore |
++----------------------+
+|               570177 |
++----------------------+
+1 row in set (1.07 sec)
+
+Query OK, 550 rows affected (10.11 sec)
+Records: 550  Duplicates: 0  Warnings: 0
+
++---------------------+
+| callingclientsafter |
++---------------------+
+|              570727 |
++---------------------+
+1 row in set (0.22 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 290 rows affected (4.67 sec)
+Records: 290  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 11808 rows affected (1.82 sec)
+Records: 11808  Duplicates: 0  Warnings: 0
+
++-----------+
+| callstats |
++-----------+
+|     11808 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-USAGE.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 2572 rows affected, 7418 warnings (2.15 sec)
+Records: 2572  Deleted: 0  Skipped: 0  Warnings: 7418
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 5780 rows affected, 16682 warnings (3.56 sec)
+Records: 5780  Deleted: 0  Skipped: 0  Warnings: 16682
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 80 rows affected, 271 warnings (0.15 sec)
+Records: 80  Deleted: 0  Skipped: 0  Warnings: 271
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 499 rows affected, 1711 warnings (0.08 sec)
+Records: 499  Deleted: 0  Skipped: 0  Warnings: 1711
+
++------------+
+| dailyusage |
++------------+
+|    3229902 |
++------------+
+1 row in set (9.24 sec)
+
++------------+------------+------------+---------+
+| datestart  | dateend    | insertedon | records |
++------------+------------+------------+---------+
+| 2018-11-20 | 2018-11-20 | 2018-11-21 |    8931 |
+| 2018-11-19 | 2018-11-19 | 2018-11-20 |    8896 |
+| 2018-11-18 | 2018-11-18 | 2018-11-19 |    8660 |
+| 2018-11-17 | 2018-11-17 | 2018-11-18 |    8653 |
+| 2018-11-16 | 2018-11-16 | 2018-11-17 |    8972 |
++------------+------------+------------+---------+
+5 rows in set (2 min 16.26 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-SALES-TELEMETRY.sql
+Database changed
+Query OK, 131 rows affected, 48 warnings (0.17 sec)
+Records: 131  Deleted: 0  Skipped: 0  Warnings: 48
+
++------------+
+| dailysales |
++------------+
+|     130083 |
++------------+
+1 row in set (1.39 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 130083 rows affected (19.21 sec)
+Records: 130083  Duplicates: 0  Warnings: 0
+
++--------+
+| sales  |
++--------+
+| 130083 |
++--------+
+1 row in set (0.07 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 2159 rows affected (0.53 sec)
+Records: 2159  Duplicates: 0  Warnings: 0
+
++-----------+
+| saleslist |
++-----------+
+|      2159 |
++-----------+
+1 row in set (0.01 sec)
+
+Database changed
+Query OK, 9 rows affected (0.31 sec)
+Records: 9  Deleted: 0  Skipped: 0  Warnings: 0
+
++------------------+
+| dailysinglesales |
++------------------+
+|             5108 |
++------------------+
+1 row in set (0.02 sec)
+
+Database changed
+Query OK, 25 rows affected (0.02 sec)
+Records: 25  Deleted: 0  Skipped: 0  Warnings: 0
+
++-----------------+
+| dailyaddonsales |
++-----------------+
+|           13933 |
++-----------------+
+1 row in set (1.33 sec)
+
+Query OK, 80 rows affected (0.06 sec)
+Records: 80  Deleted: 0  Skipped: 0  Warnings: 0
+
++----------------+
+| onlinepayments |
++----------------+
+|          36628 |
++----------------+
+1 row in set (0.06 sec)
+
++-------------+----------------+---------------------+
+| paymentdate | onlinepayments | onlinepaymentamount |
++-------------+----------------+---------------------+
+| 2018-11-20  |             80 |         46228.57000 |
+| 2018-11-19  |             80 |         42367.83000 |
+| 2018-11-18  |             93 |         47007.45000 |
+| 2018-11-17  |             52 |         40757.60000 |
+| 2018-11-16  |             50 |         29689.46000 |
++-------------+----------------+---------------------+
+5 rows in set (2.99 sec)
+
++-------------+--------------+----------------+---------------------+
+| paymentyear | paymentmonth | onlinepayments | onlinepaymentamount |
++-------------+--------------+----------------+---------------------+
+|        2018 |           11 |           1522 |        914391.84000 |
+|        2018 |           10 |           2674 |       1575052.70000 |
+|        2018 |            9 |           2536 |       1488279.08000 |
+|        2018 |            8 |           2677 |       1480347.51000 |
+|        2018 |            7 |           2521 |       1406138.40000 |
++-------------+--------------+----------------+---------------------+
+5 rows in set (0.05 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-ACTIVENUMBERS.sql
+Database changed
+Query OK, 1336 rows affected (1.09 sec)
+Records: 1336  Deleted: 0  Skipped: 0  Warnings: 0
+
++------------+----------+
+| period     | count(1) |
++------------+----------+
+| 2018-11-20 |     1336 |
+| 2018-11-19 |     1334 |
+| 2018-11-18 |     1322 |
+| 2018-11-17 |     1322 |
+| 2018-11-16 |     1321 |
++------------+----------+
+5 rows in set (0.02 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 88 rows affected (1.82 sec)
+Records: 88  Duplicates: 0  Warnings: 0
+
++-------------+
+| packagelist |
++-------------+
+|          88 |
++-------------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 26264 rows affected, 231 warnings (2 min 50.77 sec)
+Records: 26264  Deleted: 0  Skipped: 0  Warnings: 231
+
++------------+----------+
+| period     | count(1) |
++------------+----------+
+| 2018-11-20 |    26264 |
+| 2018-11-19 |    26262 |
+| 2018-11-18 |    26084 |
+| 2018-11-17 |    26235 |
+| 2018-11-16 |    26311 |
++------------+----------+
+5 rows in set (1.10 sec)
+
+Query OK, 0 rows affected (0.40 sec)
+
+Query OK, 25609 rows affected (3 min 13.12 sec)
+Records: 25609  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.34 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.54 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.30 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.19 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.18 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.18 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----------+
+| count(1) |
++----------+
+| 21496340 |
++----------+
+1 row in set (1 min 5.70 sec)
+
+Query OK, 25609 rows affected (56.15 sec)
+Records: 25609  Duplicates: 0  Warnings: 0
+
++----------+
+| count(1) |
++----------+
+| 21521949 |
++----------+
+1 row in set (24.27 sec)
+
++------------+--------------------------+
+| period     | customercontractactivity |
++------------+--------------------------+
+| 2018-11-20 |                    25609 |
+| 2018-11-19 |                    25607 |
+| 2018-11-18 |                    25432 |
+| 2018-11-17 |                    25583 |
+| 2018-11-16 |                    25659 |
++------------+--------------------------+
+5 rows in set (0.07 sec)
+
+Query OK, 0 rows affected (0.48 sec)
+
+Terminal close -- query aborted
