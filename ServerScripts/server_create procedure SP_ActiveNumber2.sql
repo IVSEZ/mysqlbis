@@ -133,5 +133,70 @@ order by period, periodday, periodmth, periodyear
 ;
 
 
+
+drop table if exists rcbill_my.rep_activenumberlastday;
+create table rcbill_my.rep_activenumberlastday as
+(
+					select period, periodyear, periodmth, periodday, servicecategory, package, sum(open_s) as activecount
+					from 
+					(
+						select a.* from rcbill_my.anreport a 
+						inner join 
+						( select max(`period`) period from rcbill_my.anreport group by date_format(period, '%Y-%m') ) b
+						on 
+						a.period=b.period
+					) a
+                    where reported='Y' and decommissioned='N'
+					group by period,periodyear, periodmth, periodday, servicecategory, package                
+
+);
+
+
+set session group_concat_max_len = 10000;
+SET @sql_dynamic = (
+	SELECT
+		GROUP_CONCAT( DISTINCT
+			CONCAT(
+				'  sum(IF(period = '''
+				, period
+				, ''', activecount,0))  AS `'
+				, replace(period,'-','') , '`'
+			)
+		)
+	FROM rcbill_my.rep_activenumberlastday
+);
+
+-- select @sql_dynamic;
+
+drop table if exists rcbill_my.rep_activenumberlastday_pv; 
+
+SET @sql = CONCAT('create table rcbill_my.rep_activenumberlastday_pv as (SELECT servicecategory, package, ', 
+			  @sql_dynamic, ' 
+		   FROM 
+				rcbill_my.rep_activenumberlastday
+		   GROUP BY servicecategory, package)'
+	   );
+
+-- select @sql;
+	 
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+set session group_concat_max_len = 1024;
+
+-- select * from rcbill_my.rep_activenumberlastday;
+-- select * from rcbill_my.rep_activenumberlastday_pv;
+
+
+
+
+
+
+
+
+
+
+
 END$$
 DELIMITER ;

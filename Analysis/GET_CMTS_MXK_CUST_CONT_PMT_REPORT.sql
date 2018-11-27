@@ -25,12 +25,14 @@ order by clientcode
 select reportdate, network, clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(*) as recordcount, count(distinct clientcode) as distinctclients from 
 rcbill_my.rep_cust_cont_payment_cmts_mxk_trail
 group by 1,2,3, 4, 5
+order by reportdate desc
 ;
 
 select reportdate, network, clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(distinct clientcode) as distinctclients from 
 rcbill_my.rep_cust_cont_payment_cmts_mxk_trail
 where firstactivedate is not null and lastactivedate is not null
 group by 1,2,3, 4, 5
+order by reportdate desc
 ;
 
 

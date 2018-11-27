@@ -1,0 +1,178 @@
+select * from rcbill_my.rep_activenumberavg
+-- where package='Crimson'
+;
+
+select servicecategory, package,
+round(sum(`201601`)) as `201601`	,
+round(sum(`201602`)) as `201602`	,
+round(sum(`201603`)) as `201603`	,
+round(sum(`201604`)) as `201604`	,
+round(sum(`201605`)) as `201605`	,
+round(sum(`201606`)) as `201606`	,
+round(sum(`201607`)) as `201607`	,
+round(sum(`201608`)) as `201608`	,
+round(sum(`201609`)) as `201609`	,
+round(sum(`201610`)) as `201610`	,
+round(sum(`201611`)) as `201611`	,
+round(sum(`201612`)) as `201612`	,
+round(sum(`201701`)) as `201701`	,
+round(sum(`201702`)) as `201702`	,
+round(sum(`201703`)) as `201703`	,
+round(sum(`201704`)) as `201704`	,
+round(sum(`201705`)) as `201705`	,
+round(sum(`201706`)) as `201706`	,
+round(sum(`201707`)) as `201707`	,
+round(sum(`201708`)) as `201708`	,
+round(sum(`201709`)) as `201709`	,
+round(sum(`201710`)) as `201710`	,
+round(sum(`201711`)) as `201711`	,
+round(sum(`201712`)) as `201712`	,
+round(sum(`201801`)) as `201801`	,
+round(sum(`201802`)) as `201802`	,
+round(sum(`201803`)) as `201803`	,
+round(sum(`201804`)) as `201804`	,
+round(sum(`201805`)) as `201805`	,
+round(sum(`201806`)) as `201806`	,
+round(sum(`201807`)) as `201807`	,
+round(sum(`201808`)) as `201808`	,
+round(sum(`201809`)) as `201809`	,
+round(sum(`201810`)) as `201810`	,
+round(sum(`201811`)) as `201811`	,
+round(sum(`201812`)) as `201812`	,
+round(sum(`201901`)) as `201901`	,
+round(sum(`201902`)) as `201902`	,
+round(sum(`201903`)) as `201903`	,
+round(sum(`201904`)) as `201904`	,
+round(sum(`201905`)) as `201905`	,
+round(sum(`201906`)) as `201906`	,
+round(sum(`201907`)) as `201907`	,
+round(sum(`201908`)) as `201908`	,
+round(sum(`201909`)) as `201909`	,
+round(sum(`201910`)) as `201910`	,
+round(sum(`201911`)) as `201911`	,
+round(sum(`201912`)) as `201912`	
+
+
+from rcbill_my.rep_activenumberavg
+-- where package='Crimson'
+where reported='Y' and decommissioned='N'
+group by servicecategory, package
+;
+
+
+select servicecategory, package,
+round(sum(`201601`)) as `201601`	,
+round(sum(`201602`)) as `201602`	,
+round(sum(`201603`)) as `201603`	,
+round(sum(`201604`)) as `201604`	,
+round(sum(`201605`)) as `201605`	,
+round(sum(`201606`)) as `201606`	,
+round(sum(`201607`)) as `201607`	,
+round(sum(`201608`)) as `201608`	,
+round(sum(`201609`)) as `201609`	,
+round(sum(`201610`)) as `201610`	,
+round(sum(`201611`)) as `201611`	,
+round(sum(`201612`)) as `201612`	,
+round(sum(`201701`)) as `201701`	,
+round(sum(`201702`)) as `201702`	,
+round(sum(`201703`)) as `201703`	,
+round(sum(`201704`)) as `201704`	,
+round(sum(`201705`)) as `201705`	,
+round(sum(`201706`)) as `201706`	,
+round(sum(`201707`)) as `201707`	,
+round(sum(`201708`)) as `201708`	,
+round(sum(`201709`)) as `201709`	,
+round(sum(`201710`)) as `201710`	,
+round(sum(`201711`)) as `201711`	,
+round(sum(`201712`)) as `201712`	,
+round(sum(`201801`)) as `201801`	,
+round(sum(`201802`)) as `201802`	,
+round(sum(`201803`)) as `201803`	,
+round(sum(`201804`)) as `201804`	,
+round(sum(`201805`)) as `201805`	,
+round(sum(`201806`)) as `201806`	,
+round(sum(`201807`)) as `201807`	,
+round(sum(`201808`)) as `201808`	,
+round(sum(`201809`)) as `201809`	,
+round(sum(`201810`)) as `201810`	,
+round(sum(`201811`)) as `201811`	,
+round(sum(`201812`)) as `201812`	,
+round(sum(`201901`)) as `201901`	,
+round(sum(`201902`)) as `201902`	,
+round(sum(`201903`)) as `201903`	,
+round(sum(`201904`)) as `201904`	,
+round(sum(`201905`)) as `201905`	,
+round(sum(`201906`)) as `201906`	,
+round(sum(`201907`)) as `201907`	,
+round(sum(`201908`)) as `201908`	,
+round(sum(`201909`)) as `201909`	,
+round(sum(`201910`)) as `201910`	,
+round(sum(`201911`)) as `201911`	,
+round(sum(`201912`)) as `201912`	
+
+
+from rcbill_my.rep_activenumberavg
+-- where package='Crimson'
+where reported='Y' and decommissioned='N'
+and upper(region)='MAHE'
+group by servicecategory, package
+;
+
+
+select servicecategory, package,
+round(sum(`201601`)) as `201601`	,
+round(sum(`201602`)) as `201602`	,
+round(sum(`201603`)) as `201603`	,
+round(sum(`201604`)) as `201604`	,
+round(sum(`201605`)) as `201605`	,
+round(sum(`201606`)) as `201606`	,
+round(sum(`201607`)) as `201607`	,
+round(sum(`201608`)) as `201608`	,
+round(sum(`201609`)) as `201609`	,
+round(sum(`201610`)) as `201610`	,
+round(sum(`201611`)) as `201611`	,
+round(sum(`201612`)) as `201612`	,
+round(sum(`201701`)) as `201701`	,
+round(sum(`201702`)) as `201702`	,
+round(sum(`201703`)) as `201703`	,
+round(sum(`201704`)) as `201704`	,
+round(sum(`201705`)) as `201705`	,
+round(sum(`201706`)) as `201706`	,
+round(sum(`201707`)) as `201707`	,
+round(sum(`201708`)) as `201708`	,
+round(sum(`201709`)) as `201709`	,
+round(sum(`201710`)) as `201710`	,
+round(sum(`201711`)) as `201711`	,
+round(sum(`201712`)) as `201712`	,
+round(sum(`201801`)) as `201801`	,
+round(sum(`201802`)) as `201802`	,
+round(sum(`201803`)) as `201803`	,
+round(sum(`201804`)) as `201804`	,
+round(sum(`201805`)) as `201805`	,
+round(sum(`201806`)) as `201806`	,
+round(sum(`201807`)) as `201807`	,
+round(sum(`201808`)) as `201808`	,
+round(sum(`201809`)) as `201809`	,
+round(sum(`201810`)) as `201810`	,
+round(sum(`201811`)) as `201811`	,
+round(sum(`201812`)) as `201812`	,
+round(sum(`201901`)) as `201901`	,
+round(sum(`201902`)) as `201902`	,
+round(sum(`201903`)) as `201903`	,
+round(sum(`201904`)) as `201904`	,
+round(sum(`201905`)) as `201905`	,
+round(sum(`201906`)) as `201906`	,
+round(sum(`201907`)) as `201907`	,
+round(sum(`201908`)) as `201908`	,
+round(sum(`201909`)) as `201909`	,
+round(sum(`201910`)) as `201910`	,
+round(sum(`201911`)) as `201911`	,
+round(sum(`201912`)) as `201912`	
+
+
+from rcbill_my.rep_activenumberavg
+-- where package='Crimson'
+where reported='Y' and decommissioned='N'
+and upper(region)='PRASLIN'
+group by servicecategory, package
+;

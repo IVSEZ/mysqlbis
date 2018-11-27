@@ -412,27 +412,44 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 			, clientaddress as clientaddress, cl_location as clientlocation, cl_area as clientarea 
 			from rcbill.clientextendedreport
 			*/
-            
-			select a.*, b.firstactivedate, b.lastactivedate
+			select a.*
+			, 
+			case 
+			when @REPORTDATE=a.lastactivedate then 'Active' 
+			else 'InActive'
+			end as `IsAccountActive` 
+			,
+			case 
+			when a.dayssincelastactive=0 then '1. Alive' 
+			when a.dayssincelastactive>0 and a.dayssincelastactive<=7 then '2. Snoozing'
+			when a.dayssincelastactive>7 and a.dayssincelastactive<=30 then '3. Asleep'
+			when a.dayssincelastactive>30 and a.dayssincelastactive<=90 then '4. Hibernating'
+			when a.dayssincelastactive>90 then '5. Dormant'
+            when a.dayssincelastactive is null then '5. Dormant'
+			end as `AccountActivityStage` 
 			from 
-			(
-				select 
-					REPORTDATE as reportdate, CLIENTDEBT_REPORTDATE as currentdebt, CL_CLIENTCODE as clientcode, cl_clientname as clientname
-					, ActiveContracts as activecontracts, ActiveSubscriptions as activesubscriptions, firstcontractdate, FirstInvoiceDate as firstinvoicedate, LastInvoiceDate as lastinvoicedate
-					, FirstPaymentDate as firstpaymentdate, LastPaymentDate as lastpaymentdate, LastPaidAmount as lastpaidamount, TotalPayments as totalpayments, TotalPaymentAmount as totalpaymentamount
-					, ClassName as clientclass, CL_NIN as clientnin, CL_PassNo as clientpassport, CL_MPhone as clientphone, CL_MEMAIL as clientemail
-					, clientaddress as clientaddress, cl_location as clientlocation, cl_area as clientarea 
-					
-				from rcbill.clientextendedreport
-			) a
-			left join
-			(
-					select clientcode, min(period) as firstactivedate, max(period) as lastactivedate
+			(            
+					select a.*, b.firstactivedate, b.lastactivedate, datediff(@REPORTDATE,b.lastactivedate) as dayssincelastactive
 					from 
-					rcbill_my.customercontractactivity 
-					group by clientcode
-			) b
-			on a.clientcode=b.clientcode
+					(
+						select 
+							REPORTDATE as reportdate, CLIENTDEBT_REPORTDATE as currentdebt, CL_CLIENTCODE as clientcode, cl_clientname as clientname
+							, ActiveContracts as activecontracts, ActiveSubscriptions as activesubscriptions, firstcontractdate, FirstInvoiceDate as firstinvoicedate, LastInvoiceDate as lastinvoicedate
+							, FirstPaymentDate as firstpaymentdate, LastPaymentDate as lastpaymentdate, LastPaidAmount as lastpaidamount, TotalPayments as totalpayments, TotalPaymentAmount as totalpaymentamount
+							, ClassName as clientclass, CL_NIN as clientnin, CL_PassNo as clientpassport, CL_MPhone as clientphone, CL_MEMAIL as clientemail
+							, clientaddress as clientaddress, cl_location as clientlocation, cl_area as clientarea 
+							
+						from rcbill.clientextendedreport
+					) a
+					left join
+					(
+							select clientcode, min(period) as firstactivedate, max(period) as lastactivedate
+							from 
+							rcbill_my.customercontractactivity 
+							group by clientcode
+					) b
+					on a.clientcode=b.clientcode
+			) a 
         );
         
         select count(*) as allcust from rcbill_my.rep_allcust;

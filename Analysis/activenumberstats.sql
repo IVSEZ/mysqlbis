@@ -1,4 +1,9 @@
 
+
+
+
+
+
 select region, network
 -- , clientclass, clienttype
 , servicecategory, package 

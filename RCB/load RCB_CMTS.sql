@@ -2,7 +2,8 @@
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20180902-1500.csv'
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20180915-1100.csv' 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20181013-1400.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20181013-1400.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20181126-1000.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_cmts` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
  IGNORE 1 LINES 
@@ -44,13 +45,16 @@ INSERTEDON=now()
 
 select count(*) as cmts from rcbill.rcb_cmts;
 
-select * from rcbill.rcb_cmts;
+-- select * from rcbill.rcb_cmts;
 
 
 select hfc_node, date(insertedon) as dateinserted, count(*) as devicecount
 from rcbill.rcb_cmts
-group by hfc_node, 2;
+group by hfc_node, 2
+order by 1, 2 desc
+;
 
+-- select * from rcbill.rcb_cmts where date(INSERTEDON) in (select max(date(INSERTEDON)) from rcbill.rcb_cmts)
 
 /*
 

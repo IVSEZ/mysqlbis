@@ -1,6 +1,6 @@
 use rcbill_my;
-set @reportdate='2018-10-15';
-SET @rundate='2018-10-15';
+set @reportdate='2018-11-25';
+SET @rundate='2018-11-25';
 
 /*
 -- All
@@ -61,11 +61,12 @@ insert into rcbill_my.customers_north
 	select @reportdate as ReportDate, a.*
     ,
 	case 
-	when a.dayssincelastactive=0 then '1. Alive' 
-	when a.dayssincelastactive>0 and a.dayssincelastactive<=7 then '2. Snoozing'
-	when a.dayssincelastactive>7 and a.dayssincelastactive<=30 then '3. Asleep'
-	when a.dayssincelastactive>30 and a.dayssincelastactive<=90 then '4. Comatose'
-	when a.dayssincelastactive>90 then '5. Dead'
+			when a.dayssincelastactive=0 then '1. Alive' 
+			when a.dayssincelastactive>0 and a.dayssincelastactive<=7 then '2. Snoozing'
+			when a.dayssincelastactive>7 and a.dayssincelastactive<=30 then '3. Asleep'
+			when a.dayssincelastactive>30 and a.dayssincelastactive<=90 then '4. Hibernating'
+			when a.dayssincelastactive>90 then '5. Dormant'
+            when a.dayssincelastactive is null then '5. Dormant'    
 	end as `ActivityStatus` 
     , 
     b.*
@@ -140,7 +141,9 @@ select * from rcbill_my.customers_north order by clientname;
 
 select * from rcbill_my.customers_north where clientisactive='Active' and activitystatus not in ('1. Alive');
 
-select * from rcbill_my.customers_north where clientisactive='Active' and activitystatus not in ('1. Alive');
+select * from rcbill_my.customers_north where ReportDate=@reportdate and lastactivedate is not null and clientcode='I18317' and clientisactive='Active' and activitystatus not in ('1. Alive');
+
+select distinct clientcode from rcbill_my.customers_north where ReportDate=@reportdate and lastactivedate is not null;
 
 /*
 select period, periodday, periodmth, periodyear, clientcode, clientname, contractcode, count(contractcode) as contractactivedays from rcbill_my.customercontractactivity 

@@ -61,13 +61,13 @@ inner join
 		)
         */
         -- PRASLIN
-        
+        /*
         and
         (
 			(clientarea like '%PRASLIN%') or (clientaddress like '%PRASLIN%') 
 			or (mxk_name like '%PRASLIN%') or (clean_mxk_name like '%PRASLIN%')
 		)
-        
+        */
         /*
         and
         (

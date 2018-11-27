@@ -161,59 +161,59 @@ select servicecategory, servicesubcategory, servicecategory2, package, clientcla
 
 from 
 (
-select 
-servicecategory, servicesubcategory, servicecategory2, package, clientclass, clienttype, region, reported, decommissioned 
-, case when periodyear=2016 and periodmth=01 then open_a end as `201601`
-, case when periodyear=2016 and periodmth=02 then open_a end as `201602`
-, case when periodyear=2016 and periodmth=03 then open_a end as `201603`
-, case when periodyear=2016 and periodmth=04 then open_a end as `201604`
-, case when periodyear=2016 and periodmth=05 then open_a end as `201605`
-, case when periodyear=2016 and periodmth=06 then open_a end as `201606`
-, case when periodyear=2016 and periodmth=07 then open_a end as `201607`
-, case when periodyear=2016 and periodmth=08 then open_a end as `201608`
-, case when periodyear=2016 and periodmth=09 then open_a end as `201609`
-, case when periodyear=2016 and periodmth=10 then open_a end as `201610`
-, case when periodyear=2016 and periodmth=11 then open_a end as `201611`
-, case when periodyear=2016 and periodmth=12 then open_a end as `201612`
-, case when periodyear=2017 and periodmth=01 then open_a end as `201701`
-, case when periodyear=2017 and periodmth=02 then open_a end as `201702`
-, case when periodyear=2017 and periodmth=03 then open_a end as `201703`
-, case when periodyear=2017 and periodmth=04 then open_a end as `201704`
-, case when periodyear=2017 and periodmth=05 then open_a end as `201705`
-, case when periodyear=2017 and periodmth=06 then open_a end as `201706`
-, case when periodyear=2017 and periodmth=07 then open_a end as `201707`
-, case when periodyear=2017 and periodmth=08 then open_a end as `201708`
-, case when periodyear=2017 and periodmth=09 then open_a end as `201709`
-, case when periodyear=2017 and periodmth=10 then open_a end as `201710`
-, case when periodyear=2017 and periodmth=11 then open_a end as `201711`
-, case when periodyear=2017 and periodmth=12 then open_a end as `201712`
-, case when periodyear=2018 and periodmth=01 then open_a end as `201801`
-, case when periodyear=2018 and periodmth=02 then open_a end as `201802`
-, case when periodyear=2018 and periodmth=03 then open_a end as `201803`
-, case when periodyear=2018 and periodmth=04 then open_a end as `201804`
-, case when periodyear=2018 and periodmth=05 then open_a end as `201805`
-, case when periodyear=2018 and periodmth=06 then open_a end as `201806`
-, case when periodyear=2018 and periodmth=07 then open_a end as `201807`
-, case when periodyear=2018 and periodmth=08 then open_a end as `201808`
-, case when periodyear=2018 and periodmth=09 then open_a end as `201809`
-, case when periodyear=2018 and periodmth=10 then open_a end as `201810`
-, case when periodyear=2018 and periodmth=11 then open_a end as `201811`
-, case when periodyear=2018 and periodmth=12 then open_a end as `201812`
-, case when periodyear=2019 and periodmth=01 then open_a end as `201901`
-, case when periodyear=2019 and periodmth=02 then open_a end as `201902`
-, case when periodyear=2019 and periodmth=03 then open_a end as `201903`
-, case when periodyear=2019 and periodmth=04 then open_a end as `201904`
-, case when periodyear=2019 and periodmth=05 then open_a end as `201905`
-, case when periodyear=2019 and periodmth=06 then open_a end as `201906`
-, case when periodyear=2019 and periodmth=07 then open_a end as `201907`
-, case when periodyear=2019 and periodmth=08 then open_a end as `201908`
-, case when periodyear=2019 and periodmth=09 then open_a end as `201909`
-, case when periodyear=2019 and periodmth=10 then open_a end as `201910`
-, case when periodyear=2019 and periodmth=11 then open_a end as `201911`
-, case when periodyear=2019 and periodmth=12 then open_a end as `201912`
+	select 
+	servicecategory, servicesubcategory, servicecategory2, package, clientclass, clienttype, region, reported, decommissioned 
+	, case when periodyear=2016 and periodmth=01 then open_a end as `201601`
+	, case when periodyear=2016 and periodmth=02 then open_a end as `201602`
+	, case when periodyear=2016 and periodmth=03 then open_a end as `201603`
+	, case when periodyear=2016 and periodmth=04 then open_a end as `201604`
+	, case when periodyear=2016 and periodmth=05 then open_a end as `201605`
+	, case when periodyear=2016 and periodmth=06 then open_a end as `201606`
+	, case when periodyear=2016 and periodmth=07 then open_a end as `201607`
+	, case when periodyear=2016 and periodmth=08 then open_a end as `201608`
+	, case when periodyear=2016 and periodmth=09 then open_a end as `201609`
+	, case when periodyear=2016 and periodmth=10 then open_a end as `201610`
+	, case when periodyear=2016 and periodmth=11 then open_a end as `201611`
+	, case when periodyear=2016 and periodmth=12 then open_a end as `201612`
+	, case when periodyear=2017 and periodmth=01 then open_a end as `201701`
+	, case when periodyear=2017 and periodmth=02 then open_a end as `201702`
+	, case when periodyear=2017 and periodmth=03 then open_a end as `201703`
+	, case when periodyear=2017 and periodmth=04 then open_a end as `201704`
+	, case when periodyear=2017 and periodmth=05 then open_a end as `201705`
+	, case when periodyear=2017 and periodmth=06 then open_a end as `201706`
+	, case when periodyear=2017 and periodmth=07 then open_a end as `201707`
+	, case when periodyear=2017 and periodmth=08 then open_a end as `201708`
+	, case when periodyear=2017 and periodmth=09 then open_a end as `201709`
+	, case when periodyear=2017 and periodmth=10 then open_a end as `201710`
+	, case when periodyear=2017 and periodmth=11 then open_a end as `201711`
+	, case when periodyear=2017 and periodmth=12 then open_a end as `201712`
+	, case when periodyear=2018 and periodmth=01 then open_a end as `201801`
+	, case when periodyear=2018 and periodmth=02 then open_a end as `201802`
+	, case when periodyear=2018 and periodmth=03 then open_a end as `201803`
+	, case when periodyear=2018 and periodmth=04 then open_a end as `201804`
+	, case when periodyear=2018 and periodmth=05 then open_a end as `201805`
+	, case when periodyear=2018 and periodmth=06 then open_a end as `201806`
+	, case when periodyear=2018 and periodmth=07 then open_a end as `201807`
+	, case when periodyear=2018 and periodmth=08 then open_a end as `201808`
+	, case when periodyear=2018 and periodmth=09 then open_a end as `201809`
+	, case when periodyear=2018 and periodmth=10 then open_a end as `201810`
+	, case when periodyear=2018 and periodmth=11 then open_a end as `201811`
+	, case when periodyear=2018 and periodmth=12 then open_a end as `201812`
+	, case when periodyear=2019 and periodmth=01 then open_a end as `201901`
+	, case when periodyear=2019 and periodmth=02 then open_a end as `201902`
+	, case when periodyear=2019 and periodmth=03 then open_a end as `201903`
+	, case when periodyear=2019 and periodmth=04 then open_a end as `201904`
+	, case when periodyear=2019 and periodmth=05 then open_a end as `201905`
+	, case when periodyear=2019 and periodmth=06 then open_a end as `201906`
+	, case when periodyear=2019 and periodmth=07 then open_a end as `201907`
+	, case when periodyear=2019 and periodmth=08 then open_a end as `201908`
+	, case when periodyear=2019 and periodmth=09 then open_a end as `201909`
+	, case when periodyear=2019 and periodmth=10 then open_a end as `201910`
+	, case when periodyear=2019 and periodmth=11 then open_a end as `201911`
+	, case when periodyear=2019 and periodmth=12 then open_a end as `201912`
 
-from rcbill_my.activenumberavg
--- where reported='Y' and decommissioned='N'
+	from rcbill_my.activenumberavg
+	-- where reported='Y' and decommissioned='N'
 ) a 
 group by servicecategory, servicesubcategory, servicecategory2, package, clientclass, clienttype, region, reported, decommissioned
 )
