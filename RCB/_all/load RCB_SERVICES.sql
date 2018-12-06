@@ -54,4 +54,4 @@ DisablePeriodConsolidation=@DisablePeriodConsolidation
 
 ;
 
--- select * from rcb_services;
+-- select * from rcbill.rcb_services;

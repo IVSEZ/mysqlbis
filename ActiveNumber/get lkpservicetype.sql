@@ -97,6 +97,36 @@ insert into rcbill_my.lkpservicetype
 values
 ('VOD','VOD');
 
+
+insert into rcbill_my.lkpservicetype
+values
+('100GB::=100GB','100GB');
+
+insert into rcbill_my.lkpservicetype
+values
+('100GB','100GB');
+
+
+
+insert into rcbill_my.lkpservicetype
+values
+('Broad Band 300::=Broad Band 300','Broad Band 300');
+
+insert into rcbill_my.lkpservicetype
+values
+('Broad Band 300','Broad Band 300');
+
+
+insert into rcbill_my.lkpservicetype
+values
+('Prepaid Data (Bundle)::=Prepaid Data (Bundle)','Prepaid Data (Bundle)');
+
+insert into rcbill_my.lkpservicetype
+values
+('Prepaid Data (Bundle)','Prepaid Data (Bundle)');
+
+
+
 SET SQL_SAFE_UPDATES = 0;
 
 update rcbill_my.lkpservicetype

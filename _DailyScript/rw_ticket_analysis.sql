@@ -31,6 +31,7 @@ select commentuser,  count(comment) as comments, count(distinct ticketid) as d_t
 , count(comment)/count(distinct date(commentdate)) as avgcmtday
 from 
 rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=year(now())
 group by commentuser
 order by 2 desc;
 
@@ -57,6 +58,17 @@ select distinct commentuser from rcbill_my.clientticket_cmmtjourney;
 
 select * from  rcbill_my.clientticketjourney where commentuser in ('Rahul Walavalkar') and opendate>='2018-01-01';
 
+select assgntechregion, year(ASSGN_OPENDATE) as year, count(ticketid) as tickets, count(distinct ticketid) as d_tickets
+from rcbill_my.clientticket_assgnjourney
+-- where assgntechregion='Approvals'
+-- and year(ASSGN_OPENDATE)=year(now())
+-- and ASSGN_CLOSEDATE is not null
+-- and CLOSEDATE is not null
+group by assgntechregion, 2
+order by 2
+;
+
+
 select * from  rcbill_my.clientticket_cmmtjourney where commentuser in ('Rahul Walavalkar') ;
 set @ticketid=888003;
 
@@ -68,3 +80,10 @@ select * from rcbill_my.clientticket_cmmtjourney where ticketid=@ticketid; -- li
 select COUNT(*) as clientticketjourney  from rcbill_my.clientticketjourney;
 select COUNT(*) as clientticket_assgnjourney from rcbill_my.clientticket_assgnjourney;
 select COUNT(*) as clientticket_cmmtjourney  from rcbill_my.clientticket_cmmtjourney;
+
+
+
+select count(distinct ticketid) as clientticket_assgnjourney from rcbill_my.clientticket_assgnjourney
+where assgntechregion='Approvals'
+and CLOSEDATE is not null
+;

@@ -1,5 +1,6 @@
 SELECT * FROM rcbill_my.lkpreported
-where reported='Y'
+-- where reported='Y'
+order by 1
 ;
 
 /*
@@ -62,6 +63,17 @@ values
 ('Indian Corporate','Y');
 
 
+insert into rcbill_my.lkpreported
+values
+('100GB','N');
+
+insert into rcbill_my.lkpreported
+values
+('Broad Band 300','N');
+
+insert into rcbill_my.lkpreported
+values
+('Prepaid Data (Bundle)','N');
 
 
 -- Prepaid, Prepaid Data, Prepaid28, Variety, Broad Band 100, Broad Band 200, Broad Band Lite, Business Unlimited-4, Business Unlimited-4-daytime

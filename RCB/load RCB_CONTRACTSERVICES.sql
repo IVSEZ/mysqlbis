@@ -66,4 +66,4 @@ CREATE INDEX IDXContractServices3
 ON rcb_contractservices (ServiceID);
 
 
--- select * from rcb_contractservices;
+-- select * from rcbill.rcb_contractservices;

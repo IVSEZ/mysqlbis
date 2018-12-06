@@ -25,6 +25,7 @@ from
 		, sum(tkt_alldays) as service_alldays, sum(tkt_workdays) as service_workdays
 		from rcbill_my.clientticket_assgnjourney
         -- where assgntechregion in ('TECHNICAL - NEW SERVICE','TECHNICAL - WORK ORDER MANAGEMENT')
+        -- where year(OPENDATE)=2018
 		group by ticketid, service, clientcode, contractcode, tickettype, openreason, assgntechregion, 7, 8
 
 ) a
@@ -37,6 +38,7 @@ inner join
 --  TotalPayments2018, TotalPaymentAmount2018, clean_mxk_name, clean_mxk_interface, clean_hfc_node, clean_hfc_nodename, clean_connection_type
 	select * from 
     (
+		/*
 		select cl_clientcode, combined_clientcode, reportdate, clientname, services, network, activecontracts, clientlocation
 		, (select clientaddress from rcbill_my.rep_allcust where clientcode=cl_clientcode) as clientaddress
 		, (select clientarea from rcbill_my.rep_allcust where clientcode=cl_clientcode) as clientarea
@@ -47,6 +49,9 @@ inner join
         -- , clean_connection_type
 		, clean_mxk_name, clean_mxk_interface, clean_hfc_node, clean_hfc_nodename, clean_connection_type
         from rcbill_my.rep_cust_cont_payment_cmts_mxk 
+        */
+        
+        select * from rcbill_my.rep_custconsolidated
 	) a
     where 
 	(
@@ -109,7 +114,8 @@ inner join
     
 
 ) b
-on a.clientcode=b.cl_clientcode;
+-- on a.clientcode=b.cl_clientcode;
+on a.clientcode=b.clientcode;
 
 
 

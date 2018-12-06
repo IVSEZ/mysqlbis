@@ -6,7 +6,12 @@ SET @row_number = 0;
 
 SET @startdate='2018-11-01';
 -- select @startdate := subdate(current_date(),1);
-select @enddate := subdate(current_date(),1);
+
+
+-- select @enddate := subdate(current_date(),1);
+SET @enddate='2018-11-30';
+
+
 -- set @package='INTELENOVELA';
 -- set @package='DUALVIEW';
 -- set @package='MULTIVIEW';

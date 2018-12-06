@@ -573,15 +573,24 @@ create table rcbill_my.rep_customers_collection2018(index idxrcc20181(client_cod
 );
 
 
-
+set session group_concat_max_len = 15000;
 
 
     drop table if exists rcbill_my.tempa;
-	create table rcbill_my.tempa(index idxtempa1(CL_CLIENTCODE), index idxtempa2(CON_CONTRACTCODE)) as
+	create table rcbill_my.tempa(index idxtempa1(CL_CLIENTCODE), index idxtempa2(CON_CONTRACTCODE), index idxtempa3(CL_CLIENTID), index idxtempa4(CON_CONTRACTID)) as
     (
-		select CL_CLIENTCODE, CON_CONTRACTCODE, connection_type,client_code, contract_code, mxk_name, mxk_interface, hfc_node, nodename
+		/*
+		select CL_CLIENTCODE, CL_CLIENTID, CON_CONTRACTCODE, CON_CONTRACTID, connection_type,client_code, contract_code, mxk_name, mxk_interface, hfc_node, nodename
 		from rcbill_my.customers_contracts_cmts_mxk
-		group by CL_CLIENTCODE, CON_CONTRACTCODE,  connection_type,client_code, contract_code, mxk_name,mxk_interface,hfc_node,nodename	
+		group by CL_CLIENTCODE, CL_CLIENTID, CON_CONTRACTCODE, CON_CONTRACTID,  connection_type,client_code, contract_code, mxk_name,mxk_interface,hfc_node,nodename	
+		*/
+        
+        select CL_CLIENTCODE, CL_CLIENTID, CON_CONTRACTCODE, CON_CONTRACTID, connection_type,client_code, contract_code
+        , mxk_name, mxk_interface, hfc_node, nodename
+        , group_concat( distinct VPNR_SERVICETYPE order by S_SERVICENAME asc separator '~') as packageinfo
+		from rcbill_my.customers_contracts_cmts_mxk
+		group by CL_CLIENTCODE, CL_CLIENTID, CON_CONTRACTCODE, CON_CONTRACTID,  connection_type,client_code, contract_code, mxk_name,mxk_interface,hfc_node,nodename	
+        
     );
 
 
@@ -589,14 +598,18 @@ create table rcbill_my.rep_customers_collection2018(index idxrcc20181(client_cod
     create table rcbill_my.tempb(index idxtempb1(b_clientcode), index idxtempb2(b_contractcode))
     as
     (
-		select clientcode as b_clientcode, contractcode as b_contractcode, `201801`, `201802`, `201803`, `201804`, `201805`, `201806`, `201807`, `201808`, `201809`, `201810`, `201811`, `201812`, TotalPayments2018, TotalPaymentAmount2018
+		select clientcode as b_clientcode, clid as b_clientid, contractcode as b_contractcode, cid as b_contractid, `201801`, `201802`, `201803`, `201804`, `201805`, `201806`, `201807`, `201808`, `201809`, `201810`, `201811`, `201812`, TotalPayments2018, TotalPaymentAmount2018
         from rcbill_my.customers_contracts_collection_pivot2018     
     );
 
 drop table if exists rcbill_my.cust_cont_payment_cmts_mxk;
 
 create table rcbill_my.cust_cont_payment_cmts_mxk 
-(index idxccpcm1(cl_clientcode),index idxccpcm2(CON_CONTRACTCODE),index idxccpcm3(b_clientcode),index idxccpcm4(b_contractcode))
+(
+index idxccpcm1(cl_clientcode),index idxccpcm2(CON_CONTRACTCODE)
+,index idxccpcm3(b_clientcode),index idxccpcm4(b_contractcode)
+,index idxccpcm5(cl_clientid),index idxccpcm6(con_contractid)
+)
 as
 (
 select a.*, b.*
@@ -620,13 +633,16 @@ and a.CON_CONTRACTCODE=b.b_contractcode
 
 ;        
 
+
 drop table if exists rcbill_my.rep_cust_cont_payment_cmts_mxk;
 
 create table rcbill_my.rep_cust_cont_payment_cmts_mxk 
 (index rccpcm1(clientcode),index rccpcm2(clientname))
 as 
 (
-	select a.reportdate, a.currentdebt, a.clientcode, a.clientname, a.clientclass, c.services,c.network, a.activecontracts, a.clientlocation, a.firstactivedate, a.lastactivedate, a.totalpaymentamount
+	select a.reportdate, a.currentdebt, a.clientcode, a.clientname, a.clientclass
+    -- , c.services,c.network
+    , a.activecontracts, a.clientlocation, a.firstactivedate, a.lastactivedate, a.totalpaymentamount
 	,b.*
     , substring_index(b.mxk_name,'|',-1) as clean_mxk_name
     , substring_index(b.mxk_interface,'|',-1) as clean_mxk_interface
@@ -640,9 +656,12 @@ as
 			select ifnull(cl_clientcode,b_clientcode) as combined_clientcode, cl_clientcode
 			-- , b_clientcode
 			, coalesce(max(b_clientcode)) as b_clientcode
-			, coalesce(group_concat((connection_type) separator '|')) as connection_type, coalesce(group_concat((mxk_name) separator '|')) as mxk_name
-			, coalesce(group_concat((mxk_interface)  separator '|')) as mxk_interface, coalesce(group_concat((hfc_node)  separator '|')) as hfc_node
-			, coalesce(group_concat((nodename) separator '|')) as nodename
+			, coalesce(group_concat((connection_type) order by con_contractid asc separator '|')) as connection_type
+            , coalesce(group_concat((mxk_name)  order by con_contractid asc separator '|')) as mxk_name
+			, coalesce(group_concat((mxk_interface) order by con_contractid asc  separator '|')) as mxk_interface
+            , coalesce(group_concat((hfc_node)  order by con_contractid asc separator '|')) as hfc_node
+			, coalesce(group_concat((nodename)  order by con_contractid asc separator '|')) as nodename
+            , coalesce(group_concat(distinct packageinfo order by con_contractid asc separator '|')) as packageinfo
 			, sum(`201801`) as `201801`, sum(`201802`) as `201802`, sum(`201803`) as `201803`, sum(`201804`) as `201804`
 			, sum(`201805`) as `201805`, sum(`201806`) as `201806`, sum(`201807`) as `201807`, sum(`201808`) as `201808`
 			, sum(`201809`) as `201809`, sum(`201810`) as `201810`, sum(`201811`) as `201811`, sum(`201812`) as `201812`
@@ -651,13 +670,14 @@ as
 			from rcbill_my.cust_cont_payment_cmts_mxk 
 			-- where cl_clientcode='I.000011750'
 			group by 1, cl_clientcode 
+            order by con_contractid
     ) b
     on
     a.clientcode=b.combined_clientcode
     
-    left join
-    rcbill_my.clientstats c 
-    on a.clientcode=c.clientcode
+    -- left join
+    -- rcbill_my.clientstats c 
+    -- on a.clientcode=c.clientcode
 )
 ;
     
@@ -668,6 +688,7 @@ drop table if exists rcbill_my.tempb;
 ####################################
 #CREATE CONSOLIDATED CUSTOMER REPORT
 ####################################
+
 
 drop table if exists rcbill_my.rep_custconsolidated;
 create table rcbill_my.rep_custconsolidated as
@@ -682,17 +703,19 @@ create table rcbill_my.rep_custconsolidated as
 	`accountactivitystage`,
 	`clientname`,
 	`clientclass`,
-	`services`,
+	`activenetwork`,
+	`activeservices`,
 	`activecontracts`,
 	`activesubscriptions`,
 	`clientaddress`,
 	`clientlocation`,
-	`network`,
 	`clean_connection_type`,
 	`clean_mxk_name`,
 	`clean_mxk_interface`,
 	`clean_hfc_node`,
 	`clean_hfc_nodename`,
+    `hfc_district`,
+    `hfc_subdistrict`,
 	`firstactivedate`,
 	`lastactivedate`,
 	`dayssincelastactive`,
@@ -731,81 +754,99 @@ create table rcbill_my.rep_custconsolidated as
 	`mxk_interface`,
 	`hfc_node`,
 	`nodename`,
-	`contractinfo`
+	`contractinfo`,
+    `packageinfo`
 	from 
 	(
 
-	select
-	b.* ,
-	-- a.clientcode,
-	a.AccountActivityStage,
-	a.activesubscriptions,
-	a.clientaddress,
-	a.clientarea,
+		select
+		b.* ,
+        d.activeservices,
+        d.activenetwork,
+		-- a.clientcode,
+		a.AccountActivityStage,
+		a.activesubscriptions,
+		a.clientaddress,
+		a.clientarea,
 
-	a.clientemail,
-	a.clientnin,
-	a.clientpassport,
-	a.clientphone,
-	a.dayssincelastactive,
-	a.firstcontractdate,
-	a.firstinvoicedate,
-	a.firstpaymentdate,
-	a.IsAccountActive,
-	a.lastinvoicedate,
-	a.lastpaidamount,
-	a.lastpaymentdate,
-	a.totalpayments,
-	c.contractinfo
-	from 
-	rcbill_my.rep_allcust a 
-	inner join 
-	rcbill_my.rep_cust_cont_payment_cmts_mxk b
-	on 
-	a.clientcode=b.clientcode
+		a.clientemail,
+		a.clientnin,
+		a.clientpassport,
+		a.clientphone,
+		a.dayssincelastactive,
+		a.firstcontractdate,
+		a.firstinvoicedate,
+		a.firstpaymentdate,
+		a.IsAccountActive,
+		a.lastinvoicedate,
+		a.lastpaidamount,
+		a.lastpaymentdate,
+		a.totalpayments,
+		c.contractinfo,
+		(select DISTRICT from rcbill.rcb_techregions where INTERFACENAME=b.clean_hfc_node limit 1) as hfc_district,
+		(select group_concat(subdistrict separator '|') as hfc_subdistrict from rcbill.rcb_techregions where INTERFACENAME=b.clean_hfc_node) as hfc_subdistrict
+		from 
+		rcbill_my.rep_allcust a 
+		inner join 
+		rcbill_my.rep_cust_cont_payment_cmts_mxk b
+		on 
+		a.clientcode=b.clientcode
 
-	-- where 
-	/*
-	(
-		a.clientaddress like '%glacis%' or a.clientaddress like '%glasic%'  or a.clientaddress like '%glaci%'
-	or
-		a.clientaddress like '%beau vallon%' or a.clientaddress like '%beauvallon%' or a.clientaddress like '%beauvalon%' 
-		or a.clientaddress like '%beauvalon%' or a.clientaddress like '%beau  vallon%' or a.clientaddress like '%beau-vallon%'
-		or a.clientaddress like '%beau  valon%'
-	or
-		a.clientaddress like '%belombre%' or a.clientaddress like '%bel ombre%' or a.clientaddress like '%belom%'  or a.clientaddress like '%belomb%'  or a.clientaddress like '%belomber%'
-	or
-		a.clientaddress like '%maca%' or a.clientaddress like '%mach%'
-	)
-	and
-	*/ 
-	-- a.firstactivedate is not null
-	-- and a.clientcode='I.000011750'
-
-	inner join 
-	(
-		select client_code as clientcode, coalesce(group_concat((CONTRACT_INFO) separator '|')) as contractinfo
-		from
+		-- where 
+		/*
 		(
-		select CLIENT_CODE
-		, concat(coalesce(CONTRACT_CODE,''),'~',coalesce(SERVICE_TYPE,''),'~',coalesce(FSAN,''),'~',coalesce(MAC,''),'~',coalesce(UID,'')) as CONTRACT_INFO 
-		from rcbill_my.rep_clientcontractdevices 
-		-- where CLIENT_CODE='I.000011750'
+			a.clientaddress like '%glacis%' or a.clientaddress like '%glasic%'  or a.clientaddress like '%glaci%'
+		or
+			a.clientaddress like '%beau vallon%' or a.clientaddress like '%beauvallon%' or a.clientaddress like '%beauvalon%' 
+			or a.clientaddress like '%beauvalon%' or a.clientaddress like '%beau  vallon%' or a.clientaddress like '%beau-vallon%'
+			or a.clientaddress like '%beau  valon%'
+		or
+			a.clientaddress like '%belombre%' or a.clientaddress like '%bel ombre%' or a.clientaddress like '%belom%'  or a.clientaddress like '%belomb%'  or a.clientaddress like '%belomber%'
+		or
+			a.clientaddress like '%maca%' or a.clientaddress like '%mach%'
+		)
+		and
+		*/ 
+		-- a.firstactivedate is not null
+		-- and a.clientcode='I.000011750'
 
-		) a 
-		group by 1
-	) c
-	on a.clientcode=c.clientcode
+		inner join 
+		(
+			select client_code as clientcode, coalesce(group_concat((CONTRACT_INFO) separator '|')) as contractinfo
+			from
+			(
+			select CLIENT_CODE
+			, concat(coalesce(CONTRACT_CODE,''),'~',coalesce(SERVICE_TYPE,''),'~',coalesce(FSAN,''),'~',coalesce(MAC,''),'~',coalesce(UID,'')) as CONTRACT_INFO 
+			from rcbill_my.rep_clientcontractdevices 
+			-- where CLIENT_CODE='I.000011750'
+
+			) a 
+			group by 1
+		) c
+		on a.clientcode=c.clientcode
+        
+        left join
+        (
+			select clientcode
+			, coalesce(group_concat((services) order by network asc separator '|')) as activeservices
+			, coalesce(group_concat((network) order by network asc separator '|')) as activenetwork
+			from rcbill_my.clientstats  
+            group by clientcode
+        ) d
+        on a.clientcode=d.clientcode
 	) a
 )
 -- where clientcode='I6816'
 ;
 
+select count(*) as rep_custconsolidated from rcbill_my.rep_custconsolidated;
 
-
+set session group_concat_max_len = 1024;
 /*
 
 select * from rcbill_my.rep_cust_cont_payment_cmts_mxk;
+
+select * from rcbill_my.rep_custconsolidated;
 
 select * from rcbill.rcb_cmts;
 select * from rcbill.rcb_mxk;
