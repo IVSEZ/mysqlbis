@@ -3,6 +3,17 @@
 ### GET CMTS MXK REPORT
 
 use rcbill_my;
+/*
+ALTER table rcbill_my.rep_cust_cont_payment_cmts_mxk_trail
+    Add column packageinfo text AFTER nodename;
+    
+ALTER table rcbill_my.rep_cust_cont_payment_cmts_mxk_trail
+	Drop column services;
+ALTER table rcbill_my.rep_cust_cont_payment_cmts_mxk_trail
+	Drop column network;
+*/
+
+
 ## RUN THIS ONLY AFTER THE CMTS AND MXK HAVE BEEN UPDATED and REVENUE_PER_NODE_MXK has been run
 /*
 insert into rcbill_my.rep_cust_cont_payment_cmts_mxk_trail
@@ -22,19 +33,38 @@ order by clientcode
 
 
 
-select reportdate, network, clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(*) as recordcount, count(distinct clientcode) as distinctclients from 
+select reportdate
+-- , network
+, clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(*) as recordcount, count(distinct clientcode) as distinctclients from 
 rcbill_my.rep_cust_cont_payment_cmts_mxk_trail
-group by 1,2,3, 4, 5
+group by 1,2,3, 4 -- , 5
 order by reportdate desc
 ;
 
-select reportdate, network, clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(distinct clientcode) as distinctclients from 
+select reportdate
+-- , network
+, clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(distinct clientcode) as distinctclients from 
 rcbill_my.rep_cust_cont_payment_cmts_mxk_trail
 where firstactivedate is not null and lastactivedate is not null
-group by 1,2,3, 4, 5
+group by 1,2,3, 4 -- , 5
 order by reportdate desc
 ;
 
+select HFC_NODE, NODENAME, CMTS_DATE, date(INSERTEDON) as INSERTED_ON
+, count(distinct CLIENT_CODE) as UNIQUE_ACCOUNTS, count(distinct CONTRACT_CODE) as UNIQUE_CONTRACTS
+, count(distinct MAC) as UNIQUE_MAC_INRCBOSS, count(distinct MAC_ADDRESS) as UNIQUE_MAC_INCMTS
+from rcbill_my.customers_cmts
+group by HFC_NODE, NODENAME, CMTS_DATE, date(INSERTEDON)
+order by HFC_NODE
+;
+
+select MXK_NAME, MXK_DATE, date(INSERTEDON) as INSERTED_ON
+, count(distinct CLIENT_CODE) as UNIQUE_ACCOUNTS, count(distinct CONTRACT_CODE) as UNIQUE_CONTRACTS
+, count(distinct FSAN2) as UNIQUE_FSAN_INRCBOSS, count(distinct SERIAL_NUM2) as UNIQUE_FSAN_INMXK
+from rcbill_my.customers_mxk
+group by MXK_NAME, MXK_DATE, date(INSERTEDON)
+order by MXK_NAME
+;
 
 
 
@@ -44,6 +74,12 @@ order by reportdate desc
 
 
 /*
+select * from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail
+where 
+reportdate='2018-12-19' and
+clean_mxk_name is null and clean_connection_type='GPON'
+;
+
 select *, year(firstactivedate) as firstactiveyear, month(firstactivedate) as firstactivemonth
 , year(lastactivedate) as lastactiveyear, month(lastactivedate) as lastactivemonth 
 from rcbill_my.rep_cust_cont_payment_cmts_mxk 

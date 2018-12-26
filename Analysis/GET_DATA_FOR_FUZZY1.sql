@@ -100,4 +100,41 @@ select a.kod as kod1, a.firm as  firm1, a.danno as danno1
      group by mphone
      order by 2 desc     
 	;
+    
+    
+    show columns from rcbill.rcb_tclients;
+    select kod, firm, bemail, memail from rcbill.rcb_tclients;
+    
+	 select mphone, count(*) as phonecount
+     from 
+	 rcbill.rcb_tclients
+     group by mphone
+     order by 2 desc;
+     
+     select mphone, count(*) as phonecount
+     from 
+	 ( 	
+     
+			select kod, firm, mphone from rcbill.rcb_tclients  
+            where 
+            /*
+            firm not like "%?%" 
+			and firm not like "%close%" and firm not like "%PREPAID CARDS%" 
+			and mphone is not null and mphone <> '' and mphone not like "%4414243%" 
+            and mphone not like '%248248-0%' and mphone not like '%248248-248%'
+			and length(mphone) >= 7 
+			*/
+            firm not regexp 'prepaid|"?"|close'
+            AND
+			mphone <> '' and mphone is not null and length(mphone)>=7
+            and 
+            mphone not regexp '4414243|248248-0|248248-248|248248|24800248-248|0248111111'
+            -- and 
+            -- mphone regexp '-'
+            order by firm
+	 ) a 
+     group by mphone
+     order by 2 desc     
+	;
+    
      

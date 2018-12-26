@@ -48,7 +48,8 @@ create table rcbill_my.salestoactive as
 		a.clientcode as o_clientcode, a.contract as o_contractcode, a.clientclass as o_clientclass, a.contracttype as o_contracttype, a.service as o_service, a.servicetype as o_servicetype
 		, a.ordertype as o_ordertype, a.cost as o_cost, a.price as o_price, a.num as o_num
 		, a.saleschannel as o_saleschannel, a.createdby as o_createdby, a.region as o_region 
-		,b.clientname as ac_clientname, b.clientclass as ac_clientclass, b.clienttype as ac_clienttype, b.servicecategory as ac_servicecategory
+        , b.clientcode as ac_clientcode, b.contractcode as ac_contractcode
+		, b.clientname as ac_clientname, b.clientclass as ac_clientclass, b.clienttype as ac_clienttype, b.servicecategory as ac_servicecategory
 		, b.servicecategory2 as ac_servicecategory2, b.servicesubcategory as ac_servicesubcategory, b.package as ac_package, b.price as ac_price, b.ACTIVECOUNT as ac_activecount
         , b.network as ac_network
 		, a.orderday as o_orderday, a.ordermonth as o_ordermonth, a.orderdate as o_orderdate, a.weekday as o_weekday    
@@ -66,6 +67,7 @@ create table rcbill_my.salestoactive as
             , orderday, ordermonth, orderdate, weekday, saleschannel,createdby, region 
 			from rcbill_my.sales
 			where 
+			-- clientcode='I.000016973' and
 			-- orderday='2017-01-04' 
 			-- and 
 			salestype='New Sales'
@@ -85,7 +87,8 @@ create table rcbill_my.salestoactive as
             -- , rcbill_my.GetActiveDaysForContract(clientcode,contractcode,package) as ActiveDaysForContract 
 			from rcbill_my.customercontractactivity
 			-- where clientname like '%rahul walavalkar%'
-			group by clientcode
+			-- where clientcode = 'I.000016973'
+            group by clientcode
 			-- , clientname
 			, contractcode
             , package

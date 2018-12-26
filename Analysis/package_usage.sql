@@ -2,11 +2,13 @@
 
 -- duration 1883.640 sec
 
+set @perioddate='2018-12-01';
+
 drop table if exists rcbill_my.tempcpp;
 create table rcbill_my.tempcpp
 as
 (
-	select distinct contractcode, period, package from rcbill_my.customercontractactivity where period>='2018-01-01'
+	select distinct contractcode, period, package from rcbill_my.customercontractactivity where period>=@perioddate
 );
 	CREATE INDEX tdxtempcpp1
 	ON rcbill_my.tempcpp (contractcode);
@@ -43,9 +45,9 @@ create table rcbill_my.tempcppd as
 	ON rcbill_my.tempcppd (csid);
 
 
--- select * from rcbill_my.tempcpp limit 100;
+-- select * from rcbill_my.tempcpp where contractcode='I.000344969' limit 100;
 -- show index from rcbill_my.tempcpp;
--- select * from rcbill_my.tempcppd limit 100;
+-- select * from rcbill_my.tempcppd where contractcode='I.000344969' contractid=2164698 limit 100;
 -- show index from rcbill_my.tempcppd;
 
 -- select count(*) as tempcpp from rcbill_my.tempcpp;
@@ -53,6 +55,8 @@ create table rcbill_my.tempcppd as
 
 
 -- show index from rcbill.rcb_ipusage;
+-- select * from rcbill.rcb_ipusage where usagedate>=@perioddate and cid=2164698;
+-- select * from rcbill.rcb_ipusage where usagedate>=@perioddate and cid=2181700;
 
 drop table if exists rcbill_my.package_ip_usage;
 create table rcbill_my.package_ip_usage as
@@ -87,7 +91,7 @@ create table rcbill_my.package_ip_usage as
         and a.csid=b.csid
 		and a.USAGEDATE=b.period
         
-        where a.USAGEDATE>='2018-01-01'
+        where a.USAGEDATE>=@perioddate
         -- where date(a.USAGEDATE)>='2018-01-01'
 		-- and a.deviceid=b.Deviceid
 	
@@ -122,7 +126,7 @@ create table rcbill_my.package_ip_usage as
 		on a.cid=b.contractid
         and a.csid=b.csid
         and a.USAGEDATE=b.period
-		where a.USAGEDATE>='2018-01-01'
+		where a.USAGEDATE>=@perioddate
         -- and a.deviceid=b.Deviceid
         -- where date(a.USAGEDATE)>='2018-01-01'
     ) 
@@ -132,7 +136,45 @@ create table rcbill_my.package_ip_usage as
 ;
 
 
-select * from rcbill_my.package_ip_usage;
+-- select * from rcbill_my.package_ip_usage where clientcode='I.000011750';
+-- TrafficType
+-- select *, (select name from rcbill.rcb_traffictypes where id=TRAFFICTYPE) as ttype from rcbill_my.package_ip_usage where package in ('Crimson','Crimson Corporate');
+
+select PACKAGE, NETWORK, TRAFFIC, mb_used, usagedays, clients, d_clients
+, (mb_used/d_clients) as usageperclient
+, (mb_used/usagedays) as usageperday
+, ((mb_used/d_clients)/usagedays) as usageperclientperday
+from
+(
+	select PACKAGE, NETWORK, TRAFFIC, count(distinct date(usagedate)) as usagedays
+	, count(clientcode) as clients, count(distinct clientcode) as d_clients
+	, sum(mb_used) as mb_used
+	from 
+	(
+		select *
+		, (select name from rcbill.rcb_traffictypes where id=TRAFFICTYPE) as TRAFFIC 
+		,
+		   case 
+				when contracttype='GNET' then 'GPON'
+				when contracttype='BUNDLE (GPON)' then 'GPON'
+				when contracttype='BUNDLE (CI)' then 'HFC'
+				when contracttype='INTERNET' then 'HFC'
+			end as NETWORK
+		from rcbill_my.package_ip_usage 
+        where 
+        0=0
+        -- and package in ('Crimson','Crimson Corporate')
+        and package in ('Amber','Amber Corporate')
+        -- and clientcode='I.000002333'
+	) a 
+	where
+	0=0 
+	and TRAFFIC='Default'
+	-- and date(usagedate)='2018-12-01'
+	group by 1, 2, 3
+) a
+;
+
 
 
 /*

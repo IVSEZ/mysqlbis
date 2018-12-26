@@ -11,6 +11,7 @@ select * from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail;
 select * from rcbill_my.rep_clientstats1;
 select * from rcbill_my.rep_clientstats2;
 select * from rcbill_my.rep_anreport_all;
+select * from rcbill_my.rep_anreport_i;
 
 select * from rcbill_my.rep_addon;
 select * from rcbill_my.rep_housingestates;
@@ -26,11 +27,35 @@ select * from rcbill_my.rep_custconsolidated;
 
 select * from rcbill_my.rep_activenumberavg;
 select * from rcbill_my.rep_activenumberavg2;
+select lastday, round(sum(activecount)) as activecount
+from rcbill_my.rep_activenumberavg2
+group by lastday 
+;
 
 select * from rcbill_my.rep_activenumberlastday;
+select period, sum(activecount) as activecount
+from rcbill_my.rep_activenumberlastday
+group by period
+;
+
+
+show columns from rcbill_my.rep_activenumberlastday_pv;
 select * from rcbill_my.rep_activenumberlastday_pv;
 select * from rcbill_my.rep_activenumberavg_pv;
 
+select * from rcbill_my.rep_activenumberavgMahe;
+select * from rcbill_my.rep_activenumberavgMahe_pv;
+select * from rcbill_my.rep_activenumberavgPraslin;
+select * from rcbill_my.rep_activenumberavgPraslin_pv; 
+
+select lastday, round(sum(activecount)) as activecount 
+from rcbill_my.rep_activenumberavgMahe
+group by lastday
+;
+select lastday, round(sum(activecount)) as activecount 
+from rcbill_my.rep_activenumberavgPraslin
+group by lastday
+;
 
 select servicecategory
 , sum(`20161231`) as `20161231` 
@@ -102,4 +127,29 @@ where IsAccountActive='Active'
 group by 1,2, 3, 4
 -- order by 1,2,3, 4
 with rollup
+;
+
+-- ACTIVE NUMBERS from Rahul analysis
+select CONTRACTCURRENTSTATUS, VPNR_SERVICETYPE,CL_CLCLASSNAME
+-- , S_SERVICENAME
+, count( distinct CL_CLIENTID) as d_clients
+, count(CL_CLIENTID) as clients, count(CON_CONTRACTCODE) as contracts, sum(CS_SUBSCRIPTIONCOUNT) as subs
+from rcbill.clientcontractssubs
+group by CONTRACTCURRENTSTATUS, VPNR_SERVICETYPE,CL_CLCLASSNAME
+-- , S_SERVICENAME
+with rollup
+;
+
+
+
+
+/*clients and contracts who have nexttv without parent device id*/
+select distinct CLIENT_CODE, CLIENT_NAME, CONTRACT_CODE, USERNAME from rcbill_my.rep_clientcontractdevices
+where SERVICE_TYPE='NEXTTV'
+and (username is null or username='')
+;
+
+select distinct CLIENT_CODE, CLIENT_NAME, CONTRACT_CODE, USERNAME from rcbill_my.rep_clientcontractdevices
+where SERVICE_TYPE='NEXTTV'
+and (username is not null and username<>'')
 ;

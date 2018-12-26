@@ -13,9 +13,17 @@ select * from
 
 ) a 
 where id>1000
-and 
-TITLETYPE='T'
+-- and 
+-- TITLETYPE='T'
 order by TOTAL_DURATION desc
 ;
                     
-                    
+         
+select titletype, count(*) as typecount
+from rcbill.rcb_vodtitles
+where id>1000
+group by titletype
+with rollup;
+
+
+select *, rcbill.GetVODTitleFromResource(RESOURCE) from rcbill.rcb_vodtitles where id>1000;

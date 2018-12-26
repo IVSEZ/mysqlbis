@@ -1,5 +1,6 @@
 set @startdate='2018-01-01';
 set @enddate='2018-08-15';
+select  @enddate := subdate(current_date(),1);
 set @package='DUALVIEW';
 set @category='INTERNET';
 
@@ -12,7 +13,8 @@ select a.*, rcbill.GetClientName(a.clientcode) as clientname from
 	from rcbill_my.customercontractactivity 
 	where 
 	clientcode in 
-    (select distinct clientcode from rcbill_my.customercontractactivity where reported='Y' and period>=@startdate and period<=@enddate
+    (select distinct clientcode from rcbill_my.customercontractactivity where reported='Y' 
+    and period>=@startdate and period<=@enddate
 		-- and upper(package)=@package 
 		and upper(servicecategory)=@category
     )

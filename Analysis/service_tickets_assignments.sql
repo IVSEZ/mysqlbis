@@ -25,7 +25,7 @@ from
 		, sum(tkt_alldays) as service_alldays, sum(tkt_workdays) as service_workdays
 		from rcbill_my.clientticket_assgnjourney
         -- where assgntechregion in ('TECHNICAL - NEW SERVICE','TECHNICAL - WORK ORDER MANAGEMENT')
-        -- where year(OPENDATE)=2018
+        where year(OPENDATE)=2018
 		group by ticketid, service, clientcode, contractcode, tickettype, openreason, assgntechregion, 7, 8
 
 ) a

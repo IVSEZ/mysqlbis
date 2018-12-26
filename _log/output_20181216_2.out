@@ -1,0 +1,126 @@
+    -> 
+    -> mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> ECHO Stop Measure %Time% >> C:\workspace\cloud\code\sql\_log\timer_20181216_2.out
+Show warnings disabled.
+--------------
+
+Connection id:		12930
+Current database:	rcbill
+Current user:		root@192.168.1.174
+SSL:			Not in use
+Using delimiter:	;
+Server version:		5.5.56-MariaDB MariaDB Server
+Protocol version:	10
+Connection:		192.168.1.166 via TCP/IP
+Server characterset:	latin1
+Db     characterset:	latin1
+Client characterset:	cp850
+Conn.  characterset:	cp850
+TCP port:		3306
+Uptime:			111 days 9 hours 20 min 19 sec
+
+Threads: 8  Questions: 3861129948  Slow queries: 8364  Opens: 40643  Flush tables: 2  Open tables: 394  Queries per second avg: 401.197
+--------------
+
+ERROR: 
+Unknown command '\_'.
+    -> 
+    -> mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> REM *************** CODE TO BENCHMARK ENDS HERE
+    -> ***********************
+    -> 
+    -> REM
+    -> ***************************************
+    -> REM Get the hours/min/secs/hun, etc
+    -> from current date and time
+    -> REM ***************************************
+    -> set
+    -> EndTime=%TIME%
+    -> set EndHour=%EndTime:~0,2%
+    -> set EndMin=%EndTime:~3,2%
+    -> set
+    -> EndSec=%EndTime:~6,2%
+    -> set EndHun=%EndTime:~9,2%
+    -> 
+    -> REM *******************************
+    -> REM Calculate
+    -> the difference
+    -> REM Hours, Minutes, seconds, hundredths calculated
+    -> separately
+    -> REM *******************************
+    -> set /a
+    -> Hour_Diff=EndHour-hour
+    -> set /a Min_Diff=EndMin-min
+    -> set /a
+    -> Sec_Diff=EndSec-sec
+    -> set /a Hun_Diff=EndHun-hun
+    -> 
+    -> REM *******************************
+    -> REM Carry any
+    -> differences
+    -> REM *******************************
+    -> 
+    -> IF %Hun_Diff% LSS 0 (
+    -> set /a
+    -> Hun_Diff=Hun_Diff+100
+    -> set /a Sec_Diff=Sec_Diff+1
+    -> )
+    -> 
+    -> IF %Sec_Diff% LSS 0 (
+    -> set /a
+    -> Sec_Diff=Sec_Diff+60
+    -> set /a Min_Diff=Min_Diff+1
+    -> )
+    -> 
+    -> If %Min_Diff% LSS 0 (
+    -> set /a
+    -> Min_Diff=Min_Diff+60
+    -> set /a Hour_Diff=Hour_Diff+1
+    -> )
+    -> 
+    -> echo Start Time = %hour%:%min%:%sec%:%hun%
+    -> echo
+    -> End Time = %EndHour%:%EndMin%:%EndSec%:%EndHun%
+    -> echo.
+    -> echo %Hour_Diff% hrs
+    -> %Min_Diff% mins %Sec_Diff%.%Hun_Diff% secs
+    -> REM The End
+    -> 
+    -> exit
+    -> Terminal close -- exit!

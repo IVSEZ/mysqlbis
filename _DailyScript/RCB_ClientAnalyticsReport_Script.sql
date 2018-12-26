@@ -15,10 +15,10 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
 #2. Create ClientContract summary table
 
-		drop table if exists clientcontracts;
+		drop table if exists rcbill.clientcontracts;
 
 
-		CREATE TABLE IF NOT EXISTS clientcontracts AS (
+		CREATE TABLE IF NOT EXISTS rcbill.clientcontracts AS (
 		SELECT
 		CL.ID as CL_CLIENTID
 		,CL.FIRM as CL_CLIENTNAME
@@ -155,7 +155,8 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		-- active subscriptions table
 		drop table if exists clientcontractssubs;
 		CREATE TABLE IF NOT EXISTS clientcontractssubs AS (
-			select distinct cl_clientid, cl_clientname, cl_clientcode, cl_clclassname, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, CS_SUBSCRIPTIONCOUNT
+			/*
+            select distinct cl_clientid, cl_clientname, cl_clientcode, cl_clclassname, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, CS_SUBSCRIPTIONCOUNT
 			from clientcontracts 
 			where 
             -- CL_CLCLASSNAME='CORPORATE LARGE'
@@ -164,6 +165,21 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 			and S_SERVICENAME like '%subscription%'
 			group by cl_clientid, cl_clientname, cl_clientcode, cl_clclassname, CON_CONTRACTCODE ,S_SERVICENAME, VPNR_SERVICETYPE
 			order by cl_clientname, CON_CONTRACTCODE
+            */
+            
+            select distinct cl_clientid, cl_clientname, cl_clientcode, cl_clclassname
+            , CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, CS_SUBSCRIPTIONCOUNT
+            , CONTRACTCURRENTSTATUS
+			from clientcontracts 
+			where 
+            -- CL_CLCLASSNAME='CORPORATE LARGE'
+			-- and 
+            CONTRACTCURRENTSTATUS not in ('INACTIVE')
+			and S_SERVICENAME like '%subscription%'
+			group by cl_clientid, cl_clientname, cl_clientcode, cl_clclassname, CON_CONTRACTCODE 
+            ,S_SERVICENAME, VPNR_SERVICETYPE, CONTRACTCURRENTSTATUS
+			order by cl_clientname, CON_CONTRACTCODE
+            
         )
         ;
 
@@ -421,11 +437,12 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 			,
 			case 
 			when a.dayssincelastactive=0 then '1. Alive' 
-			when a.dayssincelastactive>0 and a.dayssincelastactive<=7 then '2. Snoozing'
-			when a.dayssincelastactive>7 and a.dayssincelastactive<=30 then '3. Asleep'
-			when a.dayssincelastactive>30 and a.dayssincelastactive<=90 then '4. Hibernating'
-			when a.dayssincelastactive>90 then '5. Dormant'
-            when a.dayssincelastactive is null then '5. Dormant'
+			when a.dayssincelastactive>0 and a.dayssincelastactive<=7 then '2. Snoozing (1 to 7 days)'
+			when a.dayssincelastactive>7 and a.dayssincelastactive<=30 then '3. Asleep (8 to 30 days)'
+			when a.dayssincelastactive>30 and a.dayssincelastactive<=90 then '4. Hibernating (31 to 90 days)'
+			when a.dayssincelastactive>90 then '5. Dormant (more than 90 days)'
+            when a.dayssincelastactive is null then '5. Dormant (more than 90 days)'
+        
 			end as `AccountActivityStage` 
 			from 
 			(            

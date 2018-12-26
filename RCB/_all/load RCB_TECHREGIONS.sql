@@ -54,6 +54,11 @@ INSERTEDON=now()
 
 -- select distinct interfacename, count(*) from rcbill.rcb_techregions group by interfacename;
 /*
+set sql_safe_updates=0;
+update rcbill.rcb_techregions set District='ANSE ETOILE' where district='ANSE ETOLE';
+
+select * from rcbill.rcb_techregions where district='ANSE ETOLE';
+
 
 select district, decimallat, decimallong,type,nodename,interfacename,subdistrict
 from 

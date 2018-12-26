@@ -1,3 +1,5 @@
+SELECT DISTINCT o_service from rcbill_my.salestoactive;
+
 select  o_ordermonth, o_orderday, o_region,  o_ordertype, o_service, o_servicetype, o_clientclass, ac_clientclass, ac_servicesubcategory, ac_network, ac_servicecategory, ac_package,  count(*) as allcount, count(distinct o_clientcode) as distclient, sum(ac_activecount) as activenos 
 from rcbill_my.salestoactive 
 -- where 
@@ -12,7 +14,7 @@ order by  o_orderday desc, o_clientcode, firstactivedateforcontract
 select  o_ordermonth, o_orderday, o_region,  o_ordertype, o_servicetype, o_clientclass, ac_clientclass, ac_servicesubcategory, ac_servicecategory, ac_package,  count(*) as allcount, count(distinct o_clientcode) as distclient, sum(ac_activecount) as activenos 
 from rcbill_my.salestoactive 
 where 
-o_orderday='2018-02-01'
+o_orderday='2018-12-17'
 -- ac_clientclass in ('Residential')
 -- and 
 -- firstactivedateforcontract is not null
@@ -20,10 +22,67 @@ group by o_ordermonth, o_orderday, o_region,  o_ordertype, o_servicetype, o_clie
 order by  o_orderday desc, o_clientclass, o_servicetype
 ;
 
+##############################
+### INTERNET ORDERS TO ACTIVE
+select * from rcbill_my.salestoactive
+where 
+o_service IN ('Subscription gNet','Subscription Internet','Subscription Capped Internet','Subscription Capped gNet')
+and year(o_orderday)=2018
+and inst_alldays is not null
+and o_saleschannel in ('Sales')
+;
+##############################
+### TV ORDERS TO ACTIVE
+select * from rcbill_my.salestoactive
+where 
+o_service IN ('Subscription gTV','Subscription DTV')
+and year(o_orderday)=2018
+and inst_alldays is not null
+and o_saleschannel in ('Sales')
+;
+##############################
+### INTELENOVELA ORDERS TO ACTIVE
+select * from rcbill_my.salestoactive
+where 
+o_service IN ('Subscription Intelenovela')
+and year(o_orderday)=2018
+;
+##############################
+### INDIAN ORDERS TO ACTIVE
+select * from rcbill_my.salestoactive
+where 
+o_service IN ('Subscription Indian')
+and year(o_orderday)=2018
+;
+##############################
+### FRENCH ORDERS TO ACTIVE
+select * from rcbill_my.salestoactive
+where 
+o_service IN ('Subscription French')
+and year(o_orderday)=2018
+;
+##############################
+### NEXTTV ORDERS TO ACTIVE
+select * from rcbill_my.salestoactive
+where 
+o_service IN ('Subscription NextTV')
+and year(o_orderday)=2018
+;
+##############################
+### VOD ORDERS TO ACTIVE
+select * from rcbill_my.salestoactive
+where 
+o_service IN ('Subscription VOD')
+and year(o_orderday)=2018
+;
+##############################
 
 
 
 
+
+
+select * from rcbill_my.customercontractactivity where clientcode='I.000016973';
 
 select *
 from rcbill_my.salestoactive 

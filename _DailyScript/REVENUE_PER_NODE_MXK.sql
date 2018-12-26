@@ -443,7 +443,7 @@ as
 )
 ;
 
-
+-- select * from rcbill_my.customers_cmts_mxk_cont_coll where cl_clientcode='I.000001076';
 
 drop table if exists rcbill_my.customers_contracts_collection_pivot2018 ;
 create table rcbill_my.customers_contracts_collection_pivot2018 (index idxccp1 (clientcode), index idxccp2(clid), index idxccp3(cid), index idxccp4(contractcode) ) as 
@@ -542,6 +542,7 @@ create table rcbill_my.customers_collection_pivot2018 (index idxccp1 (clientcode
 
 );
 
+-- select * from rcbill_my.customers_collection_pivot2018 where clientcode='I.000001076';
 
 drop table if exists rcbill_my.rep_customers_collection2018;
 create table rcbill_my.rep_customers_collection2018(index idxrcc20181(client_code), index idxrcc20182(clientname) ) as 
@@ -572,9 +573,11 @@ create table rcbill_my.rep_customers_collection2018(index idxrcc20181(client_cod
 		order by a.TotalPaymentAmount2018 desc
 );
 
+-- select * from rcbill_my.rep_customers_collection2018 where client_code='I.000001076';
 
 set session group_concat_max_len = 15000;
 
+-- select * from rcbill_my.customers_contracts_cmts_mxk where cl_clientcode='I.000001076';
 
     drop table if exists rcbill_my.tempa;
 	create table rcbill_my.tempa(index idxtempa1(CL_CLIENTCODE), index idxtempa2(CON_CONTRACTCODE), index idxtempa3(CL_CLIENTID), index idxtempa4(CON_CONTRACTID)) as
@@ -593,7 +596,7 @@ set session group_concat_max_len = 15000;
         
     );
 
-
+-- select * from rcbill_my.customers_contracts_collection_pivot2018 where clientcode='I.000001076';
 	drop table if exists rcbill_my.tempb;
     create table rcbill_my.tempb(index idxtempb1(b_clientcode), index idxtempb2(b_contractcode))
     as
@@ -633,6 +636,7 @@ and a.CON_CONTRACTCODE=b.b_contractcode
 
 ;        
 
+-- select * from rcbill_my.cust_cont_payment_cmts_mxk where cl_clientcode='I.000001076' or b_clientcode='I.000001076';
 
 drop table if exists rcbill_my.rep_cust_cont_payment_cmts_mxk;
 
@@ -669,7 +673,7 @@ as
 			, sum(`TotalPaymentAmount2018`) as `TotalPaymentAmount2018` 
 			from rcbill_my.cust_cont_payment_cmts_mxk 
 			-- where cl_clientcode='I.000011750'
-			group by 1, cl_clientcode 
+			group by 1 -- , cl_clientcode 
             order by con_contractid
     ) b
     on
@@ -684,6 +688,7 @@ as
 drop table if exists rcbill_my.tempa;
 drop table if exists rcbill_my.tempb;
 
+-- select * from rcbill_my.rep_cust_cont_payment_cmts_mxk where clientcode='I.000001076';
 
 ####################################
 #CREATE CONSOLIDATED CUSTOMER REPORT
@@ -846,7 +851,7 @@ set session group_concat_max_len = 1024;
 
 select * from rcbill_my.rep_cust_cont_payment_cmts_mxk;
 
-select * from rcbill_my.rep_custconsolidated;
+select * from rcbill_my.rep_custconsolidated where activenetwork is null and clean_connection_type is null;
 
 select * from rcbill.rcb_cmts;
 select * from rcbill.rcb_mxk;
