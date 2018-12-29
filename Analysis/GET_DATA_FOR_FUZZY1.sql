@@ -1,7 +1,17 @@
-select * from rcbill.rcb_tclients;
+	select * from rcbill.rcb_tclients where (substr(kod,1,1)='I' or kod in ('999'));
+    select * from rcbill.rcb_tclients where KOD like '%999%';
 
+	select a.kod as kod1, a.firm as  firm1 
+	from 
+	( 
+		select kod, firm from rcbill.rcb_tclients  where firm not like "%?%" 
+		and firm not like "%close%" and firm not like "%PREPAID CARDS%" 
+        and substr(kod,1,1)='I'
+        order by firm
+    ) a 
+	;
 
-select a.kod as kod1, a.firm as  firm1, a.danno as danno1 
+	select a.kod as kod1, a.firm as  firm1, a.danno as danno1 
      from 
      ( 
 		select kod, firm, danno from rcbill.rcb_tclients  

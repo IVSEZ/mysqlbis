@@ -11,7 +11,7 @@ select * from  rcbill_my.clientticketjourney where commentuser in ('Rahul Walava
 select distinct commentuser, comment, count(*) as cmmt_count
 from 
 rcbill_my.clientticket_cmmtjourney
-where commentuser in ('Rahul Walavalkar') 
+where commentuser in ('Rahul Walavalkar','Administrator') 
 group by commentuser, comment
 order by 3 desc
 ;
@@ -29,6 +29,7 @@ select commentuser,  count(comment) as comments, count(distinct ticketid) as d_t
 , min(date(commentdate)) as mindate, max(date(commentdate)) as maxdate, count(distinct date(commentdate)) as cmmtdays
 , datediff(max(date(commentdate)), min(date(commentdate))) as totaldays
 , count(comment)/count(distinct date(commentdate)) as avgcmtday
+, (count(distinct date(commentdate))/datediff(max(date(commentdate)), min(date(commentdate)))) as consistency
 from 
 rcbill_my.clientticket_cmmtjourney
 where year(commentdate)=year(now())

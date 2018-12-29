@@ -2,7 +2,7 @@
 
 -- duration 1883.640 sec
 
-set @perioddate='2018-12-01';
+set @perioddate='2018-12-22';
 
 drop table if exists rcbill_my.tempcpp;
 create table rcbill_my.tempcpp
@@ -139,6 +139,8 @@ create table rcbill_my.package_ip_usage as
 -- select * from rcbill_my.package_ip_usage where clientcode='I.000011750';
 -- TrafficType
 -- select *, (select name from rcbill.rcb_traffictypes where id=TRAFFICTYPE) as ttype from rcbill_my.package_ip_usage where package in ('Crimson','Crimson Corporate');
+-- select *, (select name from rcbill.rcb_traffictypes where id=TRAFFICTYPE) as ttype from rcbill_my.package_ip_usage where package in ('Amber','Amber Corporate');
+
 
 select PACKAGE, NETWORK, TRAFFIC, mb_used, usagedays, clients, d_clients
 , (mb_used/d_clients) as usageperclient
@@ -163,8 +165,8 @@ from
 		from rcbill_my.package_ip_usage 
         where 
         0=0
-        -- and package in ('Crimson','Crimson Corporate')
-        and package in ('Amber','Amber Corporate')
+        and package in ('Crimson','Crimson Corporate')
+        -- and package in ('Amber','Amber Corporate')
         -- and clientcode='I.000002333'
 	) a 
 	where

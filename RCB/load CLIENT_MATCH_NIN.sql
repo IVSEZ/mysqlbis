@@ -1,6 +1,7 @@
 -- SET SESSION sql_mode = '';
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_nin_score_20181225.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_nin_score_20181225.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_nin_score_20181228.csv' 
 REPLACE INTO TABLE `rcbill`.`client_match_nin` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
  IGNORE 1 LINES 
@@ -30,7 +31,9 @@ INSERTEDON=now()
 -- update rcbill.rcb_cmts
 -- set mac_address_clean = 
 
-select date(insertedon) as insertedon, count(*) as records from rcbill.client_match_nin;
+select date(insertedon) as insertedon, count(*) as records from rcbill.client_match_nin
+group by 1
+;
 
 -- select * from rcbill.client_match_nin;
 
