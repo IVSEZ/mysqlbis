@@ -165,8 +165,8 @@ from
 		from rcbill_my.package_ip_usage 
         where 
         0=0
-        and package in ('Crimson','Crimson Corporate')
-        -- and package in ('Amber','Amber Corporate')
+        -- and package in ('Crimson','Crimson Corporate')
+        and package in ('Amber','Amber Corporate')
         -- and clientcode='I.000002333'
 	) a 
 	where

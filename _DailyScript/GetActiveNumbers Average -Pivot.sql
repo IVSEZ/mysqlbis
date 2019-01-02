@@ -246,8 +246,6 @@ group by servicecategory, servicesubcategory, servicecategory2, package, clientc
 select count(*) as rep_activenumberavg from rcbill_my.rep_activenumberavg;
 select count(*) as rep_activenumberavg1 from rcbill_my.rep_activenumberavg where reported='Y' and decommissioned='N';
 
-
-
 drop table if exists rcbill_my.rep_activenumberavg2;
 create table rcbill_my.rep_activenumberavg2 as
 (
@@ -261,6 +259,25 @@ create table rcbill_my.rep_activenumberavg2 as
 					group by periodyear, periodmth, servicecategory, package             
 
 );
+
+
+drop table if exists rcbill_my.rep_activenumberavg3;
+create table rcbill_my.rep_activenumberavg3 as
+(
+					select 
+                    -- max(period) as maxperiod, 
+                    if(month(@today)=month(period) and year(@today)=year(period) and @today<>@lastdayofmonth,@today,last_day(period)) as lastday
+                    , periodyear, periodmth, servicecategory, package
+                    , clienttype, region
+                    , sum(open_a) as activecount
+					from 
+					rcbill_my.activenumberavg
+                    where reported='Y' and decommissioned='N'
+					group by periodyear, periodmth, servicecategory, package, clienttype, region             
+
+);
+
+
 -- select * from rcbill_my.rep_activenumberavg2;
 
 set session group_concat_max_len = 50000;

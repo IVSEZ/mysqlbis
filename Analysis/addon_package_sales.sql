@@ -8,8 +8,8 @@ SET @startdate='2018-12-01';
 -- select @startdate := subdate(current_date(),1);
 
 
-select @enddate := subdate(current_date(),1);
--- SET @enddate='2018-11-30';
+-- select @enddate := subdate(current_date(),1);
+SET @enddate='2018-12-29';
 
 
 -- set @package='INTELENOVELA';

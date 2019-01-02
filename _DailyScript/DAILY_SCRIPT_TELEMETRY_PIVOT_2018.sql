@@ -1,7 +1,7 @@
 
-drop table if exists rcbill_my.rep_livetvpivot2019;
+drop table if exists rcbill_my.rep_livetvpivot2018;
 
-create table rcbill_my.rep_livetvpivot2019 as 
+create table rcbill_my.rep_livetvpivot2018 as 
 (
 	SELECT  upper(trim(resource)) as RESOURCE,
 		SUM( IF( MONTH(view_date) = 1, duration_sec, 0) ) AS `JAN`,
@@ -20,15 +20,15 @@ create table rcbill_my.rep_livetvpivot2019 as
 
 		SUM( duration_sec ) AS TOTAL_DURATION
 	FROM rcbill_my.rep_livetvstats
-	where view_date>='2019-01-01' and view_date<='2019-12-31'
+	where view_date>='2018-01-01' and view_date<='2018-12-31'
 	GROUP BY 1
 	order by 1
 )
 ;
 
-drop table if exists rcbill_my.rep_vodpivot2019;
+drop table if exists rcbill_my.rep_vodpivot2018;
 
-create table rcbill_my.rep_vodpivot2019 as 
+create table rcbill_my.rep_vodpivot2018 as 
 (
 	SELECT upper(trim(originaltitle)) as TITLE,  upper(trim(resource)) as RESOURCE,
 		SUM( IF( MONTH(view_date) = 1, duration_sec, 0) ) AS `JAN`,
@@ -47,15 +47,15 @@ create table rcbill_my.rep_vodpivot2019 as
 
 		SUM( duration_sec ) AS TOTAL_DURATION
 	FROM rcbill_my.rep_vodstats
-	where view_date>='2019-01-01' and view_date<='2019-12-31'
+	where view_date>='2018-01-01' and view_date<='2018-12-31'
 	GROUP BY 1,2
 	order by 1,2
 )
 ;
 
-drop table if exists rcbill_my.rep_radiopivot2019;
+drop table if exists rcbill_my.rep_radiopivot2018;
 
-create table rcbill_my.rep_radiopivot2019 as 
+create table rcbill_my.rep_radiopivot2018 as 
 (
 	SELECT  upper(trim(resource)) as RESOURCE,
 		SUM( IF( MONTH(view_date) = 1, duration_sec, 0) ) AS `JAN`,
@@ -74,16 +74,16 @@ create table rcbill_my.rep_radiopivot2019 as
 
 		SUM( duration_sec ) AS TOTAL_DURATION
 	FROM rcbill_my.rep_radiostats
-	where view_date>='2019-01-01' and view_date<='2019-12-31'
+	where view_date>='2018-01-01' and view_date<='2018-12-31'
 	GROUP BY 1
 	order by 1
 )
 ;
 
 
-drop table if exists rcbill_my.rep_tspivot2019;
+drop table if exists rcbill_my.rep_tspivot2018;
 
-create table rcbill_my.rep_tspivot2019 as 
+create table rcbill_my.rep_tspivot2018 as 
 (
 	SELECT  upper(trim(resource)) as RESOURCE,
 		SUM( IF( MONTH(view_date) = 1, sessions, 0) ) AS `JAN`,
@@ -102,14 +102,14 @@ create table rcbill_my.rep_tspivot2019 as
 
 		SUM( sessions ) AS TOTAL_SESSIONS
 	FROM rcbill_my.rep_tsstats
-	where view_date>='2019-01-01' and view_date<='2019-12-31'
+	where view_date>='2018-01-01' and view_date<='2018-12-31'
 	GROUP BY 1
 	order by 1
 )
 ;
 
 
--- select * from rcbill_my.rep_livetvpivot2019 order by total_duration desc ;
+-- select * from rcbill_my.rep_livetvpivot2018 order by total_duration desc ;
 /*
 
 select * FROM rcbill_my.rep_livetvstats;
@@ -117,8 +117,8 @@ select * FROM rcbill_my.rep_vodstats;
 select * FROM rcbill_my.rep_radiostats;
 select * FROM rcbill_my.rep_tsstats;
 
-select * from rcbill_my.rep_livetvpivot2019;
-select * from rcbill_my.rep_vodpivot2019;
-select * from rcbill_my.rep_radiopivot2019;
-select * from rcbill_my.rep_tspivot2019;
+select * from rcbill_my.rep_livetvpivot2018;
+select * from rcbill_my.rep_vodpivot2018;
+select * from rcbill_my.rep_radiopivot2018;
+select * from rcbill_my.rep_tspivot2018;
 */

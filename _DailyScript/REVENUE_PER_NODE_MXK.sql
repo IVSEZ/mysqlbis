@@ -444,7 +444,7 @@ as
 ;
 
 -- select * from rcbill_my.customers_cmts_mxk_cont_coll where cl_clientcode='I.000001076';
-
+###2018 payments####
 drop table if exists rcbill_my.customers_contracts_collection_pivot2018 ;
 create table rcbill_my.customers_contracts_collection_pivot2018 (index idxccp1 (clientcode), index idxccp2(clid), index idxccp3(cid), index idxccp4(contractcode) ) as 
 (
@@ -573,6 +573,144 @@ create table rcbill_my.rep_customers_collection2018(index idxrcc20181(client_cod
 		order by a.TotalPaymentAmount2018 desc
 );
 
+
+
+#####2019 payments
+
+drop table if exists rcbill_my.customers_contracts_collection_pivot2019 ;
+create table rcbill_my.customers_contracts_collection_pivot2019 (index idxccp1 (clientcode), index idxccp2(clid), index idxccp3(cid), index idxccp4(contractcode) ) as 
+(
+		select clid, clientcode, cid, contractcode
+		, ifnull(sum(`201901`),0) as `201901` 
+		, ifnull(sum(`201902`),0) as `201902` 
+		, ifnull(sum(`201903`),0) as `201903` 
+		, ifnull(sum(`201904`),0) as `201904` 
+		, ifnull(sum(`201905`),0) as `201905` 
+		, ifnull(sum(`201906`),0) as `201906` 
+		, ifnull(sum(`201907`),0) as `201907` 
+		, ifnull(sum(`201908`),0) as `201908` 
+		, ifnull(sum(`201909`),0) as `201909` 
+		, ifnull(sum(`201910`),0) as `201910` 
+		, ifnull(sum(`201911`),0) as `201911` 
+		, ifnull(sum(`201912`),0) as `201912` 
+		, sum(TotalPayments2019) as TotalPayments2019
+		, sum(TotalPaymentAmount2019) as TotalPaymentAmount2019
+		from 
+		(    
+			select clid, clientcode, cid, contractcode
+				,case when paymonth=1 then ifnull(sum(totalpaymentamount),0) end as `201901`
+				,case when paymonth=2 then ifnull(sum(totalpaymentamount),0) end as `201902`
+				,case when paymonth=3 then ifnull(sum(totalpaymentamount),0) end as `201903`
+				,case when paymonth=4 then ifnull(sum(totalpaymentamount),0) end as `201904`
+				,case when paymonth=5 then ifnull(sum(totalpaymentamount),0) end as `201905`
+				,case when paymonth=6 then ifnull(sum(totalpaymentamount),0) end as `201906`
+				,case when paymonth=7 then ifnull(sum(totalpaymentamount),0) end as `201907`
+				,case when paymonth=8 then ifnull(sum(totalpaymentamount),0) end as `201908`
+				,case when paymonth=9 then ifnull(sum(totalpaymentamount),0) end as `201909`
+				,case when paymonth=10 then ifnull(sum(totalpaymentamount),0) end as `201910`
+				,case when paymonth=11 then ifnull(sum(totalpaymentamount),0) end as `201911`
+				,case when paymonth=12 then ifnull(sum(totalpaymentamount),0) end as `201912`
+				, max(lastpaymentdate) as LastPaymentDate
+				, sum(totalpayments) as TotalPayments2019
+				, sum(totalpaymentamount) as TotalPaymentAmount2019
+
+			from 
+			rcbill_my.customers_collection
+			where year(LastPaymentDate)=2019
+			group by
+			clid, clientcode, cid, contractcode, PAYMONTH, PAYYEAR
+		-- ,3,4,5,6,7,8,9,10,11,12,13,14
+		) a 
+		group by clid, clientcode, cid, contractcode	
+
+);
+
+
+drop table if exists rcbill_my.customers_collection_pivot2019 ;
+create table rcbill_my.customers_collection_pivot2019 (index idxccp1 (clientcode), index idxccp2(clid)) as 
+(
+		select clid, clientcode
+		, ifnull(sum(`201901`),0) as `201901` 
+		, ifnull(sum(`201902`),0) as `201902` 
+		, ifnull(sum(`201903`),0) as `201903` 
+		, ifnull(sum(`201904`),0) as `201904` 
+		, ifnull(sum(`201905`),0) as `201905` 
+		, ifnull(sum(`201906`),0) as `201906` 
+		, ifnull(sum(`201907`),0) as `201907` 
+		, ifnull(sum(`201908`),0) as `201908` 
+		, ifnull(sum(`201909`),0) as `201909` 
+		, ifnull(sum(`201910`),0) as `201910` 
+		, ifnull(sum(`201911`),0) as `201911` 
+		, ifnull(sum(`201912`),0) as `201912` 
+		, sum(TotalPayments2019) as TotalPayments2019
+		, sum(TotalPaymentAmount2019) as TotalPaymentAmount2019
+		from 
+		(    
+			select clid, clientcode
+				,case when paymonth=1 then ifnull(sum(totalpaymentamount),0) end as `201901`
+				,case when paymonth=2 then ifnull(sum(totalpaymentamount),0) end as `201902`
+				,case when paymonth=3 then ifnull(sum(totalpaymentamount),0) end as `201903`
+				,case when paymonth=4 then ifnull(sum(totalpaymentamount),0) end as `201904`
+				,case when paymonth=5 then ifnull(sum(totalpaymentamount),0) end as `201905`
+				,case when paymonth=6 then ifnull(sum(totalpaymentamount),0) end as `201906`
+				,case when paymonth=7 then ifnull(sum(totalpaymentamount),0) end as `201907`
+				,case when paymonth=8 then ifnull(sum(totalpaymentamount),0) end as `201908`
+				,case when paymonth=9 then ifnull(sum(totalpaymentamount),0) end as `201909`
+				,case when paymonth=10 then ifnull(sum(totalpaymentamount),0) end as `201910`
+				,case when paymonth=11 then ifnull(sum(totalpaymentamount),0) end as `201911`
+				,case when paymonth=12 then ifnull(sum(totalpaymentamount),0) end as `201912`
+				, max(lastpaymentdate) as LastPaymentDate
+				, sum(totalpayments) as TotalPayments2019
+				, sum(totalpaymentamount) as TotalPaymentAmount2019
+
+			from 
+			rcbill_my.customers_collection
+			where year(LastPaymentDate)=2019
+			group by
+			clid, clientcode, PAYMONTH, PAYYEAR
+		-- ,3,4,5,6,7,8,9,10,11,12,13,14
+		) a 
+		group by clid, clientcode 	
+
+);
+
+-- select * from rcbill_my.customers_collection_pivot2019 where clientcode='I.000001076';
+
+drop table if exists rcbill_my.rep_customers_collection2019;
+create table rcbill_my.rep_customers_collection2019(index idxrcc20191(client_code), index idxrcc20192(clientname) ) as 
+(
+		select b.reportdate as ReportDate
+		,b.clientcode as ClientCode
+		,b.clientname as ClientName
+		,b.clientclass as ClientClass
+		,date(b.firstcontractdate) as FirstContractDate
+        ,b.lastpaymentdate as LastPaymentDate
+		,b.lastactivedate as LastActiveDate
+		,b.clientaddress as ClientAddress
+		,b.clientlocation as ClientLocation
+		,c.HOUSING_ESTATE as HousingEstate
+		,c.CLIENT_AREA as ClientArea
+		,c.CLIENT_SUBAREA as ClientSubArea
+
+		, a.clientcode as client_code, a.`201901`, a.`201902`, a.`201903`, a.`201904`, a.`201905`, a.`201906`, a.`201907`, a.`201908`, a.`201909`, a.`201910`, a.`201911`, a.`201912`, a.`TotalPayments2019`, a.`TotalPaymentAmount2019`
+		, b.totalpaymentamount as TotalPaymentOverall
+        from 
+		rcbill_my.rep_allcust b
+		left join
+		rcbill_my.customers_collection_pivot2019 a 
+		on b.clientcode=a.clientcode
+		left join
+		rcbill_my.rep_housingestates c 
+		on b.clientcode=c.CLIENT_CODE
+		order by a.TotalPaymentAmount2019 desc
+);
+
+#####################
+
+
+
+
+
 -- select * from rcbill_my.rep_customers_collection2018 where client_code='I.000001076';
 
 set session group_concat_max_len = 15000;
@@ -602,7 +740,8 @@ set session group_concat_max_len = 15000;
     as
     (
 		select clientcode as b_clientcode, clid as b_clientid, contractcode as b_contractcode, cid as b_contractid, `201801`, `201802`, `201803`, `201804`, `201805`, `201806`, `201807`, `201808`, `201809`, `201810`, `201811`, `201812`, TotalPayments2018, TotalPaymentAmount2018
-        from rcbill_my.customers_contracts_collection_pivot2018     
+        from rcbill_my.customers_contracts_collection_pivot2018 
+       -- union
     );
 
 drop table if exists rcbill_my.cust_cont_payment_cmts_mxk;

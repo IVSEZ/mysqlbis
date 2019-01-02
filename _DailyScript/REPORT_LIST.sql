@@ -25,8 +25,11 @@ select * from rcbill_my.rep_extravagance_peakcustomer_activity;
 
 select * from rcbill_my.rep_custconsolidated;
 
+select * from rcbill_my.activenumberavg;
+
 select * from rcbill_my.rep_activenumberavg;
 select * from rcbill_my.rep_activenumberavg2;
+select * from rcbill_my.rep_activenumberavg3;
 select lastday, round(sum(activecount)) as activecount
 from rcbill_my.rep_activenumberavg2
 group by lastday 
@@ -65,6 +68,9 @@ from rcbill_my.rep_activenumberlastday_pv
 group by servicecategory
 ;
 
+
+select * from rcbill.clientcontractip  where CLIENTCODE='I.000011750' order by USAGEDATE;
+select * from rcbill.clientcontractipmonth where CLIENTCODE='I.000011750' order by USAGE_MTH, USAGE_YR;
 -- =======================================
 
 
