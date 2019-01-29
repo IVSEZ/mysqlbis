@@ -5,6 +5,7 @@ select * from rcbill_my.rep_paycol_pos;
 select * from rcbill_my.rep_allcust;
 select * from rcbill_my.rep_clientcontractdevices;
 select * from rcbill_my.rep_customers_collection2018;
+select * from rcbill_my.rep_customers_collection2019;
 select * from rcbill_my.rep_cust_cont_payment_cmts_mxk;
 select * from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail;
 
@@ -23,7 +24,7 @@ select * from rcbill_my.rep_extravagance_peakcustomer_activity;
 
 
 
-select * from rcbill_my.rep_custconsolidated;
+select * from rcbill_my.rep_custconsolidated; -- where clientcode='I.000014924';
 
 select * from rcbill_my.activenumberavg;
 
@@ -70,7 +71,14 @@ group by servicecategory
 
 
 select * from rcbill.clientcontractip  where CLIENTCODE='I.000011750' order by USAGEDATE;
+
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.187.241' and USAGEDATE='2018-12-31';
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.186.118' and USAGEDATE='2018-12-31';
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='41.203.255.10' and USAGEDATE='2018-12-31';
 select * from rcbill.clientcontractipmonth where CLIENTCODE='I.000011750' order by USAGE_MTH, USAGE_YR;
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='197.234.2.150';
+
+
 -- =======================================
 
 

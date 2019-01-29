@@ -12,18 +12,23 @@ clientclass in ('Corporate Bundle','Corporate Bulk')
 and period='2017-08-01';
 -- and period>='2017-08-01' and period<='2017-08-31';
 */
+select distinct clientclass from rcbill_my.clientstats;
 
-
+## GET BULK BUNDLE CUSTOMERS
 select * from rcbill_my.clientstats where 
 (
-clientclass in ('Corporate Bulk','Corporate Bundle')
+clientclass in ('Corporate Bulk','Corporate Bundle','Corporate')
 or
  `Extravagance Corporate` >0
 or
  `Crimson Corporate` >0 
+ or
+ `Amber Corporate` >0 
+ or
+ `Indian Corporate` >0 
 or clientname like '%staff%'
 )    
--- and clientclass not in ('Employee')
+and clientclass not in ('Employee') and clientclass not in ('Intelvision Office')
 ;
 
 select a.*,b.services,b.Intelenovela from rcbill_my.customercontractactivity a 

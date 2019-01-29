@@ -71,14 +71,60 @@ rcbill.rcb_mxk;
 */
 
 
+drop temporary table if exists a;
+drop temporary table if exists b;
+drop temporary table if exists c;
+
 ## GPON CUSTOMERS
+create temporary table a (index idxf1(FSAN2)) as 
+(
+			select *, cast(if(length(replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS',''))=8,substring(replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS',''),2),replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS','')) as char(100)) as FSAN2
+			from        
+			rcbill_my.rep_clientcontractdevices 
+			where 
+			length(FSAN)>=4
+            and 
+            CONTRACT_TYPE in 
+            (
+				'GNET',
+				'CAPPED GNET',
+				'GTV',
+				'BUNDLE (GPON)',
+				'GVOICE',
+				'EMAIL',
+				'NEXTTV',
+				'MOBILE TV',
+				'IPTV',
+				'HOTSPOT ACCESS'
+            )
+            and CONTRACT_CODE<>CLIENT_CODE
+			-- FSAN is not null or FSAN <>''
+);
+
+create temporary table b (index idxsn2(SERIAL_NUM2)) as 
+(
+			select MXK_NAME
+			, TRIM(UPPER(concat(VENDOR_ID,SERIAL_NUM))) as DEVICEFSAN
+			, SERIAL_NUM
+			-- , length(SERIAL_NUM) as len_ser
+			, CAST(trim(upper(if(length(SERIAL_NUM)=8,substring(SERIAL_NUM,2),SERIAL_NUM))) as char(100)) as SERIAL_NUM2  
+			, MODEL_ID, MXK_INTERFACE
+            , date(INSERTEDON) as MXK_DATE
+			from
+			rcbill.rcb_mxk where (date(INSERTEDON) in (select max(date(INSERTEDON)) from rcbill.rcb_mxk))
+			-- and model_id<>'-'
+			and TRIM(SERIAL_NUM)<>'0'
+)
+;
+
+
 
 drop table if exists rcbill_my.tempcustmxk1;
 create table rcbill_my.tempcustmxk1 as 
 (
 		select a.*, b.* 
 		from 
-		(
+		/*(
 			select *, if(length(replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS',''))=8,substring(replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS',''),2),replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS','')) as FSAN2
 			from        
 			rcbill_my.rep_clientcontractdevices 
@@ -100,9 +146,10 @@ create table rcbill_my.tempcustmxk1 as
             )
             and CONTRACT_CODE<>CLIENT_CODE
 			-- FSAN is not null or FSAN <>''
-		) a 
+		) */
+        a 
 		left join 
-		(
+		/*(
 			select MXK_NAME
 			, TRIM(UPPER(concat(VENDOR_ID,SERIAL_NUM))) as DEVICEFSAN
 			, SERIAL_NUM
@@ -114,16 +161,63 @@ create table rcbill_my.tempcustmxk1 as
 			rcbill.rcb_mxk where (date(INSERTEDON) in (select max(date(INSERTEDON)) from rcbill.rcb_mxk))
 			-- and model_id<>'-'
 			and TRIM(SERIAL_NUM)<>'0'
-		) b
+		) */
+        b
 		on upper(trim(a.FSAN2))=upper(trim(b.SERIAL_NUM2))
 );
+
+drop temporary table if exists a;
+drop temporary table if exists b;
+drop temporary table if exists c;
+
+
+create temporary table a (index idxf1(FSAN2)) as 
+(
+			select *, 
+			cast(if(length(replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS',''))=8,substring(replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS',''),2),replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS','')) as char(100)) as FSAN2
+			from        
+			rcbill_my.rep_clientcontractdevices 
+			where 
+			length(FSAN)>=4
+            and 
+            CONTRACT_TYPE in 
+            (
+				'GNET',
+				'CAPPED GNET',
+				'GTV',
+				'BUNDLE (GPON)',
+				'GVOICE',
+				'EMAIL',
+				'NEXTTV',
+				'MOBILE TV',
+				'IPTV',
+				'HOTSPOT ACCESS'
+            )   
+            and CONTRACT_CODE<>CLIENT_CODE
+);
+
+create temporary table b (index idxsn2(SERIAL_NUM2)) as 
+(
+			select MXK_NAME
+			, TRIM(UPPER(concat(VENDOR_ID,SERIAL_NUM))) as DEVICEFSAN
+			, SERIAL_NUM
+			-- , length(SERIAL_NUM) as len_ser
+			, cast(trim(upper(if(length(SERIAL_NUM)=8,substring(SERIAL_NUM,2),SERIAL_NUM))) as char(100)) as SERIAL_NUM2  
+			, MODEL_ID, MXK_INTERFACE
+            , date(INSERTEDON) as MXK_DATE            
+			from
+			rcbill.rcb_mxk where (date(INSERTEDON) in (select max(date(INSERTEDON)) from rcbill.rcb_mxk))
+			-- and model_id<>'-'
+			and TRIM(SERIAL_NUM)<>'0'
+);
+
 
 drop table if exists rcbill_my.tempcustmxk2;
 create table rcbill_my.tempcustmxk2 as
 (
 		select a.*, b.*
 		from 
-		(
+		/*(
 			select *, 
 			if(length(replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS',''))=8,substring(replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS',''),2),replace(replace(replace(UPPER(TRIM(FSAN)),'ZNTS0',''),'ZNTSC',''),'ZNTS','')) as FSAN2
 			from        
@@ -145,9 +239,10 @@ create table rcbill_my.tempcustmxk2 as
 				'HOTSPOT ACCESS'
             )   
             and CONTRACT_CODE<>CLIENT_CODE
-		) a 
+		) */
+        a 
 		right join 
-		(
+		/*(
 			select MXK_NAME
 			, TRIM(UPPER(concat(VENDOR_ID,SERIAL_NUM))) as DEVICEFSAN
 			, SERIAL_NUM
@@ -159,9 +254,17 @@ create table rcbill_my.tempcustmxk2 as
 			rcbill.rcb_mxk where (date(INSERTEDON) in (select max(date(INSERTEDON)) from rcbill.rcb_mxk))
 			-- and model_id<>'-'
 			and TRIM(SERIAL_NUM)<>'0'
-		) b
+		) */ 
+        b
 		on upper(trim(a.FSAN2))=upper(trim(b.SERIAL_NUM2))
 );
+
+
+drop temporary table if exists a;
+drop temporary table if exists b;
+drop temporary table if exists c;
+
+
 
 drop table if exists rcbill_my.customers_mxk;
 create table rcbill_my.customers_mxk as
@@ -178,14 +281,8 @@ drop table if exists rcbill_my.tempcustmxk2;
 
 ## HFC CUSTOMERS
 
-drop table if exists rcbill_my.tempcustcmts1;
-create table rcbill_my.tempcustcmts1 as 
+create temporary table a (index idxa1(MAC)) as 
 (
-	select a.*, c.*
-    -- , now() as INSERTEDON
-	from 
-	-- rcbill_my.rep_clientcontractdevices a 
-	(
 		select * from rcbill_my.rep_clientcontractdevices where length(MAC)>=4
         and CONTRACT_TYPE in 
         (
@@ -207,9 +304,11 @@ create table rcbill_my.tempcustcmts1 as
 			'PREPAID TRAFFIC'        
         )
         and CONTRACT_CODE<>CLIENT_CODE
-    ) a
-    left join
-	(
+
+);
+
+create temporary table c (index idxc1(MAC_ADDRESS)) as 
+(
 		select a.MAC_ADDRESS_CLEAN2 as MAC_ADDRESS, a.IP_ADDRESS, a.HFC_NODE
 		, date(a.INSERTEDON) as CMTS_DATE
         , b.INTERFACENAME, b.NODENAME
@@ -221,19 +320,16 @@ create table rcbill_my.tempcustcmts1 as
 		on 
 		trim(upper(a.HFC_NODE))=trim(upper(b.INTERFACENAME))
 		where date(a.INSERTEDON) in (select max(date(INSERTEDON)) from rcbill.rcb_cmts)
-	) c
-	on a.MAC=c.MAC_ADDRESS
-
 );
 
-drop table if exists rcbill_my.tempcustcmts2;
-create table rcbill_my.tempcustcmts2 as 
+drop table if exists rcbill_my.tempcustcmts1;
+create table rcbill_my.tempcustcmts1 as 
 (
 	select a.*, c.*
     -- , now() as INSERTEDON
 	from 
 	-- rcbill_my.rep_clientcontractdevices a 
-	(
+	/*(
 		select * from rcbill_my.rep_clientcontractdevices where length(MAC)>=4
         and CONTRACT_TYPE in 
         (
@@ -255,9 +351,61 @@ create table rcbill_my.tempcustcmts2 as
 			'PREPAID TRAFFIC'        
         )
         and CONTRACT_CODE<>CLIENT_CODE
-    ) a
-	right join
-	(
+    ) */
+    a
+    left join
+	/*(
+		select a.MAC_ADDRESS_CLEAN2 as MAC_ADDRESS, a.IP_ADDRESS, a.HFC_NODE
+		, date(a.INSERTEDON) as CMTS_DATE
+        , b.INTERFACENAME, b.NODENAME
+        -- , b.DECIMALLAT, b.DECIMALLONG, b.DISTRICT, b.SUBDISTRICT, b.LATITUDE, b.LONGITUDE
+		from 
+		rcbill.rcb_cmts a 
+		left join
+		rcbill.rcb_techregions b 
+		on 
+		trim(upper(a.HFC_NODE))=trim(upper(b.INTERFACENAME))
+		where date(a.INSERTEDON) in (select max(date(INSERTEDON)) from rcbill.rcb_cmts)
+	) */
+    c
+	on a.MAC=c.MAC_ADDRESS
+
+);
+
+
+drop temporary table if exists a;
+drop temporary table if exists b;
+drop temporary table if exists c;
+
+
+create temporary table a (index idxa1(MAC)) as 
+(
+		select * from rcbill_my.rep_clientcontractdevices where length(MAC)>=4
+        and CONTRACT_TYPE in 
+        (
+			'IMPORT',
+			'CAPPED INTERNET',
+			'INTERNET',
+			'EMAIL',
+			'VOICE',
+			'DIGITAL TV',
+			'BUNDLE (CI)',
+			'DTV, INTERNET, VOICE',
+			'DTV,',
+			'INTERNET, VOICE',
+			'NEXTTV',
+			'MOBILE TV',
+			'DTV',
+			'HOTSPOT ACCESS',
+			'PREPAID INTERNET',
+			'PREPAID TRAFFIC'        
+        )
+        and CONTRACT_CODE<>CLIENT_CODE
+);
+
+
+create temporary table c (index idxc1(MAC_ADDRESS)) as 
+(
 		select a.MAC_ADDRESS_CLEAN2 as MAC_ADDRESS, a.IP_ADDRESS, a.HFC_NODE
 		, date(a.INSERTEDON) as CMTS_DATE        
         , b.INTERFACENAME, b.NODENAME
@@ -269,12 +417,63 @@ create table rcbill_my.tempcustcmts2 as
 		on 
 		trim(upper(a.HFC_NODE))=trim(upper(b.INTERFACENAME))
 		where date(a.INSERTEDON) in (select max(date(INSERTEDON)) from rcbill.rcb_cmts)
-	) c
+);
+
+
+drop table if exists rcbill_my.tempcustcmts2;
+create table rcbill_my.tempcustcmts2 as 
+(
+	select a.*, c.*
+    -- , now() as INSERTEDON
+	from 
+	-- rcbill_my.rep_clientcontractdevices a 
+	/*(
+		select * from rcbill_my.rep_clientcontractdevices where length(MAC)>=4
+        and CONTRACT_TYPE in 
+        (
+			'IMPORT',
+			'CAPPED INTERNET',
+			'INTERNET',
+			'EMAIL',
+			'VOICE',
+			'DIGITAL TV',
+			'BUNDLE (CI)',
+			'DTV, INTERNET, VOICE',
+			'DTV,',
+			'INTERNET, VOICE',
+			'NEXTTV',
+			'MOBILE TV',
+			'DTV',
+			'HOTSPOT ACCESS',
+			'PREPAID INTERNET',
+			'PREPAID TRAFFIC'        
+        )
+        and CONTRACT_CODE<>CLIENT_CODE
+    ) */
+    a
+	right join
+	/*(
+		select a.MAC_ADDRESS_CLEAN2 as MAC_ADDRESS, a.IP_ADDRESS, a.HFC_NODE
+		, date(a.INSERTEDON) as CMTS_DATE        
+        , b.INTERFACENAME, b.NODENAME
+        -- , b.DECIMALLAT, b.DECIMALLONG, b.DISTRICT, b.SUBDISTRICT, b.LATITUDE, b.LONGITUDE
+		from 
+		rcbill.rcb_cmts a 
+		left join
+		rcbill.rcb_techregions b 
+		on 
+		trim(upper(a.HFC_NODE))=trim(upper(b.INTERFACENAME))
+		where date(a.INSERTEDON) in (select max(date(INSERTEDON)) from rcbill.rcb_cmts)
+	) */
+    c
 	on a.MAC=c.MAC_ADDRESS
 
 );
 
 
+drop temporary table if exists a;
+drop temporary table if exists b;
+drop temporary table if exists c;
 
 drop table if exists rcbill_my.customers_cmts;
 create table rcbill_my.customers_cmts as
@@ -310,6 +509,17 @@ as
 ;
 
 
+create temporary table a (index idxa1(CL_CLIENTID), index idxa2(CON_CONTRACTID)) as 
+(
+
+		select CL_CLIENTID, CL_CLIENTNAME, CL_CLIENTCODE, CL_CLCLASSNAME, CON_CONTRACTID, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, VPNR_SERVICEPRICE, CONTRACTCURRENTSTATUS 
+		from rcbill.clientcontracts where s_servicename like 'SUBSCRIPTION%' 
+		-- and CL_CLIENTID=723711
+		group by 
+		CL_CLIENTID, CL_CLIENTNAME, CL_CLIENTCODE, CL_CLCLASSNAME, CON_CONTRACTID, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, VPNR_SERVICEPRICE, CONTRACTCURRENTSTATUS
+
+);
+
 
 drop table if exists rcbill_my.customers_contracts_cmts_mxk;
 
@@ -319,13 +529,14 @@ as
 (
 	select a.*, b.*
 	from 
-	(
+	/*(
 		select CL_CLIENTID, CL_CLIENTNAME, CL_CLIENTCODE, CL_CLCLASSNAME, CON_CONTRACTID, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, VPNR_SERVICEPRICE, CONTRACTCURRENTSTATUS 
 		from rcbill.clientcontracts where s_servicename like 'SUBSCRIPTION%' 
 		-- and CL_CLIENTID=723711
 		group by 
 		CL_CLIENTID, CL_CLIENTNAME, CL_CLIENTCODE, CL_CLCLASSNAME, CON_CONTRACTID, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, VPNR_SERVICEPRICE, CONTRACTCURRENTSTATUS
-	) a
+	) */
+    a
 	left join
 	rcbill_my.customers_cmts_mxk b 
 	on 
@@ -334,6 +545,10 @@ as
 	a.CON_CONTRACTID=b.contract_id
 )
 ;
+
+drop temporary table if exists a;
+drop temporary table if exists b;
+drop temporary table if exists c;
 
 /*
 
@@ -713,12 +928,17 @@ create table rcbill_my.rep_customers_collection2019(index idxrcc20191(client_cod
 
 -- select * from rcbill_my.rep_customers_collection2018 where client_code='I.000001076';
 
-set session group_concat_max_len = 15000;
+set session group_concat_max_len = 30000;
 
 -- select * from rcbill_my.customers_contracts_cmts_mxk where cl_clientcode='I.000001076';
 
     drop table if exists rcbill_my.tempa;
-	create table rcbill_my.tempa(index idxtempa1(CL_CLIENTCODE), index idxtempa2(CON_CONTRACTCODE), index idxtempa3(CL_CLIENTID), index idxtempa4(CON_CONTRACTID)) as
+	create table rcbill_my.tempa(
+    -- index idxtempa1(CL_CLIENTCODE), index idxtempa2(CON_CONTRACTCODE)
+    index idxtempa1(CL_CLIENTCODE,CON_CONTRACTCODE)
+    )
+    -- , index idxtempa3(CL_CLIENTID), index idxtempa4(CON_CONTRACTID)
+     as
     (
 		/*
 		select CL_CLIENTCODE, CL_CLIENTID, CON_CONTRACTCODE, CON_CONTRACTID, connection_type,client_code, contract_code, mxk_name, mxk_interface, hfc_node, nodename
@@ -736,44 +956,135 @@ set session group_concat_max_len = 15000;
 
 -- select * from rcbill_my.customers_contracts_collection_pivot2018 where clientcode='I.000001076';
 	drop table if exists rcbill_my.tempb;
-    create table rcbill_my.tempb(index idxtempb1(b_clientcode), index idxtempb2(b_contractcode))
+    create table rcbill_my.tempb(
+    -- index idxtempb1(b_clientcode), index idxtempb2(b_contractcode)
+        index idxtempb1(b_clientcode,b_contractcode)
+    )
     as
     (
-		select clientcode as b_clientcode, clid as b_clientid, contractcode as b_contractcode, cid as b_contractid, `201801`, `201802`, `201803`, `201804`, `201805`, `201806`, `201807`, `201808`, `201809`, `201810`, `201811`, `201812`, TotalPayments2018, TotalPaymentAmount2018
+		/*
+        commented on 3 Jan 2019 to cater for 2019 payments
+        select clientcode as b_clientcode, clid as b_clientid, contractcode as b_contractcode, cid as b_contractid, `201801`, `201802`, `201803`, `201804`, `201805`, `201806`, `201807`, `201808`, `201809`, `201810`, `201811`, `201812`, TotalPayments2018, TotalPaymentAmount2018
         from rcbill_my.customers_contracts_collection_pivot2018 
-       -- union
+        */
+			select * ,
+			ifnull(b_clientcode,c_clientcode) as bc_clientcode,
+			ifnull(b_clientid,c_clientid) as bc_clientid,
+			ifnull(b_contractcode,c_contractcode) as bc_contractcode,
+			ifnull(b_contractid,c_contractid) as bc_contractid
+			
+			from
+			
+			(
+				select a.*, c.* from
+				( 
+				select clientcode as b_clientcode, clid as b_clientid, contractcode as b_contractcode, cid as b_contractid
+				, `201801`, `201802`, `201803`, `201804`, `201805`, `201806`, `201807`, `201808`, `201809`, `201810`, `201811`, `201812`, TotalPayments2018, TotalPaymentAmount2018
+				from rcbill_my.customers_contracts_collection_pivot2018 
+				) a 
+				left join	
+				(
+				select clientcode as c_clientcode, clid as c_clientid, contractcode as c_contractcode, cid as c_contractid
+				, `201901`, `201902`, `201903`, `201904`, `201905`, `201906`, `201907`, `201908`, `201909`, `201910`, `201911`, `201912`, TotalPayments2019, TotalPaymentAmount2019
+				from rcbill_my.customers_contracts_collection_pivot2019         
+				) c 
+				on a.b_clientcode=c.c_clientcode
+				and a.b_contractcode=c.c_contractcode
+
+				UNION 
+				
+				select a.*, c.* from
+				( 
+				select clientcode as b_clientcode, clid as b_clientid, contractcode as b_contractcode, cid as b_contractid
+				, `201801`, `201802`, `201803`, `201804`, `201805`, `201806`, `201807`, `201808`, `201809`, `201810`, `201811`, `201812`, TotalPayments2018, TotalPaymentAmount2018
+				from rcbill_my.customers_contracts_collection_pivot2018 
+				) a 
+				right join	
+				(
+				select clientcode as c_clientcode, clid as c_clientid, contractcode as c_contractcode, cid as c_contractid
+				, `201901`, `201902`, `201903`, `201904`, `201905`, `201906`, `201907`, `201908`, `201909`, `201910`, `201911`, `201912`, TotalPayments2019, TotalPaymentAmount2019
+				from rcbill_my.customers_contracts_collection_pivot2019         
+				) c 
+				on a.b_clientcode=c.c_clientcode
+				and a.b_contractcode=c.c_contractcode
+			) a        
+       
     );
 
-drop table if exists rcbill_my.cust_cont_payment_cmts_mxk;
+-- show index from tempa;
+-- show index from tempb;
+-- select * from tempa
+-- select * from tempb
+create temporary table a as 
+(
+-- explain
+	select a.*, b.*
+	from
+	rcbill_my.tempa	a 
+	left join
+	rcbill_my.tempb b
+	-- on a.CL_CLIENTCODE=b.b_clientcode
+	-- and a.CON_CONTRACTCODE=b.b_contractcode      
+	on a.CL_CLIENTCODE=b.bc_clientcode
+	and a.CON_CONTRACTCODE=b.bc_contractcode   
+);
 
+create temporary table b as 
+(
+	select a.*, b.*
+	from
+	rcbill_my.tempa a 
+	right join
+	rcbill_my.tempb b
+	-- on a.CL_CLIENTCODE=b.b_clientcode
+	-- and a.CON_CONTRACTCODE=b.b_contractcode 
+	on a.CL_CLIENTCODE=b.bc_clientcode
+	and a.CON_CONTRACTCODE=b.bc_contractcode  
+);
+
+drop table if exists rcbill_my.cust_cont_payment_cmts_mxk;
 create table rcbill_my.cust_cont_payment_cmts_mxk 
 (
 index idxccpcm1(cl_clientcode),index idxccpcm2(CON_CONTRACTCODE)
-,index idxccpcm3(b_clientcode),index idxccpcm4(b_contractcode)
+-- ,index idxccpcm3(b_clientcode),index idxccpcm4(b_contractcode)
+,index idxccpcm3(bc_clientcode),index idxccpcm4(bc_contractcode)
 ,index idxccpcm5(cl_clientid),index idxccpcm6(con_contractid)
 )
 as
 (
+select * from a
+/*
 select a.*, b.*
 from
 rcbill_my.tempa	a 
 left join
 rcbill_my.tempb b
-on a.CL_CLIENTCODE=b.b_clientcode
-and a.CON_CONTRACTCODE=b.b_contractcode      
+-- on a.CL_CLIENTCODE=b.b_clientcode
+-- and a.CON_CONTRACTCODE=b.b_contractcode      
+on a.CL_CLIENTCODE=b.bc_clientcode
+and a.CON_CONTRACTCODE=b.bc_contractcode   
+*/
 )
 union 
 (
+select * from b
+/*
 select a.*, b.*
 from
 rcbill_my.tempa a 
 right join
 rcbill_my.tempb b
-on a.CL_CLIENTCODE=b.b_clientcode
-and a.CON_CONTRACTCODE=b.b_contractcode 
+-- on a.CL_CLIENTCODE=b.b_clientcode
+-- and a.CON_CONTRACTCODE=b.b_contractcode 
+on a.CL_CLIENTCODE=b.bc_clientcode
+and a.CON_CONTRACTCODE=b.bc_contractcode   
+*/
 )
-
 ;        
+
+drop temporary table if exists a;
+drop temporary table if exists b;
+drop temporary table if exists c;
 
 -- select * from rcbill_my.cust_cont_payment_cmts_mxk where cl_clientcode='I.000001076' or b_clientcode='I.000001076';
 
@@ -796,9 +1107,13 @@ as
 	rcbill_my.rep_allcust a
 	left join
     (
-			select ifnull(cl_clientcode,b_clientcode) as combined_clientcode, cl_clientcode
+			select 
+            -- ifnull(cl_clientcode,b_clientcode) as combined_clientcode
+            ifnull(cl_clientcode,bc_clientcode) as combined_clientcode
+            , cl_clientcode
 			-- , b_clientcode
-			, coalesce(max(b_clientcode)) as b_clientcode
+			-- , coalesce(max(b_clientcode)) as b_clientcode
+            , coalesce(max(bc_clientcode)) as bc_clientcode
 			, coalesce(group_concat((connection_type) order by con_contractid asc separator '|')) as connection_type
             , coalesce(group_concat((mxk_name)  order by con_contractid asc separator '|')) as mxk_name
 			, coalesce(group_concat((mxk_interface) order by con_contractid asc  separator '|')) as mxk_interface
@@ -810,6 +1125,14 @@ as
 			, sum(`201809`) as `201809`, sum(`201810`) as `201810`, sum(`201811`) as `201811`, sum(`201812`) as `201812`
 			, sum(`TotalPayments2018`) as `TotalPayments2018`
 			, sum(`TotalPaymentAmount2018`) as `TotalPaymentAmount2018` 
+                        
+            -- added 3 Jan 2019
+			, sum(`201901`) as `201901`, sum(`201902`) as `201902`, sum(`201903`) as `201903`, sum(`201904`) as `201904`
+			, sum(`201905`) as `201905`, sum(`201906`) as `201906`, sum(`201907`) as `201907`, sum(`201908`) as `201908`
+			, sum(`201909`) as `201909`, sum(`201910`) as `201910`, sum(`201911`) as `201911`, sum(`201912`) as `201912`
+			, sum(`TotalPayments2019`) as `TotalPayments2019`
+			, sum(`TotalPaymentAmount2019`) as `TotalPaymentAmount2019`       
+            
 			from rcbill_my.cust_cont_payment_cmts_mxk 
 			-- where cl_clientcode='I.000011750'
 			group by 1 -- , cl_clientcode 
@@ -871,6 +1194,20 @@ create table rcbill_my.rep_custconsolidated as
 	`lastpaymentdate`,
 	`totalpayments`,
 	`totalpaymentamount`,
+	`201901`,
+	`201902`,
+	`201903`,
+	`201904`,
+	`201905`,
+	`201906`,
+	`201907`,
+	`201908`,
+	`201909`,
+	`201910`,
+	`201911`,
+	`201912`,
+	`totalpayments2019`,
+	`totalpaymentamount2019`,
 	`201801`,
 	`201802`,
 	`201803`,
@@ -892,7 +1229,7 @@ create table rcbill_my.rep_custconsolidated as
 	`clientphone`,
 	`combined_clientcode`,
 	`cl_clientcode`,
-	`b_clientcode`,
+	`bc_clientcode`,
 	`connection_type`,
 	`mxk_name`,
 	`mxk_interface`,

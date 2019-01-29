@@ -22,6 +22,44 @@ group by o_ordermonth, o_orderday, o_region,  o_ordertype, o_servicetype, o_clie
 order by  o_orderday desc, o_clientclass, o_servicetype
 ;
 
+
+##########################################################################
+# get all orders and match with tickets snapshot and then with dedupe clients
+select a.*, b.*
+from 
+(
+	select a.*, b.*
+	-- , a.inst_alldays, a.inst_workdays, b.tkt_alldays, b.tkt_workdays
+	from 
+	(
+		select * from rcbill_my.salestoactive
+		where 
+		0=0
+		-- and o_service IN ('Subscription gNet','Subscription Internet','Subscription Capped Internet','Subscription Capped gNet')
+		and year(o_orderday)=2018
+		-- and inst_alldays is not null
+		and o_saleschannel in ('Sales', 'Finance')
+		order by o_clientcode
+	) a  
+	inner join 
+	(
+		select  ticketid, clientcode, contractcode, TicketType, OpenReason, CloseReason, OpenRegion, StageRegion, CloseRegion, opendate, closedate, firstcommentdate, lastcommentdate, firstcomment, lastcomment, tkt_alldays, tkt_workdays
+        from  rcbill_my.clientticketsnapshot_irs		-- where clientcode='I.000018750' and contractcode='I.000317492'
+	) b
+	on 
+	a.o_clientcode=b.clientcode
+	and 
+	a.o_contractcode=b.contractcode
+) a
+left join
+rcbill_my.dedupe_clients b
+on 
+b.DEDUPE_CLIENT_CODE LIKE concat('%[',a.o_clientcode,']%')
+;
+
+
+##########################################################################
+
 ##############################
 ### INTERNET ORDERS TO ACTIVE
 
@@ -51,10 +89,11 @@ order by o_clientcode
 
 select * from rcbill_my.salestoactive
 where 
-o_service IN ('Subscription gTV','Subscription DTV')
+0=0
+and o_service IN ('Subscription gTV','Subscription DTV')
 and year(o_orderday)=2018
 and inst_alldays is not null
-and o_saleschannel in ('Sales')
+and o_saleschannel in ('Sales','Finance')
 ;
 
 ##############################

@@ -11,6 +11,8 @@
 -- set @period='2018-08-31';
 -- set @period='2018-09-30';
 -- set @period='2018-10-31';
+-- set @period='2018-11-30';
+ set @period='2018-12-31';
 
 
 /*
@@ -28,6 +30,8 @@ group by clientcode, clientclass
 order by 4 desc
 ;
 */
+
+
 
 select @period AS period, clientcode, clientclass, package, subscriptions
 from 
@@ -92,4 +96,45 @@ from
 ) a 
 where 
 upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
+;
+
+/*
+DTV customers
+*/
+
+select @period AS period, clientcode, clientclass, package, subscriptions
+from 
+(
+	select clientcode, clientclass, group_concat(package order by package separator '|') as package, count(*) as subscriptions
+    from rcbill_my.customercontractactivity 
+    where period=@period and REPORTED='Y'
+	-- and package in ('Extravagance','Extravagance Corporate','French','Indian','Indian Corporate')
+	and servicecategory='TV' and Network='HFC' and servicesubcategory<>'ADDON'
+    group by clientcode, clientclass
+	order by 4 desc
+
+) a 
+where 0=0 
+-- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
+;
+
+
+/*
+IPTV customers
+*/
+
+select @period AS period, clientcode, clientclass, package, subscriptions
+from 
+(
+	select clientcode, clientclass, group_concat(package order by package separator '|') as package, count(*) as subscriptions
+    from rcbill_my.customercontractactivity 
+    where period=@period and REPORTED='Y'
+	-- and package in ('Extravagance','Extravagance Corporate','French','Indian','Indian Corporate')
+	and servicecategory='TV' and Network='GPON' and servicesubcategory<>'ADDON'
+    group by clientcode, clientclass
+	order by 4 desc
+
+) a 
+where 0=0 
+-- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
 ;

@@ -2,13 +2,19 @@
 
 -- duration 1883.640 sec
 
-set @perioddate='2018-12-22';
+set @startdate='2018-01-01';
+set @enddate='2018-12-31';
+-- select * from rcbill_my.customercontractactivity where period>=@startdate and period<=@enddate
 
 drop table if exists rcbill_my.tempcpp;
 create table rcbill_my.tempcpp
 as
 (
-	select distinct contractcode, period, package from rcbill_my.customercontractactivity where period>=@perioddate
+	select distinct contractcode, period, package from rcbill_my.customercontractactivity 
+    where 
+    0=0
+    and servicecategory='Internet'
+    and period>=@startdate and period<=@enddate
 );
 	CREATE INDEX tdxtempcpp1
 	ON rcbill_my.tempcpp (contractcode);
@@ -55,8 +61,8 @@ create table rcbill_my.tempcppd as
 
 
 -- show index from rcbill.rcb_ipusage;
--- select * from rcbill.rcb_ipusage where usagedate>=@perioddate and cid=2164698;
--- select * from rcbill.rcb_ipusage where usagedate>=@perioddate and cid=2181700;
+-- select * from rcbill.rcb_ipusage where usagedate>=@startdate and cid=2164698;
+-- select * from rcbill.rcb_ipusage where usagedate>=@startdate and cid=2181700;
 
 drop table if exists rcbill_my.package_ip_usage;
 create table rcbill_my.package_ip_usage as
@@ -91,7 +97,9 @@ create table rcbill_my.package_ip_usage as
         and a.csid=b.csid
 		and a.USAGEDATE=b.period
         
-        where a.USAGEDATE>=@perioddate
+        where 0=0
+        and a.USAGEDATE>=@startdate
+        and a.USAGEDATE<=@enddate
         -- where date(a.USAGEDATE)>='2018-01-01'
 		-- and a.deviceid=b.Deviceid
 	
@@ -126,7 +134,9 @@ create table rcbill_my.package_ip_usage as
 		on a.cid=b.contractid
         and a.csid=b.csid
         and a.USAGEDATE=b.period
-		where a.USAGEDATE>=@perioddate
+		where 0=0
+		and a.USAGEDATE>=@startdate
+        and a.USAGEDATE<=@enddate
         -- and a.deviceid=b.Deviceid
         -- where date(a.USAGEDATE)>='2018-01-01'
     ) 
@@ -166,7 +176,7 @@ from
         where 
         0=0
         -- and package in ('Crimson','Crimson Corporate')
-        and package in ('Amber','Amber Corporate')
+        -- and package in ('Amber','Amber Corporate')
         -- and clientcode='I.000002333'
 	) a 
 	where

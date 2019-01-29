@@ -4,12 +4,12 @@
 -- set @package='INTELENOVELA';
 SET @row_number = 0;
 
-SET @startdate='2018-12-01';
+SET @startdate='2019-01-01';
 -- select @startdate := subdate(current_date(),1);
 
 
 -- select @enddate := subdate(current_date(),1);
-SET @enddate='2018-12-29';
+SET @enddate='2019-01-27';
 
 
 -- set @package='INTELENOVELA';

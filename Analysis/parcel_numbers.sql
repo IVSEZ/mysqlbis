@@ -2,6 +2,8 @@ select * from rcbill.rcb_tclients where upper(address) like '%PARCEL%';
 select * from rcbill.rcb_tclients where upper(moladdress) like '%PARCEL%';
 select * from rcbill.rcb_tclients where upper(MOLRegistrationAddress) like '%PARCEL%';
 
+select * from rcbill.rcb_tclients where kod = 'I13413';
+
 select id, firm, kod, address, moladdress, MOLRegistrationAddress 
 ,locate('PARCEL',upper(address)) as a1_location
 ,locate('PARCEL',upper(moladdress)) as a2_location

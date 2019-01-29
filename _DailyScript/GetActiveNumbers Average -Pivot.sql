@@ -21,8 +21,8 @@ create table rcbill_my.activenumberavg as
 		baseservice,
 		service,
 		GetServiceCategory2(service) as servicecategory2, 
-		getcleanstring(servicetypeold) as package,
-		servicetype,
+		-- getcleanstring(servicetypeold) as package,
+		servicetype as package,
 		reported,
 		decommissioned,
 		periodmth,
@@ -95,7 +95,7 @@ create table rcbill_my.activenumberavg as
 		baseservice,
 		service,
 		GetServiceCategory2(service),
-		package,
+		-- package,
 		servicetype,
 		periodmth,
 		mthname,
@@ -115,7 +115,7 @@ CREATE INDEX IDXanavg1
 ON rcbill_my.activenumberavg (periodmth);
 
 CREATE INDEX IDXanavg2
-ON rcbill_my.activenumberavg (servicetype);
+ON rcbill_my.activenumberavg (package);
 
 CREATE INDEX IDXanavg3
 ON rcbill_my.activenumberavg (reported);
@@ -242,7 +242,7 @@ group by servicecategory, servicesubcategory, servicecategory2, package, clientc
 )
 ;
 
--- select * from rcbill_my.rep_activenumberavg where reported='Y' and decommissioned='N';
+-- select * from rcbill_my.rep_activenumberavg where reported='Y' and decommissioned='N' and package='Corporate';
 select count(*) as rep_activenumberavg from rcbill_my.rep_activenumberavg;
 select count(*) as rep_activenumberavg1 from rcbill_my.rep_activenumberavg where reported='Y' and decommissioned='N';
 
@@ -427,4 +427,4 @@ DEALLOCATE PREPARE stmt;
 set session group_concat_max_len = 1024;
 
 select count(*) as rep_activenumberavgPraslin from rcbill_my.rep_activenumberavgPraslin;
-select count(*) as rep_activenumberavgMahe_pv from rcbill_my.rep_activenumberavgPraslin_pv;
+select count(*) as rep_activenumberavgPraslin_pv from rcbill_my.rep_activenumberavgPraslin_pv;

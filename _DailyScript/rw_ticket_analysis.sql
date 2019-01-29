@@ -26,7 +26,7 @@ order by 4 desc;
 
 
 select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
-, min(date(commentdate)) as mindate, max(date(commentdate)) as maxdate, count(distinct date(commentdate)) as cmmtdays
+, min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
 , datediff(max(date(commentdate)), min(date(commentdate))) as totaldays
 , count(comment)/count(distinct date(commentdate)) as avgcmtday
 , (count(distinct date(commentdate))/datediff(max(date(commentdate)), min(date(commentdate)))) as consistency
@@ -36,6 +36,16 @@ where year(commentdate)=year(now())
 group by commentuser
 order by 2 desc;
 
+select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
+, min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
+, datediff(max(date(commentdate)), min(date(commentdate))) as totaldays
+, count(comment)/count(distinct date(commentdate)) as avgcmtday
+, (count(distinct date(commentdate))/datediff(max(date(commentdate)), min(date(commentdate)))) as consistency
+from 
+rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=2018
+group by commentuser
+order by 2 desc;
 
 
 

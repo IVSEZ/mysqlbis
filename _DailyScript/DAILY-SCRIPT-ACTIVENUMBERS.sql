@@ -9,7 +9,7 @@ use rcbill_my;
 -- SET @rundate='2017-12-26';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/activenumber/DailySubscriptionStats-05052018-06052018.csv'
 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-01012019.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-28012019.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -100,7 +100,7 @@ reported = (select reported from rcbill_my.lkpreported where servicenewtype=serv
 ;
 
 select period, count(1) from rcbill_my.activenumber group by period order by period desc
-limit 5
+limit 6
 ;
 
 drop table if exists rcbill_my.packagelist;
@@ -138,7 +138,7 @@ use rcbill_my;
 SET @@SESSION.sql_mode='ALLOW_INVALID_DATES';
 SET SQL_SAFE_UPDATES = 0;
 
- 	SET @rundate='2019-01-01'; SET @perioddate=str_to_date('2019-01-01','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-01;2019-01-01.csv'
+-- 	SET @rundate='2019-01-01'; SET @perioddate=str_to_date('2019-01-01','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-01;2019-01-01.csv'
 -- 	SET @rundate='2019-01-02'; SET @perioddate=str_to_date('2019-01-02','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-02;2019-01-02.csv'
 -- 	SET @rundate='2019-01-03'; SET @perioddate=str_to_date('2019-01-03','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-03;2019-01-03.csv'
 -- 	SET @rundate='2019-01-04'; SET @perioddate=str_to_date('2019-01-04','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-04;2019-01-04.csv'
@@ -165,7 +165,7 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2019-01-25'; SET @perioddate=str_to_date('2019-01-25','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-25;2019-01-25.csv'
 -- 	SET @rundate='2019-01-26'; SET @perioddate=str_to_date('2019-01-26','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-26;2019-01-26.csv'
 -- 	SET @rundate='2019-01-27'; SET @perioddate=str_to_date('2019-01-27','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-27;2019-01-27.csv'
--- 	SET @rundate='2019-01-28'; SET @perioddate=str_to_date('2019-01-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-28;2019-01-28.csv'
+ 	SET @rundate='2019-01-28'; SET @perioddate=str_to_date('2019-01-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-28;2019-01-28.csv'
 -- 	SET @rundate='2019-01-29'; SET @perioddate=str_to_date('2019-01-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-29;2019-01-29.csv'
 -- 	SET @rundate='2019-01-30'; SET @perioddate=str_to_date('2019-01-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-30;2019-01-30.csv'
 -- 	SET @rundate='2019-01-31'; SET @perioddate=str_to_date('2019-01-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2019-01-31;2019-01-31.csv'
@@ -388,7 +388,7 @@ CREATE INDEX IDXaccl6
 ON rcbill_my.activeccl (cl_longitude);
 
 
-select count(1) from rcbill_my.customercontractactivity;
+select count(1) as countbefore from rcbill_my.customercontractactivity;
 #now insert the daily activity table into the customer contract activity table. 
 insert into rcbill_my.customercontractactivity
 (
@@ -404,7 +404,7 @@ delete from rcbill_my.customercontractactivity where period in ('2018-04-02','20
 
 */
 
-select count(1) from rcbill_my.customercontractactivity;
+select count(1) as countafter from rcbill_my.customercontractactivity;
 
 -- select * from rcbill_my.customercontractactivity where period=@rundate and clientcode='I.000011750';
 
@@ -412,6 +412,13 @@ select period, count(1) as customercontractactivity from rcbill_my.customercontr
 group by period order by period desc
 limit 5
 ;
+
+
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+
 
 -- CREATE A CUSTOMER CONTRACT SNAPSHOT TABLE
 drop table if exists rcbill_my.customercontractsnapshot;
