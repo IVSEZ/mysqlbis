@@ -56,6 +56,8 @@ INSERTEDON=now()
 -- select distinct interfacename, count(*) from rcbill.rcb_techregions group by interfacename;
 /*
 set sql_safe_updates=0;
+delete from rcbill.rcb_techregions where date(insertedon)=date(now());
+
 update rcbill.rcb_techregions set District='ANSE ETOILE' where district='ANSE ETOLE';
 
 select * from rcbill.rcb_techregions where district='ANSE ETOLE';

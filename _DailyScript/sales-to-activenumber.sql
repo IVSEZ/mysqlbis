@@ -28,7 +28,7 @@ group by 1,2,3
 
 -- duration: 631.640 sec, 636.218 sec, 653.016 sec 742.890 sec
 
-select now() as currenttime;
+-- select now() as currenttime;
 
 drop table if exists rcbill_my.salestoactive;
 create table rcbill_my.salestoactive as
@@ -168,7 +168,7 @@ create table rcbill_my.salestoactive as
 )
 ;
 
-select now() as currenttime;
+-- select now() as currenttime;
 
 #JOURNEY TABLE
 drop table if exists rcbill_my.salestoactivejourney;

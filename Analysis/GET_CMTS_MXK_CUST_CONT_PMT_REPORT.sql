@@ -1,4 +1,6 @@
-
+show columns from rcbill_my.rep_cust_cont_payment_cmts_mxk;
+show columns from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail;
+ 
 ### GET CMTS MXK REPORT
 
 use rcbill_my;
@@ -23,6 +25,36 @@ select * from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail;
 
 */
 
+## UPDATED for 2019 table
+/*
+-- FIRST TIME create table rcbill_my.rep_cust_cont_payment_cmts_mxk_trail2 as (select * from rcbill_my.rep_cust_cont_payment_cmts_mxk);
+
+insert into rcbill_my.rep_cust_cont_payment_cmts_mxk_trail2
+select * from rcbill_my.rep_cust_cont_payment_cmts_mxk
+;
+
+select * from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail2;
+
+
+*/
+
+
+########################### CHANGE COLLATION and CHARACTER_SET
+/*
+SELECT table_schema, table_name, column_name, character_set_name, collation_name
+FROM information_schema.columns
+where table_name like 'rep_cust_cont_payment_cmts_mxk_trail%'
+-- WHERE collation_name = 'latin1_general_ci'
+ORDER BY table_schema, table_name,ordinal_position; 
+
+
+ALTER TABLE rep_cust_cont_payment_cmts_mxk_trail CONVERT TO CHARACTER SET utf8 COLLATE 'utf8_general_ci';
+
+ALTER TABLE rep_cust_cont_payment_cmts_mxk_trail2 CONVERT TO CHARACTER SET utf8 COLLATE 'utf8_general_ci';
+
+*/
+###########################
+
 
 select *
 from rcbill_my.rep_cust_cont_payment_cmts_mxk 
@@ -30,12 +62,28 @@ where firstactivedate is not null and lastactivedate is not null
 order by clientcode
 ;
 
-
+select reportdate
+-- , network
+, clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(*) as recordcount, count(distinct clientcode) as distinctclients from 
+rcbill_my.rep_cust_cont_payment_cmts_mxk_trail2
+group by 1,2,3, 4 -- , 5
+order by reportdate desc
+;
 
 select reportdate
 -- , network
 , clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(*) as recordcount, count(distinct clientcode) as distinctclients from 
 rcbill_my.rep_cust_cont_payment_cmts_mxk_trail
+group by 1,2,3, 4 -- , 5
+order by reportdate desc
+;
+
+/*
+select reportdate
+-- , network
+, clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(distinct clientcode) as distinctclients from 
+rcbill_my.rep_cust_cont_payment_cmts_mxk_trail2
+where firstactivedate is not null and lastactivedate is not null
 group by 1,2,3, 4 -- , 5
 order by reportdate desc
 ;
@@ -48,6 +96,36 @@ where firstactivedate is not null and lastactivedate is not null
 group by 1,2,3, 4 -- , 5
 order by reportdate desc
 ;
+*/
+#########
+
+(
+select reportdate
+-- , network
+, clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(distinct clientcode) as distinctclients from 
+rcbill_my.rep_cust_cont_payment_cmts_mxk_trail2
+where firstactivedate is not null and lastactivedate is not null
+group by 1,2,3, 4 -- , 5
+order by reportdate desc
+) 
+union
+(
+select reportdate
+-- , network
+, clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(distinct clientcode) as distinctclients from 
+rcbill_my.rep_cust_cont_payment_cmts_mxk_trail
+where firstactivedate is not null and lastactivedate is not null
+group by 1,2,3, 4 -- , 5
+order by reportdate desc
+)
+;
+
+
+#########
+
+
+
+
 
 select HFC_NODE, NODENAME, CMTS_DATE, date(INSERTEDON) as INSERTED_ON
 , count(distinct CLIENT_CODE) as UNIQUE_ACCOUNTS, count(distinct CONTRACT_CODE) as UNIQUE_CONTRACTS

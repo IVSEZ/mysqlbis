@@ -11,7 +11,7 @@ select @enddate := subdate(current_date(),1);
 -- set @package='DUALVIEW';
 -- set @package='MULTIVIEW';
 SET @package='VOD';
-
+-- select * from rcbill_my.rep_custconsolidated
 
 select 
 a.*

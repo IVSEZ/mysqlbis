@@ -30,7 +30,19 @@ select * from rcbill_my.activenumberavg;
 
 select * from rcbill_my.rep_activenumberavg;
 select * from rcbill_my.rep_activenumberavg2;
+
+## MONTHLY AVERAGE REPORT FOR SUBMISSION
 select * from rcbill_my.rep_activenumberavg3;
+
+##TV
+select * from rcbill_my.rep_activenumberavg3 where servicecategory='TV';
+
+select lastday, servicecategory, region, sum(activecount) as activecount
+from rcbill_my.rep_activenumberavg3 where 0=0 
+and servicecategory='TV'
+group by lastday, servicecategory, region;
+
+
 select lastday, round(sum(activecount)) as activecount
 from rcbill_my.rep_activenumberavg2
 group by lastday 
@@ -46,6 +58,9 @@ group by period
 show columns from rcbill_my.rep_activenumberlastday_pv;
 select * from rcbill_my.rep_activenumberlastday_pv;
 select * from rcbill_my.rep_activenumberavg_pv;
+
+select servicecategory, package, `20181231`, `20190131` from rcbill_my.rep_activenumberlastday_pv;
+select servicecategory, package, `20181231`, `20190131` from rcbill_my.rep_activenumberavg_pv;
 
 select * from rcbill_my.rep_activenumberavgMahe;
 select * from rcbill_my.rep_activenumberavgMahe_pv;

@@ -176,14 +176,16 @@ select * from rcbill_my.dedupe_clients where match_name=1 and match_nin=1 and ma
 
 -- select * from rcbill_my.dedupe_clients where dedupe_client_code like '%[I6054]%';
 
+/*
+
 select * from rcbill_my.matched_clients
 where 0=0
 -- and CLIENT_NAME like '%samia cad%'
 -- and client_nin	= '984-0385-1-0-88'
 -- and dedupe_client_code in ('[I.000000018]|[I19765]')
-and CLIENT_CODE in ('I.000013173')
+and CLIENT_CODE in ('I.000000399')
 ;
 
-
+*/
 
 
