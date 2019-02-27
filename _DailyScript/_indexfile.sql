@@ -9,7 +9,7 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@#mysql 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20190212_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20190227_1.out
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
@@ -68,6 +68,8 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\GetActiveNumbers Average -Pivot.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\budget_actual_analysis_2019.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\reports-sales-addons-prepaid-camera.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
@@ -79,6 +81,9 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\RCB_ClientAnalyticsReport_Scri
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\REVENUE_PER_NODE_MXK.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\Analysis\service_tickets_assignments.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\sales-to-activenumber.sql
@@ -99,7 +104,7 @@ use rcbill_my;
 
 call sp_ActiveNumber(31,10,2018,'','');
 
-call sp_GetActiveNumberFromTo('2019-02-07','2019-02-10');
+call sp_GetActiveNumberFromTo('2019-02-22','2019-02-25');
 
 
 select * from rcbill_my.clientstats where VOD>0 and DualView>0

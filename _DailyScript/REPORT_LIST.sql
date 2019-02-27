@@ -34,6 +34,9 @@ select * from rcbill_my.rep_activenumberavg2;
 ## MONTHLY AVERAGE REPORT FOR SUBMISSION
 select * from rcbill_my.rep_activenumberavg3;
 
+## BUDGET VS ACTUAL ANALYSIS
+select * from rcbill_my.rep_budget_actual_2019_pv;
+
 ##TV
 select * from rcbill_my.rep_activenumberavg3 where servicecategory='TV';
 
@@ -42,6 +45,10 @@ from rcbill_my.rep_activenumberavg3 where 0=0
 and servicecategory='TV'
 group by lastday, servicecategory, region;
 
+select lastday,servicecategory, round(sum(activecount)) as activecount
+from rcbill_my.rep_activenumberavg2
+group by lastday, servicecategory
+;
 
 select lastday, round(sum(activecount)) as activecount
 from rcbill_my.rep_activenumberavg2
@@ -85,7 +92,7 @@ group by servicecategory
 ;
 
 
-select * from rcbill.clientcontractip  where CLIENTCODE='I.000011750' order by USAGEDATE;
+select * from rcbill.clientcontractip  where CLIENTCODE='I6816' order by USAGEDATE desc;
 
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.187.241' and USAGEDATE='2018-12-31';
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.186.118' and USAGEDATE='2018-12-31';
@@ -114,13 +121,26 @@ select clean_connection_type
 , count(distinct clientcode) as d_clients
 from rcbill_my.rep_custconsolidated
 group by clean_connection_type
+with rollup
 ;
+
+select activenetwork
+, count(clientcode) as clients
+, count(distinct clientcode) as d_clients
+from rcbill_my.rep_custconsolidated
+where IsAccountActive='Active'
+group by 1
+-- order by 1,2,3, 4
+with rollup
+;
+
 
 select isaccountactive, accountactivitystage
 , count(clientcode) as clients
 , count(distinct clientcode) as d_clients
 from rcbill_my.rep_custconsolidated
 group by isaccountactive, accountactivitystage
+with rollup
 ;
 
 select 
@@ -137,6 +157,11 @@ ifnull(isaccountactive,'') as isaccountactive
 , count(clientcode) as clients
 , count(distinct clientcode) as d_clients
 , sum(totalpaymentamount) as totalpaymentamount
+, sum(TotalPayments2019) as TotalPayments2019
+, sum(TotalPaymentAmount2019) as TotalPaymentAmount2019
+			, sum(`201901`) as `201901`, sum(`201902`) as `201902`, sum(`201903`) as `201903`, sum(`201904`) as `201904`
+			, sum(`201905`) as `201905`, sum(`201906`) as `201906`, sum(`201907`) as `201907`, sum(`201908`) as `201908`
+			, sum(`201909`) as `201909`, sum(`201910`) as `201910`, sum(`201911`) as `201911`, sum(`201912`) as `201912`
 , sum(TotalPayments2018) as TotalPayments2018
 , sum(TotalPaymentAmount2018) as TotalPaymentAmount2018
 			, sum(`201801`) as `201801`, sum(`201802`) as `201802`, sum(`201803`) as `201803`, sum(`201804`) as `201804`
@@ -169,7 +194,14 @@ group by CONTRACTCURRENTSTATUS, VPNR_SERVICETYPE,CL_CLCLASSNAME
 with rollup
 ;
 
-
+##MXK COUNT
+select date(insertedon) as dateinserted, mxk_name
+-- , MXK_INTERFACE
+,  count(*) as devicecount
+from rcbill.rcb_mxk
+group by 1, 2 -- , 3
+order by 1 desc, 2 asc
+;
 
 
 /*clients and contracts who have nexttv without parent device id*/
@@ -181,4 +213,18 @@ and (username is null or username='')
 select distinct CLIENT_CODE, CLIENT_NAME, CONTRACT_CODE, USERNAME from rcbill_my.rep_clientcontractdevices
 where SERVICE_TYPE='NEXTTV'
 and (username is not null and username<>'')
+;
+
+## CLIENT EMAIL AND OTHER INFO REPORT FOR MARKETING
+-- select * from rcbill.rcb_tclients;
+select reportdate, clientcode
+, currentdebt, IsAccountActive, AccountActivityStage
+, clientname
+, clientclass, clientemail
+, clientphone , clientlocation, clientaddress
+
+, clean_connection_type
+from rcbill_my.rep_custconsolidated
+where 0=0
+-- limit 100
 ;

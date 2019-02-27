@@ -3,43 +3,62 @@
 -- 12575.188 sec / 0.000 sec
 select distinct clientcode from rcbill_my.customercontractactivity where upper(package) like '%AMBER%';
 
-
 select 
+a.*, 
 
--- a.*
-
-
-a.reportdate
-, a.clientcode
-, a.currentdebt
-, a.isaccountactive
-, a.accountactivitystage
-, a.clientname
-, a.clientclass
-, a.activenetwork
-, a.activeservices
-, a.activecontracts
-, a.activesubscriptions
-, a.clientlocation
-, a.clientphone
-, a.clientaddress
-
-
-,b.contractpackage
+CASE 
+	when datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) < 32 then '< 1 Month' 
+	when datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) >= 32 and datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) < 91 then '1 - 3 Months' 
+	when datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) >= 91 and datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) < 181 then '3 - 6 Months' 
+	when datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) >= 181 and datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) < 366 then '6 - 12 Months' 
+	when datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) >= 366 then 'Over a year' 
+end as AMBER_DURATION
 from 
-rcbill_my.rep_custconsolidated a 
-left join
--- rcbill_my.customercontractsnapshot b
 (
-	select clientcode, group_concat( distinct package order by contractcode asc separator '|') as contractpackage
-	from rcbill_my.customercontractsnapshot
-	where servicecategory='Internet'
-	and CurrentStatus='Active'
-	group by clientcode
-) b
-on
-a.clientcode=b.clientcode
-where a.clientcode in 
+	select 
+
+	-- a.*
+
+
+	a.reportdate
+	, a.clientcode
+	, a.currentdebt
+	, a.isaccountactive
+	, a.accountactivitystage
+	, a.clientname
+	, a.clientclass
+	, a.activenetwork
+	, a.activeservices
+	, a.activecontracts
+	, a.activesubscriptions
+	, a.clientlocation
+	, a.clientphone
+	, a.clientaddress
+	, b.contractpackage
+	, (select min(period) from rcbill_my.customercontractactivity where 0=0 and upper(package) in ('AMBER','AMBER CORPORATE') and clientcode=a.clientcode) as AMBER_FIRSTTIME
+	, (select max(period) from rcbill_my.customercontractactivity where 0=0 and upper(package) in ('AMBER','AMBER CORPORATE') and clientcode=a.clientcode) as AMBER_LASTTIME
+	from 
+	rcbill_my.rep_custconsolidated a 
+	left join
+	-- rcbill_my.customercontractsnapshot b
+	(
+		select clientcode, group_concat( distinct package order by contractcode asc separator '|') as contractpackage
+		from rcbill_my.customercontractsnapshot
+		where servicecategory='Internet'
+		and CurrentStatus='Active'
+		group by clientcode
+	) b
+	on
+	a.clientcode=b.clientcode
+
+
+	where a.clientcode in 
+	(
+	  select distinct clientcode from rcbill_my.customercontractactivity where upper(package) in ('AMBER','AMBER CORPORATE')
+	) 
+) a 
+;
+/*
 (
 '0008'	,
 'I.000000263'	,
@@ -708,3 +727,5 @@ where a.clientcode in
 )
 
 ;
+
+*/

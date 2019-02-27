@@ -8,7 +8,9 @@ set @m11='2018-11-30';set @m12='2018-12-31';
     
     
     (
-	select 'BUDGET' as C_TYPE, b_month as MTH, b_year as YR, b_region as REGION, b_service as CATEGORY, B_PACKAGE as PACKAGE, sum(B_count) as ACTIVE from rcbill_my.iv_budget
+	select 'BUDGET' as C_TYPE, b_month as MTH, b_year as YR, b_region as REGION, b_service as CATEGORY, B_PACKAGE as PACKAGE
+    , sum(B_count) as ACTIVE 
+    from rcbill_my.iv_budget
 	where 
 	-- B_REGION in (@region)
 	-- and

@@ -101,6 +101,8 @@ create temporary table a (index idxf1(FSAN2)) as
 			-- FSAN is not null or FSAN <>''
 );
 
+select 'created temp table a' as message;
+
 create temporary table b (index idxsn2(SERIAL_NUM2)) as 
 (
 			select MXK_NAME
@@ -117,6 +119,7 @@ create temporary table b (index idxsn2(SERIAL_NUM2)) as
 )
 ;
 
+select 'created temp table b' as message;
 
 
 drop table if exists rcbill_my.tempcustmxk1;
@@ -166,6 +169,8 @@ create table rcbill_my.tempcustmxk1 as
 		on upper(trim(a.FSAN2))=upper(trim(b.SERIAL_NUM2))
 );
 
+select 'created rcbill_my.tempcustmxk1' as message;
+
 drop temporary table if exists a;
 drop temporary table if exists b;
 drop temporary table if exists c;
@@ -196,6 +201,9 @@ create temporary table a (index idxf1(FSAN2)) as
             and CONTRACT_CODE<>CLIENT_CODE
 );
 
+select 'created temp a' as message;
+
+
 create temporary table b (index idxsn2(SERIAL_NUM2)) as 
 (
 			select MXK_NAME
@@ -210,6 +218,8 @@ create temporary table b (index idxsn2(SERIAL_NUM2)) as
 			-- and model_id<>'-'
 			and TRIM(SERIAL_NUM)<>'0'
 );
+
+select 'created temp b' as message;
 
 
 drop table if exists rcbill_my.tempcustmxk2;
@@ -259,6 +269,7 @@ create table rcbill_my.tempcustmxk2 as
 		on upper(trim(a.FSAN2))=upper(trim(b.SERIAL_NUM2))
 );
 
+select 'created rcbill_my.tempcustmxk2' as message;
 
 drop temporary table if exists a;
 drop temporary table if exists b;
@@ -275,6 +286,8 @@ create table rcbill_my.customers_mxk as
 	
 -- )
 ;
+
+select 'created rcbill_my.customers_mxk' as message;
 
 drop table if exists rcbill_my.tempcustmxk1;
 drop table if exists rcbill_my.tempcustmxk2;
@@ -307,6 +320,9 @@ create temporary table a (index idxa1(MAC)) as
 
 );
 
+select 'created temp a' as message;
+
+
 create temporary table c (index idxc1(MAC_ADDRESS)) as 
 (
 		select a.MAC_ADDRESS_CLEAN2 as MAC_ADDRESS, a.IP_ADDRESS, a.HFC_NODE
@@ -321,6 +337,9 @@ create temporary table c (index idxc1(MAC_ADDRESS)) as
 		trim(upper(a.HFC_NODE))=trim(upper(b.INTERFACENAME))
 		where date(a.INSERTEDON) in (select max(date(INSERTEDON)) from rcbill.rcb_cmts)
 );
+
+select 'created temp c' as message;
+
 
 drop table if exists rcbill_my.tempcustcmts1;
 create table rcbill_my.tempcustcmts1 as 
@@ -372,6 +391,8 @@ create table rcbill_my.tempcustcmts1 as
 
 );
 
+select 'created rcbill_my.tempcustcmts1' as message;
+
 
 drop temporary table if exists a;
 drop temporary table if exists b;
@@ -404,6 +425,8 @@ create temporary table a (index idxa1(MAC)) as
 );
 
 
+select 'created temp a' as message;
+
 create temporary table c (index idxc1(MAC_ADDRESS)) as 
 (
 		select a.MAC_ADDRESS_CLEAN2 as MAC_ADDRESS, a.IP_ADDRESS, a.HFC_NODE
@@ -419,6 +442,8 @@ create temporary table c (index idxc1(MAC_ADDRESS)) as
 		where date(a.INSERTEDON) in (select max(date(INSERTEDON)) from rcbill.rcb_cmts)
 );
 
+
+select 'created temp c' as message;
 
 drop table if exists rcbill_my.tempcustcmts2;
 create table rcbill_my.tempcustcmts2 as 
@@ -470,6 +495,7 @@ create table rcbill_my.tempcustcmts2 as
 
 );
 
+select 'created rcbill_my.tempcustcmts2' as message;
 
 drop temporary table if exists a;
 drop temporary table if exists b;
@@ -481,6 +507,9 @@ create table rcbill_my.customers_cmts as
     union
 	(select *, now() as InsertedOn from rcbill_my.tempcustcmts2 b) 
 ;
+
+select 'created rcbill_my.customers_cmts' as message;
+
 
 drop table if exists rcbill_my.tempcustcmts1;
 drop table if exists rcbill_my.tempcustcmts2;
@@ -508,6 +537,7 @@ as
 	)
 ;
 
+select 'created rcbill_my.customers_cmts_mxk' as message;
 
 create temporary table a (index idxa1(CL_CLIENTID), index idxa2(CON_CONTRACTID)) as 
 (
@@ -519,6 +549,8 @@ create temporary table a (index idxa1(CL_CLIENTID), index idxa2(CON_CONTRACTID))
 		CL_CLIENTID, CL_CLIENTNAME, CL_CLIENTCODE, CL_CLCLASSNAME, CON_CONTRACTID, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, VPNR_SERVICEPRICE, CONTRACTCURRENTSTATUS
 
 );
+
+select 'created temp a' as message;
 
 
 drop table if exists rcbill_my.customers_contracts_cmts_mxk;
@@ -545,6 +577,9 @@ as
 	a.CON_CONTRACTID=b.contract_id
 )
 ;
+
+select 'created rcbill_my.customers_contracts_cmts_mxk' as message;
+
 
 drop temporary table if exists a;
 drop temporary table if exists b;
@@ -593,6 +628,7 @@ and
     (a.nodename is null and b.nodename is not null)
 );
 
+select 'updated rcbill_my.customers_contracts_cmts_mxk' as message;
 
 
 -- select * from rcbill_my.customers_contracts_cmts_mxk;
@@ -638,6 +674,7 @@ create table rcbill_my.customers_collection (index idxccoll1(ClientCode), index 
 
 
 
+select 'created rcbill_my.customers_collection' as message;
 
 drop table if exists rcbill_my.customers_cmts_mxk_cont_coll;
 
@@ -658,8 +695,11 @@ as
 )
 ;
 
+select 'created rcbill_my.customers_cmts_mxk_cont_coll' as message;
+
 -- select * from rcbill_my.customers_cmts_mxk_cont_coll where cl_clientcode='I.000001076';
 ###2018 payments####
+/*
 drop table if exists rcbill_my.customers_contracts_collection_pivot2018 ;
 create table rcbill_my.customers_contracts_collection_pivot2018 (index idxccp1 (clientcode), index idxccp2(clid), index idxccp3(cid), index idxccp4(contractcode) ) as 
 (
@@ -788,7 +828,8 @@ create table rcbill_my.rep_customers_collection2018(index idxrcc20181(client_cod
 		order by a.TotalPaymentAmount2018 desc
 );
 
-
+-- select * from rcbill_my.rep_customers_collection2018;
+*/
 
 #####2019 payments
 
@@ -840,6 +881,7 @@ create table rcbill_my.customers_contracts_collection_pivot2019 (index idxccp1 (
 
 );
 
+select 'created rcbill_my.customers_contracts_collection_pivot2019' as message;
 
 drop table if exists rcbill_my.customers_collection_pivot2019 ;
 create table rcbill_my.customers_collection_pivot2019 (index idxccp1 (clientcode), index idxccp2(clid)) as 
@@ -889,6 +931,7 @@ create table rcbill_my.customers_collection_pivot2019 (index idxccp1 (clientcode
 
 );
 
+select 'created rcbill_my.customers_collection_pivot2019' as message;
 -- select * from rcbill_my.customers_collection_pivot2019 where clientcode='I.000001076';
 
 drop table if exists rcbill_my.rep_customers_collection2019;
@@ -919,6 +962,8 @@ create table rcbill_my.rep_customers_collection2019(index idxrcc20191(client_cod
 		on b.clientcode=c.CLIENT_CODE
 		order by a.TotalPaymentAmount2019 desc
 );
+
+select 'created rcbill_my.rep_customers_collection2019' as message;
 
 #####################
 
@@ -953,6 +998,8 @@ set session group_concat_max_len = 30000;
 		group by CL_CLIENTCODE, CL_CLIENTID, CON_CONTRACTCODE, CON_CONTRACTID,  connection_type,client_code, contract_code, mxk_name,mxk_interface,hfc_node,nodename	
         
     );
+
+select 'created rcbill_my.tempa' as message;
 
 -- select * from rcbill_my.customers_contracts_collection_pivot2018 where clientcode='I.000001076';
 	drop table if exists rcbill_my.tempb;
@@ -1011,6 +1058,8 @@ set session group_concat_max_len = 30000;
        
     );
 
+select 'created rcbill_my.tempb' as message;
+
 -- show index from tempa;
 -- show index from tempb;
 -- select * from tempa
@@ -1029,6 +1078,8 @@ create temporary table a as
 	and a.CON_CONTRACTCODE=b.bc_contractcode   
 );
 
+select 'created a' as message;
+
 create temporary table b as 
 (
 	select a.*, b.*
@@ -1041,6 +1092,8 @@ create temporary table b as
 	on a.CL_CLIENTCODE=b.bc_clientcode
 	and a.CON_CONTRACTCODE=b.bc_contractcode  
 );
+
+select 'created b' as message;
 
 drop table if exists rcbill_my.cust_cont_payment_cmts_mxk;
 create table rcbill_my.cust_cont_payment_cmts_mxk 
@@ -1081,6 +1134,8 @@ and a.CON_CONTRACTCODE=b.bc_contractcode
 */
 )
 ;        
+
+select 'created rcbill_my.cust_cont_payment_cmts_mxk' as message;
 
 drop temporary table if exists a;
 drop temporary table if exists b;
@@ -1146,6 +1201,8 @@ as
     -- on a.clientcode=c.clientcode
 )
 ;
+
+select 'created rcbill_my.rep_cust_cont_payment_cmts_mxk' as message;
     
 drop table if exists rcbill_my.tempa;
 drop table if exists rcbill_my.tempb;

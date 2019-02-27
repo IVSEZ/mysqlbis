@@ -98,6 +98,14 @@ group by mxk_name, 2 -- , 3
 order by 1, 2 desc
 ;
 
+
+select date(insertedon) as dateinserted, mxk_name
+-- , MXK_INTERFACE
+,  count(*) as devicecount
+from rcbill.rcb_mxk
+group by 1, 2 -- , 3
+order by 1 desc, 2 asc
+;
 -- select distinct vendor_id from rcbill.rcb_mxk;
 -- select mxk_interface, count(*) from rcbill.rcb_mxk group by mxk_interface;
 
