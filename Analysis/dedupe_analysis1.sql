@@ -177,7 +177,7 @@ select * from rcbill_my.dedupe_clients;
 select * from rcbill_my.dedupe_clients where match_name=1 and match_nin=1 and match_phone=1;
 
 -- select * from rcbill_my.dedupe_clients where dedupe_client_code like '%[I6054]%';
-
+-- select * from rcbill_my.matched_clients where client_code in ('I22376') order by m_client_code;
 /*
 
 select * from rcbill_my.matched_clients
