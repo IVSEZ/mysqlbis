@@ -29,7 +29,8 @@ CREATE TABLE rcbill.templivetv
 	where 
  	-- date(a.SessionStart)='2018-08-28'
 	-- date(a.SessionStart)>=@rundate
-    date(a.SessionStart)> (select max(date(sessionstart)) from rcbill.clientlivetvstats)
+    -- date(a.SessionStart)> (select max(date(sessionstart)) from rcbill.clientlivetvstats)
+    (a.SessionStart)> (select max(sessionstart) from rcbill.clientlivetvstats)
 	order by a.device
 )
 ;
@@ -101,7 +102,8 @@ insert into rcbill.clientlivetvstats
 	on a.device=b.mac and a.device=b.phoneno
 	where 
 	-- date(a.SessionStart)='2018-08-28'
-	date(a.SessionStart)>(select max(date(sessionstart)) from rcbill.clientlivetvstats)
+	-- date(a.SessionStart)>(select max(date(sessionstart)) from rcbill.clientlivetvstats)
+    (a.SessionStart)>(select max(sessionstart) from rcbill.clientlivetvstats)
 );
 
 -- select * from rcbill.clientlivetvstats where date(sessionstart)='2018-08-28'

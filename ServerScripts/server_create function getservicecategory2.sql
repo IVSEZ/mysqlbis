@@ -19,6 +19,7 @@ BEGIN
 		WHEN 'Subscription gVOICE' THEN 'Voice'
 		-- WHEN 'Subscription VOD' THEN 'TV'
 		WHEN 'Subscription VOD' THEN 'OTT'
+		WHEN 'Subscription iGo' THEN 'OTT'
 
     END;
  
@@ -26,4 +27,3 @@ BEGIN
     RETURN servicecategory2;
   END$$
 DELIMITER ;
-

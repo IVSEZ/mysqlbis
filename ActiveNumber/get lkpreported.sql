@@ -4,6 +4,12 @@ order by 1
 ;
 
 /*
+
+insert into rcbill_my.lkpreported
+values
+('iGo','Y');
+
+
 SET SQL_SAFE_UPDATES = 0;
 insert into rcbill_my.lkpreported
 values

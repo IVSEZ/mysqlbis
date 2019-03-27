@@ -1,28 +1,29 @@
 -- SET SESSION sql_mode = '';
 
--- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_phone_score_20181225.csv' 
--- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_phone_score_20181228.csv' 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_phone_score_20190209.csv' 
-REPLACE INTO TABLE `rcbill`.`client_match_phone` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_nin_score_20181225.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_nin_score_20181228.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_nin_score_20190209.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_nin_score_20190323.csv' 
+REPLACE INTO TABLE `rcbill`.`client_match_nin` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
  IGNORE 1 LINES 
 (
 @client_code1 ,
 @client_name1 ,
-@client_phone1 ,
+@client_nin1 ,
 @client_code2 ,
 @client_name2 ,
-@client_phone2 ,
+@client_nin2 ,
 @match_score  
 
 ) 
 set 
 CLIENT_CODE=@client_code1 ,
 CLIENT_NAME=UPPER(TRIM(@client_name1)) ,
-CLIENT_PHONE=@client_phone1 ,
+CLIENT_NIN=UPPER(TRIM(@client_nin1)) ,
 M_CLIENT_CODE=@client_code2 ,
 M_CLIENT_NAME=UPPER(TRIM(@client_name2)) ,
-M_CLIENT_PHONE=@client_phone2 ,
+M_CLIENT_NIN=UPPER(TRIM(@client_nin2)) ,
 M_SCORE=@match_score ,
 
 INSERTEDON=now()
@@ -32,11 +33,11 @@ INSERTEDON=now()
 -- update rcbill.rcb_cmts
 -- set mac_address_clean = 
 
-select date(insertedon) as insertedon, count(*) as records from rcbill.client_match_phone
+select date(insertedon) as insertedon, count(*) as records from rcbill.client_match_nin
 group by 1
 ;
 
--- select * from rcbill.client_match_phone;
+-- select * from rcbill.client_match_nin;
 
 
 

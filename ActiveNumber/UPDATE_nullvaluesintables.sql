@@ -6,7 +6,12 @@
         select * from rcbill_my.activenumber where servicetype ='DualView';
         select * from rcbill_my.dailyactivenumber where servicetype='DualView';
         select * from rcbill_my.customercontractactivity where servicetype='DualView';
-        
+
+
+        select * from rcbill_my.activenumber where servicetype ='iGo';
+        select * from rcbill_my.dailyactivenumber where servicetype='iGo';
+        select * from rcbill_my.customercontractactivity where servicetype='iGo';
+                
         
 /*
 fields to be updated
@@ -68,7 +73,7 @@ where rcbill_my.activenumber.servicetypeold1 is null
 
 
 UPDATE rcbill_my.activenumber 
-SET    servicetype = GetServiceType(servicetypeold,servicetypeold1,service)
+SET    servicetype = rcbill_my.GetServiceType(servicetypeold,servicetypeold1,service)
 where servicetype is null
 ;
 

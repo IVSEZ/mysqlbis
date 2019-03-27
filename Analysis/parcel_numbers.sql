@@ -56,6 +56,7 @@ from
 ;
 
 select * from rcbill.rcb_clientparcels where a1_parcel='' and a2_parcel='' and a3_parcel='';
+select * from rcbill.rcb_clientparcels where (a1_parcel<>'') and (a2_parcel<>'') and a1_parcel<>a2_parcel ='' and a3_parcel='';
 
 
 

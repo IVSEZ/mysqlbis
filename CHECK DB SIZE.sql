@@ -31,3 +31,11 @@ order by table_name,ordinal_position;
 select * from information_schema.columns
 where table_schema = 'rcbill_my'
 order by table_name,ordinal_position;
+
+drop table if exists rcbill_my.tempcppd;
+drop table if exists rcbill_my.tempactivenumber;
+drop table if exists rcbill_my.tempcca;
+drop table if exists rcbill_my.tempcustbehr2;
+drop table if exists rcbill_my.tempcustbehr1;
+drop table if exists rcbill_my.tempcpp;
+

@@ -97,7 +97,9 @@ ORDER BY CLIENT_CODE,M_CLIENT_CODE
 
 drop table if exists rcbill_my.matched_clients;
 
-create table rcbill_my.matched_clients as 
+create table rcbill_my.matched_clients
+(index idxmc1(DEDUPE_CLIENT_CODE))
+as 
 (
 	select rcbill_my.GetNewClientCode(CLIENT_CODE,M_CLIENT_CODE) as DEDUPE_CLIENT_CODE
     , CLIENT_CODE, CLIENT_NAME, M_CLIENT_CODE, M_CLIENT_NAME
@@ -162,7 +164,9 @@ create table rcbill_my.matched_clients as
 ;
 
 DROP TABLE if exists rcbill_my.dedupe_clients;
-CREATE table rcbill_my.dedupe_clients as 
+CREATE table rcbill_my.dedupe_clients
+(index idxdc1(DEDUPE_CLIENT_CODE))
+as 
 (
 	select DEDUPE_CLIENT_CODE, MATCH_NAME, MATCH_NIN, MATCH_PHONE, INSERTEDON
 	FROM 
@@ -172,13 +176,45 @@ CREATE table rcbill_my.dedupe_clients as
 ;
 
 select * from rcbill_my.matched_clients;
+-- show index from rcbill_my.matched_clients;
 select * from rcbill_my.dedupe_clients;
 
 select * from rcbill_my.dedupe_clients where match_name=1 and match_nin=1 and match_phone=1;
 
--- select * from rcbill_my.dedupe_clients where dedupe_client_code like '%[I6054]%';
--- select * from rcbill_my.matched_clients where client_code in ('I22376') order by m_client_code;
+-- select * from rcbill_my.dedupe_clients where dedupe_client_code like '%[I.000011750]%';
+-- select * from rcbill_my.matched_clients where dedupe_client_code like '%[I.000011750]%' -- client_code in ('I22376') order by m_client_code;
 /*
+
+select 
+DEDUPE_CLIENT_CODE, M_CLIENT_CODE, M_CLIENT_NAME, M_CLIENT_NIN, M_CLIENT_PHONE, MATCH_NAME, MATCH_NIN, MATCH_PHONE
+
+from 
+rcbill_my.matched_clients where client_code = 'I.000016364'
+;
+
+
+select 
+DEDUPE_CLIENT_CODE, M_CLIENT_CODE, M_CLIENT_NAME, M_CLIENT_NIN, M_CLIENT_PHONE, MATCH_NAME, MATCH_NIN, MATCH_PHONE
+
+from 
+rcbill_my.matched_clients where dedupe_client_code like '%[I.000016364]%'
+group by DEDUPE_CLIENT_CODE
+;
+
+select 
+DEDUPE_CLIENT_CODE,  CLIENT_CODE, M_CLIENT_CODE, M_CLIENT_NAME, M_CLIENT_NIN, M_CLIENT_PHONE, MATCH_NAME, MATCH_NIN, MATCH_PHONE
+
+from 
+rcbill_my.matched_clients where dedupe_client_code in (
+select 
+distinct DEDUPE_CLIENT_CODE
+from 
+rcbill_my.matched_clients where dedupe_client_code like '%[I.000016364]%'
+-- group by DEDUPE_CLIENT_CODE
+)
+and 
+client_code = 'I.000016364'
+;
 
 select * from rcbill_my.matched_clients
 where 0=0

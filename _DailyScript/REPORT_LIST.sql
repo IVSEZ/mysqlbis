@@ -1,3 +1,6 @@
+
+select * from rcbill.rcb_clientparcels;
+
 select * from rcbill_my.rep_paycol_channel;
 select * from rcbill_my.rep_paycol_pos;
 
@@ -13,6 +16,9 @@ select * from rcbill_my.rep_clientstats1;
 select * from rcbill_my.rep_clientstats2;
 select * from rcbill_my.rep_anreport_all;
 select * from rcbill_my.rep_anreport_i;
+select * from rcbill_my.rep_anreport_t;
+select * from rcbill_my.rep_anreport_v;
+select * from rcbill_my.rep_anreport_o;
 
 select * from rcbill_my.rep_addon;
 select * from rcbill_my.rep_housingestates;
@@ -24,7 +30,7 @@ select * from rcbill_my.rep_extravagance_peakcustomer_activity;
 
 
 
-select * from rcbill_my.rep_custconsolidated; -- where clientcode='I.000014924';
+select * from rcbill_my.rep_custconsolidated;-- where clientcode='I17545';
 
 select * from rcbill_my.activenumberavg;
 
@@ -36,6 +42,10 @@ select * from rcbill_my.rep_activenumberavg3;
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
+
+#SERVICE TICKETS
+select * from rcbill_my.rep_servicetickets_2019;
+
 
 ##TV
 select * from rcbill_my.rep_activenumberavg3 where servicecategory='TV';

@@ -1005,7 +1005,8 @@ select 'created rcbill_my.tempa' as message;
 	drop table if exists rcbill_my.tempb;
     create table rcbill_my.tempb(
     -- index idxtempb1(b_clientcode), index idxtempb2(b_contractcode)
-        index idxtempb1(b_clientcode,b_contractcode)
+        -- index idxtempb1(b_clientcode,b_contractcode)
+	index idxtempb1(bc_clientcode,bc_contractcode)    
     )
     as
     (
@@ -1094,6 +1095,9 @@ create temporary table b as
 );
 
 select 'created b' as message;
+
+drop table if exists rcbill_my.tempa;
+drop table if exists rcbill_my.tempb;
 
 drop table if exists rcbill_my.cust_cont_payment_cmts_mxk;
 create table rcbill_my.cust_cont_payment_cmts_mxk 
@@ -1265,6 +1269,7 @@ create table rcbill_my.rep_custconsolidated as
 	`201912`,
 	`totalpayments2019`,
 	`totalpaymentamount2019`,
+    `AvgMonthlyPayment2019`,
 	`201801`,
 	`201802`,
 	`201803`,
@@ -1279,6 +1284,7 @@ create table rcbill_my.rep_custconsolidated as
 	`201812`,
 	`totalpayments2018`,
 	`totalpaymentamount2018`,
+    `AvgMonthlyPayment2018`,
 	`clientarea`,
 	`clientemail`,
 	`clientnin`,
@@ -1299,6 +1305,9 @@ create table rcbill_my.rep_custconsolidated as
 
 		select
 		b.* ,
+        ((b.totalpaymentamount2018)/12) as AvgMonthlyPayment2018 ,
+        ((b.totalpaymentamount2019)/MONTH(now())) as AvgMonthlyPayment2019,
+        
         d.activeservices,
         d.activenetwork,
 		-- a.clientcode,
@@ -1380,7 +1389,118 @@ create table rcbill_my.rep_custconsolidated as
 select count(*) as rep_custconsolidated from rcbill_my.rep_custconsolidated;
 
 set session group_concat_max_len = 1024;
+
+
+
+##RETENTION CUSTOMER REPORT
+drop table if exists rcbill_my.retentioncustomeractivity;
+select 'creating rcbill_my.retentioncustomeractivity' as message;
+create table rcbill_my.retentioncustomeractivity as
+(
+
+
+select 
+-- * 
+ReportDate,
+clientcode as ClientCode,
+clientname as ClientName,
+clientclass as ClientClass,
+clientclass as ClientType,
+firstactivedate as FirstActiveDate,
+lastactivedate as LastActiveDate,
+dayssincelastactive as DaysSinceLastActive,
+activecontracts as ActiveContracts,
+clientphone as ClientPhone,
+clientemail as ClientEmail,
+clientnin as ClientNIN,
+clientaddress as ClientAddress
+
+from rcbill_my.rep_custconsolidated where upper(clientname) like '%RETENTION%'
+
+
+)
+;
+
+select count(*) as retentioncustomeractivity from rcbill_my.retentioncustomeractivity;
+
+-- select * from rcbill_my.retentioncustomeractivity;
+
+
 /*
+
+
+##RETENTION CUSTOMER REPORT
+drop table if exists rcbill_my.retentioncustomeractivity;
+select 'creating rcbill_my.retentioncustomeractivity' as message;
+create table rcbill_my.retentioncustomeractivity as
+(
+
+
+select distinct
+@rundate as ReportDate,
+count(distinct a.contractcode) as ContractCount,
+count(distinct a.period) as DaysActive,
+min(a.period) as FirstActiveDate,
+max(a.period) as LastActiveDate,
+a.clientid as ClientId,
+a.clientcode as ClientCode,
+a.clientclass as ClientClass, 
+a.clienttype as ClientType,
+
+
+b.ClientName,
+b.ClientPhone, 
+b.ClientEmail,
+b.ClientPassport,
+b.ClientNIN,
+b.ClientAddress,
+b.RegistrationAddress,
+
+now() as InsertedOn
+
+
+from 
+
+rcbill_my.dailyactivenumber a 
+
+inner join
+(
+	select id,
+	firm as ClientName,
+	mphone as ClientPhone, 
+	memail as ClientEmail,
+	passno as ClientPassport,
+	Danno as ClientNIN,
+	moladdress as ClientAddress,
+	molregistrationaddress as RegistrationAddress
+	from rcbill.rcb_tclients
+	where 
+	upper(firm) like '%RETENTION%'
+) b
+-- rcbill.rcb_tclients b
+
+on a.clientid=b.id
+
+group by
+a.clientid,
+a.clientcode,
+a.clientclass, a.clienttype,
+b.ClientName,
+b.ClientPhone, 
+b.ClientEmail,
+b.ClientPassport,
+b.ClientNIN,
+b.ClientAddress,
+b.RegistrationAddress
+
+order by max(a.period) asc
+
+
+)
+;
+
+select count(*) as retentioncustomeractivity from rcbill_my.retentioncustomeractivity;
+
 
 select * from rcbill_my.rep_cust_cont_payment_cmts_mxk;
 

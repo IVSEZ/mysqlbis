@@ -100,6 +100,14 @@ values
 
 insert into rcbill_my.lkpservicetype
 values
+('iGo::=iGo','iGo');
+
+insert into rcbill_my.lkpservicetype
+values
+('iGo','IGo');
+
+insert into rcbill_my.lkpservicetype
+values
 ('100GB::=100GB','100GB');
 
 insert into rcbill_my.lkpservicetype
