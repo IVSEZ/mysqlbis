@@ -17,6 +17,9 @@ create table rcbill_my.rep_servicetickets_2019 as
 (
 
 		select a.*, b.*
+        -- ,
+		-- , (select packageprice from rcbill_my.packagelist where package=a.package and servicesubcategory=a.network) as packageprice
+		, (select sum(price) from rcbill_my.customercontractsnapshot where contractcode=a.contractcode) as packageprice
 		from 
 		(
 
@@ -27,11 +30,16 @@ create table rcbill_my.rep_servicetickets_2019 as
 				-- , date(ASSGN_OPENDATE) as assgnopendate, date(ASSGN_CLOSEDATE) as assgnclosedate
 				, opendate as opendate, CLOSEDATE as closedate
 				, ASSGN_OPENDATE as assgnopendate, ASSGN_CLOSEDATE as assgnclosedate
+                -- , (select package from rcbill_my.customercontractsnapshot where contractcode=contractcode) as package
+
 				, sum(tkt_alldays) as service_alldays, sum(tkt_workdays) as service_workdays
+                , sum(tkt_workdays2) as service_workdays2
 				from rcbill_my.clientticket_assgnjourney
 				-- where assgntechregion in ('TECHNICAL - NEW SERVICE','TECHNICAL - WORK ORDER MANAGEMENT')
 				where year(OPENDATE)=2019
-				group by ticketid, service, clientcode, contractcode, tickettype, openreason, assgntechregion, 7, 8
+				group by ticketid, service, clientcode, contractcode, tickettype, openreason, assgntechregion
+                , opendate, CLOSEDATE, ASSGN_OPENDATE, ASSGN_CLOSEDATE
+                -- , 12
                 order by opendate, ASSGN_OPENDATE
 
 		) a
@@ -128,7 +136,7 @@ create table rcbill_my.rep_servicetickets_2019 as
 
 select count(*) as rep_servicetickets_2019 from rcbill_my.rep_servicetickets_2019;
 
--- select * from rcbill_my.rep_servicetickets_2019;
+-- select *, (packageprice/30) as  priceperday from rcbill_my.rep_servicetickets_2019 where ticketid=910797;
 
 /*
 select distinct clientlocation from rcbill_my.rep_cust_cont_payment_cmts_mxk ;

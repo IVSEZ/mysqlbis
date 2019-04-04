@@ -15,7 +15,7 @@ set @category='CAPPED';
 ## change dates on csv 4 files
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailyUsage\\cdrUsageClient-Capped-05052018-06052018.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-Capped-26032019.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-Capped-03042019.csv'
 
 REPLACE INTO TABLE `rcbill_my`.`dailyusage` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -65,7 +65,7 @@ INSERTEDON=now()
 set @category='UNCAPPED';
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailyUsage\\cdrUsageClient-UnCapped-05052018-06052018.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-UnCapped-26032019.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-UnCapped-03042019.csv'
 
 REPLACE INTO TABLE `rcbill_my`.`dailyusage` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -116,7 +116,7 @@ INSERTEDON=now()
 set @category='PREPAID';
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailyUsage\\cdrUsageClient-PREPAID-05052018-06052018.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-PREPAID-26032019.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-PREPAID-03042019.csv'
 
 
 
@@ -168,7 +168,7 @@ INSERTEDON=now()
 set @category='HOTSPOT';
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailyUsage\\cdrUsageClient-Hotspot-05052018-06052018.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-Hotspot-26032019.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-Hotspot-03042019.csv'
 
 REPLACE INTO TABLE `rcbill_my`.`dailyusage` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 

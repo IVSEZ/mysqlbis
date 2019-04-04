@@ -11,6 +11,9 @@
         select * from rcbill_my.activenumber where servicetype ='iGo';
         select * from rcbill_my.dailyactivenumber where servicetype='iGo';
         select * from rcbill_my.customercontractactivity where servicetype='iGo';
+        
+             select * from rcbill_my.customercontractactivity where service ='Subscription iGo';
+               select * from rcbill_my.customercontractactivity where service is null;
                 
         
 /*
@@ -147,4 +150,60 @@ where servicetype = 'VOD'
 	SET    rcbill_my.dailyactivenumber.servicecategory = rcbill_my.lkpbaseservice.servicecategory
 	where rcbill_my.dailyactivenumber.servicetype = 'VOD'
 	;
+    
+    
+    
+   	UPDATE rcbill_my.customercontractactivity 
+		   JOIN rcbill_my.lkpbaseservice 
+		   ON rcbill_my.dailyactivenumber.service = rcbill_my.lkpbaseservice.Service
+	SET    rcbill_my.dailyactivenumber.servicecategory = rcbill_my.lkpbaseservice.servicecategory
+	where rcbill_my.dailyactivenumber.servicetype = 'VOD'
+	;
+    
+    create table rcbill_my.cca1 as 
+    (
+		select * from rcbill_my.customercontractactivity where clientcode='I.000011750'
+	);
+    
+    select * from rcbill_my.cca1;
+    
+    UPDATE rcbill_my.cca1
+     SET servicecategory2 = rcbill_my.GetServiceCategory2(service)
+    ;
+    
+    UPDATE rcbill_my.customercontractactivity
+     SET servicecategory2 = rcbill_my.GetServiceCategory2(service)
+    ;
+    
+    UPDATE rcbill_my.customercontractactivity 
+		   JOIN rcbill_my.lkpbaseservice 
+		   ON rcbill_my.customercontractactivity.SERVICE = rcbill_my.lkpbaseservice.Service
+	SET    rcbill_my.customercontractactivity.servicecategory = rcbill_my.lkpbaseservice.servicecategory
+	where rcbill_my.customercontractactivity.package = 'VOD'
+	;
+
+    UPDATE rcbill_my.customercontractactivity 
+		   JOIN rcbill_my.lkpbaseservice 
+		   ON rcbill_my.customercontractactivity.SERVICE = rcbill_my.lkpbaseservice.Service
+	SET    rcbill_my.customercontractactivity.servicecategory = rcbill_my.lkpbaseservice.servicecategory
+	where rcbill_my.customercontractactivity.package = 'DUALVIEW'
+	;
+
+    UPDATE rcbill_my.customercontractactivity 
+		   JOIN rcbill_my.lkpbaseservice 
+		   ON rcbill_my.customercontractactivity.SERVICE = rcbill_my.lkpbaseservice.Service
+	SET    rcbill_my.customercontractactivity.servicecategory = rcbill_my.lkpbaseservice.servicecategory
+	where rcbill_my.customercontractactivity.package = 'MULTIVIEW'
+	;
+    UPDATE rcbill_my.customercontractactivity 
+		   JOIN rcbill_my.lkpbaseservice 
+		   ON rcbill_my.customercontractactivity.SERVICE = rcbill_my.lkpbaseservice.Service
+	SET    rcbill_my.customercontractactivity.servicecategory = rcbill_my.lkpbaseservice.servicecategory
+	where rcbill_my.customercontractactivity.package = 'IGo'
+	;
+    
+    SERVICECATEGORY=(select servicecategory from rcbill_my.lkpbaseservice where service=@service),	
+    
+    
+    -- select * from rcbill_my.customercontractactivity where package='MultiView';
 */

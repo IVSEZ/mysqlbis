@@ -1,7 +1,8 @@
 
 
 -- 12575.188 sec / 0.000 sec
-select distinct clientcode from rcbill_my.customercontractactivity where upper(package) like '%AMBER%';
+-- select distinct clientcode from rcbill_my.customercontractactivity where upper(package) like '%AMBER%';
+-- select * from rcbill_my.rep_custconsolidated;
 
 select 
 a.*, 
@@ -34,6 +35,10 @@ from
 	, a.clientlocation
 	, a.clientphone
 	, a.clientaddress
+    , a.firstactivedate
+    , a.firstcontractdate
+    , a.contractinfo
+    , a.packageinfo
 	, b.contractpackage
 	, (select min(period) from rcbill_my.customercontractactivity where 0=0 and upper(package) in ('AMBER','AMBER CORPORATE') and clientcode=a.clientcode) as AMBER_FIRSTTIME
 	, (select max(period) from rcbill_my.customercontractactivity where 0=0 and upper(package) in ('AMBER','AMBER CORPORATE') and clientcode=a.clientcode) as AMBER_LASTTIME
