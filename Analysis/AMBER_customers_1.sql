@@ -4,9 +4,12 @@
 -- select distinct clientcode from rcbill_my.customercontractactivity where upper(package) like '%AMBER%';
 -- select * from rcbill_my.rep_custconsolidated;
 
+-- 
+
+
 select 
 a.*, 
-
+datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) as AMBER_DAYS,
 CASE 
 	when datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) < 32 then '< 1 Month' 
 	when datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) >= 32 and datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) < 91 then '1 - 3 Months' 
@@ -14,6 +17,28 @@ CASE
 	when datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) >= 181 and datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) < 366 then '6 - 12 Months' 
 	when datediff(a.AMBER_LASTTIME , a.AMBER_FIRSTTIME) >= 366 then 'Over a year' 
 end as AMBER_DURATION
+,
+datediff(a.reportdate, a.amber_lasttime) as AMBER_DAYSSINCEACTIVE,
+CASE
+	when datediff(a.reportdate, a.amber_lasttime) = 0 then 'Active'
+    when datediff(a.reportdate, a.amber_lasttime) > 0 then 'InActive'
+    else 'NotActivated'
+end as AMBER_ISACTIVE
+,
+(
+	select min(closedate) from rcbill_my.clientticketsnapshot_irs where tickettype='INSTALLATION' and clientcode=a.clientcode and contractcode=a.firstambercontract 
+) as AMBER_INSTALLDATE
+
+
+/*,
+
+(
+	select closedate from rcbill_my.clientticketsnapshot_irs where clientcode=a.clientcode and contractcode in 
+	(
+	select min(contractcode) as firstambercontract from rcbill_my.customercontractsnapshot where package='Amber' and clientcode=a.clientcode
+	)
+) as AMBER_INSTALLDATE
+*/
 from 
 (
 	select 
@@ -39,6 +64,7 @@ from
     , a.firstcontractdate
     , a.contractinfo
     , a.packageinfo
+    , (select min(contractcode) as firstambercontract from rcbill_my.customercontractsnapshot where package='Amber' and clientcode=a.clientcode) as firstambercontract
 	, b.contractpackage
 	, (select min(period) from rcbill_my.customercontractactivity where 0=0 and upper(package) in ('AMBER','AMBER CORPORATE') and clientcode=a.clientcode) as AMBER_FIRSTTIME
 	, (select max(period) from rcbill_my.customercontractactivity where 0=0 and upper(package) in ('AMBER','AMBER CORPORATE') and clientcode=a.clientcode) as AMBER_LASTTIME
@@ -60,86 +86,86 @@ from
 	where a.clientcode in 
 	(
 	  -- select distinct clientcode from rcbill_my.customercontractactivity where upper(package) in ('AMBER','AMBER CORPORATE')
-      'I.000019509',
-'I.000019522',
-'I.000019530',
-'I.000019532',
-'I.000019535',
-'I.000019537',
-'I.000019539',
-'I.000019546',
-'I.000019555',
-'I.000019563',
-'I.000019559',
-'I.000019556',
-'I.000019565',
-'I.000019569',
-'I.000019564',
-'I.000019572',
-'I.000019574',
-'I.000004482',
-'I3710',
-'I3169',
-'I.000019582',
-'I.000019579',
-'I10251',
-'I.000019586',
-'I.000004072',
-'I5808',
-'I.000019591',
-'I.000019589',
-'I.000019590',
-'I9454',
-'I.000013087',
-'I.000019594',
-'I.000019596',
-'I.000019597',
-'I.000019600',
-'I.000019602',
-'I.000019615',
-'I.000019610',
-'I.000019611',
-'I.000019613',
-'I.000019599',
-'I.000012995',
-'I11344',
-'I.000019623',
-'I.000019625',
-'I.000019619',
-'I.000017968',
-'I.000019631',
-'I.000019632',
-'I.000019639',
-'I16857',
-'I.000019657',
-'I.000019656',
-'I.000019659',
-'I.000019665',
-'I3036',
-'I.000019671',
-'I.000019669',
-'I.000019675',
-'I.000019681',
-'I.000019676',
-'I16889',
-'I.000019686',
-'I.000009836',
-'I.000019692',
-'I.000019689',
-'I.000010635',
-'I.000019698',
-'I.000019700',
-'I.000019702',
-'I.000019704',
-'I.000019706',
-'I.000019714',
-'I.000019721',
-'I.000019717',
-'I.000019722',
-'I.000012899',
-'I.000019727',
-'I.000019730',
-'I.000019733'
+			  'I.000019509',
+			'I.000019522',
+			'I.000019530',
+			'I.000019532',
+			'I.000019535',
+			'I.000019537',
+			'I.000019539',
+			'I.000019546',
+			'I.000019555',
+			'I.000019563',
+			'I.000019559',
+			'I.000019556',
+			'I.000019565',
+			'I.000019569',
+			'I.000019564',
+			'I.000019572',
+			'I.000019574',
+			'I.000004482',
+			'I3710',
+			'I3169',
+			'I.000019582',
+			'I.000019579',
+			'I10251',
+			'I.000019586',
+			'I.000004072',
+			'I5808',
+			'I.000019591',
+			'I.000019589',
+			'I.000019590',
+			'I9454',
+			'I.000013087',
+			'I.000019594',
+			'I.000019596',
+			'I.000019597',
+			'I.000019600',
+			'I.000019602',
+			'I.000019615',
+			'I.000019610',
+			'I.000019611',
+			'I.000019613',
+			'I.000019599',
+			'I.000012995',
+			'I11344',
+			'I.000019623',
+			'I.000019625',
+			'I.000019619',
+			'I.000017968',
+			'I.000019631',
+			'I.000019632',
+			'I.000019639',
+			'I16857',
+			'I.000019657',
+			'I.000019656',
+			'I.000019659',
+			'I.000019665',
+			'I3036',
+			'I.000019671',
+			'I.000019669',
+			'I.000019675',
+			'I.000019681',
+			'I.000019676',
+			'I16889',
+			'I.000019686',
+			'I.000009836',
+			'I.000019692',
+			'I.000019689',
+			'I.000010635',
+			'I.000019698',
+			'I.000019700',
+			'I.000019702',
+			'I.000019704',
+			'I.000019706',
+			'I.000019714',
+			'I.000019721',
+			'I.000019717',
+			'I.000019722',
+			'I.000012899',
+			'I.000019727',
+			'I.000019730',
+			'I.000019733'
 	) 
 ) a 
 ;
