@@ -30,7 +30,7 @@ select * from rcbill_my.rep_extravagance_peakcustomer_activity;
 
 
 
-select * from rcbill_my.rep_custconsolidated;-- where clientcode='I17545';
+select * from rcbill_my.rep_custconsolidated where clientcode='I.000019420';
 
 select * from rcbill_my.activenumberavg;
 

@@ -15,11 +15,25 @@ drop table if exists rcbill_my.rep_servicetickets_2019;
 
 create table rcbill_my.rep_servicetickets_2019 as 
 (
-
+	select a.*
+    -- , (a.priceperday * a.penaltydays) as penaltyamount
+    ,case when a.agreeddays>0 and a.service_workdays2>a.agreeddays then (a.service_workdays2-a.agreeddays) end as penaltydays
+		-- else 0 end as penaltydays
+    ,case when a.agreeddays>0 and a.service_workdays2>a.agreeddays then round(((a.service_workdays2-a.agreeddays)*a.priceperday),2) end as penaltyamount
+		-- else 0 end as penaltyamount
+    from 
+    (
 		select a.*, b.*
         -- ,
 		-- , (select packageprice from rcbill_my.packagelist where package=a.package and servicesubcategory=a.network) as packageprice
-		, (select sum(price) from rcbill_my.customercontractsnapshot where contractcode=a.contractcode) as packageprice
+		, round((select sum(price) from rcbill_my.customercontractsnapshot where contractcode=a.contractcode),2) as packageprice
+		, round(((select sum(price) from rcbill_my.customercontractsnapshot where contractcode=a.contractcode)/30),2) as priceperday
+        , case 
+			when year(a.assgnopendate)=2019 and month(a.assgnopendate) in (1,2) then 0
+			when year(a.assgnopendate)=2019 and month(a.assgnopendate) in (3) then 3
+			when year(a.assgnopendate)=2019 and month(a.assgnopendate) not in (1,2,3) then 2 
+            end as agreeddays
+        
 		from 
 		(
 
@@ -131,11 +145,12 @@ create table rcbill_my.rep_servicetickets_2019 as
 		-- on a.clientcode=b.cl_clientcode;
 		on a.client_code=b.clientcode
         order by a.opendate, a.assgnopendate
+	) a order by a.opendate, a.assgnopendate
 )
 ;
 
 select count(*) as rep_servicetickets_2019 from rcbill_my.rep_servicetickets_2019;
-
+-- select * from rcbill_my.rep_servicetickets_2019;
 -- select *, (packageprice/30) as  priceperday from rcbill_my.rep_servicetickets_2019 where ticketid=910797;
 
 /*

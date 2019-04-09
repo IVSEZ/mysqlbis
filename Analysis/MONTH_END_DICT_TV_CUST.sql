@@ -12,8 +12,12 @@
 -- set @period='2018-09-30';
 -- set @period='2018-10-31';
 -- set @period='2018-11-30';
- set @period='2018-12-31';
+-- set @period='2018-12-31';
+-- set @period='2019-01-31';
+-- set @period='2019-02-28';
+ set @period='2019-03-31';
 
+select servicecategory, package, `20181031`, `20181130`, `20181231`, `20190131`, `20190228`, `20190331` from rcbill_my.rep_activenumberlastday_pv;
 
 /*
 select * from rcbill_my.customercontractactivity 
