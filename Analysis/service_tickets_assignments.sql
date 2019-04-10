@@ -151,6 +151,7 @@ create table rcbill_my.rep_servicetickets_2019 as
 
 select count(*) as rep_servicetickets_2019 from rcbill_my.rep_servicetickets_2019;
 -- select * from rcbill_my.rep_servicetickets_2019;
+-- select * from rcbill_my.rep_servicetickets_2019 where ticketid=909247;
 -- select *, (packageprice/30) as  priceperday from rcbill_my.rep_servicetickets_2019 where ticketid=910797;
 
 /*
