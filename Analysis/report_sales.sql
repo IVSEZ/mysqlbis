@@ -1,7 +1,10 @@
 select * from rcbill_my.dailysales;
 
-select * from rcbill_my.sales;
+-- show columns from rcbill_my.sales;
+select * from rcbill_my.sales order by orderday desc;
 select state, count(*) from rcbill_my.sales group by 1;
+select * from rcbill_my.sales where salescenter=saleschannel;
+select 
 
 
 
@@ -64,18 +67,18 @@ order by orderday desc
 drop table if exists rcbill_my.rep_dailysales;
 create table rcbill_my.rep_dailysales as
 (
-		select orderday, salescenter, salestype,  count(*) as ordercount
+		select orderday, weekday, salescenter, salestype,  count(*) as ordercount
 		from rcbill_my.sales
 		where 
 		0=0
 		and orderstatus='Processed'
-		group by 1,2,3
+		group by 1,2,3,4
 
-		order by orderday ,salescenter, salestype        
+		order by orderday, salescenter, salestype        
 
 );
 
--- select * from rcbill_my.rep_dailysales;
+-- select * from rcbill_my.rep_dailysales where salescenter='Sales' order by orderday desc;
 
 
 set session group_concat_max_len = 100000;
@@ -119,18 +122,18 @@ set session group_concat_max_len = 1024;
 drop table if exists rcbill_my.rep_dailysalesreg;
 create table rcbill_my.rep_dailysalesreg as
 (
-		select orderday, salescenter, salestype, region, count(*) as ordercount
+		select orderday, weekday, region, salescenter, salestype, count(*) as ordercount
 		from rcbill_my.sales
 		where 
 		0=0
 		and orderstatus='Processed'
-		group by 1,2,3,4
+		group by 1,2,3,4,5
 
 		order by orderday ,salescenter, salestype, region        
 
 );
 
--- select * from rcbill_my.rep_dailysales;
+-- select * from rcbill_my.rep_dailysalesreg where salescenter='Sales' order by orderday desc;
 
 
 set session group_concat_max_len = 100000;

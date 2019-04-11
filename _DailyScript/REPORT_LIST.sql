@@ -24,6 +24,23 @@ select * from rcbill_my.rep_addon;
 select * from rcbill_my.rep_housingestates;
 select * from rcbill_my.rep_prepaid_camera;
 
+## SALES REPORTS
+select * from rcbill_my.sales order by orderday desc;
+SELECT orderday, weekday, orderdate, orderid, salescenter, createdby, region, ordertype, salestype, state, orderstatus
+, clientcode, clientclass, contractcode, contracttype, service, servicetype, cost, price, num, originalcontract, originalservice, originalservicetype
+-- , originalprice
+, cleanorigcost as origcost, cleanorigprice as origprice
+from rcbill_my.sales
+order by orderday desc;
+
+
+select * from rcbill_my.rep_dailysales where salescenter='Sales' order by orderday desc;
+select * from rcbill_my.rep_dailysalesreg where salescenter='Sales' order by orderday desc;
+select * from rcbill_my.rep_dailysales where salescenter='Sales' and salestype='New Sales' order by orderday desc;
+select * from rcbill_my.rep_dailysalesreg where salescenter='Sales' and salestype='New Sales' order by orderday desc;
+select * from rcbill_my.rep_dailysales where salescenter='Sales' and salestype='Renewals' order by orderday desc;
+select * from rcbill_my.rep_dailysalesreg where salescenter='Sales' and salestype='Renewals' order by orderday desc;
+#######################################
 
 select * from rcbill_my.rep_extravagance_peak_activity;
 select * from rcbill_my.rep_extravagance_peakcustomer_activity;
