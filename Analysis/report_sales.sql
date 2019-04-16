@@ -133,6 +133,40 @@ create table rcbill_my.rep_dailysalesreg as
 
 );
 
+select distinct region from rcbill_my.rep_dailysalesreg;
+
+drop table if exists rcbill_my.rep_dailysalesreg;
+create table rcbill_my.rep_dailysalesreg as
+(
+	select orderday, weekday, salescenter, salestype, sum(`MAHE`) as `Mahe`, sum(`PRASLIN`) as `Praslin`, sum(`UNKNOWN`) as `Unknown`
+    from 
+    (
+		select orderday, weekday, salescenter, salestype
+			,case region when 'MAHE' then sum(ordercount) else 0  end as `MAHE`
+			,case region when 'PRASLIN' then sum(ordercount) else 0 end as `PRASLIN`
+			,case region when '' then sum(ordercount) else 0 end as `UNKNOWN`
+            -- case when as ordercount
+		from
+        (
+			select orderday, weekday, upper(trim(region)) as region, salescenter, salestype, count(*) as ordercount
+			from rcbill_my.sales
+			where 
+			0=0
+			and orderstatus='Processed'
+			group by 1,2,3,4,5    
+            -- order by orderday desc
+             
+        ) a
+		group by 1,2,3,4, region
+
+		-- order by orderday DESC ,salescenter, salestype        
+	) a 
+    group by 1,2,3,4
+);
+
+select count(1) as rep_dailysalesreg from rcbill_my.rep_dailysalesreg;
+-- select * from rcbill_my.rep_dailysalesreg where salescenter='Sales' order by orderday desc;
+
 -- select * from rcbill_my.rep_dailysalesreg where salescenter='Sales' order by orderday desc;
 
 

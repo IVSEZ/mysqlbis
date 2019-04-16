@@ -47,7 +47,7 @@ create table rcbill_my.salestoactive as
 		select 
 		-- a.*, 
 		@rundate as ReportDate,
-		a.clientcode as o_clientcode, a.contract as o_contractcode, a.clientclass as o_clientclass, a.contracttype as o_contracttype, a.service as o_service, a.servicetype as o_servicetype
+		a.clientcode as o_clientcode, a.contractcode as o_contractcode, a.clientclass as o_clientclass, a.contracttype as o_contracttype, a.service as o_service, a.servicetype as o_servicetype
 		, a.ordertype as o_ordertype, a.cost as o_cost, a.price as o_price, a.num as o_num
 		, a.saleschannel as o_saleschannel, a.createdby as o_createdby, a.region as o_region 
         , b.clientcode as ac_clientcode, b.contractcode as ac_contractcode
@@ -65,7 +65,7 @@ create table rcbill_my.salestoactive as
 		, (datediff(b.lastactivedate,b.firstactivedate)+1) as DurationForContract 
 		from 
 		(
-			select distinct clientcode, contract, clientclass, contracttype, service, servicetype, ordertype, cost, price, num
+			select distinct clientcode, contractcode, clientclass, contracttype, service, servicetype, ordertype, cost, price, num
             , orderday, ordermonth, orderdate, weekday, saleschannel,createdby, region 
 			from rcbill_my.sales
 			where 
@@ -75,8 +75,8 @@ create table rcbill_my.salestoactive as
 			salestype='New Sales'
 			and
 			state in ('Open','Completed')
-			and clientcode <> '' and contract <>''
-				group by clientcode, contract, clientclass, contracttype, service, servicetype, ordertype, cost, price, num, orderday, ordermonth, orderdate, weekday
+			and clientcode <> '' and contractcode <>''
+				group by clientcode, contractcode, clientclass, contracttype, service, servicetype, ordertype, cost, price, num, orderday, ordermonth, orderdate, weekday
 			, saleschannel,createdby, region 
 		) a
 		left join
@@ -97,7 +97,7 @@ create table rcbill_my.salestoactive as
 			-- , clientclass, clienttype, servicecategory, servicecategory2, servicesubcategory, package, price
 
 		) b
-		on a.clientcode=b.clientcode and a.contract=b.contractcode and a.servicetype=b.package
+		on a.clientcode=b.clientcode and a.contractcode=b.contractcode and a.servicetype=b.package
 	) a 
 	left join
 	(
@@ -117,7 +117,7 @@ create table rcbill_my.salestoactive as
 				salestype='New Sales'
 				and
 				state in ('Open','Completed')
-				and clientcode <> '' and contract <>''
+				and clientcode <> '' and contractcode <>''
 					group by clientcode 
 			)
 			group by clientcode
@@ -197,7 +197,7 @@ create table rcbill_my.salestoactivejourney as
 		select 
 		-- a.*, 
 		@rundate as ReportDate,
-		a.clientcode as o_clientcode, a.contract as o_contractcode, a.clientclass as o_clientclass, a.contracttype as o_contracttype
+		a.clientcode as o_clientcode, a.contractcode as o_contractcode, a.clientclass as o_clientclass, a.contracttype as o_contracttype
         , a.service as o_service, a.servicetype as o_servicetype
 		, a.ordertype as o_ordertype, a.cost as o_cost, a.price as o_price, a.num as o_num
 		, a.saleschannel as o_saleschannel, a.createdby as o_createdby, a.region as o_region 
@@ -223,7 +223,7 @@ create table rcbill_my.salestoactivejourney as
         
 		from 
 		(
-			select distinct clientcode, contract, clientclass, contracttype, service, servicetype, ordertype, cost, price, num, orderday, ordermonth, orderdate, weekday, saleschannel,createdby, region 
+			select distinct clientcode, contractcode, clientclass, contracttype, service, servicetype, ordertype, cost, price, num, orderday, ordermonth, orderdate, weekday, saleschannel,createdby, region 
 			from rcbill_my.sales
 			where 
 			-- orderday='2017-01-04' 
@@ -231,8 +231,8 @@ create table rcbill_my.salestoactivejourney as
 			salestype='New Sales'
 			and
 			state in ('Open','Completed')
-            and clientcode <> '' and contract <>''
-				group by clientcode, contract, clientclass, contracttype, service, servicetype, ordertype, cost, price, num, orderday, ordermonth, orderdate, weekday
+            and clientcode <> '' and contractcode <>''
+				group by clientcode, contractcode, clientclass, contracttype, service, servicetype, ordertype, cost, price, num, orderday, ordermonth, orderdate, weekday
 			, saleschannel,createdby, region 
 		) a
 		left join
@@ -274,7 +274,7 @@ create table rcbill_my.salestoactivejourney as
 				salestype='New Sales'
 				and
 				state in ('Open','Completed')
-				and clientcode <> '' and contract <>''
+				and clientcode <> '' and contractcode <>''
 				group by clientcode 
 			)
 			group by clientcode

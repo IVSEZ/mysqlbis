@@ -31,15 +31,19 @@ SELECT orderday, weekday, orderdate, orderid, salescenter, createdby, region, or
 -- , originalprice
 , cleanorigcost as origcost, cleanorigprice as origprice
 from rcbill_my.sales
-order by orderday desc;
+where year(orderday)>2018
+order by orderdate desc;
 
 
 select * from rcbill_my.rep_dailysales where salescenter='Sales' order by orderday desc;
 select * from rcbill_my.rep_dailysalesreg where salescenter='Sales' order by orderday desc;
-select * from rcbill_my.rep_dailysales where salescenter='Sales' and salestype='New Sales' order by orderday desc;
-select * from rcbill_my.rep_dailysalesreg where salescenter='Sales' and salestype='New Sales' order by orderday desc;
-select * from rcbill_my.rep_dailysales where salescenter='Sales' and salestype='Renewals' order by orderday desc;
+select year(orderday) as ordersyear, month(orderday) as ordersmonth, day(orderday) as ordersday,weekday,monthname(orderday) as monthname, ordercount from rcbill_my.rep_dailysales where salescenter='Sales' and salestype='New Sales' order by orderday desc;
+select year(orderday) as ordersyear, month(orderday) as ordersmonth, day(orderday) as ordersday,weekday,monthname(orderday) as monthname, `Mahe`, `Praslin`, `Unknown` from rcbill_my.rep_dailysalesreg where salescenter='Sales' and salestype='New Sales' order by orderday desc;
+
+-- select * from rcbill_my.rep_dailysales where salescenter='Sales' and salestype='Renewals' order by orderday desc;
+select year(orderday) as ordersyear, month(orderday) as ordersmonth, day(orderday) as ordersday,weekday, ordercount from rcbill_my.rep_dailysales where salescenter='Sales' and salestype='Renewals' order by orderday desc;
 select * from rcbill_my.rep_dailysalesreg where salescenter='Sales' and salestype='Renewals' order by orderday desc;
+select year(orderday) as ordersyear, month(orderday) as ordersmonth, day(orderday) as ordersday,weekday,monthname(orderday) as monthname, `Mahe`, `Praslin`, `Unknown` from rcbill_my.rep_dailysalesreg where salescenter='Sales' and salestype='Renewals' order by orderday desc;
 #######################################
 
 select * from rcbill_my.rep_extravagance_peak_activity;
@@ -47,7 +51,9 @@ select * from rcbill_my.rep_extravagance_peakcustomer_activity;
 
 
 
-select * from rcbill_my.rep_custconsolidated where clientcode='I.000019420';
+select * from rcbill_my.rep_custconsolidated where clientcode='I.000019528';
+select * from rcbill_my.rep_custconsolidated where clientname like '%ballanty%';
+select * from rcbill_my.rep_custconsolidated where clean_mxk_interface='1-2-4-1';
 
 select * from rcbill_my.activenumberavg;
 

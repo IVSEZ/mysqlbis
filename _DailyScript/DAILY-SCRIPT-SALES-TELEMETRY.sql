@@ -6,7 +6,7 @@ use rcbill_my;
 ## change all csv dates 6 files
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\SalesReport-05052018-06052018-1.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\SalesReport-10042019-1.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\SalesReport-15042019-1.csv' 
  
 REPLACE INTO TABLE `rcbill_my`.`dailysales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -127,7 +127,7 @@ create table rcbill_my.rep_dailysales as
 
 select count(1) as rep_dailysales from rcbill_my.rep_dailysales;
 -- select * from rcbill_my.rep_dailysales where salescenter='Sales' order by orderday desc;
-
+/*
 drop table if exists rcbill_my.rep_dailysalesreg;
 create table rcbill_my.rep_dailysalesreg as
 (
@@ -140,6 +140,37 @@ create table rcbill_my.rep_dailysalesreg as
 
 		order by orderday ,salescenter, salestype, region        
 
+);
+*/
+
+
+drop table if exists rcbill_my.rep_dailysalesreg;
+create table rcbill_my.rep_dailysalesreg as
+(
+	select orderday, weekday, salescenter, salestype, sum(`MAHE`) as `Mahe`, sum(`PRASLIN`) as `Praslin`, sum(`UNKNOWN`) as `Unknown`
+    from 
+    (
+		select orderday, weekday, salescenter, salestype
+			,case region when 'MAHE' then sum(ordercount) else 0  end as `MAHE`
+			,case region when 'PRASLIN' then sum(ordercount) else 0 end as `PRASLIN`
+			,case region when '' then sum(ordercount) else 0 end as `UNKNOWN`
+            -- case when as ordercount
+		from
+        (
+			select orderday, weekday, upper(trim(region)) as region, salescenter, salestype, count(*) as ordercount
+			from rcbill_my.sales
+			where 
+			0=0
+			and orderstatus='Processed'
+			group by 1,2,3,4,5    
+            -- order by orderday desc
+             
+        ) a
+		group by 1,2,3,4, region
+
+		-- order by orderday DESC ,salescenter, salestype        
+	) a 
+    group by 1,2,3,4
 );
 
 select count(1) as rep_dailysalesreg from rcbill_my.rep_dailysalesreg;
@@ -193,7 +224,7 @@ order by orderday desc, region, salestype
 use rcbill_my;
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\PrepaidCardSales-05052018-06052018-P1.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\PrepaidCardSales-10042019-P1.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\PrepaidCardSales-15042019-P1.csv' 
 
 REPLACE INTO TABLE `rcbill_my`.`dailysinglesales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -284,7 +315,7 @@ use rcbill_my;
 
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\Sales-Addon-05052018-06052018.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\Sales-Addon-10042019.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\Sales-Addon-15042019.csv'
 
 REPLACE INTO TABLE `rcbill_my`.`dailyaddonsales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -385,7 +416,7 @@ order by 3 desc
 # ONLINE PAYMENTS
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\DailySales\\eBarclays-PaymentsList-05052018-06052018.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\eBarclays-PaymentsList-10042019.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\eBarclays-PaymentsList-15042019.csv' 
 REPLACE INTO TABLE `rcbill_my`.`onlinepayments` CHARACTER SET Latin1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 1 LINES 
