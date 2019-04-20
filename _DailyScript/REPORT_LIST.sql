@@ -26,6 +26,7 @@ select * from rcbill_my.rep_prepaid_camera;
 
 ## SALES REPORTS
 select * from rcbill_my.sales order by orderday desc;
+
 SELECT orderday, weekday, orderdate, orderid, salescenter, createdby, region, ordertype, salestype, state, orderstatus
 , clientcode, clientclass, contractcode, contracttype, service, servicetype, cost, price, num, originalcontract, originalservice, originalservicetype
 -- , originalprice
@@ -51,7 +52,7 @@ select * from rcbill_my.rep_extravagance_peakcustomer_activity;
 
 
 
-select * from rcbill_my.rep_custconsolidated where clientcode='I.000019528';
+select * from rcbill_my.rep_custconsolidated where clientcode='I15284';
 select * from rcbill_my.rep_custconsolidated where clientname like '%ballanty%';
 select * from rcbill_my.rep_custconsolidated where clean_mxk_interface='1-2-4-1';
 
@@ -125,7 +126,8 @@ group by servicecategory
 ;
 
 
-select * from rcbill.clientcontractip  where CLIENTCODE='I6816' order by USAGEDATE desc;
+select * from rcbill.clientcontractip  where CLIENTCODE='I.000011750' order by USAGEDATE desc;
+select * from rcbill.clientcontractipmonth where CLIENTCODE='I.000011750' order by USAGE_MTH desc, USAGE_YR desc;
 
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.187.241' and USAGEDATE='2018-12-31';
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.186.118' and USAGEDATE='2018-12-31';
