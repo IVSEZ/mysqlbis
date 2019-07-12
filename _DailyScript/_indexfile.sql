@@ -9,7 +9,7 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@#mysql 
-mysql \T C:\workspace\cloud\code\sql\_log\output_201900420_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20190712_1.out
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
@@ -102,9 +102,9 @@ select * from rcbill_my.rep_radiostats;
 
 use rcbill_my;
 
-call sp_ActiveNumber(31,10,2018,'','');
+call sp_ActiveNumber(30,04,2019,'','');
 
-call sp_GetActiveNumberFromTo('2019-04-12','2019-04-14');
+call sp_GetActiveNumberFromTo('2019-07-01','2019-07-08');
 
 
 select * from rcbill_my.clientstats where VOD>0 and DualView>0

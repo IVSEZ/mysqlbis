@@ -4,7 +4,7 @@ use rcbill_my;
 -- SET @date1='2019-01-17';
 -- SET @date2='2019-01-27';
 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-19042019.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-11072019.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-27062017.csv' 
 
 REPLACE INTO TABLE `rcbill_my`.`dailycalls` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
@@ -40,6 +40,7 @@ INSERTEDON=now()
 
 -- select * from rcbill_my.dailycalls where date(calldate)>='2018-05-13' order by calldate;
 -- select * from rcbill_my.dailycalls order by calldate desc;
+-- select * from rcbill_my.dailycalls where callnumber=2719841;
 
 -- SET SQL_SAFE_UPDATES = 0;
 -- delete from rcbill_my.dailycalls where date(insertedon)='2018-11-19';
@@ -52,13 +53,25 @@ INSERTEDON=now()
 drop temporary table if exists a;
 create temporary table a as
 (
-	select a.calldate, a.callnumber, a.callqueuename, a.calleventname, a.waittime, a.talktime from 
+	/*
+	select a.calldate, a.callnumber, a.callqueuename, a.calleventname, a.waittime, a.talktime 
+    from 
     -- select * from 
 	rcbill_my.dailycalls a 
 	where
 	(a.calldate>@date1 and a.calldate<@date2)
 	and
 	(a.callnumber not in ('4414243','anonymous')) and (length(a.callnumber)>3)
+    */
+    
+ 	select a.calldate, a.callnumber, a.callqueuename, a.callagent, a.calleventname, a.waittime, a.talktime from 
+    -- select * from 
+	rcbill_my.dailycalls a 
+	where
+	(a.calldate>@date1 and a.calldate<@date2)
+	and
+	(a.callnumber not in ('4414243','anonymous')) and (length(a.callnumber)>3)   
+    
 )
 ;
 drop temporary table if exists b;
@@ -75,6 +88,7 @@ select count(*) as callingclientsbefore from rcbill_my.callingclients;
 -- create statement on 22/11/2017 took time 4403.156 sec
 insert into rcbill_my.callingclients
 (
+/*
 	select date(a.calldate) as CAll_DATE, time(a.calldate) as CAll_TIME, a.callnumber,a.callqueuename, a.calleventname, a.waittime, a.talktime 
 	,
 	b.firm, b.kod, b.mphone
@@ -85,6 +99,27 @@ insert into rcbill_my.callingclients
 	on
 	b.mphone like concat('%', a.callnumber , '%')
 	order by a.calldate
+*/
+
+	SELECT 
+    DATE(a.calldate) AS CAll_DATE,
+    TIME(a.calldate) AS CAll_TIME,
+    a.calldate AS calldatetime,
+    a.callnumber,
+    a.callqueuename,
+    a.callagent,
+    a.calleventname,
+    a.waittime,
+    a.talktime,
+    b.firm,
+    b.kod,
+    b.mphone
+FROM
+    a
+        LEFT JOIN
+    b ON b.mphone LIKE CONCAT('%', a.callnumber, '%')
+ORDER BY a.calldate
+
 )
 ;
 
@@ -336,6 +371,122 @@ create table rcbill_my.callstats as
 
 select count(*) as callstats from rcbill_my.callstats;
 
+
+
+##### CC CALL REPORT #######
+
+### first time #####
+### takes 1016.922 sec
+### takes 1016.922 sec
+
+/*
+
+drop temporary table if exists tempccl1;
+
+create temporary table tempccl1
+(index idxtccl1(call_date), index idxtccl2(shift), index idxtccl3(callagent) )
+as
+(
+	SELECT 
+			*,
+				rcbill_my.GetShiftName(calldatetime) AS shift,
+				rcbill_my.GetWeekdayName(WEEKDAY(DATE(calldatetime))) AS shiftday
+		FROM
+			rcbill_my.callingclients
+		-- WHERE
+		--    kod = 'I.000009236'
+		ORDER BY calldatetime DESC
+);
+
+drop table if exists rcbill_my.rep_cccallreport;
+
+create table rcbill_my.rep_cccallreport 
+(index idxrccr1(calldate), index idxrccr2(clientcode), index idxrccr3(clientname), index idxrccr4(callernumber), index idxrccr5(ccagent))
+as 
+(
+	SELECT 
+		a.kod AS clientcode,
+		a.firm AS clientname,
+		a.calldatetime AS calldate,
+		a.shiftday,
+		a.shift,
+		a.callnumber AS callernumber,
+		a.waittime,
+		a.calleventname AS callstatus,
+		b.ccagent AS ccagent,
+		a.callagent,
+		a.talktime,
+		now() as insertedon
+	FROM
+		tempccl1 a
+		
+		left join 
+		
+		rcbill_my.ccrota b 
+		on 
+		a.call_date=b.ccdate
+		and a.shift=b.ccshift
+		and a.callagent=b.ccnumber
+	ORDER BY a.calldatetime DESC
+)
+;
+
+select count(*) as rep_cccallreport from rcbill_my.rep_cccallreport;
+
+drop temporary table if exists tempccl1; 
+*/
+drop temporary table if exists tempccl1; 
+create temporary table tempccl1
+(index idxtccl1(call_date), index idxtccl2(shift), index idxtccl3(callagent) )
+as
+(
+	SELECT 
+			*,
+				rcbill_my.GetShiftName(calldatetime) AS shift,
+				rcbill_my.GetWeekdayName(WEEKDAY(DATE(calldatetime))) AS shiftday
+		FROM
+			rcbill_my.callingclients
+		where CAll_DATE>(select max(date(calldate)) from rcbill_my.rep_cccallreport)
+        -- WHERE
+		--    kod = 'I.000009236'
+		ORDER BY calldatetime DESC
+);
+
+select count(*) as rep_cccallreportbefore from rcbill_my.rep_cccallreport;
+
+
+insert into rcbill_my.rep_cccallreport
+(
+	SELECT 
+		a.kod AS clientcode,
+		a.firm AS clientname,
+		a.calldatetime AS calldate,
+		a.shiftday,
+		a.shift,
+		a.callnumber AS callernumber,
+		a.waittime,
+		a.calleventname AS callstatus,
+		b.ccagent AS ccagent,
+		a.callagent,
+		a.talktime,
+        now() as insertedon
+	FROM
+		tempccl1 a
+		
+		left join 
+		
+		rcbill_my.ccrota b 
+		on 
+		a.call_date=b.ccdate
+		and a.shift=b.ccshift
+		and a.callagent=b.ccnumber
+	ORDER BY a.calldatetime DESC
+)
+;
+
+select count(*) as rep_cccallreportafter from rcbill_my.rep_cccallreport;
+
+drop temporary table if exists tempccl1; 
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-082016.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-092016.csv' 

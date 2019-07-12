@@ -41,6 +41,22 @@ order by money desc, period desc
 
 select distinct cl_clientcode, con_contractcode from rcbill_my.fourmonthcustomers;
 
+
+select b.reportdate, b.clientcode, b.currentdebt, b.IsAccountActive, b.AccountActivityStage
+, b.clientname, b.clientclass, b.activenetwork, b.activeservices
+, b.clientemail, b.clientphone
+, b.firstactivedate, b.lastactivedate, b.dayssincelastactive
+, b.totalpaymentamount, b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019, b.TotalPaymentAmount2018, b.AvgMonthlyPayment2018
+from 
+(
+select distinct cl_clientcode from rcbill_my.fourmonthcustomers
+) a
+left join 
+rcbill_my.rep_custconsolidated b
+on 
+a.cl_clientcode=b.clientcode
+;
+
 select * from rcbill_my.fourmonthcustomers
 where cl_clientcode in ('I.000001680','I.000009645','I6033')
  order by cl_clientname;

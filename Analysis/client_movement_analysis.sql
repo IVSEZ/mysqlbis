@@ -71,8 +71,8 @@ order by clientcode, period
 
 */
 
-set @date1='2017-03-31';
-set @date2='2017-07-31';
+set @date1='2019-03-31';
+set @date2='2019-06-11';
 -- set @date2='2017-09-30';
 -- set @date2='2017-10-12';
 
@@ -155,7 +155,7 @@ t1.clientcode=t2.clientcode;
 drop  table if exists t3;
 create  table t3 as 
 (
-	select * 
+	select * , ifnull(clientcode_start, clientcode_end) as `clientcode`
     , 
     case 
 		when clientcode_start is null then 'Activated'
@@ -179,6 +179,20 @@ create  table t3 as
 ;
  
 select * from t3; 
+
+select a.*, b.IsAccountActive, b.AccountActivityStage, b.activeservices, b.activecontracts, b.activesubscriptions, b.firstactivedate, b.lastactivedate
+from 
+t3 a
+left join 
+rcbill_my.rep_custconsolidated b 
+on 
+a.clientcode=b.clientcode;
+ 
+select * from rcbill_my.rep_custconsolidated where clientcode='I.000019951'; 
+ select * from rcbill_my.customercontractactivity where clientcode='I.000019951';
+ select * from rcbill_my.clientstats where clientcode='I.000019951';
+ select * from rcbill_my.rep_allcust where clientcode='I.000019951';
+ select * from rcbill_my.rep_cust_cont_payment_cmts_mxk where clientcode='I.000019951';
  
 /*
 t1.period as t1_period, t1.clientcode as t1_clientcode, t1.clientname as t1_clientname, t1.activecount_start as t1_activecount_start, t1.package_start as t1_package_start, t1.cclass_start as t1_cclass_start, t1.contracts_start as t1_contracts_start

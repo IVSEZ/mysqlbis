@@ -190,9 +190,34 @@ set session group_concat_max_len = 1024;
 
 
 
+drop table if exists rcbill_my.rep_ott;
 
-
-
+create table rcbill_my.rep_ott as 
+(
+	select period,
+	ifnull(sum(`DUALVIEW`),0) as `DUALVIEW`,
+	ifnull(sum(`MULTIVIEW`),0) as `MULTIVIEW`,
+	ifnull(sum(`IGO`),0) as `IGO`,
+	ifnull(sum(`VOD`),0) as `VOD`,
+	ifnull(sum(`MOBILE INDIAN`),0) as `MOBILE INDIAN`
+	from
+	(
+		select period
+		,case when upper(package)='DUALVIEW' then sum(open_s) end as `DUALVIEW`
+		,case when upper(package)='MULTIVIEW' then sum(open_s) end as `MULTIVIEW`
+		,case when upper(package)='IGO' then sum(open_s) end as `IGO`
+		,case when upper(package)='VOD' then sum(open_s) end as `VOD`
+		,case when upper(package)='MOBILE INDIAN' then sum(open_s) end as `MOBILE INDIAN`
+        
+		from
+		rcbill_my.anreport
+		where upper(servicecategory)='OTT' and reported='Y' and decommissioned='N'
+		and year(period)=2019
+		group by period, package  
+	) a
+	group by period
+)
+;
 
 
 

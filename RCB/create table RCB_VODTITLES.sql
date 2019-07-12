@@ -40,4 +40,7 @@ select * from rcbill.rcb_vodtitles;
 /*
 use rcbill;
 rename table rcbill.rcb_vodtitles to rcbill.rcb_vodtitles2017;
+
+show columns from rcbill.rcb_vodtitles;
+alter table rcbill.rcb_vodtitles MODIFY RESOURCEORIG varchar(20);
 */

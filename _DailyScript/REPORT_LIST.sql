@@ -1,5 +1,12 @@
 
+select *, rcbill.GetClientID(clientcode) as clientid from rcbill_my.rep_custconsolidated;
+
 select * from rcbill.rcb_clientparcels;
+
+-- SAM Report
+select * from rcbill_my.rep_ott;
+
+
 
 select * from rcbill_my.rep_paycol_channel;
 select * from rcbill_my.rep_paycol_pos;
@@ -11,6 +18,12 @@ select * from rcbill_my.rep_customers_collection2018;
 select * from rcbill_my.rep_customers_collection2019;
 select * from rcbill_my.rep_cust_cont_payment_cmts_mxk;
 select * from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail;
+
+select * from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail2;
+
+#ALL STATS FROM CMTSMXK TRAIL TABLE
+select * from rcbill_my.rep_cmtsmxk_trail order by reportdate desc;
+
 
 select * from rcbill_my.rep_clientstats1;
 select * from rcbill_my.rep_clientstats2;
@@ -52,7 +65,7 @@ select * from rcbill_my.rep_extravagance_peakcustomer_activity;
 
 
 
-select * from rcbill_my.rep_custconsolidated where clientcode='I15284';
+select * from rcbill_my.rep_custconsolidated where clientcode='I.000012657';
 select * from rcbill_my.rep_custconsolidated where clientname like '%ballanty%';
 select * from rcbill_my.rep_custconsolidated where clean_mxk_interface='1-2-4-1';
 
@@ -69,6 +82,13 @@ select * from rcbill_my.rep_budget_actual_2019_pv;
 
 #SERVICE TICKETS
 select * from rcbill_my.rep_servicetickets_2019;
+
+#GET TICKETS WITH CERTAIN COMMENTS IN THEM
+select * from  rcbill_my.clientticketjourney 
+where commentuser in ('Rahul Walavalkar') and 
+(trim(upper(comment)) REGEXP 'APPROVED FOR RETENTION')
+order by commentdate desc
+;
 
 
 ##TV
@@ -127,17 +147,47 @@ group by servicecategory
 
 
 select * from rcbill.clientcontractip  where CLIENTCODE='I.000011750' order by USAGEDATE desc;
-select * from rcbill.clientcontractipmonth where CLIENTCODE='I.000011750' order by USAGE_MTH desc, USAGE_YR desc;
+select * from rcbill.clientcontractipmonth where CLIENTCODE='I.000011750' order by USAGE_YR desc, USAGE_MTH desc;
 
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.187.241' and USAGEDATE='2018-12-31';
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.186.118' and USAGEDATE='2018-12-31';
-select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='41.203.255.10' and USAGEDATE='2018-12-31';
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='41.220.111.246' and USAGEDATE='2018-12-31';
 select * from rcbill.clientcontractipmonth where CLIENTCODE='I.000011750' order by USAGE_MTH, USAGE_YR;
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='197.234.2.150';
 
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='197.234.3.145' order by usagedate desc;
+
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='197.234.8.234' order by usagedate desc;
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.169.195' order by usagedate desc;
+
+
+select * from rcbill.clientcontractip where CLIENTCODE='I.000009236' order by usagedate desc;
+
+select CLIENTCODE, CLIENTNAME, CONTRACTCODE, USAGEDATE, PROCESSEDCLIENTIP as IP from rcbill.clientcontractip where CLIENTCODE='I.000009236' order by usagedate desc;
+select CLIENTCODE, CLIENTNAME, CONTRACTCODE, USAGE_MTH, USAGE_YR, PROCESSEDCLIENTIP as IP, FROM_DATE, TO_DATE 
+from rcbill.clientcontractipmonth where CLIENTCODE='I.000009236' order by USAGE_YR desc, USAGE_MTH desc, TO_DATE desc;
+
+
+select FROM_DATE, TO_DATE, USAGE_MTH, USAGE_YR, CONTRACTCODE, PROCESSEDCLIENTIP as IP  
+from rcbill.clientcontractipmonth where CLIENTCODE='I.000009236' order by TO_DATE desc;
+
+-- show index from rcbill.clientcontractip 
 
 -- =======================================
 
+## call center (cc) report
+select * from rcbill_my.rep_cccallreport order by calldate desc;
+select * from rcbill_my.rep_cccallreport where clientcode='I.000011750';
+
+select * from rcbill_my.rep_cccallreport where clientcode='I.000009236';
+select * from rcbill_my.rep_cccallreport where callernumber=2719841;
+
+select calldate, shiftday, shift, callernumber, waittime, callstatus, ccagent, callagent, talktime
+from 
+rcbill_my.rep_cccallreport where clientcode='I.000009236'
+order by calldate desc;
+
+############################
 
 select paydate, pay_channel, sum(pay_amount) as pay_amount from rcbill_my.rep_paycol_channel
 group by paydate, pay_channel
@@ -263,3 +313,37 @@ from rcbill_my.rep_custconsolidated
 where 0=0
 -- limit 100
 ;
+
+
+### ticket assignment
+select reportdate, service, tickettype, openreason, ticketid, opendate, closedate, assgntechregion, assgnopendate
+, assgnclosedate, service_workdays,  service_workdays2, service_alldays, packageprice, priceperday, agreeddays, penaltydays, penaltyamount, client_code, contractcode, clientname, clientclass
+, activenetwork, activeservices, clientlocation, mxk_name, mxk_interface,nodename, hfc_node, hfc_district, hfc_subdistrict
+
+from rcbill_my.rep_servicetickets_2019 order by ticketid desc, assgnopendate asc
+;
+
+
+### tickets by user for this year
+select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
+, min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
+, datediff(max(date(commentdate)), min(date(commentdate))) as totaldays
+, count(comment)/count(distinct date(commentdate)) as avgcmtday
+, (count(distinct date(commentdate))/datediff(max(date(commentdate)), min(date(commentdate)))) as consistency
+from 
+rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=year(now())
+group by commentuser
+order by 2 desc;
+
+### tickets by user for 2018
+select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
+, min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
+, datediff(max(date(commentdate)), min(date(commentdate))) as totaldays
+, count(comment)/count(distinct date(commentdate)) as avgcmtday
+, (count(distinct date(commentdate))/datediff(max(date(commentdate)), min(date(commentdate)))) as consistency
+from 
+rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=2018
+group by commentuser
+order by 2 desc;

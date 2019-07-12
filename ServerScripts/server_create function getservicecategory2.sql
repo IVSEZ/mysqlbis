@@ -20,6 +20,7 @@ BEGIN
 		-- WHEN 'Subscription VOD' THEN 'TV'
 		WHEN 'Subscription VOD' THEN 'OTT'
 		WHEN 'Subscription iGo' THEN 'OTT'
+		WHEN 'Subscription Mobile Indian' THEN 'OTT'
 
     END;
  

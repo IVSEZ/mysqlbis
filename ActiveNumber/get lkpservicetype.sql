@@ -108,6 +108,17 @@ values
 
 insert into rcbill_my.lkpservicetype
 values
+('Mobile Indian::=Mobile Indian','Mobile Indian');
+
+insert into rcbill_my.lkpservicetype
+values
+('Mobile Indian','Mobile Indian');
+
+
+
+
+insert into rcbill_my.lkpservicetype
+values
 ('100GB::=100GB','100GB');
 
 insert into rcbill_my.lkpservicetype

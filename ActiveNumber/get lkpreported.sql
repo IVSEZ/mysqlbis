@@ -4,6 +4,9 @@ order by 1
 ;
 
 /*
+insert into rcbill_my.lkpreported
+values
+('Mobile Indian','Y');
 
 insert into rcbill_my.lkpreported
 values

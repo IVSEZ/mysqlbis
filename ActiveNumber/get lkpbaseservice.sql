@@ -14,6 +14,10 @@ insert into rcbill_my.lkpbaseservice
 values
 ('Subscription iGo','OTT','ADDON');
 
+insert into rcbill_my.lkpbaseservice
+values
+('Subscription Mobile Indian','OTT','MOBILE TV');
+
 set sql_safe_updates=0;
 update rcbill_my.lkpbaseservice set servicecategory='OTT' where service='Subscription NextTV';
 update rcbill_my.lkpbaseservice set servicecategory='OTT' where service='Subscription VOD';

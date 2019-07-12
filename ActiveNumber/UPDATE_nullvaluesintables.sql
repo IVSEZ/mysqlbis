@@ -202,6 +202,13 @@ where servicetype = 'VOD'
 	where rcbill_my.customercontractactivity.package = 'IGo'
 	;
     
+set sql_safe_updates=0;
+update rcbill_my.customercontractactivity
+set servicecategory2='OTT'
+where SERVICE='Subscription Mobile Indian'
+;    
+    
+    
     SERVICECATEGORY=(select servicecategory from rcbill_my.lkpbaseservice where service=@service),	
     
     

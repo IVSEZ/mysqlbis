@@ -105,7 +105,7 @@ insert into rcbill.clientvodstats
 -- select distinct date(sessionstart), count(distinct clientcode) from rcbill.clientvodstats group by 1;
 
 
--- select * from rcbill.clientvodstats where clientname like '%rahul%' order by sessionstart desc;
+-- select * from rcbill.clientvodstats where clientname like '%rajendra naidu%' order by sessionstart desc;
 -- select * from rcbill.clientvodstats where clientname like '%cindy%' order by sessionstart desc;
 
 /*

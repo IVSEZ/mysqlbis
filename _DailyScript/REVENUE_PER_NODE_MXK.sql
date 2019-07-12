@@ -70,10 +70,15 @@ rcbill.rcb_mxk;
   WHERE t1.id IS NULL
 */
 
+-- select * from rcbill_my.customercontractsnapshot where ;
 
 drop temporary table if exists a;
 drop temporary table if exists b;
 drop temporary table if exists c;
+
+-- select * from rcbill_my.rep_clientcontractdevices ;
+-- select distinct contract_type from rcbill_my.rep_clientcontractdevices;
+
 
 ## GPON CUSTOMERS
 create temporary table a (index idxf1(FSAN2)) as 
@@ -83,6 +88,8 @@ create temporary table a (index idxf1(FSAN2)) as
 			rcbill_my.rep_clientcontractdevices 
 			where 
 			length(FSAN)>=4
+            and CONTRACT_CODE in (select contractcode from rcbill_my.customercontractsnapshot where network='GPON')
+            /*
             and 
             CONTRACT_TYPE in 
             (
@@ -95,13 +102,17 @@ create temporary table a (index idxf1(FSAN2)) as
 				'NEXTTV',
 				'MOBILE TV',
 				'IPTV',
-				'HOTSPOT ACCESS'
+				'HOTSPOT ACCESS',
+                'VOIP INTERCONNECT'
             )
+            */
             and CONTRACT_CODE<>CLIENT_CODE
 			-- FSAN is not null or FSAN <>''
 );
 
 select 'created temp table a' as message;
+
+-- select * from a;
 
 create temporary table b (index idxsn2(SERIAL_NUM2)) as 
 (
@@ -184,6 +195,8 @@ create temporary table a (index idxf1(FSAN2)) as
 			rcbill_my.rep_clientcontractdevices 
 			where 
 			length(FSAN)>=4
+            and CONTRACT_CODE in (select contractcode from rcbill_my.customercontractsnapshot where network='GPON')
+            /*
             and 
             CONTRACT_TYPE in 
             (
@@ -196,8 +209,10 @@ create temporary table a (index idxf1(FSAN2)) as
 				'NEXTTV',
 				'MOBILE TV',
 				'IPTV',
-				'HOTSPOT ACCESS'
-            )   
+				'HOTSPOT ACCESS',
+                'VOIP INTERCONNECT'
+            ) 
+            */
             and CONTRACT_CODE<>CLIENT_CODE
 );
 
@@ -288,20 +303,23 @@ create table rcbill_my.customers_mxk as
 ;
 
 select 'created rcbill_my.customers_mxk' as message;
+-- select * from rcbill_my.customers_mxk;
 
 drop table if exists rcbill_my.tempcustmxk1;
 drop table if exists rcbill_my.tempcustmxk2;
 
 ## HFC CUSTOMERS
-
 create temporary table a (index idxa1(MAC)) as 
 (
 		select * from rcbill_my.rep_clientcontractdevices where length(MAC)>=4
+        and CONTRACT_CODE in (select contractcode from rcbill_my.customercontractsnapshot where network='HFC')
+        /*
         and CONTRACT_TYPE in 
         (
 			'IMPORT',
 			'CAPPED INTERNET',
 			'INTERNET',
+            'INTERNET,',
 			'EMAIL',
 			'VOICE',
 			'DIGITAL TV',
@@ -316,6 +334,7 @@ create temporary table a (index idxa1(MAC)) as
 			'PREPAID INTERNET',
 			'PREPAID TRAFFIC'        
         )
+        */
         and CONTRACT_CODE<>CLIENT_CODE
 
 );
@@ -392,21 +411,27 @@ create table rcbill_my.tempcustcmts1 as
 );
 
 select 'created rcbill_my.tempcustcmts1' as message;
-
+-- select * from a
+-- select * from c
+-- select * from rcbill_my.tempcustcmts1;
 
 drop temporary table if exists a;
 drop temporary table if exists b;
 drop temporary table if exists c;
 
+-- select distinct contract_type from rcbill_my.rep_clientcontractdevices ;
 
 create temporary table a (index idxa1(MAC)) as 
 (
 		select * from rcbill_my.rep_clientcontractdevices where length(MAC)>=4
+        and CONTRACT_CODE in (select contractcode from rcbill_my.customercontractsnapshot where network='HFC')
+       /*
         and CONTRACT_TYPE in 
         (
 			'IMPORT',
 			'CAPPED INTERNET',
 			'INTERNET',
+            'INTERNET,',
 			'EMAIL',
 			'VOICE',
 			'DIGITAL TV',
@@ -421,6 +446,7 @@ create temporary table a (index idxa1(MAC)) as
 			'PREPAID INTERNET',
 			'PREPAID TRAFFIC'        
         )
+        */
         and CONTRACT_CODE<>CLIENT_CODE
 );
 
@@ -521,28 +547,45 @@ create table rcbill_my.customers_cmts_mxk
 (index idxccm1(client_id),index idxccm2(client_code),index idxccm3(contract_id),index idxccm4(contract_code))
 as
 	(
+	/*
 	select 'HFC' as connection_type ,client_id, client_code, client_name, contract_id, contract_code, contract_type, service_type
 	, fsan as fsan_rcb, null as fsan_mxk, null as mxk_name, null as model_id, null as mxk_interface, null as mxk_date
 	, mac as mac_rcb, uid as uid_rcb
 	, mac_address as mac_cmts, ip_address, hfc_node, cmts_date, interfacename, nodename, date(insertedon) as report_date
 	from rcbill_my.customers_cmts
-	)
+	*/
+	select 'CMTS' as conntype ,client_id, client_code, client_name, contract_id, contract_code, contract_type, service_type
+	, fsan as fsan_rcb, null as fsan_mxk, null as mxk_name, null as model_id, null as mxk_interface, null as mxk_date
+	, mac as mac_rcb, uid as uid_rcb
+	, mac_address as mac_cmts, ip_address, hfc_node, cmts_date, interfacename, nodename, date(insertedon) as report_date
+	from rcbill_my.customers_cmts
+    
+    )
 	union
 	(
+	/*
 	select 'GPON' as connection_type,client_id, client_code, client_name, contract_id, contract_code, contract_type, service_type
 	, fsan as fsan_rcb, serial_num as fsan_mxk, mxk_name, model_id, mxk_interface, mxk_date
 	, mac as mac_rcb, uid as uid_rcb
 	, NULL as mac_cmts, null as ip_address, null as hfc_node, null as cmts_date, null as interfacename, null as nodename, date(insertedon) as report_date
 	from rcbill_my.customers_mxk
-	)
+	*/
+	select 'MXK' as conntype,client_id, client_code, client_name, contract_id, contract_code, contract_type, service_type
+	, fsan as fsan_rcb, serial_num as fsan_mxk, mxk_name, model_id, mxk_interface, mxk_date
+	, mac as mac_rcb, uid as uid_rcb
+	, NULL as mac_cmts, null as ip_address, null as hfc_node, null as cmts_date, null as interfacename, null as nodename, date(insertedon) as report_date
+	from rcbill_my.customers_mxk
+    
+    )
 ;
-
+-- select * from rcbill_my.customers_cmts_mxk where client_code='I.000011750';
 select 'created rcbill_my.customers_cmts_mxk' as message;
 
 create temporary table a (index idxa1(CL_CLIENTID), index idxa2(CON_CONTRACTID)) as 
 (
 
 		select CL_CLIENTID, CL_CLIENTNAME, CL_CLIENTCODE, CL_CLCLASSNAME, CON_CONTRACTID, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, VPNR_SERVICEPRICE, CONTRACTCURRENTSTATUS 
+        , rcbill_my.GetNetworkForClientContract(CL_CLIENTCODE,CON_CONTRACTCODE) as connection_type
 		from rcbill.clientcontracts where s_servicename like 'SUBSCRIPTION%' 
 		-- and CL_CLIENTID=723711
 		group by 
@@ -559,7 +602,7 @@ create table rcbill_my.customers_contracts_cmts_mxk
 (index idxccmc1(CL_CLIENTID), index idxccmc2(CL_CLIENTCODE), index idxccmc3(CON_CONTRACTID), index idxccmc4(CON_CONTRACTCODE))
 as
 (
-	select a.*, b.*
+	select a.*,  b.*
 	from 
 	/*(
 		select CL_CLIENTID, CL_CLIENTNAME, CL_CLIENTCODE, CL_CLCLASSNAME, CON_CONTRACTID, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, VPNR_SERVICEPRICE, CONTRACTCURRENTSTATUS 
@@ -631,7 +674,7 @@ and
 select 'updated rcbill_my.customers_contracts_cmts_mxk' as message;
 
 
--- select * from rcbill_my.customers_contracts_cmts_mxk;
+-- select * from rcbill_my.customers_contracts_cmts_mxk where cl_clientcode='I.000011750';
 
 /*
 (
@@ -1146,6 +1189,10 @@ drop temporary table if exists b;
 drop temporary table if exists c;
 
 -- select * from rcbill_my.cust_cont_payment_cmts_mxk where cl_clientcode='I.000001076' or b_clientcode='I.000001076';
+-- select * from rcbill_my.cust_cont_payment_cmts_mxk where connection_type='HFC';
+-- select * from rcbill_my.cust_cont_payment_cmts_mxk where cl_clientcode='I9929';
+-- select * from rcbill_my.cust_cont_payment_cmts_mxk where cl_clientcode='I9890';
+-- select * from rcbill_my.cust_cont_payment_cmts_mxk where cl_clientcode='I8983';
 
 drop table if exists rcbill_my.rep_cust_cont_payment_cmts_mxk;
 
@@ -1334,30 +1381,13 @@ create table rcbill_my.rep_custconsolidated as
 		(select group_concat(subdistrict separator '|') as hfc_subdistrict from rcbill.rcb_techregions where INTERFACENAME=b.clean_hfc_node) as hfc_subdistrict
 		from 
 		rcbill_my.rep_allcust a 
-		inner join 
+		-- inner join 
+        left join
 		rcbill_my.rep_cust_cont_payment_cmts_mxk b
 		on 
 		a.clientcode=b.clientcode
-
-		-- where 
-		/*
-		(
-			a.clientaddress like '%glacis%' or a.clientaddress like '%glasic%'  or a.clientaddress like '%glaci%'
-		or
-			a.clientaddress like '%beau vallon%' or a.clientaddress like '%beauvallon%' or a.clientaddress like '%beauvalon%' 
-			or a.clientaddress like '%beauvalon%' or a.clientaddress like '%beau  vallon%' or a.clientaddress like '%beau-vallon%'
-			or a.clientaddress like '%beau  valon%'
-		or
-			a.clientaddress like '%belombre%' or a.clientaddress like '%bel ombre%' or a.clientaddress like '%belom%'  or a.clientaddress like '%belomb%'  or a.clientaddress like '%belomber%'
-		or
-			a.clientaddress like '%maca%' or a.clientaddress like '%mach%'
-		)
-		and
-		*/ 
-		-- a.firstactivedate is not null
-		-- and a.clientcode='I.000011750'
-
-		inner join 
+		-- inner join 
+        left join
 		(
 			select client_code as clientcode, coalesce(group_concat((CONTRACT_INFO) separator '|')) as contractinfo
 			from
@@ -1365,7 +1395,7 @@ create table rcbill_my.rep_custconsolidated as
 			select CLIENT_CODE
 			, concat(coalesce(CONTRACT_CODE,''),'~',coalesce(SERVICE_TYPE,''),'~',coalesce(FSAN,''),'~',coalesce(MAC,''),'~',coalesce(UID,'')) as CONTRACT_INFO 
 			from rcbill_my.rep_clientcontractdevices 
-			-- where CLIENT_CODE='I.000011750'
+			-- where CLIENT_CODE='I.000019951'
 
 			) a 
 			group by 1
@@ -1381,6 +1411,27 @@ create table rcbill_my.rep_custconsolidated as
             group by clientcode
         ) d
         on a.clientcode=d.clientcode
+
+
+		-- where 0=0
+		/*
+		(
+			a.clientaddress like '%glacis%' or a.clientaddress like '%glasic%'  or a.clientaddress like '%glaci%'
+		or
+			a.clientaddress like '%beau vallon%' or a.clientaddress like '%beauvallon%' or a.clientaddress like '%beauvalon%' 
+			or a.clientaddress like '%beauvalon%' or a.clientaddress like '%beau  vallon%' or a.clientaddress like '%beau-vallon%'
+			or a.clientaddress like '%beau  valon%'
+		or
+			a.clientaddress like '%belombre%' or a.clientaddress like '%bel ombre%' or a.clientaddress like '%belom%'  or a.clientaddress like '%belomb%'  or a.clientaddress like '%belomber%'
+		or
+			a.clientaddress like '%maca%' or a.clientaddress like '%mach%'
+		)
+		and
+		*/ 
+		-- a.firstactivedate is not null
+		-- and a.clientcode='I6030'
+
+
 	) a
 )
 -- where clientcode='I6816'
@@ -1390,7 +1441,7 @@ select count(*) as rep_custconsolidated from rcbill_my.rep_custconsolidated;
 
 set session group_concat_max_len = 1024;
 
-
+-- select * from rcbill_my.rep_custconsolidated where clientcode='I.000011750';
 
 ##RETENTION CUSTOMER REPORT
 drop table if exists rcbill_my.retentioncustomeractivity;

@@ -1,3 +1,13 @@
+
+
+
+select servicecategory, package
+-- , `20181031`, `20181130`, `20181231`
+, `20190131`, `20190228`, `20190331`
+, `20190430`, `20190531`, `20190630`
+ from rcbill_my.rep_activenumberlastday_pv;
+
+
 -- select distinct period from rcbill_my.rep_activenumberlastday;
 -- select * from rcbill_my.rep_activenumberlastday;
 -- select * from rcbill_my.rep_activenumberlastday_pv;
@@ -15,9 +25,11 @@
 -- set @period='2018-12-31';
 -- set @period='2019-01-31';
 -- set @period='2019-02-28';
- set @period='2019-03-31';
+-- set @period='2019-03-31';
+-- set @period='2019-04-30';
+-- set @period='2019-05-31';
+ set @period='2019-06-30';
 
-select servicecategory, package, `20181031`, `20181130`, `20181231`, `20190131`, `20190228`, `20190331` from rcbill_my.rep_activenumberlastday_pv;
 
 /*
 select * from rcbill_my.customercontractactivity 
@@ -36,24 +48,6 @@ order by 4 desc
 */
 
 
-
-select @period AS period, clientcode, clientclass, package, subscriptions
-from 
-(
-	select clientcode, clientclass, group_concat(package order by package separator '|') as package, count(*) as subscriptions
-    from rcbill_my.customercontractactivity
-    where period=@period and REPORTED='Y'
-	and package in ('Extravagance','Extravagance Corporate','French')
-	group by clientcode, clientclass
-	order by 4 desc
-
-) a 
-where 
--- package like '%|%'
-upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%'
-;
-
-
 /*
 select * from rcbill_my.customercontractactivity 
 where period=@period and REPORTED='Y'
@@ -70,6 +64,7 @@ order by 4 desc
 ;
 */
 
+set @message = 'EXTRA + INDIAN';
 select @period AS period, clientcode, clientclass, package, subscriptions
 from 
 (
@@ -87,6 +82,25 @@ upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%INDIAN%'
 ;
 
 
+set @message = 'EXTRA + FRENCH';
+select @period AS period, clientcode, clientclass, package, subscriptions
+from 
+(
+	select clientcode, clientclass, group_concat(package order by package separator '|') as package, count(*) as subscriptions
+    from rcbill_my.customercontractactivity
+    where period=@period and REPORTED='Y'
+	and package in ('Extravagance','Extravagance Corporate','French')
+	group by clientcode, clientclass
+	order by 4 desc
+
+) a 
+where 
+-- package like '%|%'
+upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%'
+;
+
+
+set @message = 'EXTRA + INDIAN + FRENCH';
 select @period AS period, clientcode, clientclass, package, subscriptions
 from 
 (
@@ -102,10 +116,34 @@ where
 upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
 ;
 
+
+/*
+IPTV customers
+*/
+
+set @message = 'IPTV';
+select @period AS period, clientcode, clientclass, package, subscriptions
+from 
+(
+	select clientcode, clientclass, group_concat(package order by package separator '|') as package, count(*) as subscriptions
+    from rcbill_my.customercontractactivity 
+    where period=@period and REPORTED='Y'
+	-- and package in ('Extravagance','Extravagance Corporate','French','Indian','Indian Corporate')
+	and servicecategory='TV' and Network='GPON' and servicesubcategory<>'ADDON'
+    group by clientcode, clientclass
+	order by 4 desc
+
+) a 
+where 0=0 
+-- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
+;
+
+
 /*
 DTV customers
 */
 
+set @message = 'DTV';
 select @period AS period, clientcode, clientclass, package, subscriptions
 from 
 (
@@ -123,22 +161,3 @@ where 0=0
 ;
 
 
-/*
-IPTV customers
-*/
-
-select @period AS period, clientcode, clientclass, package, subscriptions
-from 
-(
-	select clientcode, clientclass, group_concat(package order by package separator '|') as package, count(*) as subscriptions
-    from rcbill_my.customercontractactivity 
-    where period=@period and REPORTED='Y'
-	-- and package in ('Extravagance','Extravagance Corporate','French','Indian','Indian Corporate')
-	and servicecategory='TV' and Network='GPON' and servicesubcategory<>'ADDON'
-    group by clientcode, clientclass
-	order by 4 desc
-
-) a 
-where 0=0 
--- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
-;

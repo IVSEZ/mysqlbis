@@ -1,7 +1,8 @@
 -- SET SESSION sql_mode = '';
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_parcel_score_20190416.csv' 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_parcel_score_20190418.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_parcel_score_20190418.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_parcel_score_20190517.csv' 
 
 REPLACE INTO TABLE `rcbill`.`client_match_parcel` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -34,6 +35,7 @@ INSERTEDON=now()
 
 select date(insertedon) as insertedon, count(*) as records from rcbill.client_match_parcel
 group by 1
+order by 1 desc
 ;
 
 -- select * from rcbill.client_match_parcel;

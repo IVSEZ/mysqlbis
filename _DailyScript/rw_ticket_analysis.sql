@@ -24,7 +24,7 @@ order by 4 desc;
 
 
 
-
+### tickets by user for this year
 select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
 , min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
 , datediff(max(date(commentdate)), min(date(commentdate))) as totaldays
@@ -36,6 +36,7 @@ where year(commentdate)=year(now())
 group by commentuser
 order by 2 desc;
 
+### tickets by user for 2018
 select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
 , min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
 , datediff(max(date(commentdate)), min(date(commentdate))) as totaldays

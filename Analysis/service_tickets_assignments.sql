@@ -155,6 +155,131 @@ select count(*) as rep_servicetickets_2019 from rcbill_my.rep_servicetickets_201
 -- select *, (packageprice/30) as  priceperday from rcbill_my.rep_servicetickets_2019 where ticketid=910797;
 
 /*
+-- tickets opened last month
+select date(opendate) as opendate, count(ticketid), count(distinct ticketid) from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+group by 1
+with rollup
+;
+
+select date(opendate) as opendate, count(ticketid), count(distinct ticketid) from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+and service='Internet'
+group by 1
+with rollup
+;
+
+
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+-- and service='Internet'
+;
+
+
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+and service='Internet'
+;
+
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+and service='Internet'
+and clean_hfc_nodename is null
+;
+
+
+select assgntechregion, count(ticketid) as tickets from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+group by assgntechregion 
+order by 2 desc
+;
+select assgntechregion, count(distinct ticketid) as d_tickets from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+group by assgntechregion 
+order by 2 desc
+;
+
+select clean_hfc_nodename, count(ticketid) as tickets from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+group by clean_hfc_nodename 
+order by 2 desc
+;
+
+select clean_hfc_nodename, count(distinct ticketid) as d_tickets from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+group by clean_hfc_nodename 
+order by 2 desc
+;
+
+
+### REPORT FOR MLADEN - INTERNET TICKETS OPENED IN PAST MONTH PER NODE
+select clean_hfc_nodename
+, count(ticketid) as tickets
+, count(distinct ticketid) as d_tickets, count(distinct clientcode) as d_clients from rcbill_my.rep_servicetickets_2019 
+where month(opendate)=5 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+and service='Internet'
+group by clean_hfc_nodename 
+order by 2 desc
+;
+
+select clean_hfc_nodename, count(distinct ticketid) as d_tickets from rcbill_my.rep_servicetickets_2019 
+where month(opendate)=4 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+group by clean_hfc_nodename 
+order by 2 desc
+;
+
+select clean_hfc_nodename
+-- , count(ticketid) as tickets
+, count(distinct ticketid) as d_tickets, count(distinct clientcode) as d_clients from rcbill_my.rep_servicetickets_2019 
+where month(opendate)=4 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+and service='Internet'
+group by clean_hfc_nodename 
+order by 2 desc
+;
+
+
+
+select clean_hfc_nodename, clientlocation, count(distinct ticketid) as d_tickets from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+and service='Internet'
+group by clean_hfc_nodename, clientlocation 
+order by 3 desc
+;
+
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
+and clean_connection_type is null
+;
+
+
+*/
+
+/*
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+-- and connection_type REGEXP 'HFC'
+and clean_connection_type <> 'GPON'
+;
+
+
+
+
+
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and clean_connection_type in ('HFC')
+;
+
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
+and clean_connection_type is null
+;
+
+*/
+
+
+
+/*
 select distinct clientlocation from rcbill_my.rep_cust_cont_payment_cmts_mxk ;
 
 select *, (select clientaddress from rcbill_my.rep_allcust where clientcode=cl_clientcode) as clientaddress

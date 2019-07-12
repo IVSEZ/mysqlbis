@@ -4,7 +4,8 @@
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_name_score_20181227.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_name_score_20190208.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_name_score_20190322.csv' 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_name_score_20190413.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_name_score_20190413.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_name_score_20190517.csv' 
 
 REPLACE INTO TABLE `rcbill`.`client_match_name` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -33,6 +34,7 @@ INSERTEDON=now()
 
 select date(insertedon) as insertedon, count(*) as records from rcbill.client_match_name
 group by 1
+order by 1 desc
 ;
 
 -- select * from rcbill.client_match_name;
