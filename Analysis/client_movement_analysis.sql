@@ -72,7 +72,8 @@ order by clientcode, period
 */
 
 set @date1='2019-03-31';
-set @date2='2019-06-11';
+set @date2='2019-07-22';
+-- set @date2='2019-06-11';
 -- set @date2='2017-09-30';
 -- set @date2='2017-10-12';
 
@@ -178,7 +179,7 @@ create  table t3 as
 )
 ;
  
-select * from t3; 
+-- select distinct clientcode from t3 where package_start in ('Crimson','Crimson Corporate'); 
 
 select a.*, b.IsAccountActive, b.AccountActivityStage, b.activeservices, b.activecontracts, b.activesubscriptions, b.firstactivedate, b.lastactivedate
 from 
