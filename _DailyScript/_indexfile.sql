@@ -9,7 +9,7 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@#mysql 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20190728_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20190731_1.out
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
@@ -86,11 +86,15 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\Analysis\service_tickets_assignments.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\sales-to-activenumber.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 exit
 
+
+
+
+## this has been moved out of the above code
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\sales-to-activenumber.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 
 ####################################################################################

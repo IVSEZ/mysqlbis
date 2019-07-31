@@ -157,7 +157,7 @@ select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='197.234.2.150';
 
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='197.234.3.145' order by usagedate desc;
 
-select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='197.234.8.234' order by usagedate desc;
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='196.13.208.101' order by usagedate desc;
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.169.195' order by usagedate desc;
 
 
