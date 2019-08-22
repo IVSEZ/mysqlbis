@@ -27,6 +27,7 @@ from
 	, a.activeservices
 	, a.activecontracts
 	, a.activesubscriptions
+    , a.clientarea
 	, a.clientlocation
 	, a.clientphone
 	, a.clientaddress

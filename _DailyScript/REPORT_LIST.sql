@@ -347,3 +347,16 @@ rcbill_my.clientticket_cmmtjourney
 where year(commentdate)=2018
 group by commentuser
 order by 2 desc;
+
+
+#online payments
+select PAYMENTDATE, EXTERNALREF
+				, CLIENTCODE, CLIENTNAME, PAYMENTAMOUNT, SERVICE, PACKAGE, DEBTPERIODFROM, DEBTPERIODTO, PAYMENTCOMMENT
+				, CLIENTCLASS, CONTRACTCODE, INSERTEDON
+				from rcbill_my.onlinepayments where year(paymentdate)=2019 order by paymentdate desc
+                ;
+                
+select paymentdate, externalref, clientcode, clientname, sum(paymentamount) as paymentamount
+from rcbill_my.onlinepayments
+group by paymentdate, externalref, clientcode, clientname
+;

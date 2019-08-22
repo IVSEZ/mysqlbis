@@ -1,3 +1,10 @@
+-- set @periodstart='2019-06-28';
+-- set @periodend='2019-07-02';
+
+set @periodstart='2019-08-14';
+set @periodend='2019-08-20';
+
+
 
 	select a.*
 	,b.clientname, b.clientclass, b.clientphone, b.clientemail
@@ -44,7 +51,7 @@
 				rcbill.clientvodstats
 			WHERE
 			--     clientcode = '" . $cust_code . "'
-			date(sessionstart)>='2019-06-28' and date(sessionstart)<='2019-07-02'
+			date(sessionstart)>=@periodstart and date(sessionstart)<=@periodend
 			ORDER BY sessionstart DESC
 			) a
 		ORDER BY sessionstart DESC
@@ -56,7 +63,7 @@
 		, GROUP_CONCAT(package ORDER BY package SEPARATOR '|' ) as package
 		, network from rcbill_my.customercontractactivity 
 		-- where clientcode='I.000014301' and contractcode='I.000344067' and period='2019-07-01'
-		where period>='2019-06-28' and period<='2019-07-02'
+		where period>=@periodstart and period<=@periodend
 		group by 
 		clientcode
 		-- , contractcode
@@ -88,8 +95,8 @@
 select clientcode, contractcode, period, GROUP_CONCAT(servicecategory ORDER BY servicecategory SEPARATOR '|' ) as service
 , GROUP_CONCAT(package ORDER BY package SEPARATOR '|' ) as package
 , network from rcbill_my.customercontractactivity 
-where clientcode='I.000003563' and contractcode='I.000364846' and period='2019-07-01'
-where period>='2019-06-28' and period<='2019-07-02'
+-- where clientcode='I.000003563' and contractcode='I.000364846' and period='2019-07-01'
+where period>=@periodstart and period<=@periodend
 group by 
 clientcode
 -- , contractcode
