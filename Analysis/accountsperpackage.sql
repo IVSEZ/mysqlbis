@@ -16,6 +16,16 @@ select count(distinct clientcode) as vodcust from rcbill_my.customercontractsnap
 
 
 
+select count(distinct clientcode) as tvcust from rcbill_my.customercontractsnapshot 
+where servicecategory='TV' and network='HFC' and CurrentStatus='Active'
+-- limit 10
+;
+
+
+select count(distinct clientcode) as intcust from rcbill_my.customercontractsnapshot 
+where servicecategory='Internet' and network='HFC' and CurrentStatus='Active'
+;
+
 
 
 select * from rcbill_my.clientstats where VOD>0 and DualView>0
