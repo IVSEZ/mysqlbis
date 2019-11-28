@@ -1,11 +1,6 @@
 
 
 
-select servicecategory, package
--- , `20181031`, `20181130`, `20181231`
-, `20190131`, `20190228`, `20190331`
-, `20190430`, `20190531`, `20190630`
- from rcbill_my.rep_activenumberlastday_pv;
 
 
 -- select distinct period from rcbill_my.rep_activenumberlastday;
@@ -28,8 +23,10 @@ select servicecategory, package
 -- set @period='2019-03-31';
 -- set @period='2019-04-30';
 -- set @period='2019-05-31';
- set @period='2019-06-30';
-
+-- set @period='2019-06-30';
+-- set @period='2019-07-31';
+-- set @period='2019-08-31';
+ set @period='2019-09-30';
 
 /*
 select * from rcbill_my.customercontractactivity 
@@ -63,6 +60,15 @@ group by clientcode, clientclass
 order by 4 desc
 ;
 */
+
+select servicecategory, package
+-- , `20181031`, `20181130`, `20181231`
+, `20190131`, `20190228`, `20190331`
+, `20190430`, `20190531`, `20190630`
+, `20190731`, `20190831`, `20190930`
+ from rcbill_my.rep_activenumberlastday_pv;
+
+
 
 set @message = 'EXTRA + INDIAN';
 select @period AS period, clientcode, clientclass, package, subscriptions
@@ -161,3 +167,88 @@ where 0=0
 ;
 
 
+/*
+INTERNET customers
+*/
+
+set @message = 'INTERNET';
+select @period AS period, clientcode, clientclass, package, subscriptions
+from 
+(
+	select clientcode, clientclass, group_concat(package order by package separator '|') as package, count(*) as subscriptions
+    from rcbill_my.customercontractactivity 
+    where period=@period and REPORTED='Y'
+	-- and package in ('Extravagance','Extravagance Corporate','French','Indian','Indian Corporate')
+	and servicecategory='INTERNET'
+    group by clientcode, clientclass
+	order by 4 desc
+
+) a 
+where 0=0 
+-- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
+;
+
+/*
+INTERNET customers - Business
+*/
+
+set @message = 'INTERNET - BUSINESS';
+select @period AS period, clientcode, clientclass, package, subscriptions
+from 
+(
+	select clientcode, clientclass, group_concat(package order by package separator '|') as package, count(*) as subscriptions
+    from rcbill_my.customercontractactivity 
+    where period=@period and REPORTED='Y'
+	and clientclass in ('Corporate Large','Corporate Lite','USD_standard')
+	and servicecategory='INTERNET'
+    group by clientcode, clientclass
+	order by 4 desc
+
+) a 
+where 0=0 
+-- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
+;
+
+
+/*
+INTERNET customers - Business
+*/
+
+set @message = 'INTERNET - RESIDENTIAL';
+select @period AS period, clientcode, clientclass, package, subscriptions
+from 
+(
+	select clientcode, clientclass, group_concat(package order by package separator '|') as package, count(*) as subscriptions
+    from rcbill_my.customercontractactivity 
+    where period=@period and REPORTED='Y'
+	and clientclass in ('Residential','VIP','Standing Order','Employee','Prepaid','Corporate Bundle','Corporate Bulk','Corporate')
+	and servicecategory='INTERNET'
+    group by clientcode, clientclass
+	order by 4 desc
+
+) a 
+where 0=0 
+-- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
+;
+
+
+/*
+VOICE customers
+*/
+
+set @message = 'VOICE';
+select @period AS period, clientcode, clientclass, package, subscriptions
+from 
+(
+	select clientcode, clientclass, group_concat(package order by package separator '|') as package, count(*) as subscriptions
+    from rcbill_my.customercontractactivity 
+    where period=@period and REPORTED='Y'
+	and clientclass in ('Residential','VIP','Standing Order','Employee','Prepaid','Corporate Bundle','Corporate Bulk','Corporate')
+	and servicecategory='VOICE'
+    group by clientcode, clientclass
+	order by 4 desc
+
+) a 
+where 0=0 
+-- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
+;

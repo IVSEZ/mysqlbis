@@ -6,7 +6,7 @@ select * from  rcbill_my.clientticketjourney where commentuser in ('Rahul Walava
 
 select * from  rcbill_my.clientticketjourney where commentuser in ('Rahul Walavalkar') and (comment like '%quantify%' or comment like 'quantify%' or comment like '%quantify') order by commentdate desc;
 
-select * from  rcbill_my.clientticketjourney where commentuser in ('Rahul Walavalkar') and (comment like '%Payment Gateway error.%') order by commentdate desc;
+select * from  rcbill_my.clientticketjourney where commentuser in ('Rahul Walavalkar') and (comment like '%Payment Gateway%') order by commentdate desc;
 
 
 ############################################################################

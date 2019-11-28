@@ -147,12 +147,12 @@ select * from rcbill_my.rep_cmtsmxk_trail
 where clean_connection_type = 'GPON' and clean_hfc_nodename is null and clean_mxk_name is null
 order by reportdate desc;
 
--- set @mxkname='MXK-BEAUVALLON';
+ set @mxkname='MXK-BEAUVALLON';
 -- set @mxkname='MXK-MAHE';
 -- set @mxkname='MXK-ANSEETOILE';
 -- set @mxkname='MXK-ANSEROYALE';
 -- set @mxkname='MXK-PERSEVERANCE';
- set @mxkname='MXK-PRASLIN';
+-- set @mxkname='MXK-PRASLIN';
 
 
 select * from rcbill_my.rep_cmtsmxk_trail 

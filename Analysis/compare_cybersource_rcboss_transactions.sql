@@ -107,7 +107,7 @@ GROUP BY CS_RESULT
 ;
 
 #TO FIND WHICH PAYMENTS CAME THROUGH CYBERSOURCE BUT NOT RECORDED ON RCBOSS
-select * from rcbill_my.cs_rc_onlinepayments where cs_result='SUCCESS' and rc_refno is null order by CS_DATEANDTIME asc;
+select * from rcbill_my.cs_rc_onlinepayments where cs_result='SUCCESS' and rc_refno is null order by CS_DATEANDTIME desc;
 
 #TO FIND WHICH PAYMENTS DID NOT COME THROUGH CYBERSOURCE BUT RECORDED ON RCBOSS
 select * from rcbill_my.cs_rc_onlinepayments where

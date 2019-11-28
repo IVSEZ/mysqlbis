@@ -1,28 +1,42 @@
 use rcbill_my;
 
 
+-- select * 
+
 select * from rcbill_my.rep_custconsolidated a 
 where
- 
-a.clientaddress like '%glacis%' or a.clientaddress like '%glasic%'  or a.clientaddress like '%glaci%'
-or
-a.clientaddress like '%SIMPSON%'
-or 
-a.clientaddress like '%beau belle%' or a.clientaddress like '%beau bel%'  or a.clientaddress like '%beaubel%'
-or
-a.clientaddress like '%beau vallon%' or a.clientaddress like '%beauvallon%' or a.clientaddress like '%beauvalon%' 
-or a.clientaddress like '%beauvalon%' or a.clientaddress like '%beau  vallon%' or a.clientaddress like '%beau-vallon%'
-or a.clientaddress like '%beau  valon%'
-or
-a.clientaddress like '%belombre%' or a.clientaddress like '%bel ombre%' or a.clientaddress like '%belom%'  or a.clientaddress like '%belomb%'  or a.clientaddress like '%belomber%'
-or
-a.clientaddress like '%maca%' or a.clientaddress like '%mach%'
+	 
+	a.clientaddress like '%glacis%' or a.clientaddress like '%glasic%'  or a.clientaddress like '%glaci%'
+	or
+	a.clientaddress like '%SIMPSON%'
+	or 
+	a.clientaddress like '%beau belle%' or a.clientaddress like '%beau bel%'  or a.clientaddress like '%beaubel%'
+	or
+	a.clientaddress like '%beau vallon%' or a.clientaddress like '%beauvallon%' or a.clientaddress like '%beauvalon%' 
+	or a.clientaddress like '%beauvalon%' or a.clientaddress like '%beau  vallon%' or a.clientaddress like '%beau-vallon%'
+	or a.clientaddress like '%beau  valon%'
+	or
+	a.clientaddress like '%belombre%' or a.clientaddress like '%bel ombre%' or a.clientaddress like '%belom%'  or a.clientaddress like '%belomb%'  or a.clientaddress like '%belomber%'
+	or
+	a.clientaddress like '%maca%' or a.clientaddress like '%mach%'
+	or
+	a.clientaddress like '%glacis%' or a.clientaddress like '%glasic%' or a.clientaddress like '%la gogue%'  
+    or a.clientaddress like '%lagog%' or a.clientaddress like '%anse etole%' or a.clientaddress like '%anse etoile%'
+    or a.clientaddress like '%la retraite%' or a.clientaddress like '%maldive%' or a.clientaddress like '%maldives%'
+    or a.clientaddress like '%english river%' or a.clientaddress like '%union vale%' or a.clientaddress like '%unionvale%'
 
-or clientlocation in ('BEAU VALLON','BELOMBRE','BEL OMBRE','GLACIS')
+	or clientlocation in ('BEAU VALLON','BELOMBRE','BEL OMBRE','GLACIS','ANSE ETOILE','ENGLISH RIVER')
 
-or hfc_district in ('BEAU VALLON','BEL OMBRE','GLACIS')
-or clean_mxk_name in ('MXK-BEAUVALLON')
+	or hfc_district in ('BEAU VALLON','BEL OMBRE','GLACIS','ANSE ETOILE')
+	or clean_mxk_name in ('MXK-BEAUVALLON','MXK-ANSEETOILE')
 ;
+
+
+select distinct clientlocation from rcbill_my.rep_custconsolidated;
+select distinct hfc_district from rcbill_my.rep_custconsolidated;
+select distinct clean_mxk_name from rcbill_my.rep_custconsolidated;
+select distinct clientaddress from rcbill_my.rep_custconsolidated;
+
 
 select * from rcbill_my.rep_custconsolidated a 
 where

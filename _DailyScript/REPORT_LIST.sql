@@ -3,9 +3,14 @@ select *, rcbill.GetClientID(clientcode) as clientid from rcbill_my.rep_custcons
 
 select * from rcbill.rcb_clientparcels;
 
+select CONCAT_WS( "|", a1_parcel,a2_parcel,a3_parcel ) as client_parcels
+from rcbill.rcb_clientparcels;
+
 -- SAM Report
 select * from rcbill_my.rep_ott;
 
+select * from rcbill.rcb_casa where date(PAYDATE)='2019-10-29';
+select * from rcbill.rcb_invoicesheader where date(DATA)='2019-10-29';
 
 
 select * from rcbill_my.rep_paycol_channel;
@@ -23,7 +28,25 @@ select * from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail2;
 
 #ALL STATS FROM CMTSMXK TRAIL TABLE
 select * from rcbill_my.rep_cmtsmxk_trail order by reportdate desc;
+#CMTS
+select HFC_NODE, NODENAME, CMTS_DATE, date(INSERTEDON) as INSERTED_ON
+, count(distinct CLIENT_CODE) as UNIQUE_ACCOUNTS, count(distinct CONTRACT_CODE) as UNIQUE_CONTRACTS
+, count(distinct MAC) as UNIQUE_MAC_INRCBOSS, count(distinct MAC_ADDRESS) as UNIQUE_MAC_INCMTS
+from rcbill_my.customers_cmts
+group by HFC_NODE, NODENAME, CMTS_DATE, date(INSERTEDON)
+with rollup
+-- order by HFC_NODE
+;
 
+#MXK
+select MXK_NAME, MXK_DATE, date(INSERTEDON) as INSERTED_ON
+, count(distinct CLIENT_CODE) as UNIQUE_ACCOUNTS, count(distinct CONTRACT_CODE) as UNIQUE_CONTRACTS
+, count(distinct FSAN2) as UNIQUE_FSAN_INRCBOSS, count(distinct SERIAL_NUM2) as UNIQUE_FSAN_INMXK
+from rcbill_my.customers_mxk
+group by MXK_NAME, MXK_DATE, date(INSERTEDON)
+with rollup
+-- order by MXK_NAME
+;
 
 select * from rcbill_my.rep_clientstats1;
 select * from rcbill_my.rep_clientstats2;
@@ -74,6 +97,14 @@ select * from rcbill_my.activenumberavg;
 select * from rcbill_my.rep_activenumberavg;
 select * from rcbill_my.rep_activenumberavg2;
 
+## LAST DAY ACTIVE NUMBER
+select servicecategory, package
+-- , `20181031`, `20181130`, `20181231`
+, `20190131`, `20190228`, `20190331`
+, `20190430`, `20190531`, `20190630`
+, `20190731`, `20190831`, `20190930`
+ from rcbill_my.rep_activenumberlastday_pv;
+ 
 ## MONTHLY AVERAGE REPORT FOR SUBMISSION
 select * from rcbill_my.rep_activenumberavg3;
 
@@ -137,13 +168,7 @@ from rcbill_my.rep_activenumberavgPraslin
 group by lastday
 ;
 
-select servicecategory
-, sum(`20161231`) as `20161231` 
-, sum(`20171231`) as `20171231` 
-, sum(`20181127`) as `20181127` 
-from rcbill_my.rep_activenumberlastday_pv
-group by servicecategory
-;
+
 
 
 select * from rcbill.clientcontractip  where CLIENTCODE='I.000011750' order by USAGEDATE desc;
@@ -158,10 +183,14 @@ select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='197.234.2.150';
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='197.234.3.145' order by usagedate desc;
 
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='196.13.208.101' order by usagedate desc;
-select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.169.195' order by usagedate desc;
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='41.220.107.242' order by usagedate desc;
 
 
 select * from rcbill.clientcontractip where CLIENTCODE='I.000009236' order by usagedate desc;
+
+select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='41.220.111.243';
+select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='154.70.175.82';
+
 
 select CLIENTCODE, CLIENTNAME, CONTRACTCODE, USAGEDATE, PROCESSEDCLIENTIP as IP from rcbill.clientcontractip where CLIENTCODE='I.000009236' order by usagedate desc;
 select CLIENTCODE, CLIENTNAME, CONTRACTCODE, USAGE_MTH, USAGE_YR, PROCESSEDCLIENTIP as IP, FROM_DATE, TO_DATE 
@@ -328,6 +357,7 @@ from rcbill_my.rep_servicetickets_2019 order by ticketid desc, assgnopendate asc
 select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
 , min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
 , datediff(max(date(commentdate)), min(date(commentdate))) as totaldays
+, count(distinct ticketid)/count(distinct date(commentdate)) as avgtktday
 , count(comment)/count(distinct date(commentdate)) as avgcmtday
 , (count(distinct date(commentdate))/datediff(max(date(commentdate)), min(date(commentdate)))) as consistency
 from 
@@ -340,6 +370,7 @@ order by 2 desc;
 select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
 , min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
 , datediff(max(date(commentdate)), min(date(commentdate))) as totaldays
+, count(distinct ticketid)/count(distinct date(commentdate)) as avgtktday
 , count(comment)/count(distinct date(commentdate)) as avgcmtday
 , (count(distinct date(commentdate))/datediff(max(date(commentdate)), min(date(commentdate)))) as consistency
 from 
@@ -360,3 +391,43 @@ select paymentdate, externalref, clientcode, clientname, sum(paymentamount) as p
 from rcbill_my.onlinepayments
 group by paymentdate, externalref, clientcode, clientname
 ;
+
+## SERVICE TICKETS ASSIGNMENT REPORT FOR PATRICK
+select reportdate, service, tickettype, openreason, ticketid, opendate, closedate, assgntechregion, assgnopendate
+				, assgnclosedate, service_workdays,  service_workdays2, service_alldays, packageprice, priceperday, agreeddays, penaltydays, penaltyamount, client_code, contractcode, clientname, clientclass
+				, activenetwork, activeservices, clientlocation, mxk_name, mxk_interface,nodename, hfc_node, hfc_district, hfc_subdistrict
+
+				from rcbill_my.rep_servicetickets_2019 order by ticketid desc, assgnopendate asc 
+;
+
+select assgntechregion, date(assgnopendate), count(distinct ticketid) as d_tickets, count(ticketid) as ticket_instances
+from rcbill_my.rep_servicetickets_2019 
+group by assgntechregion, 2
+order by 1, 2 desc
+;
+
+select assgntechregion, date(assgnclosedate), count(distinct ticketid) as d_tickets, count(ticketid) as ticket_instances
+from rcbill_my.rep_servicetickets_2019 
+group by assgntechregion, 2
+order by 1, 2 desc
+;
+
+
+##### VOD ACTIVE CUSTOMERS
+select * from rcbill_my.clientstats where `VOD`>0
+;
+
+##### ACTIVE CUSTOMERS
+select services, count(distinct clientcode) AS CLIENTS, sum(contractcount) AS CONTRACTS from rcbill_my.clientstats
+where clientclass in ('Residential','Corporate Bundle','Corporate Bulk') 
+group by services
+;
+
+
+###### customer snapshot
+select * from rcbill_my.customercontractsnapshot where clientcode='I.000012204';
+select * from rcbill_my.customercontractsnapshot where package='Intel Data 10' and CurrentStatus='Active';
+select * from rcbill_my.customercontractsnapshot where package='Intel Data 10' and CurrentStatus='Active' and network='HFC';
+select * from rcbill_my.customercontractsnapshot where package='Intel Data 10' and CurrentStatus='Active' and network='GPON';
+##### 
+select * from rcbill_my.rep_custconsolidated where ;

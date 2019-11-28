@@ -3,9 +3,9 @@ use rcbill_my;
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `GetPackageForClientContractDate`(clcode text, concode text, condate date) RETURNS varchar(100) CHARSET utf8
 BEGIN
-    DECLARE package varchar(100);
+    DECLARE con_package varchar(100);
 
-    SET package=(select package from rcbill_my.customercontractactivity where 
+    SET con_package=(select package from rcbill_my.customercontractactivity where 
 					clientcode=clcode
 					and
 					contractcode=concode
@@ -13,7 +13,7 @@ BEGIN
 					period=condate limit 1
 				);
 
-	RETURN package;
-
+	RETURN con_package;
+    
   END$$
 DELIMITER ;

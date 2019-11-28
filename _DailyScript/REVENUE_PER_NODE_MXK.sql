@@ -575,10 +575,17 @@ as
 	, mac as mac_rcb, uid as uid_rcb
 	, NULL as mac_cmts, null as ip_address, null as hfc_node, null as cmts_date, null as interfacename, null as nodename, date(insertedon) as report_date
 	from rcbill_my.customers_mxk
+    -- where client_code='I.000018640'
+    -- and 
+    where model_id<>'-'
+    ### this model_id<>'-' condition inserted on 06/09/2019 to ensure that mxk are not double counted due to fsan being found on multiple interfaces on different mxks
+    
     
     )
 ;
 -- select * from rcbill_my.customers_cmts_mxk where client_code='I.000011750';
+-- select * from rcbill_my.customers_cmts_mxk where client_code='I.000018640';
+
 select 'created rcbill_my.customers_cmts_mxk' as message;
 
 create temporary table a (index idxa1(CL_CLIENTID), index idxa2(CON_CONTRACTID)) as 
@@ -1241,6 +1248,7 @@ as
             
 			from rcbill_my.cust_cont_payment_cmts_mxk 
 			-- where cl_clientcode='I.000011750'
+            -- where CL_CLIENTCODE='I.000018640'
 			group by 1 -- , cl_clientcode 
             order by con_contractid
     ) b

@@ -29,23 +29,41 @@ select * from rcbill_my.clientstats where (`Extravagance`>=2 or `Extravagance Co
 
 
 
-select * from rcbill_my.clientstats where (`Extravagance`>=1 or `Extravagance Corporate`>=1) 
+select * from rcbill_my.clientstats 
+where (`Extravagance`>=1 or `Extravagance Corporate`>=1) 
 and services in ('All','TV & Internet') and clientclass in ('Residential','Corporate Bundle','Corporate Bulk') order by clientname; 
 
-select * from rcbill_my.clientstats where (`Extravagance`>=1 or `Extravagance Corporate`>=1) and services in ('All','TV & Internet') 
+select * from rcbill_my.clientstats 
+where (`Extravagance`>=1 or `Extravagance Corporate`>=1) and services in ('All','TV & Internet') 
 and clientclass in ('Residential','Corporate Bundle','Corporate Bulk') and (`Starter`=0 and `Value`=0)
 order by clientname; 
 
-select * from rcbill_my.clientstats where (`Extravagance`>=1 or `Extravagance Corporate`>=1 or `Basic`>=1 or `Prestige`>=1 or `Executive`>=1) 
+select * from rcbill_my.clientstats 
+where (`Extravagance`>=1 or `Extravagance Corporate`>=1 or `Basic`>=1 or `Prestige`>=1 or `Executive`>=1) 
 and clientclass in ('Residential','Corporate Bundle','Corporate Bulk') order by clientname;
 
-select * from rcbill_my.clientstats where (`Extravagance`>1 or `Extravagance Corporate`>1 or `Basic`>1 or `Prestige`>1 or `Executive`>1) 
+select * from rcbill_my.clientstats 
+where (`Extravagance`>1 or `Extravagance Corporate`>1 or `Basic`>1 or `Prestige`>1 or `Executive`>1) 
 and clientclass in ('Residential','Corporate Bundle','Corporate Bulk') order by clientname;
 
+
+select distinct services from rcbill_my.clientstats;
 
 /* EXTRAVAGANCE + INTERNET */
 select * from rcbill_my.clientstats where (`Extravagance`>=1 or `Extravagance Corporate`>=1) 
-and services in ('All','TV & Internet') and clientclass in ('Residential','Corporate Bundle','Corporate Bulk') order by clientname; 
+and services in ('TV & Internet','TV & Internet & Voice') and clientclass in ('Residential','Corporate Bundle','Corporate Bulk') 
+order by clientname; 
+
+/* EXECUTIVE + INTERNET */
+select * from rcbill_my.clientstats where (`Executive`>=1) 
+and services in ('TV & Internet','TV & Internet & Voice') and clientclass in ('Residential','Corporate Bundle','Corporate Bulk') 
+order by clientname; 
+
+/* BASIC + INTERNET */
+select * from rcbill_my.clientstats where (`Basic`>=1) 
+and services in ('TV & Internet','TV & Internet & Voice') and clientclass in ('Residential','Corporate Bundle','Corporate Bulk') 
+order by clientname; 
+
 
 
 

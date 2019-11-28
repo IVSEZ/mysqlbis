@@ -71,18 +71,27 @@ order by clientcode, period
 
 */
 
-set @date1='2019-03-31';
-set @date2='2019-07-22';
+
+
+#### run peak_internet_customers_1.sql script to determine dates when we had peak internet customers
+
+
+-- set @date1='2019-03-31';
+-- set @date2='2019-09-24';
 -- set @date2='2019-06-11';
 -- set @date2='2017-09-30';
 -- set @date2='2017-10-12';
+-- set @date1='2018-09-05';
+set @date1='2018-12-21';
+-- set @date2='2019-10-31';
+set @date2='2019-11-11';
 
 ##1
 drop table if exists t1;
 create table t1 as
 (	
 	select period as period_start, clientcode as clientcode_start, clientname as clientname_start, sum(activecount) as activecount_start
-	, package_start, cclass_start, servicecategory2_start
+	, package_start, cclass_start, servicecategory2_start, network_start
 	, case when package_start is not null then sum(contracts) end as contracts_start
 
 	from 
@@ -92,10 +101,11 @@ create table t1 as
 		 , count(*) as contracts,
 				case when period=@date1 then package end as `package_start`,
 				case when period=@date1 then clientclass end as `cclass_start`,
-                case when period=@date1 then servicecategory2 end as `servicecategory2_start`
+                case when period=@date1 then servicecategory2 end as `servicecategory2_start`,
+                case when period=@date1 then network end as `network_start`
 		from 
 		rcbill_my.customercontractactivity where (period in (@date1) and reported='Y' and servicecategory='Internet' 
-        and clientclass in ('Residential','Corporate Bulk','Corporate Bundle')
+        -- and clientclass in ('Residential','Corporate Bulk','Corporate Bundle')
         )
 		group by period, clientcode, clientname, contractcode, package_start, cclass_start, servicecategory2_start
 		-- , period_start, period_end
@@ -112,7 +122,7 @@ drop table if exists t2;
 create table t2 as 
 (
 	select period as period_end, clientcode as clientcode_end, clientname as clientname_end, sum(activecount) as activecount_end
-	, package_end, cclass_end, servicecategory2_end
+	, package_end, cclass_end, servicecategory2_end, network_end
 	, case when package_end is not null then sum(contracts) end as contracts_end
 
 	from 
@@ -122,11 +132,13 @@ create table t2 as
 		 , count(*) as contracts,
 				case when period=@date2 then package end as `package_end`,
 				case when period=@date2 then clientclass end as `cclass_end`,
-				case when period=@date2 then servicecategory2 end as `servicecategory2_end`
+				case when period=@date2 then servicecategory2 end as `servicecategory2_end`,
+                case when period=@date2 then network end as `network_end`
+                
 
 		from 
 		rcbill_my.customercontractactivity where (period in (@date2) and reported='Y' and servicecategory='Internet' 
-        and clientclass in ('Residential','Corporate Bulk','Corporate Bundle')
+        -- and clientclass in ('Residential','Corporate Bulk','Corporate Bundle')
         )
 		group by period, clientcode, clientname, contractcode, package_end, cclass_end, servicecategory2_end
 		-- , period_start, period_end
@@ -159,12 +171,36 @@ create  table t3 as
 	select * , ifnull(clientcode_start, clientcode_end) as `clientcode`
     , 
     case 
-		when clientcode_start is null then 'Activated'
-		when clientcode_end is null then 'Deactivated'
+		when clientcode_start is null and clientcode_end is not null then 'Activated'
+		when clientcode_end is null and clientcode_start is not null then 'Deactivated'
+		when clientcode_end is not null and clientcode_start is not null then 'Stayed Active'
+		when clientcode_end is null and clientcode_start is null then 'Stayed InActive'
+        
+	end as `ActivationMovement`
+	,		
+     case 
         when package_start <> package_end then 'Changed Package'
         -- when cclass_start <> cclass_end then 'Changed Client Class'
         when package_start = package_end then 'Same Package'
-	end as `MovementResult`
+	end as `PackageMovement`
+	,		
+     case 
+        when cclass_start <> cclass_end then 'Changed Client Class'
+        when cclass_start = cclass_end then 'Same Client Class'
+	end as `ClassMovement`
+	,		
+     case 
+        when network_start <> network_end then 'Changed Network'
+        when network_start = network_end then 'Same Network'
+	end as `NetworkMovement`
+ 	,		
+     case 
+        when servicecategory2_start <> servicecategory2_end then 'Changed Package Type'
+        -- when cclass_start <> cclass_end then 'Changed Client Class'
+        when servicecategory2_start = servicecategory2_end then 'Same Package Type'
+	end as `PackageTypeMovement`
+  
+    
     , (ifnull(activecount_end,0)-ifnull(activecount_start,0)) as activecount_diff
     , (ifnull(contracts_end,0)-ifnull(contracts_start,0)) as contracts_diff  
     from 
@@ -188,12 +224,17 @@ left join
 rcbill_my.rep_custconsolidated b 
 on 
 a.clientcode=b.clientcode;
- 
+
+
+
+/* 
 select * from rcbill_my.rep_custconsolidated where clientcode='I.000019951'; 
  select * from rcbill_my.customercontractactivity where clientcode='I.000019951';
  select * from rcbill_my.clientstats where clientcode='I.000019951';
  select * from rcbill_my.rep_allcust where clientcode='I.000019951';
  select * from rcbill_my.rep_cust_cont_payment_cmts_mxk where clientcode='I.000019951';
+*/
+
  
 /*
 t1.period as t1_period, t1.clientcode as t1_clientcode, t1.clientname as t1_clientname, t1.activecount_start as t1_activecount_start, t1.package_start as t1_package_start, t1.cclass_start as t1_cclass_start, t1.contracts_start as t1_contracts_start

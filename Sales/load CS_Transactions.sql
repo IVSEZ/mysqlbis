@@ -75,7 +75,8 @@
 -- 	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/CyberSource/CS_Transactions_20190831.csv'
 
 
- 	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/CyberSource/CS_Transactions_20190821-20190902.csv'
+-- 	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/CyberSource/CS_Transactions_20190821-20190902.csv'
+ 	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/CyberSource/CS_Transactions_20190903-20190904.csv'
 
 
 REPLACE INTO TABLE `rcbill_my`.`cs_transactions` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
@@ -196,8 +197,14 @@ INSERTEDON=now()
 
 select * from rcbill_my.cs_transactions; -- where date(DATEANDTIME)='2019-07-26';
 
-select date(dateandtime), count(*) from rcbill_my.cs_transactions
-group by 1
+select date(dateandtime) as PAYMENT_DATE
+        , case APPLICATIONS
+			when 'Credit Card Authorization(success),Credit Card Settlement(success)' then 'SUCCESS'
+			when 'Credit Card Authorization(failure),Credit Card Settlement(warning)' then 'FAILURE'
+			when 'Credit Card Authorization(warning),Credit Card Settlement(warning)' then 'WARNING'
+		  end as CS_RESULT
+, count(*) AS TRANSACTIONS, sum(PAYMENTAMOUNT) AS PAYMENT_AMOUNT from rcbill_my.cs_transactions
+group by 1, 2
 order by 1 desc
 ;
 

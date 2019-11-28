@@ -4,10 +4,11 @@
 -- select * from rcbill_my.clientticket_assgnjourney where ticketid=@ticketid order by ASSGN_CLOSEDATE;
 -- select * from rcbill_my.clientticketjourney where ticketid=@ticketid;
 -- select * from rcbill_my.clientticketsnapshot_f where ticketid=@ticketid;
-
+-- select * from rcbill_my.clientticket_assgnjourney order by ticketid desc, assgn_opendate asc;
 -- select * from rcbill_my.clientticket_assgnjourney where assgntechregion='Approvals' and assgntechuser='Rahul Walavalkar';
 -- select *, TIMESTAMPDIFF(MINUTE, ASSGN_OPENDATE, ASSGN_CLOSEDATE) as assgnduration from rcbill_my.clientticket_assgnjourney where assgntechregion='Approvals' and assgntechuser='Rahul Walavalkar';
 -- select * from rcbill_my.clientticket_assgnjourney where assgntechregion='Approvals' and assgntechuser='Rahul Walavalkar';
+-- select * from rcbill_my.clientticket_assgnjourney where assgntechregion='RC BOSS' and assgntechuser='Rahul Walavalkar';
 
 
 
@@ -39,7 +40,11 @@ create table rcbill_my.rep_servicetickets_2019 as
 
 				select ticketid, service, clientcode as client_code, contractcode, tickettype
 				, openreason
+                , opentechregion
+                , openuser
 				, assgntechregion
+				, assgntechuser
+                , closeuser
 				-- , date(opendate) as opendate, date(CLOSEDATE) as closedate
 				-- , date(ASSGN_OPENDATE) as assgnopendate, date(ASSGN_CLOSEDATE) as assgnclosedate
 				, opendate as opendate, CLOSEDATE as closedate
@@ -51,7 +56,12 @@ create table rcbill_my.rep_servicetickets_2019 as
 				from rcbill_my.clientticket_assgnjourney
 				-- where assgntechregion in ('TECHNICAL - NEW SERVICE','TECHNICAL - WORK ORDER MANAGEMENT')
 				where year(OPENDATE)=2019
-				group by ticketid, service, clientcode, contractcode, tickettype, openreason, assgntechregion
+				group by ticketid, service, clientcode, contractcode, tickettype, openreason
+                , opentechregion
+                , openuser
+				, assgntechregion
+				, assgntechuser
+                , closeuser
                 , opendate, CLOSEDATE, ASSGN_OPENDATE, ASSGN_CLOSEDATE
                 -- , 12
                 order by opendate, ASSGN_OPENDATE
