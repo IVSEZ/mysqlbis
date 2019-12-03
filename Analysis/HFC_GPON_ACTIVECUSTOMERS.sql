@@ -9,3 +9,5 @@ from rcbill_my.rep_custconsolidated
 group by 1, 2, 3 , 4, 5
 
 ;
+
+select * from rcbill.rcb_tclients order by firm;
