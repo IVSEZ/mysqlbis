@@ -45,6 +45,9 @@ as
 ;
 
 select * from rcbill_my.rep_parcelextract;
+-- select distinct clientclass from rcbill_my.rep_parcelextract;
+-- select * from rcbill_my.rep_parcelextract where clientclass in ('CORPORATE LITE','CORPORATE LARGE','CORPORATE','VIP');
+
 
 select  parcel_present
 -- , clientarea, clientclass
