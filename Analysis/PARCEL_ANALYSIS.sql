@@ -82,11 +82,35 @@ group by email_present
 with rollup
 ;
 
+select  email_present
+-- , clientarea, clientclass
+, isaccountactive, accountactivitystage, count(clientcode) as clients
+from 
+rcbill_my.rep_parcelextract a 
+where a.dayssincelastactive<=365 
+group by email_present
+-- , clientarea, clientclass
+, isaccountactive, accountactivitystage
+with rollup
+;
+
 select  nin_present
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage, count(clientcode) as clients
 from 
 rcbill_my.rep_parcelextract a 
+group by nin_present
+-- , clientarea, clientclass
+, isaccountactive, accountactivitystage
+with rollup
+;
+
+select  nin_present
+-- , clientarea, clientclass
+, isaccountactive, accountactivitystage, count(clientcode) as clients
+from 
+rcbill_my.rep_parcelextract a 
+where a.dayssincelastactive<=365 
 group by nin_present
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage
@@ -103,3 +127,4 @@ group by ONE_YEAR
 , isaccountactive, accountactivitystage
 with rollup
 ;
+
