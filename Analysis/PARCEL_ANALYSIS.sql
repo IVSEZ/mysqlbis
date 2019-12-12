@@ -3,29 +3,34 @@ select * from rcbill_my.rep_custconsolidated;
 
 select * from rcbill.rcb_clientparcels;
 
-drop table if exists rcbill_my.rep_parcelextract;
+select * from rcbill_my.matched_clients group by DEDUPE_CLIENT_CODE;
 
-create table rcbill_my.rep_parcelextract
+drop table if exists rcbill_my.rep_custextract;
+
+create table rcbill_my.rep_custextract (index idxrce1 (clientcode))
 as 
 (
-	select a.CLIENTCODE, a.IsAccountActive, a.AccountActivityStage, a.CLIENTNAME, a.clientclass
-	-- , a.clientaddress
-	, a.clientlocation, a.clientarea, a.clientemail, a.clientnin
+	select a.reportdate, a.CLIENTCODE, a.IsAccountActive, a.AccountActivityStage, a.CLIENTNAME, a.clientclass
+	, a.clientaddress
+	, a.clientlocation, a.clientarea
+    , a.clientemail
+    -- , 'a@a.com' as clientemail
+    , a.clientnin, a.clientphone
 	-- , a.dayssincelastactive
 	, b.address, b.moladdress, b.MOLRegistrationAddress
     , a.dayssincelastactive
-	-- , a1_parcel, a2_parcel, a3_parcel
-	, case when a1_parcel is null and a2_parcel is null and a3_parcel is null 
+	, b.a1_parcel, b.a2_parcel, b.a3_parcel
+	, case when b.a1_parcel is null and b.a2_parcel is null and b.a3_parcel is null 
 		then 'NOT PRESENT'
 		else 'PRESENT' end as `PARCEL_PRESENT` 
-	, case when clientemail is null  
+	, case when a.clientemail is null  
 		then 'NOT PRESENT'
 		else 'PRESENT' end as `EMAIL_PRESENT` 
-	, case when clientnin is null  
+	, case when a.clientnin is null  
 		then 'NOT PRESENT'
-		when locate("-",clientnin)=0 then 'INVALID'
+		when locate("-",a.clientnin)=0 then 'INVALID'
 		else 'PRESENT' end as `NIN_PRESENT`
-	, case when address is null and moladdress is null and MOLRegistrationAddress is null 
+	, case when a.clientaddress is null and b.address is null and b.moladdress is null and b.MOLRegistrationAddress is null 
 		then 'NOT PRESENT'
 		else 'PRESENT' end as `ADDRESS_PRESENT`
     , case when a.dayssincelastactive <=365 
@@ -40,33 +45,144 @@ as
 	a.CLIENTCODE=b.clientcode
 	-- where a.AccountActivityStage not in ('4. Hibernating (31 to 90 days)','5. Dormant (more than 90 days)')
 	-- where a.AccountActivityStage in ('4. Hibernating (31 to 90 days)','5. Dormant (more than 90 days)')
-	order by 14 asc
+	order by 3 asc, 16 asc
 )
 ;
 
-select * from rcbill_my.rep_parcelextract;
--- select distinct clientclass from rcbill_my.rep_parcelextract;
--- select * from rcbill_my.rep_parcelextract where clientclass in ('CORPORATE LITE','CORPORATE LARGE','CORPORATE','VIP');
+-- show index from rcbill_my.rep_custextract;
+select * from rcbill_my.rep_custextract;
+select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR';
+
+### to put in a table to verify data against.
+-- drop table if exists rcbill_my.rep_custextract20191211;
+/*
+create table rcbill_my.rep_custextract20191211(index idxrceorig1 (orig_clientcode)) as 
+(
+select 
+reportdate as orig_reportdate,
+CLIENTCODE as orig_CLIENTCODE,
+IsAccountActive as orig_IsAccountActive,
+AccountActivityStage as orig_AccountActivityStage,
+CLIENTNAME as orig_CLIENTNAME,
+clientclass as orig_clientclass,
+clientaddress as orig_clientaddress,
+clientlocation as orig_clientlocation,
+clientarea as orig_clientarea,
+clientemail as orig_clientemail,
+clientnin as orig_clientnin,
+clientphone as orig_clientphone,
+address as orig_address,
+moladdress as orig_moladdress,
+MOLRegistrationAddress as orig_MOLRegistrationAddress,
+dayssincelastactive as orig_dayssincelastactive,
+
+a1_parcel as orig_a1_parcel,
+a2_parcel as orig_a2_parcel,
+a3_parcel as orig_a3_parcel,
+
+PARCEL_PRESENT as orig_PARCEL_PRESENT,
+EMAIL_PRESENT as orig_EMAIL_PRESENT,
+NIN_PRESENT as orig_NIN_PRESENT,
+ADDRESS_PRESENT as orig_ADDRESS_PRESENT,
+ONE_YEAR as orig_ONE_YEAR
+from rcbill_my.rep_custextract
+);
+
+-- show index from rcbill_my.rep_custextract20191211;
+*/
 
 
+###COMPARE DAILY EXTRACT AGAINST CUSTOMER EXTRACT FROM 11/12/2019
+select * from rcbill_my.rep_custextract20191211; -- where orig_clientcode='I.000011750';
+
+select a.*,b.*
+, case when orig_IsAccountActive=IsAccountActive then 'Same Account Activity'
+	else 'Changed Account Activity'
+    end as `ACCOUNT_ACTIVITY_STATUS`
+, case when orig_CLIENTNAME=CLIENTNAME then 'Same Client Name'
+	else 'Changed Client Name'
+    end as `CLIENT_NAME_STATUS`
+, case when orig_clientclass is NULL and clientclass is NULL then 'Same Client Class'
+	   when orig_clientclass=clientclass then 'Same Client Class'
+	   else 'Changed Client Class'
+    end as `CLIENT_CLASS_STATUS`
+, case when orig_clientaddress is NULL and clientaddress is NULL then 'Same Client Address'
+	when orig_clientaddress=clientaddress then 'Same Client Address'
+	else 'Changed Client Address'
+    end as `CLIENT_ADDRESS_STATUS`
+, case when orig_clientlocation is NULL and clientlocation is NULL then 'Same Client Location' 
+	when orig_clientlocation=clientlocation then 'Same Client Location'
+	else 'Changed Client Location'
+    end as `CLIENT_LOCATION_STATUS`
+, case when orig_clientarea is NULL and clientarea is NULL then 'Same Client Area' 
+	when orig_clientarea=clientarea then 'Same Client Area'
+	else 'Changed Client Area'
+    end as `CLIENT_AREA_STATUS`
+, case when orig_clientemail is NULL and clientemail is NULL then 'Same Client Email' 
+	when orig_clientemail=clientemail then 'Same Client Email'
+	else 'Changed Client Email'
+    end as `CLIENT_EMAIL_STATUS`
+, case when orig_clientnin is NULL and clientnin is NULL then 'Same Client NIN' 
+	when orig_clientnin=clientnin then 'Same Client NIN'
+	else 'Changed Client NIN'
+    end as `CLIENT_NIN_STATUS`
+, case when orig_clientphone is NULL and clientphone is NULL then 'Same Client Phone' 
+	when orig_clientphone=clientphone then 'Same Client Phone'
+	else 'Changed Client Phone'
+    end as `CLIENT_PHONE_STATUS`
+, case when orig_address is NULL and address is NULL then 'Same Address' 
+	when orig_address=address then 'Same Address'
+	else 'Changed Address'
+    end as `ADDRESS_STATUS`
+, case when orig_moladdress is NULL and moladdress is NULL then 'Same MOL Address' 
+	when orig_moladdress=moladdress then 'Same MOL Address'
+	else 'Changed MOL Address'
+    end as `MOL_ADDRESS_STATUS`
+, case when orig_MOLRegistrationAddress is NULL and MOLRegistrationAddress is NULL then 'Same MOL REG Address' 
+	when orig_MOLRegistrationAddress=MOLRegistrationAddress then 'Same MOL REG Address'
+	else 'Changed MOL REG Address'
+    end as `MOLREG_ADDRESS_STATUS`
+, case when orig_a1_parcel is NULL and a1_parcel is NULL then 'Same A1 Parcel' 
+	when orig_a1_parcel=a1_parcel then 'Same A1 Parcel'
+	else 'Changed A1 Parcel'
+    end as `A1_PARCEL_STATUS`
+, case when orig_a2_parcel is NULL and a2_parcel is NULL then 'Same A2 Parcel' 
+	when orig_a2_parcel=a2_parcel then 'Same A2 Parcel'
+	else 'Changed A2 Parcel'
+    end as `A2_PARCEL_STATUS`
+, case when orig_a3_parcel is NULL and a3_parcel is NULL then 'Same A3 Parcel' 
+	when orig_a3_parcel=a3_parcel then 'Same A3 Parcel'
+	else 'Changed A3 Parcel'
+    end as `A3_PARCEL_STATUS`
+
+from 
+rcbill_my.rep_custextract20191211 a 
+right join
+rcbill_my.rep_custextract b 
+on 
+a.orig_clientcode=b.clientcode
+;
+
+-- select distinct clientclass from rcbill_my.rep_custextract;
+-- select * from rcbill_my.rep_custextract where clientclass in ('CORPORATE LITE','CORPORATE LARGE','CORPORATE','VIP');
+
+#### PARCEL PRESENT
 select  parcel_present
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage, count(clientcode) as clients
 from 
-rcbill_my.rep_parcelextract a 
+rcbill_my.rep_custextract a 
 group by parcel_present
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage
 with rollup
 ;
 
-
-
 select  parcel_present
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage, count(clientcode) as clients
 from 
-rcbill_my.rep_parcelextract a
+rcbill_my.rep_custextract a
 where a.dayssincelastactive<=365 
 group by parcel_present
 -- , clientarea, clientclass
@@ -74,11 +190,12 @@ group by parcel_present
 with rollup
 ;
 
+#### EMAIL PRESENT
 select  email_present
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage, count(clientcode) as clients
 from 
-rcbill_my.rep_parcelextract a 
+rcbill_my.rep_custextract a 
 group by email_present
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage
@@ -89,7 +206,7 @@ select  email_present
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage, count(clientcode) as clients
 from 
-rcbill_my.rep_parcelextract a 
+rcbill_my.rep_custextract a 
 where a.dayssincelastactive<=365 
 group by email_present
 -- , clientarea, clientclass
@@ -97,11 +214,12 @@ group by email_present
 with rollup
 ;
 
+#### NIN PRESENT
 select  nin_present
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage, count(clientcode) as clients
 from 
-rcbill_my.rep_parcelextract a 
+rcbill_my.rep_custextract a 
 group by nin_present
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage
@@ -112,7 +230,7 @@ select  nin_present
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage, count(clientcode) as clients
 from 
-rcbill_my.rep_parcelextract a 
+rcbill_my.rep_custextract a 
 where a.dayssincelastactive<=365 
 group by nin_present
 -- , clientarea, clientclass
@@ -120,11 +238,37 @@ group by nin_present
 with rollup
 ;
 
+#### ADDRESS PRESENT
+select  ADDRESS_PRESENT
+-- , clientarea, clientclass
+, isaccountactive, accountactivitystage, count(clientcode) as clients
+from 
+rcbill_my.rep_custextract a 
+group by ADDRESS_PRESENT
+-- , clientarea, clientclass
+, isaccountactive, accountactivitystage
+with rollup
+;
+
+select  ADDRESS_PRESENT
+-- , clientarea, clientclass
+, isaccountactive, accountactivitystage, count(clientcode) as clients
+from 
+rcbill_my.rep_custextract a 
+where a.dayssincelastactive<=365 
+group by ADDRESS_PRESENT
+-- , clientarea, clientclass
+, isaccountactive, accountactivitystage
+with rollup
+;
+
+
+## ONE YEAR
 select  ONE_YEAR
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage, count(clientcode) as clients
 from 
-rcbill_my.rep_parcelextract a 
+rcbill_my.rep_custextract a 
 group by ONE_YEAR
 -- , clientarea, clientclass
 , isaccountactive, accountactivitystage

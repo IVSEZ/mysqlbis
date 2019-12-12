@@ -12,6 +12,7 @@ select * from rcbill_my.rep_ott;
 select * from rcbill.rcb_casa where date(PAYDATE)='2019-10-29';
 select * from rcbill.rcb_invoicesheader where date(DATA)='2019-10-29';
 
+select * from rcbill_my.matched_clients;
 
 select * from rcbill_my.rep_paycol_channel;
 select * from rcbill_my.rep_paycol_pos;
