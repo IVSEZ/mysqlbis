@@ -5,7 +5,10 @@ select * from rcbill.rcb_clientparcels;
 
 select * from rcbill_my.matched_clients group by DEDUPE_CLIENT_CODE;
 
+
+
 drop table if exists rcbill_my.rep_custextract;
+
 
 create table rcbill_my.rep_custextract (index idxrce1 (clientcode))
 as 
@@ -95,73 +98,235 @@ from rcbill_my.rep_custextract
 ###COMPARE DAILY EXTRACT AGAINST CUSTOMER EXTRACT FROM 11/12/2019
 select * from rcbill_my.rep_custextract20191211; -- where orig_clientcode='I.000011750';
 
-select a.*,b.*
-, case when orig_IsAccountActive=IsAccountActive then 'Same Account Activity'
-	else 'Changed Account Activity'
-    end as `ACCOUNT_ACTIVITY_STATUS`
-, case when orig_CLIENTNAME=CLIENTNAME then 'Same Client Name'
-	else 'Changed Client Name'
-    end as `CLIENT_NAME_STATUS`
-, case when orig_clientclass is NULL and clientclass is NULL then 'Same Client Class'
-	   when orig_clientclass=clientclass then 'Same Client Class'
-	   else 'Changed Client Class'
-    end as `CLIENT_CLASS_STATUS`
-, case when orig_clientaddress is NULL and clientaddress is NULL then 'Same Client Address'
-	when orig_clientaddress=clientaddress then 'Same Client Address'
-	else 'Changed Client Address'
-    end as `CLIENT_ADDRESS_STATUS`
-, case when orig_clientlocation is NULL and clientlocation is NULL then 'Same Client Location' 
-	when orig_clientlocation=clientlocation then 'Same Client Location'
-	else 'Changed Client Location'
-    end as `CLIENT_LOCATION_STATUS`
-, case when orig_clientarea is NULL and clientarea is NULL then 'Same Client Area' 
-	when orig_clientarea=clientarea then 'Same Client Area'
-	else 'Changed Client Area'
-    end as `CLIENT_AREA_STATUS`
-, case when orig_clientemail is NULL and clientemail is NULL then 'Same Client Email' 
-	when orig_clientemail=clientemail then 'Same Client Email'
-	else 'Changed Client Email'
-    end as `CLIENT_EMAIL_STATUS`
-, case when orig_clientnin is NULL and clientnin is NULL then 'Same Client NIN' 
-	when orig_clientnin=clientnin then 'Same Client NIN'
-	else 'Changed Client NIN'
-    end as `CLIENT_NIN_STATUS`
-, case when orig_clientphone is NULL and clientphone is NULL then 'Same Client Phone' 
-	when orig_clientphone=clientphone then 'Same Client Phone'
-	else 'Changed Client Phone'
-    end as `CLIENT_PHONE_STATUS`
-, case when orig_address is NULL and address is NULL then 'Same Address' 
-	when orig_address=address then 'Same Address'
-	else 'Changed Address'
-    end as `ADDRESS_STATUS`
-, case when orig_moladdress is NULL and moladdress is NULL then 'Same MOL Address' 
-	when orig_moladdress=moladdress then 'Same MOL Address'
-	else 'Changed MOL Address'
-    end as `MOL_ADDRESS_STATUS`
-, case when orig_MOLRegistrationAddress is NULL and MOLRegistrationAddress is NULL then 'Same MOL REG Address' 
-	when orig_MOLRegistrationAddress=MOLRegistrationAddress then 'Same MOL REG Address'
-	else 'Changed MOL REG Address'
-    end as `MOLREG_ADDRESS_STATUS`
-, case when orig_a1_parcel is NULL and a1_parcel is NULL then 'Same A1 Parcel' 
-	when orig_a1_parcel=a1_parcel then 'Same A1 Parcel'
-	else 'Changed A1 Parcel'
-    end as `A1_PARCEL_STATUS`
-, case when orig_a2_parcel is NULL and a2_parcel is NULL then 'Same A2 Parcel' 
-	when orig_a2_parcel=a2_parcel then 'Same A2 Parcel'
-	else 'Changed A2 Parcel'
-    end as `A2_PARCEL_STATUS`
-, case when orig_a3_parcel is NULL and a3_parcel is NULL then 'Same A3 Parcel' 
-	when orig_a3_parcel=a3_parcel then 'Same A3 Parcel'
-	else 'Changed A3 Parcel'
-    end as `A3_PARCEL_STATUS`
+-- drop table if exists rcbill_my.rep_custextract_compare20191213;
 
-from 
-rcbill_my.rep_custextract20191211 a 
-right join
-rcbill_my.rep_custextract b 
-on 
-a.orig_clientcode=b.clientcode
+
+-- set @tabledate = 20191212;
+
+create table rcbill_my.rep_custextract_compare20191213 as 
+(
+	select -- a.*,b.*
+		a.orig_reportdate , b.reportdate ,
+		a.orig_CLIENTCODE , b.CLIENTCODE ,
+		a.orig_IsAccountActive , b.IsAccountActive ,
+		a.orig_AccountActivityStage , b.AccountActivityStage ,
+		a.orig_CLIENTNAME , b.CLIENTNAME ,
+		a.orig_clientclass , b.clientclass ,
+		a.orig_clientaddress , b.clientaddress ,
+		a.orig_clientlocation , b.clientlocation ,
+		a.orig_clientarea , b.clientarea ,
+		a.orig_clientemail , b.clientemail ,
+		a.orig_clientnin , b.clientnin ,
+		a.orig_clientphone , b.clientphone ,
+		a.orig_address , b.address ,
+		a.orig_moladdress , b.moladdress ,
+		a.orig_MOLRegistrationAddress , b.MOLRegistrationAddress ,
+		a.orig_dayssincelastactive , b.dayssincelastactive ,
+		a.orig_a1_parcel , b.a1_parcel ,
+		a.orig_a2_parcel , b.a2_parcel ,
+		a.orig_a3_parcel , b.a3_parcel ,
+		a.orig_PARCEL_PRESENT , b.PARCEL_PRESENT ,
+		a.orig_EMAIL_PRESENT , b.EMAIL_PRESENT ,
+		a.orig_NIN_PRESENT , b.NIN_PRESENT ,
+		a.orig_ADDRESS_PRESENT , b.ADDRESS_PRESENT ,
+		a.orig_ONE_YEAR , b.ONE_YEAR 
+	
+    , case when orig_clientcode is NULL and clientcode is NOT NULL then 'New Client'
+		else 'Existing Client'
+		end as `CLIENT_STATUS`
+	, case when orig_IsAccountActive=IsAccountActive then 'Same Account Activity'
+		else 'Changed Account Activity'
+		end as `ACCOUNT_ACTIVITY_STATUS`
+	, case when orig_CLIENTNAME=CLIENTNAME then 'Same Client Name'
+		else 'Changed Client Name'
+		end as `CLIENT_NAME_STATUS`
+	, case when orig_clientclass is NULL and clientclass is NULL then 'Same Client Class'
+		   when orig_clientclass=clientclass then 'Same Client Class'
+		   else 'Changed Client Class'
+		end as `CLIENT_CLASS_STATUS`
+	, case when orig_clientaddress is NULL and clientaddress is NULL then 'Same Client Address'
+		when orig_clientaddress=clientaddress then 'Same Client Address'
+		else 'Changed Client Address'
+		end as `CLIENT_ADDRESS_STATUS`
+	, case when orig_clientlocation is NULL and clientlocation is NULL then 'Same Client Location' 
+		when orig_clientlocation=clientlocation then 'Same Client Location'
+		else 'Changed Client Location'
+		end as `CLIENT_LOCATION_STATUS`
+	, case when orig_clientarea is NULL and clientarea is NULL then 'Same Client Area' 
+		when orig_clientarea=clientarea then 'Same Client Area'
+		else 'Changed Client Area'
+		end as `CLIENT_AREA_STATUS`
+	, case when (orig_clientemail is NULL or length(orig_clientemail)=0) and (clientemail is NULL or length(clientemail)=0) then 'Client Email Not Present' 
+		when (orig_clientemail is NULL or length(orig_clientemail)=0) and (clientemail  is NOT NULL or length(clientemail)>0) then 'Client Email Added'
+		when orig_clientemail=clientemail  then 'Same Client Email'
+		else 'Changed Client Email'
+		end as `CLIENT_EMAIL_STATUS`
+	, case when (orig_clientnin is NULL or length(orig_clientnin)=0) and (clientnin is NULL or length(clientnin)=0) then 'Client NIN Not Present' 
+		when (orig_clientnin is NULL or length(orig_clientnin)=0) and (clientnin  is NOT NULL or length(clientnin)>0) then 'Client NIN Added'
+		when orig_clientnin=clientnin  then 'Same Client NIN'
+		else 'Changed Client NIN'
+		end as `CLIENT_NIN_STATUS`
+	, case when (orig_clientphone is NULL or length(orig_clientphone)=0) and (clientphone is NULL or length(clientphone)=0) then 'Client Phone Not Present' 
+		when (orig_clientphone is NULL or length(orig_clientphone)=0) and (clientphone  is NOT NULL or length(clientphone)>0) then 'Client Phone Added'
+		when orig_clientphone=clientphone  then 'Same Client Phone'
+		else 'Changed Client Phone'
+		end as `CLIENT_PHONE_STATUS`
+	, case when orig_address is NULL and address is NULL then 'Same Address' 
+		when orig_address=address then 'Same Address'
+		else 'Changed Address'
+		end as `ADDRESS_STATUS`
+	, case when orig_moladdress is NULL and moladdress is NULL then 'Same MOL Address' 
+		when orig_moladdress=moladdress then 'Same MOL Address'
+		else 'Changed MOL Address'
+		end as `MOL_ADDRESS_STATUS`
+	, case when orig_MOLRegistrationAddress is NULL and MOLRegistrationAddress is NULL then 'Same MOL REG Address' 
+		when orig_MOLRegistrationAddress=MOLRegistrationAddress then 'Same MOL REG Address'
+		else 'Changed MOL REG Address'
+		end as `MOLREG_ADDRESS_STATUS`
+	, case when (orig_a1_parcel is NULL or length(orig_a1_parcel)=0) and (a1_parcel is NULL or length(a1_parcel)=0) then 'A1 Parcel Not Present' 
+		when (orig_a1_parcel is NULL or length(orig_a1_parcel)=0) and (a1_parcel is NOT NULL or length(a1_parcel)>0) then 'A1 Parcel Added'
+		when orig_a1_parcel=a1_parcel then 'Same A1 Parcel'
+		else 'A1 Parcel Changed'
+		end as `A1_PARCEL_STATUS`
+	, case when (orig_a2_parcel is NULL or length(orig_a2_parcel)=0) and (a2_parcel is NULL or length(a2_parcel)=0) then 'A2 Parcel Not Present' 
+		when (orig_a2_parcel is NULL or length(orig_a2_parcel)=0) and (a2_parcel is NOT NULL or length(a2_parcel)>0) then 'A2 Parcel Added'
+		when orig_a2_parcel=a2_parcel then 'Same A2 Parcel'
+		else 'A2 Parcel Changed'
+		end as `A2_PARCEL_STATUS`
+	, case when (orig_a3_parcel is NULL or length(orig_a3_parcel)=0) and (a3_parcel is NULL or length(a3_parcel)=0) then 'A3 Parcel Not Present' 
+		when (orig_a3_parcel is NULL or length(orig_a3_parcel)=0) and (a3_parcel is NOT NULL or length(a3_parcel)>0) then 'A3 Parcel Added'
+		when orig_a3_parcel=a3_parcel then 'Same A3 Parcel'
+		else 'A3 Parcel Changed'
+		end as `A3_PARCEL_STATUS`
+	, case when orig_PARCEL_PRESENT is NULL and PARCEL_PRESENT ='NOT PRESENT' then 'Parcel Not Present' 
+		when orig_PARCEL_PRESENT = 'NOT PRESENT' and PARCEL_PRESENT ='NOT PRESENT' then 'Parcel Not Present'
+        when orig_PARCEL_PRESENT = 'NOT PRESENT' and PARCEL_PRESENT ='PRESENT' then 'Parcel Added'
+		else 'Parcel Present'
+        end as `PARCEL_ADD_STATUS`
+
+	from 
+	rcbill_my.rep_custextract20191211 a 
+	right join
+	rcbill_my.rep_custextract b 
+	on 
+	a.orig_clientcode=b.clientcode
+)
 ;
+
+set @tablename='rcbill_my.rep_custextract_compare20191213';
+
+SET @qs = CONCAT('SELECT * FROM ', @tablename);
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+/*
+select CLIENT_STATUS
+, CLIENT_NAME_STATUS
+, count(*) from rcbill_my.rep_custextract_compare20191213
+group by 1, 2 ,3,4,5,6,7,8,9,10
+with rollup
+;
+
+select CLIENT_STATUS
+, CLIENT_CLASS_STATUS
+, count(*) from rcbill_my.rep_custextract_compare20191213
+group by 1, 2
+with rollup
+;
+
+select CLIENT_STATUS
+, CLIENT_ADDRESS_STATUS
+, count(*) from rcbill_my.rep_custextract_compare20191213
+group by 1, 2
+with rollup
+;
+
+select CLIENT_STATUS
+, CLIENT_LOCATION_STATUS
+, count(*) from rcbill_my.rep_custextract_compare20191213
+group by 1, 2
+with rollup
+;
+
+
+select CLIENT_STATUS
+, CLIENT_AREA_STATUS
+, count(*) from rcbill_my.rep_custextract_compare20191213
+group by 1, 2
+with rollup
+;
+
+
+select CLIENT_STATUS
+, CLIENT_EMAIL_STATUS
+, count(*) from rcbill_my.rep_custextract_compare20191213
+group by 1, 2
+with rollup
+;
+
+select CLIENT_STATUS
+, CLIENT_NIN_STATUS
+, NIN_PRESENT
+, count(*) from rcbill_my.rep_custextract_compare20191213
+group by 1, 2, 3
+with rollup
+;
+
+
+select CLIENT_STATUS
+, CLIENT_PHONE_STATUS
+, count(*) from rcbill_my.rep_custextract_compare20191213
+group by 1, 2
+with rollup
+;
+
+select CLIENT_STATUS
+, PARCEL_ADD_STATUS
+, count(*) from rcbill_my.rep_custextract_compare20191213
+group by 1, 2
+with rollup
+;
+*/
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_NAME_STATUS, count(*) from ', @tablename, ' group by 1, 2 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_CLASS_STATUS, count(*) from ', @tablename, ' group by 1, 2 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_ADDRESS_STATUS, count(*) from ', @tablename, ' group by 1, 2 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_LOCATION_STATUS, count(*) from ', @tablename, ' group by 1, 2 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_AREA_STATUS, count(*) from ', @tablename, ' group by 1, 2 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_EMAIL_STATUS, count(*) from ', @tablename, ' group by 1, 2 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, count(*) from ', @tablename, ' group by 1, 2, 3 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_PHONE_STATUS, count(*) from ', @tablename, ' group by 1, 2 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, PARCEL_ADD_STATUS, count(*) from ', @tablename, ' group by 1, 2 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+
+
+
 
 -- select distinct clientclass from rcbill_my.rep_custextract;
 -- select * from rcbill_my.rep_custextract where clientclass in ('CORPORATE LITE','CORPORATE LARGE','CORPORATE','VIP');
