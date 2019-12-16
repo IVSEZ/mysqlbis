@@ -103,7 +103,7 @@ select * from rcbill_my.rep_custextract20191211; -- where orig_clientcode='I.000
 
 -- set @tabledate = 20191212;
 
-create table rcbill_my.rep_custextract_compare20191214 as 
+create table rcbill_my.rep_custextract_compare20191215 as 
 (
 	select -- a.*,b.*
 		a.orig_reportdate , b.reportdate ,
@@ -213,7 +213,7 @@ create table rcbill_my.rep_custextract_compare20191214 as
 )
 ;
 
-set @tablename='rcbill_my.rep_custextract_compare20191214';
+set @tablename='rcbill_my.rep_custextract_compare20191215';
 
 SET @qs = CONCAT('SELECT * FROM ', @tablename);
 PREPARE ps FROM @qs;
