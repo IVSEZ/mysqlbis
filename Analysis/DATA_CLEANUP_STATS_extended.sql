@@ -40,12 +40,75 @@ union
 ;
 select * from rcbill_my.tempa;
 
+drop table if exists rcbill_my.rep_custextract_compare_final;
 
-select clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
-, case when reportdate='2019-12-12' then CLIENTCODES end as '20191212'
-, case when reportdate='2019-12-13' then CLIENTCODES end as '20191213'
-, case when reportdate='2019-12-14' then CLIENTCODES end as '20191214'
-, case when reportdate='2019-12-15' then CLIENTCODES end as '20191215'
-, case when reportdate='2019-12-16' then CLIENTCODES end as '20191216'
-from rcbill_my.tempa
+create table rcbill_my.rep_custextract_compare_final as 
+(
+
+	select clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
+	, sum(`20191212`) as `20191212`
+	, sum(`20191213`) as `20191213`
+	, sum(`20191214`) as `20191214`
+	, sum(`20191215`) as `20191215`
+	, sum(`20191216`) as `20191216`
+
+	from 
+	(
+		select clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
+		, case when reportdate='2019-12-12' then CLIENTCODES end as '20191212'
+		, case when reportdate='2019-12-13' then CLIENTCODES end as '20191213'
+		, case when reportdate='2019-12-14' then CLIENTCODES end as '20191214'
+		, case when reportdate='2019-12-15' then CLIENTCODES end as '20191215'
+		, case when reportdate='2019-12-16' then CLIENTCODES end as '20191216'
+		from rcbill_my.tempa
+	) a
+	group by clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
+)
 ;
+
+select * from rcbill_my.rep_custextract_compare_final;
+
+set @colname=', sum(`20191212`) as `20191212`
+, sum(`20191213`) as `20191213`
+, sum(`20191214`) as `20191214`
+, sum(`20191215`) as `20191215`
+, sum(`20191216`) as `20191216`
+';
+
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENTCLASS ', @colname , ' from rcbill_my.rep_custextract_compare_final group by 1,2,3 with rollup');
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_CLASS_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1, 2 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_ADDRESS_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_LOCATION_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_AREA_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_EMAIL_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_PHONE_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select CLIENT_STATUS, PARCEL_ADD_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
