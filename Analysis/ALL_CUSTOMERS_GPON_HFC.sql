@@ -107,6 +107,10 @@ group by 1,2
 
 
 ### JOIN BOTH
+
+### file saves as all_customers_tickets_DDMMYYYY-1.csv
+
+
 SELECT A.*,B.*
 FROM 
 (
