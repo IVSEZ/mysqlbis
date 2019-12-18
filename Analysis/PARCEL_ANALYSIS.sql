@@ -214,14 +214,14 @@ create table rcbill_my.rep_custextract_compare20191217 as
 ;
 
 
-
+select * from rcbill_my.rep_custextract_compare20191217; -- where client_status='New Client';
 
 ########################################################################################
 /*
 COMMENTED AS THIS IS IN THE DATA_CLEANUP_STATS FILE
 
 
-set @tablename='rcbill_my.rep_custextract_compare20191216';
+set @tablename='rcbill_my.rep_custextract_compare20191217';
 
 SET @qs = CONCAT('SELECT * FROM ', @tablename);
 PREPARE ps FROM @qs;
