@@ -209,3 +209,49 @@ PREPARE ps FROM @qs;
 EXECUTE ps;
 
 -- ===========================================================
+
+-- ===========================================================
+
+set @tablename='rcbill_my.rep_custextract_compare20191217';
+
+SET @qs = CONCAT('SELECT * FROM ', @tablename);
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select REPORTDATE, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select REPORTDATE, CLIENT_STATUS, CLIENT_CLASS_STATUS, count(*) from ', @tablename, ' group by 1, 2, 3 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select REPORTDATE, CLIENT_STATUS, CLIENT_ADDRESS_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select REPORTDATE, CLIENT_STATUS, CLIENT_LOCATION_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select REPORTDATE, CLIENT_STATUS, CLIENT_AREA_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select REPORTDATE, CLIENT_STATUS, CLIENT_EMAIL_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select REPORTDATE, CLIENT_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select REPORTDATE, CLIENT_STATUS, CLIENT_PHONE_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+SET @qs = CONCAT('select REPORTDATE, CLIENT_STATUS, PARCEL_ADD_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
+-- ===========================================================

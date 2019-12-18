@@ -103,7 +103,7 @@ select * from rcbill_my.rep_custextract20191211; -- where orig_clientcode='I.000
 
 -- drop table if exists rcbill_my.rep_custextract_compare20191213;
 
-create table rcbill_my.rep_custextract_compare20191216 as 
+create table rcbill_my.rep_custextract_compare20191217 as 
 (
 	select -- a.*,b.*
 		a.orig_reportdate , b.reportdate ,
@@ -217,8 +217,8 @@ create table rcbill_my.rep_custextract_compare20191216 as
 
 
 ########################################################################################
-
-
+/*
+COMMENTED AS THIS IS IN THE DATA_CLEANUP_STATS FILE
 
 
 set @tablename='rcbill_my.rep_custextract_compare20191216';
@@ -226,6 +226,9 @@ set @tablename='rcbill_my.rep_custextract_compare20191216';
 SET @qs = CONCAT('SELECT * FROM ', @tablename);
 PREPARE ps FROM @qs;
 EXECUTE ps;
+
+*/
+
 
 /*
 select CLIENT_STATUS
@@ -295,6 +298,9 @@ group by 1, 2
 with rollup
 ;
 */
+
+
+/*
 
 SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3 with rollup' );
 PREPARE ps FROM @qs;
@@ -447,4 +453,6 @@ group by ONE_YEAR
 , isaccountactive, accountactivitystage
 with rollup
 ;
+
+*/
 
