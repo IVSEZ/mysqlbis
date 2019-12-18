@@ -95,31 +95,31 @@ SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_CLASS_STATUS ', @colname, ' from 
 PREPARE ps FROM @qs;
 EXECUTE ps;
 
-SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_ADDRESS_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_ADDRESS_STATUS, CLIENTCLASS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1, 2, 3 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
 
-SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_LOCATION_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_LOCATION_STATUS, CLIENTCLASS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1, 2, 3 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
 
-SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_AREA_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_AREA_STATUS, CLIENTCLASS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1, 2, 3 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
 
-SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_EMAIL_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_EMAIL_STATUS, CLIENTCLASS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1, 2, 3 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
 
-SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1, 2, 3 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
 
-SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_PHONE_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_PHONE_STATUS, CLIENTCLASS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1, 2, 3 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
 
-SET @qs = CONCAT('select CLIENT_STATUS, PARCEL_ADD_STATUS, CLIENTCLASS, count(*) from ', @tablename, ' group by 1, 2, 3, 4 with rollup' );
+SET @qs = CONCAT('select CLIENT_STATUS, PARCEL_ADD_STATUS, CLIENTCLASS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1, 2, 3 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
 
