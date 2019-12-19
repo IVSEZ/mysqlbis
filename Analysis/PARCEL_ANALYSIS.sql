@@ -23,17 +23,17 @@ as
 	, b.address, b.moladdress, b.MOLRegistrationAddress
     , a.dayssincelastactive
 	, b.a1_parcel, b.a2_parcel, b.a3_parcel
-	, case when b.a1_parcel is null and b.a2_parcel is null and b.a3_parcel is null 
+	, case when (b.a1_parcel is null or length(b.a1_parcel)=0) and (b.a2_parcel is null or length(b.a2_parcel)=0) and (b.a3_parcel is null or length(b.a3_parcel)=0) 
 		then 'NOT PRESENT'
 		else 'PRESENT' end as `PARCEL_PRESENT` 
-	, case when a.clientemail is null  
+	, case when a.clientemail is null or length(a.clientemail)=0
 		then 'NOT PRESENT'
 		else 'PRESENT' end as `EMAIL_PRESENT` 
-	, case when a.clientnin is null  
+	, case when a.clientnin is null or length(a.clientnin)=0 
 		then 'NOT PRESENT'
 		when locate("-",a.clientnin)=0 then 'INVALID'
 		else 'PRESENT' end as `NIN_PRESENT`
-	, case when a.clientaddress is null and b.address is null and b.moladdress is null and b.MOLRegistrationAddress is null 
+	, case when (a.clientaddress is null or length(a.clientaddress)=0) and (b.address is null or length(b.address)=0) and (b.moladdress is null or length(b.moladdress)=0) and (b.MOLRegistrationAddress is null or length(b.MOLRegistrationAddress)=0)
 		then 'NOT PRESENT'
 		else 'PRESENT' end as `ADDRESS_PRESENT`
     , case when a.dayssincelastactive <=365 
@@ -101,7 +101,7 @@ select * from rcbill_my.rep_custextract20191211; -- where orig_clientcode='I.000
 
 ########################################################################################
 
--- drop table if exists rcbill_my.rep_custextract_compare20191213;
+-- drop table if exists rcbill_my.rep_custextract_compare20191217;
 
 create table rcbill_my.rep_custextract_compare20191217 as 
 (
@@ -214,8 +214,10 @@ create table rcbill_my.rep_custextract_compare20191217 as
 ;
 
 
-select * from rcbill_my.rep_custextract_compare20191217; -- where client_status='New Client';
-
+select * from rcbill_my.rep_custextract_compare20191217 where 0=0 
+-- and client_status='New Client';
+-- and client_nin_status='Client NIN Not Present' and nin_present='INVALID'
+;
 ########################################################################################
 /*
 COMMENTED AS THIS IS IN THE DATA_CLEANUP_STATS FILE
