@@ -44,7 +44,19 @@ FROM
     rcbill_my.rep_vodranking2019
 ORDER BY OVERALL ASC;
 
+select * from rcbill_my.rep_vodpivot2019 limit 1000;
 
+select ifnull(TITLE,rcbill.GetVODTitleFromResource(RESOURCE)) as TITLE, RESOURCE
+, rcbill.GetVODTypeFromResource(RESOURCE) as TYPE
+, JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, `DEC`, TOTAL_DURATION
+from rcbill_my.rep_vodpivot2019 order by total_duration desc
+;
+
+
+
+select RESOURCE, JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, `DEC`, TOTAL_DURATION
+					from rcbill_my.rep_vodpivot2019 order by total_duration desc
+                    ;
                   
                     
 select * from 

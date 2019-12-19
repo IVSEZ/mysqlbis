@@ -63,4 +63,9 @@ where id>1000
 group by titletype
 with rollup;
 
-
+-- 
+/*
+CREATE INDEX IDXRCBVODTITLE1
+ON rcbill.rcb_vodtitles (RESOURCEORIG);
+*/
+-- show index from rcbill.rcb_vodtitles;

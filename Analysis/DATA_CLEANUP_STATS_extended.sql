@@ -53,6 +53,7 @@ union
 )
 
 ;
+
 select * from rcbill_my.tempa;
 
 drop table if exists rcbill_my.rep_custextract_compare_final;
@@ -95,6 +96,36 @@ set @colname=', sum(`20191212`) as `20191212`
 , sum(`20191217`) as `20191217`
 , sum(`20191218`) as `20191218`
 ';
+
+
+SET @qs = CONCAT('select CLIENT_NAME_STATUS ', @colname , ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup');
+PREPARE ps FROM @qs;
+EXECUTE ps;
+SET @qs = CONCAT('select CLIENT_CLASS_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+SET @qs = CONCAT('select CLIENT_ADDRESS_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+SET @qs = CONCAT('select CLIENT_LOCATION_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+SET @qs = CONCAT('select CLIENT_AREA_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+SET @qs = CONCAT('select CLIENT_EMAIL_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+SET @qs = CONCAT('select CLIENT_NIN_STATUS, NIN_PRESENT ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1, 2 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+SET @qs = CONCAT('select CLIENT_PHONE_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+SET @qs = CONCAT('select PARCEL_ADD_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+PREPARE ps FROM @qs;
+EXECUTE ps;
+
 
 
 SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_NAME_STATUS ', @colname , ' from rcbill_my.rep_custextract_compare_final group by 1,2 with rollup');
