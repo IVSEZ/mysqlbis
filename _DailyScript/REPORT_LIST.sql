@@ -354,7 +354,7 @@ from rcbill_my.rep_servicetickets_2019 order by ticketid desc, assgnopendate asc
 ;
 
 
-### tickets by user for this year
+### tickets by user for current year
 select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
 , min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
 , datediff(max(date(commentdate)), min(date(commentdate))) as totaldays
@@ -431,4 +431,35 @@ select * from rcbill_my.customercontractsnapshot where package='Intel Data 10' a
 select * from rcbill_my.customercontractsnapshot where package='Intel Data 10' and CurrentStatus='Active' and network='HFC';
 select * from rcbill_my.customercontractsnapshot where package='Intel Data 10' and CurrentStatus='Active' and network='GPON';
 ##### 
-select * from rcbill_my.rep_custconsolidated where ;
+select * from rcbill_my.rep_custconsolidated;
+
+
+
+###### user actions
+
+select a.*
+/*, b.kod as clientcode
+, b.firm as clientname
+, c.kod as contractcode
+*/
+, rcbill.GetClientCode(clid) as clientcode
+, rcbill.GetClientNameFromId(clid) as clientname
+, rcbill.GetContractCode(cid) as contractcode
+, d.name as username
+from 
+rcbill.rcb_useractions a 
+/*
+left join 
+rcbill.rcb_tclients b 
+on a.clid=b.id
+
+left join
+rcbill.rcb_contracts c
+on a.cid=c.id
+*/
+left join
+rcbill.rcb_tickettechusers d
+on a.userid=d.kod
+
+;
+
