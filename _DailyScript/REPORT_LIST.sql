@@ -442,9 +442,9 @@ select a.*
 , b.firm as clientname
 , c.kod as contractcode
 */
-, rcbill.GetClientCode(clid) as clientcode
-, rcbill.GetClientNameFromId(clid) as clientname
-, rcbill.GetContractCode(cid) as contractcode
+, rcbill.GetClientCode(a.clid) as clientcode
+, rcbill.GetClientNameFromId(a.clid) as clientname
+, rcbill.GetContractCode(a.cid) as contractcode
 , d.name as username
 from 
 rcbill.rcb_useractions a 
@@ -458,8 +458,8 @@ rcbill.rcb_contracts c
 on a.cid=c.id
 */
 left join
-rcbill.rcb_tickettechusers d
-on a.userid=d.kod
-
+rcbill.rcb_users d
+on a.userid=d.id
+limit 1000
 ;
 
