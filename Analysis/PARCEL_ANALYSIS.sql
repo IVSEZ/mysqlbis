@@ -103,7 +103,7 @@ select * from rcbill_my.rep_custextract20191211; -- where orig_clientcode='I.000
 
 -- drop table if exists rcbill_my.rep_custextract_compare20191217;
 
-create table rcbill_my.rep_custextract_compare20191221 as 
+create table rcbill_my.rep_custextract_compare20191222 as 
 (
 	select -- a.*,b.*
 		a.orig_reportdate , b.reportdate ,
@@ -214,7 +214,7 @@ create table rcbill_my.rep_custextract_compare20191221 as
 ;
 
 
-select * from rcbill_my.rep_custextract_compare20191221 where 0=0 
+select * from rcbill_my.rep_custextract_compare20191222 where 0=0 
 -- and client_status='New Client';
 -- and client_nin_status='Client NIN Not Present' and nin_present='INVALID'
 ;

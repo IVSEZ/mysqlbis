@@ -82,12 +82,20 @@ union
     where clientname like '%STAFF%'
 	group by REPORTDATE, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
 )
+union  
+(
+	select reportdate, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
+	, count(CLIENTCODE) as CLIENTCODES
+	from rcbill_my.rep_custextract_compare20191222
+    where clientname like '%STAFF%'
+	group by REPORTDATE, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
+)
 
 ;
 
-select * from rcbill_my.tempa;
+select * from rcbill_my.tempabulk;
 
-drop table if exists rcbill_my.rep_custextract_compare_final_bulk;
+drop table if exists rcbill_my.rep_custextract_compare_final_bulk_bulk;
 
 create table rcbill_my.rep_custextract_compare_final_bulk as 
 (
@@ -103,6 +111,7 @@ create table rcbill_my.rep_custextract_compare_final_bulk as
 	, sum(`20191219`) as `20191219`
 	, sum(`20191220`) as `20191220`
 	, sum(`20191221`) as `20191221`
+	, sum(`20191222`) as `20191222`
 
 	from 
 	(
@@ -117,13 +126,14 @@ create table rcbill_my.rep_custextract_compare_final_bulk as
 		, case when reportdate='2019-12-19' then CLIENTCODES end as '20191219'
 		, case when reportdate='2019-12-20' then CLIENTCODES end as '20191220'
 		, case when reportdate='2019-12-21' then CLIENTCODES end as '20191221'
+		, case when reportdate='2019-12-22' then CLIENTCODES end as '20191222'
 		from rcbill_my.tempabulk
 	) a
 	group by clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
 )
 ;
 
-select * from rcbill_my.rep_custextract_compare_final;
+select * from rcbill_my.rep_custextract_compare_final_bulk;
 
 set @colname=', sum(`20191212`) as `20191212`
 , sum(`20191213`) as `20191213`
@@ -135,34 +145,35 @@ set @colname=', sum(`20191212`) as `20191212`
 , sum(`20191219`) as `20191219`
 , sum(`20191220`) as `20191220`
 , sum(`20191221`) as `20191221`
+, sum(`20191222`) as `20191222`
 ';
 
 
 
-SET @qs = CONCAT('select CLIENT_NAME_STATUS ', @colname , ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup');
+SET @qs = CONCAT('select CLIENT_NAME_STATUS ', @colname , ' from rcbill_my.rep_custextract_compare_final_bulk group by 1 with rollup');
 PREPARE ps FROM @qs;
 EXECUTE ps;
-SET @qs = CONCAT('select CLIENT_CLASS_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+SET @qs = CONCAT('select CLIENT_CLASS_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final_bulk group by 1 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
-SET @qs = CONCAT('select CLIENT_ADDRESS_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+SET @qs = CONCAT('select CLIENT_ADDRESS_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final_bulk group by 1 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
-SET @qs = CONCAT('select CLIENT_LOCATION_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+SET @qs = CONCAT('select CLIENT_LOCATION_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final_bulk group by 1 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
-SET @qs = CONCAT('select CLIENT_AREA_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+SET @qs = CONCAT('select CLIENT_AREA_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final_bulk group by 1 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
-SET @qs = CONCAT('select CLIENT_EMAIL_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+SET @qs = CONCAT('select CLIENT_EMAIL_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final_bulk group by 1 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
-SET @qs = CONCAT('select CLIENT_NIN_STATUS, NIN_PRESENT ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1, 2 with rollup' );
+SET @qs = CONCAT('select CLIENT_NIN_STATUS, NIN_PRESENT ', @colname, ' from rcbill_my.rep_custextract_compare_final_bulk group by 1, 2 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
-SET @qs = CONCAT('select CLIENT_PHONE_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+SET @qs = CONCAT('select CLIENT_PHONE_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final_bulk group by 1 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
-SET @qs = CONCAT('select PARCEL_ADD_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1 with rollup' );
+SET @qs = CONCAT('select PARCEL_ADD_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final_bulk group by 1 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
