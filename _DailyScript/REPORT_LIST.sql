@@ -104,6 +104,7 @@ select servicecategory, package
 , `20190131`, `20190228`, `20190331`
 , `20190430`, `20190531`, `20190630`
 , `20190731`, `20190831`, `20190930`
+, `20191031`, `20191130`, `20191222`
  from rcbill_my.rep_activenumberlastday_pv;
  
 ## MONTHLY AVERAGE REPORT FOR SUBMISSION
