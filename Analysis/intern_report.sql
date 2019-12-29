@@ -1,7 +1,7 @@
-select * from rcbill.rcb_useractions order by ID desc limit 100;
+-- select * from rcbill.rcb_useractions order by ID desc limit 100;
 
-select * from rcbill.rcb_users where `name` like '%- Intern';
-select * from rcbill.rcb_tickettechusers;
+-- select * from rcbill.rcb_users where `name` like '%- Intern';
+-- select * from rcbill.rcb_tickettechusers;
 
 select *
 , (select name from rcbill.rcb_tickettechusers where RCBUSERID=a.userid) as username
@@ -111,7 +111,7 @@ select *
 , (select name from rcbill.rcb_tickettechusers where RCBUSERID=a.userid) as username
 , rcbill.GetClientCode(clid) as ClientCode, rcbill.GetClientNameFromID(clid) as ClientName from rcbill.rcb_useractions a where userid in (select id from rcbill.rcb_users where `name` like '%- Intern')
 ) a 
-inner join
+left join
 rcbill_my.tempcompare b 
 on a.CLIENTCODE=b.clientcode
 ;
