@@ -56,15 +56,3 @@ ON rcb_useractions (PAYMENTID);
 
 -- select * from rcbill.rcb_useractions where clid=717788;
 select count(*) from rcbill.rcb_useractions;
-
-/*
-select * from rcbill.rcb_casa limit 1000;
-		select clid, cid, COALESCE(sum(money),0) as TotalPaymentAmount , 
-		max(money) as LastPaidAmount, 
-		COALESCE(count(*),0) as TotalPayments, min(ENTERDATE) as FirstPaymentDate, max(ENTERDATE) as LastPaymentDate
-		from rcbill.rcb_casa
-		where
-		(hard not in (100, 101, 102) or hard is null)
-		group by clid, cid;
-        
-        */
