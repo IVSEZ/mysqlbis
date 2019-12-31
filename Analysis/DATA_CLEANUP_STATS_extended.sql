@@ -118,7 +118,7 @@ union
 (
 	select reportdate, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
 	, count(CLIENTCODE) as CLIENTCODES
-	from rcbill_my.rep_custextract_compare20191228
+	from rcbill_my.rep_custextract_compare20191229
 	group by REPORTDATE, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
 )
 ;
@@ -147,7 +147,7 @@ create table rcbill_my.rep_custextract_compare_final as
 	, sum(`20191225`) as `20191225`
 	, sum(`20191226`) as `20191226`
 	, sum(`20191227`) as `20191227`
-	, sum(`20191228`) as `20191228`
+	, sum(`20191229`) as `20191229`
 
 	from 
 	(
@@ -168,7 +168,7 @@ create table rcbill_my.rep_custextract_compare_final as
 		, case when reportdate='2019-12-25' then CLIENTCODES end as '20191225'
 		, case when reportdate='2019-12-26' then CLIENTCODES end as '20191226'
 		, case when reportdate='2019-12-27' then CLIENTCODES end as '20191227'
-		, case when reportdate='2019-12-28' then CLIENTCODES end as '20191228'
+		, case when reportdate='2019-12-29' then CLIENTCODES end as '20191229'
         
 		from rcbill_my.tempa
 	) a
@@ -194,7 +194,7 @@ set @colname=', sum(`20191212`) as `20191212`
 , sum(`20191225`) as `20191225`
 , sum(`20191226`) as `20191226`
 , sum(`20191227`) as `20191227`
-, sum(`20191228`) as `20191228`
+, sum(`20191229`) as `20191229`
 
 ';
 
