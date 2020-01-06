@@ -121,6 +121,20 @@ union
 	from rcbill_my.rep_custextract_compare20191229
 	group by REPORTDATE, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
 )
+union  
+(
+	select reportdate, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
+	, count(CLIENTCODE) as CLIENTCODES
+	from rcbill_my.rep_custextract_compare20191230
+	group by REPORTDATE, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
+)
+union  
+(
+	select reportdate, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
+	, count(CLIENTCODE) as CLIENTCODES
+	from rcbill_my.rep_custextract_compare20191231
+	group by REPORTDATE, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
+)
 ;
 
 select * from rcbill_my.tempa;
@@ -148,6 +162,8 @@ create table rcbill_my.rep_custextract_compare_final as
 	, sum(`20191226`) as `20191226`
 	, sum(`20191227`) as `20191227`
 	, sum(`20191229`) as `20191229`
+	, sum(`20191230`) as `20191230`
+	, sum(`20191231`) as `20191231`
 
 	from 
 	(
@@ -169,6 +185,8 @@ create table rcbill_my.rep_custextract_compare_final as
 		, case when reportdate='2019-12-26' then CLIENTCODES end as '20191226'
 		, case when reportdate='2019-12-27' then CLIENTCODES end as '20191227'
 		, case when reportdate='2019-12-29' then CLIENTCODES end as '20191229'
+		, case when reportdate='2019-12-30' then CLIENTCODES end as '20191230'
+		, case when reportdate='2019-12-31' then CLIENTCODES end as '20191231'
         
 		from rcbill_my.tempa
 	) a
@@ -195,6 +213,8 @@ set @colname=', sum(`20191212`) as `20191212`
 , sum(`20191226`) as `20191226`
 , sum(`20191227`) as `20191227`
 , sum(`20191229`) as `20191229`
+, sum(`20191230`) as `20191230`
+, sum(`20191231`) as `20191231`
 
 ';
 

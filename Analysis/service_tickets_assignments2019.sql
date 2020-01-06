@@ -12,9 +12,9 @@
 
 
 
-drop table if exists rcbill_my.rep_servicetickets_2020;
+drop table if exists rcbill_my.rep_servicetickets_2019;
 
-create table rcbill_my.rep_servicetickets_2020 as 
+create table rcbill_my.rep_servicetickets_2019 as 
 (
 	select a.*
     -- , (a.priceperday * a.penaltydays) as penaltyamount
@@ -30,10 +30,9 @@ create table rcbill_my.rep_servicetickets_2020 as
 		, round((select sum(price) from rcbill_my.customercontractsnapshot where contractcode=a.contractcode),2) as packageprice
 		, round(((select sum(price) from rcbill_my.customercontractsnapshot where contractcode=a.contractcode)/30),2) as priceperday
         , case 
-			-- when year(a.assgnopendate)=2020 and month(a.assgnopendate) in (1,2) then 0
-			-- when year(a.assgnopendate)=2020 and month(a.assgnopendate) in (3) then 3
-			-- when year(a.assgnopendate)=2020 and month(a.assgnopendate) not in (1,2,3) then 2 
-            when year(a.assgnopendate)=2020 then 2 
+			when year(a.assgnopendate)=2019 and month(a.assgnopendate) in (1,2) then 0
+			when year(a.assgnopendate)=2019 and month(a.assgnopendate) in (3) then 3
+			when year(a.assgnopendate)=2019 and month(a.assgnopendate) not in (1,2,3) then 2 
             end as agreeddays
         
 		from 
@@ -56,7 +55,7 @@ create table rcbill_my.rep_servicetickets_2020 as
                 , sum(tkt_workdays2) as service_workdays2
 				from rcbill_my.clientticket_assgnjourney
 				-- where assgntechregion in ('TECHNICAL - NEW SERVICE','TECHNICAL - WORK ORDER MANAGEMENT')
-				where year(OPENDATE)=2020
+				where year(OPENDATE)=2019
 				group by ticketid, service, clientcode, contractcode, tickettype, openreason
                 , opentechregion
                 , openuser
@@ -160,20 +159,20 @@ create table rcbill_my.rep_servicetickets_2020 as
 )
 ;
 
-select count(*) as rep_servicetickets_2020 from rcbill_my.rep_servicetickets_2020;
--- select * from rcbill_my.rep_servicetickets_2020;
--- select * from rcbill_my.rep_servicetickets_2020 where ticketid=909247;
--- select *, (packageprice/30) as  priceperday from rcbill_my.rep_servicetickets_2020 where ticketid=910797;
+select count(*) as rep_servicetickets_2019 from rcbill_my.rep_servicetickets_2019;
+-- select * from rcbill_my.rep_servicetickets_2019;
+-- select * from rcbill_my.rep_servicetickets_2019 where ticketid=909247;
+-- select *, (packageprice/30) as  priceperday from rcbill_my.rep_servicetickets_2019 where ticketid=910797;
 
 /*
 -- tickets opened last month
-select date(opendate) as opendate, count(ticketid), count(distinct ticketid) from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select date(opendate) as opendate, count(ticketid), count(distinct ticketid) from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 group by 1
 with rollup
 ;
 
-select date(opendate) as opendate, count(ticketid), count(distinct ticketid) from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select date(opendate) as opendate, count(ticketid), count(distinct ticketid) from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 and service='Internet'
 group by 1
@@ -181,42 +180,42 @@ with rollup
 ;
 
 
-select * from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 -- and service='Internet'
 ;
 
 
-select * from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 and service='Internet'
 ;
 
-select * from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 and service='Internet'
 and clean_hfc_nodename is null
 ;
 
 
-select assgntechregion, count(ticketid) as tickets from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select assgntechregion, count(ticketid) as tickets from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 group by assgntechregion 
 order by 2 desc
 ;
-select assgntechregion, count(distinct ticketid) as d_tickets from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select assgntechregion, count(distinct ticketid) as d_tickets from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 group by assgntechregion 
 order by 2 desc
 ;
 
-select clean_hfc_nodename, count(ticketid) as tickets from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select clean_hfc_nodename, count(ticketid) as tickets from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 group by clean_hfc_nodename 
 order by 2 desc
 ;
 
-select clean_hfc_nodename, count(distinct ticketid) as d_tickets from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select clean_hfc_nodename, count(distinct ticketid) as d_tickets from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 group by clean_hfc_nodename 
 order by 2 desc
@@ -226,16 +225,16 @@ order by 2 desc
 ### REPORT FOR MLADEN - INTERNET TICKETS OPENED IN PAST MONTH PER NODE
 select clean_hfc_nodename
 , count(ticketid) as tickets
-, count(distinct ticketid) as d_tickets, count(distinct clientcode) as d_clients from rcbill_my.rep_servicetickets_2020 
-where month(opendate)=5 and year(opendate)=2020
+, count(distinct ticketid) as d_tickets, count(distinct clientcode) as d_clients from rcbill_my.rep_servicetickets_2019 
+where month(opendate)=5 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 and service='Internet'
 group by clean_hfc_nodename 
 order by 2 desc
 ;
 
-select clean_hfc_nodename, count(distinct ticketid) as d_tickets from rcbill_my.rep_servicetickets_2020 
-where month(opendate)=4 and year(opendate)=2020
+select clean_hfc_nodename, count(distinct ticketid) as d_tickets from rcbill_my.rep_servicetickets_2019 
+where month(opendate)=4 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 group by clean_hfc_nodename 
 order by 2 desc
@@ -243,8 +242,8 @@ order by 2 desc
 
 select clean_hfc_nodename
 -- , count(ticketid) as tickets
-, count(distinct ticketid) as d_tickets, count(distinct clientcode) as d_clients from rcbill_my.rep_servicetickets_2020 
-where month(opendate)=4 and year(opendate)=2020
+, count(distinct ticketid) as d_tickets, count(distinct clientcode) as d_clients from rcbill_my.rep_servicetickets_2019 
+where month(opendate)=4 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 and service='Internet'
 group by clean_hfc_nodename 
@@ -253,14 +252,14 @@ order by 2 desc
 
 
 
-select clean_hfc_nodename, clientlocation, count(distinct ticketid) as d_tickets from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select clean_hfc_nodename, clientlocation, count(distinct ticketid) as d_tickets from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 and service='Internet'
 group by clean_hfc_nodename, clientlocation 
 order by 3 desc
 ;
 
-select * from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and (clean_connection_type = 'HFC' or clean_connection_type is null) and (activenetwork not in ('GPON' , 'GPON|MOBILE TV', 'GPON|GPON') or activenetwork is null)
 and clean_connection_type is null
 ;
@@ -269,7 +268,7 @@ and clean_connection_type is null
 */
 
 /*
-select * from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 -- and connection_type REGEXP 'HFC'
 and clean_connection_type <> 'GPON'
 ;
@@ -278,11 +277,11 @@ and clean_connection_type <> 'GPON'
 
 
 
-select * from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and clean_connection_type in ('HFC')
 ;
 
-select * from rcbill_my.rep_servicetickets_2020 where month(opendate)=5 and year(opendate)=2020
+select * from rcbill_my.rep_servicetickets_2019 where month(opendate)=5 and year(opendate)=2019
 and clean_connection_type is null
 ;
 

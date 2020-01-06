@@ -23,9 +23,10 @@ DATA USED CAPPED VS UNCAPPED
 
 -- select * from rcbill_my.rep_dailysales where salescenter='Sales' order by orderday desc;
 -- select * from rcbill_my.rep_dailysalesreg where salescenter='Sales' order by orderday desc;
-SELECT year(orderday) as orderyear, salestype, sum(ordercount) as orders from rcbill_my.rep_dailysales group by 1,2;
+SELECT year(orderday) as orderyear, salestype, sum(ordercount) as orders from rcbill_my.rep_dailysales group by 1,2 order by 1 desc;
 SELECT year(orderday) as orderyear, month(orderday) as ordermonth, salestype, sum(ordercount) as orders 
-from rcbill_my.rep_dailysales group by 1,2,3;
+from rcbill_my.rep_dailysales group by 1,2,3
+order by 1 desc, 2 desc;
 
 
 
@@ -156,7 +157,52 @@ from
 	a.CLIENTCODE=b.clientcode
 ) a
 group by 1,2,3
+order by 1 desc, 2 desc
 ;
 
 ####################################################################################################
 
+## CALLS MADE
+
+-- select * from rcbill_my.rep_cccallreport;
+
+select year(calldate) as callyear, callstatus
+-- , shift
+, SEC_TO_TIME(AVG(TIME_TO_SEC(waittime))) as avg_waittime, SEC_TO_TIME(AVG(TIME_TO_SEC(talktime))) as avg_talktime
+, count(*) as calls
+from rcbill_my.rep_cccallreport
+group by 1,2 -- ,3
+order by 1 desc
+;
+
+####################################################################################################
+
+## COLLECTIONS
+-- select * from rcbill_my.rep_paycol_channel;
+-- select * from rcbill_my.rep_paycol_pos;
+
+select payyear, pay_pos, sum(pay_amount) as pay_amount
+from rcbill_my.rep_paycol_pos
+group by 1,2
+order by 1 desc, 3 desc
+;
+
+
+select payyear, pay_channel, sum(pay_amount) as pay_amount
+from rcbill_my.rep_paycol_channel
+group by 1,2
+order by 1 desc, 3 desc
+;
+
+####################################################################################################
+
+## ACTIVE NUMBERS
+
+
+select servicecategory, package
+, `20161231`
+, `20171231`
+, `20181231`
+, `20191231`
+ from rcbill_my.rep_activenumberlastday_pv;
+ 
