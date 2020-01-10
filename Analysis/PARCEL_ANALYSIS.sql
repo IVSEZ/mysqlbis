@@ -215,9 +215,50 @@ create table rcbill_my.rep_custextract_compare20200108 as
 
 
 select * from rcbill_my.rep_custextract_compare20200108 where 0=0 
--- and client_status='New Client';
+-- and client_status='New Client'
+and client_status='Existing Client'
 -- and client_nin_status='Client NIN Not Present' and nin_present='INVALID'
+and
+(
+/*
+client_name_status like '%CHANGED%'
+or client_address_status like '%CHANGED%'
+or client_location_status like '%CHANGED%'
+or client_area_status like '%CHANGED%'
+or client_email_status like '%CHANGED%'
+or */client_nin_status like '%CHANGED%'
+/*or client_phone_status like '%CHANGED%'
+or address_status like '%CHANGED%'
+or mol_address_status like '%CHANGED%'
+or molreg_address_status like '%CHANGED%'
+or a1_parcel_status like '%CHANGED%'
+or a2_parcel_status like '%CHANGED%'
+or a3_parcel_status like '%CHANGED%'
+or parcel_add_status like '%CHANGED%'
+*/
+
+/*or 
+client_name_status like '%ADDED%'
+or client_address_status like '%ADDED%'
+or client_location_status like '%ADDED%'
+or client_area_status like '%ADDED%'
+or client_email_status like '%ADDED%'
+*/or client_nin_status like '%ADDED%'
+/*or client_phone_status like '%ADDED%'
+or address_status like '%ADDED%'
+or mol_address_status like '%ADDED%'
+or molreg_address_status like '%ADDED%'
+or a1_parcel_status like '%ADDED%'
+or a2_parcel_status like '%ADDED%'
+or a3_parcel_status like '%ADDED%'
+or parcel_add_status like '%ADDED%'
+*/
+)
+
 ;
+
+
+
 ########################################################################################
 /*
 COMMENTED AS THIS IS IN THE DATA_CLEANUP_STATS FILE
