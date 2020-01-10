@@ -2,6 +2,28 @@ select * from rcbill_my.rep_vodpivot2019;
 select * from rcbill_my.rep_vodpivot2018;  
 select rcbill.GetVODTitleFromResource('20180605.141400.043.')
 ;
+
+SELECT 
+    IFNULL(TITLE,
+            rcbill.GetVODTitleFromResource(RESOURCE)) AS TITLE,
+    RESOURCE,
+    JAN,
+    FEB,
+    MAR,
+    APR,
+    MAY,
+    JUN,
+    JUL,
+    AUG,
+    SEP,
+    OCT,
+    NOV,
+    `DEC`,
+    TOTAL_DURATION
+FROM
+    rcbill_my.rep_vodpivot2018
+ORDER BY total_duration DESC;
+
 SELECT 
     IFNULL(TITLE,
             rcbill.GetVODTitleFromResource(RESOURCE)) AS TITLE,

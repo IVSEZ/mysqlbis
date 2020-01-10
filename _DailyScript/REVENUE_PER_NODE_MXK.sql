@@ -303,7 +303,7 @@ create table rcbill_my.customers_mxk as
 ;
 
 select 'created rcbill_my.customers_mxk' as message;
--- select * from rcbill_my.customers_mxk;
+-- select * from rcbill_my.customers_mxk where mxk_name='MXK-ANSEETOILE';
 
 drop table if exists rcbill_my.tempcustmxk1;
 drop table if exists rcbill_my.tempcustmxk2;

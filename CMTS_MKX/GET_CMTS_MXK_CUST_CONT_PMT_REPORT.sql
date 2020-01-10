@@ -39,6 +39,19 @@ select * from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail2;
 */
 
 
+## UPDATED for 2020 table
+/*
+-- FIRST TIME drop table if exists rcbill_my.rep_cust_cont_payment_cmts_mxk_trail3; create table rcbill_my.rep_cust_cont_payment_cmts_mxk_trail3 as (select * from rcbill_my.rep_cust_cont_payment_cmts_mxk);
+
+insert into rcbill_my.rep_cust_cont_payment_cmts_mxk_trail3
+select * from rcbill_my.rep_cust_cont_payment_cmts_mxk
+;
+
+select * from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail3;
+
+
+*/
+
 ########################### CHANGE COLLATION and CHARACTER_SET
 /*
 SELECT table_schema, table_name, column_name, character_set_name, collation_name
@@ -60,6 +73,14 @@ select *
 from rcbill_my.rep_cust_cont_payment_cmts_mxk 
 where firstactivedate is not null and lastactivedate is not null
 order by clientcode
+;
+
+select reportdate
+-- , network
+, clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(*) as recordcount, count(distinct clientcode) as distinctclients from 
+rcbill_my.rep_cust_cont_payment_cmts_mxk_trail3
+group by 1,2,3, 4 -- , 5
+order by reportdate desc
 ;
 
 select reportdate
@@ -109,6 +130,19 @@ select reportdate
 , clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(distinct clientcode) as distinctclients 
 , sum(activecontracts) as activecontracts
 from 
+rcbill_my.rep_cust_cont_payment_cmts_mxk_trail3
+where firstactivedate is not null and lastactivedate is not null
+and lastactivedate=reportdate
+group by 1,2,3, 4 -- , 5
+order by reportdate desc
+) 
+union
+(
+select reportdate
+-- , network
+, clean_connection_type, clean_hfc_nodename, clean_mxk_name, count(distinct clientcode) as distinctclients 
+, sum(activecontracts) as activecontracts
+from 
 rcbill_my.rep_cust_cont_payment_cmts_mxk_trail2
 where firstactivedate is not null and lastactivedate is not null
 and lastactivedate=reportdate
@@ -146,6 +180,28 @@ order by reportdate desc;
 select * from rcbill_my.rep_cmtsmxk_trail 
 where clean_connection_type = 'GPON' and clean_hfc_nodename is null and clean_mxk_name is null
 order by reportdate desc;
+
+
+select HFC_NODE, NODENAME, CMTS_DATE, date(INSERTEDON) as INSERTED_ON
+, count(distinct CLIENT_CODE) as UNIQUE_ACCOUNTS, count(distinct CONTRACT_CODE) as UNIQUE_CONTRACTS
+, count(distinct MAC) as UNIQUE_MAC_INRCBOSS, count(distinct MAC_ADDRESS) as UNIQUE_MAC_INCMTS
+from rcbill_my.customers_cmts
+group by HFC_NODE, NODENAME, CMTS_DATE, date(INSERTEDON)
+order by HFC_NODE
+;
+
+select MXK_NAME, MXK_DATE, date(INSERTEDON) as INSERTED_ON
+, count(distinct CLIENT_CODE) as UNIQUE_ACCOUNTS, count(distinct CONTRACT_CODE) as UNIQUE_CONTRACTS
+, count(distinct FSAN2) as UNIQUE_FSAN_INRCBOSS, count(distinct SERIAL_NUM2) as UNIQUE_FSAN_INMXK
+from rcbill_my.customers_mxk
+group by MXK_NAME, MXK_DATE, date(INSERTEDON)
+order by MXK_NAME
+;
+
+-- select * from rcbill_my.customers_mxk;
+/*
+select distinct client_code from rcbill_my.customers_mxk where mxk_name='MXK-ANSEETOILE';
+*/
 
  set @mxkname='MXK-BEAUVALLON';
 -- set @mxkname='MXK-MAHE';
