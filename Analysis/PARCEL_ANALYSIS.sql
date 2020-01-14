@@ -274,8 +274,9 @@ EXECUTE ps;
 
 /*
 
-select * from rcbill_my.rep_custextract_compare20191221 where 0=0 
-and CLIENTNAME like '%STAFF%';
+select * from rcbill_my.rep_custextract_compare20200109 where 0=0 
+and CLIENTCLASS like '%CORP%'
+
 -- and client_nin_status='Client NIN Not Present' and nin_present='INVALID'
 ;
 
