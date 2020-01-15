@@ -358,23 +358,37 @@ from rcbill_my.rep_servicetickets_2019 order by ticketid desc, assgnopendate asc
 ### tickets by user for current year
 select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
 , min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
-, datediff(max(date(commentdate)), min(date(commentdate))) as totaldays
+, datediff(date_add(max(date(commentdate)),INTERVAL 1 day), min(date(commentdate))) as totaldays
 , count(distinct ticketid)/count(distinct date(commentdate)) as avgtktday
 , count(comment)/count(distinct date(commentdate)) as avgcmtday
-, (count(distinct date(commentdate))/datediff(max(date(commentdate)), min(date(commentdate)))) as consistency
+, (count(distinct date(commentdate))/datediff(date_add(max(date(commentdate)),INTERVAL 1 day), min(date(commentdate)))) as consistency
 from 
 rcbill_my.clientticket_cmmtjourney
 where year(commentdate)=year(now())
 group by commentuser
 order by 2 desc;
 
+
+### tickets by user for 2019
+select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
+, min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
+, datediff(date_add(max(date(commentdate)),INTERVAL 1 day), min(date(commentdate))) as totaldays
+, count(distinct ticketid)/count(distinct date(commentdate)) as avgtktday
+, count(comment)/count(distinct date(commentdate)) as avgcmtday
+, (count(distinct date(commentdate))/datediff(date_add(max(date(commentdate)),INTERVAL 1 day), min(date(commentdate)))) as consistency
+from 
+rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=2019
+group by commentuser
+order by 2 desc;
+
 ### tickets by user for 2018
 select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
 , min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
-, datediff(max(date(commentdate)), min(date(commentdate))) as totaldays
+, datediff(date_add(max(date(commentdate)),INTERVAL 1 day), min(date(commentdate))) as totaldays
 , count(distinct ticketid)/count(distinct date(commentdate)) as avgtktday
 , count(comment)/count(distinct date(commentdate)) as avgcmtday
-, (count(distinct date(commentdate))/datediff(max(date(commentdate)), min(date(commentdate)))) as consistency
+, (count(distinct date(commentdate))/datediff(date_add(max(date(commentdate)),INTERVAL 1 day), min(date(commentdate)))) as consistency
 from 
 rcbill_my.clientticket_cmmtjourney
 where year(commentdate)=2018
