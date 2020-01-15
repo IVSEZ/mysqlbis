@@ -27,9 +27,9 @@
 -- set @period='2019-07-31';
 -- set @period='2019-08-31';
 -- set @period='2019-09-30';
- set @period='2019-10-31';
+-- set @period='2019-10-31';
 -- set @period='2019-11-30';
--- set @period='2019-12-31';
+ set @period='2019-12-31';
 
 /*
 select * from rcbill_my.customercontractactivity 
