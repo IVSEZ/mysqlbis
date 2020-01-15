@@ -215,6 +215,13 @@ create table rcbill_my.rep_custextract_compare20200113 as
 
 
 select * from rcbill_my.rep_custextract_compare20200113 where 0=0 
+and one_year='ONE YEAR'
+and CLIENT_PHONE_STATUS='Client Phone Not Present'
+and CLIENT_EMAIL_STATUS='Client Email Not Present'
+;
+
+
+select * from rcbill_my.rep_custextract_compare20200113 where 0=0 
 -- and client_status='New Client'
 and client_status='Existing Client'
 -- and client_nin_status='Client NIN Not Present' and nin_present='INVALID'
