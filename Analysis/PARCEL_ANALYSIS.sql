@@ -214,18 +214,46 @@ create table rcbill_my.rep_custextract_compare20200114 as
 ;
 
 
-<<<<<<< HEAD
-select * from rcbill_my.rep_custextract_compare20200114 where 0=0 
-=======
-select * from rcbill_my.rep_custextract_compare20200113 where 0=0 
-and one_year='ONE YEAR'
-and CLIENT_PHONE_STATUS='Client Phone Not Present'
-and CLIENT_EMAIL_STATUS='Client Email Not Present'
+select * from rcbill_my.rep_custextract_compare20200114 where 0=0 ;
+-- select client_nin_status, nin_present, count(*) from rcbill_my.rep_custextract_compare20200114 group by 1,2;
+-- select * from rcbill_my.rep_custextract_compare20200114 where client_nin_status='Changed Client NIN' and nin_present='NOT PRESENT';
+
+-- =======
+select * from rcbill_my.rep_custextract where CLIENTCODE in 
+(
+
+	select clientcode from rcbill_my.rep_custextract_compare20200114 where 0=0 
+	and one_year='ONE YEAR'
+	and
+	(
+		(	
+			CLIENT_PHONE_STATUS='Client Phone Not Present'
+		)	
+	or 
+		(
+			nin_present='NOT PRESENT' or nin_present='INVALID'
+		)
+	or
+		(
+			email_present='NOT PRESENT'
+		)
+	
+	or 
+		(
+			address_present='NOT PRESENT'
+		)
+	or 
+		(
+			PARCEL_PRESENT='NOT PRESENT'
+        )
+	
+	)
+)
 ;
 
 
-select * from rcbill_my.rep_custextract_compare20200113 where 0=0 
->>>>>>> 764e96bd32ce884e6ed9a5fb14383398a7ad665a
+select * from rcbill_my.rep_custextract_compare20200114 where 0=0 
+
 -- and client_status='New Client'
 and client_status='Existing Client'
 -- and client_nin_status='Client NIN Not Present' and nin_present='INVALID'
