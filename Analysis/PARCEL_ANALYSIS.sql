@@ -224,7 +224,8 @@ select * from rcbill_my.rep_custextract where CLIENTCODE in
 
 	select clientcode from rcbill_my.rep_custextract_compare20200116 where 0=0 
 	and one_year='ONE YEAR'
-	and
+	/*
+    and
 	(
 		(	
 			CLIENT_PHONE_STATUS='Client Phone Not Present'
@@ -248,6 +249,7 @@ select * from rcbill_my.rep_custextract where CLIENTCODE in
         )
 	
 	)
+    */
 )
 ;
 
