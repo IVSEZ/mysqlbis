@@ -42,11 +42,13 @@ and clientname not in ('PREPAID CARDS')
 ### PRASLIN FAULT CUSTOMERS 23/01/2020
 SELECT 
 -- * 
-CLIENT_CODE, CLIENT_NAME, CLIENT_ADDRESS
+MXK_NAME, MXK_INTERFACE
+, CLIENT_CODE, CLIENT_NAME, CLIENT_ADDRESS
 , (select a1_parcel from rcbill.rcb_clientparcels where clientcode=a.CLIENT_CODE) as PARCEL1
 , (select a2_parcel from rcbill.rcb_clientparcels where clientcode=a.CLIENT_CODE) as PARCEL2
 , (select a3_parcel from rcbill.rcb_clientparcels where clientcode=a.CLIENT_CODE) as PARCEL3
-, CONTRACT_CODE, FSAN, FSAN2, MAC, MXK_NAME, MXK_INTERFACE, MODEL_ID, MXK_DATE
+, CONTRACT_CODE, FSAN, FSAN2, MAC
+, MODEL_ID, MXK_DATE
 FROM rcbill_my.customers_mxk a 
 where MXK_NAME='MXK-PRASLIN'
 and 
