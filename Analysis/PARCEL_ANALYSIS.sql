@@ -54,7 +54,7 @@ as
 
 -- show index from rcbill_my.rep_custextract;
 select * from rcbill_my.rep_custextract;
-select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR';
+select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR'; -- and clientclass='CORPORATE LARGE';
 
 ### to put in a table to verify data against.
 -- drop table if exists rcbill_my.rep_custextract20191211;
