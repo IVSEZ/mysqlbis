@@ -39,3 +39,15 @@ UPDDATE=@UpdDate,
 USERID=@USERID 
 ;
 
+
+
+drop table if exists rcbill.rcb_regions;
+
+create table rcbill.rcb_regions as
+(
+	
+)
+;
+
+
+select * from rcbill.rcb_tickettechusers;
