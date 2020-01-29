@@ -223,6 +223,7 @@ select * from rcbill_my.rep_custextract where CLIENTCODE in
 (
 
 	select clientcode from rcbill_my.rep_custextract_compare20200127 where 0=0 
+    and clientclass='EMPLOYEE'
 	and one_year='ONE YEAR'
 	
     and
