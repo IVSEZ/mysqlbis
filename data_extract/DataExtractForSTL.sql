@@ -38,7 +38,7 @@ select
 , CITY AS CITY
 , '' AS STATE
 , RegionID
-, (SELECT `Name` FROM rcbill.rcb_regions WHERE ID=a.RegionID) as REGION
+, (SELECT `Name` FROM rcbill.rcb_regions WHERE ID=RegionID) as REGION
 , 'SEYCHELLES' AS COUNTRY
 	
 
