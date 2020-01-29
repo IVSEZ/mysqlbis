@@ -11,18 +11,50 @@
 -- SELECT ID, Name from RCBill.dbo.ClientClasses;
 
 -- select * from rcbill.rcb_tclients;
+-- select * from rcbill.rcb_clientparcels;
+
 use rcbill;
 
 select 
-kod
-, firm, bemail, memail
-, 
-from rcbill.rcb_tclients
-where 
-(bemail is not null or memail is not null)
-and
-( length(bemail)>0 or length(memail)>0)
+0
+, substring_index(trim(replace(FIRM,',','')),' ',1) as FirstName
+, substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',','')))) as LastName
+, case 
+	when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='VIP' THEN 'RESIDENTIAL'
+	when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='EMPLOYEE' THEN 'RESIDENTIAL'
+	when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='INTELVISION OFFICE' THEN 'CORPORATE LARGE'
+    ELSE (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS) 
+   end AS CUSTOMERSEGMENT
+, case 
+	when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='VIP' THEN 'VIP'
+	when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='EMPLOYEE' THEN 'EMPLOYEE'
+	when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='INTELVISION OFFICE' THEN 'INTELVISION OFFICE'
+    ELSE (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS) 
+   end as CUSTOMERSUBSEGMENT
+
+, TRIM(REPLACE(ADDRESS,'CITY','')) AS ADDRESSONE
+, TRIM(REPLACE(MOLADDRESS,'CITY','')) AS ADDRESSTWO
+, TRIM(REPLACE(MOLRegistrationAddress,'CITY','')) AS ADDRESSTHREE
+, CITY AS CITY
+, '' AS STATE
+, RegionID
+, (SELECT `Name` FROM rcbill.rcb_regions WHERE ID=RegionID) as REGION
+, 'SEYCHELLES' AS COUNTRY
+	
+
+from rcbill.rcb_tclients a 
+where
+0=0
+-- and a.CLClass in (13)
+
+ORDER BY a.ID DESC
 ;
+
+
+
+
+
+/*
 
 
 select 'CUSTOMER ACCOUNT' AS TABLENAME;
@@ -318,4 +350,9 @@ a.ID
 , (SELECT NAME FROM RCBill.dbo.USERS where id=a.USERID) as CREATEDBYNAME
 , a.SetupDate as SETUPDATE
 , (SELECT NAME FROM RCBill.dbo.USERS where id=a.SetupUserID) as SETUPBYNAME
-from RCBill.dbo.CashPoints a 
+from RCBill.dbo.CashPoints a ;
+
+
+
+
+*/
