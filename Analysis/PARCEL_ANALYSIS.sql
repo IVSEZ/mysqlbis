@@ -215,6 +215,7 @@ create table rcbill_my.rep_custextract_compare20200204 as
 
 
 select * from rcbill_my.rep_custextract_compare20200204 where 0=0 ;
+select * from rcbill_my.rep_custextract_compare20200204 where 0=0 and ONE_YEAR='ONE YEAR';
 -- select client_nin_status, nin_present, count(*) from rcbill_my.rep_custextract_compare20200114 group by 1,2;
 -- select * from rcbill_my.rep_custextract_compare20200114 where client_nin_status='Changed Client NIN' and nin_present='NOT PRESENT';
 
