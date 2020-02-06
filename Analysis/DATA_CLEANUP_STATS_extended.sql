@@ -438,7 +438,7 @@ SET @qs = CONCAT('select PARCEL_ADD_STATUS ', @colname, ' from rcbill_my.rep_cus
 PREPARE ps FROM @qs;
 EXECUTE ps;
 
-
+/*
 
 SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_NAME_STATUS ', @colname , ' from rcbill_my.rep_custextract_compare_final group by 1,2 with rollup');
 PREPARE ps FROM @qs;
@@ -467,6 +467,8 @@ EXECUTE ps;
 SET @qs = CONCAT('select CLIENT_STATUS, PARCEL_ADD_STATUS ', @colname, ' from rcbill_my.rep_custextract_compare_final group by 1, 2 with rollup' );
 PREPARE ps FROM @qs;
 EXECUTE ps;
+
+*/
 
 SET @qs = CONCAT('select CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENTCLASS ', @colname , ' from rcbill_my.rep_custextract_compare_final group by 1,2,3 with rollup');
 PREPARE ps FROM @qs;
