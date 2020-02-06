@@ -1,10 +1,17 @@
 
 select *, rcbill.GetClientID(clientcode) as clientid from rcbill_my.rep_custconsolidated;
 
+
+-- PARCEL REPORT
+
 select * from rcbill.rcb_clientparcels;
 
 select CONCAT_WS( "|", a1_parcel,a2_parcel,a3_parcel ) as client_parcels
 from rcbill.rcb_clientparcels;
+
+select clientcode, clientname, address, moladdress, MOLRegistrationAddress, a1_parcel, a2_parcel, a3_parcel, CONCAT_WS( "|", a1_parcel,a2_parcel,a3_parcel ) as client_parcels from rcbill.rcb_clientparcels;
+
+
 
 -- SAM Report
 select * from rcbill_my.rep_ott;
