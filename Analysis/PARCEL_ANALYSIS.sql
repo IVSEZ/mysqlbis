@@ -222,7 +222,12 @@ select * from rcbill_my.rep_custextract_compare20200204 where 0=0 ;
 select * from rcbill_my.rep_custextract where CLIENTCODE in 
 (
 
+<<<<<<< HEAD
 	select clientcode from rcbill_my.rep_custextract_compare20200204 where 0=0 
+=======
+	select clientcode from rcbill_my.rep_custextract_compare20200127 where 0=0 
+    and clientclass='EMPLOYEE'
+>>>>>>> 6bc5d9d4e42bbfb59c71d5a22d735d42b25528c7
 	and one_year='ONE YEAR'
 	
     and
