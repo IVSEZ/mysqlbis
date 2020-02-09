@@ -277,7 +277,14 @@ union
     where 0=0 and ONE_YEAR='ONE YEAR'
 	group by REPORTDATE, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
 )
-
+union  
+(
+	select reportdate, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
+	, count(CLIENTCODE) as CLIENTCODES
+	from rcbill_my.rep_custextract_compare20200206
+    where 0=0 and ONE_YEAR='ONE YEAR'
+	group by REPORTDATE, clientclass, CLIENT_STATUS, CLIENT_NAME_STATUS, CLIENT_ADDRESS_STATUS, CLIENT_AREA_STATUS, CLIENT_CLASS_STATUS, CLIENT_EMAIL_STATUS, CLIENT_NIN_STATUS, NIN_PRESENT, CLIENT_PHONE_STATUS, PARCEL_ADD_STATUS
+)
 ;
 
 select * from rcbill_my.tempa;
@@ -322,6 +329,7 @@ create table rcbill_my.rep_custextract_compare_final as
 	, sum(`20200202`) as `20200202`
 	, sum(`20200203`) as `20200203`
 	, sum(`20200204`) as `20200204`
+	, sum(`20200206`) as `20200206`
 
 	from 
 	(
@@ -360,6 +368,7 @@ create table rcbill_my.rep_custextract_compare_final as
 		, case when reportdate='2020-02-02' then CLIENTCODES end as '20200202'
 		, case when reportdate='2020-02-03' then CLIENTCODES end as '20200203'
 		, case when reportdate='2020-02-04' then CLIENTCODES end as '20200204'
+		, case when reportdate='2020-02-06' then CLIENTCODES end as '20200206'
         
 		from rcbill_my.tempa
 	) a
@@ -370,6 +379,7 @@ create table rcbill_my.rep_custextract_compare_final as
 select * from rcbill_my.rep_custextract_compare_final;
 
 set @colname='
+, sum(`20200206`) as `20200206`
 , sum(`20200204`) as `20200204`
 , sum(`20200203`) as `20200203`
 , sum(`20200202`) as `20200202`

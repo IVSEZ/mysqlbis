@@ -103,7 +103,7 @@ select * from rcbill_my.rep_custextract20191211; -- where orig_clientcode='I.000
 
 -- drop table if exists rcbill_my.rep_custextract_compare20200116;
 
-create table rcbill_my.rep_custextract_compare20200205 as 
+create table rcbill_my.rep_custextract_compare20200206 as 
 (
 	select -- a.*,b.*
 		a.orig_reportdate , b.reportdate ,
@@ -213,9 +213,12 @@ create table rcbill_my.rep_custextract_compare20200205 as
 )
 ;
 
-select * from rcbill_my.rep_custextract_compare20200205 where 0=0 ;
+select * from rcbill_my.rep_custextract_compare20200206 where 0=0 ;
 
-select * from rcbill_my.rep_custextract_compare20200205 where 0=0 and ONE_YEAR='ONE YEAR';
+select * from rcbill_my.rep_custextract_compare20200206 where 0=0 and ONE_YEAR='ONE YEAR';
+
+
+
 -- select client_nin_status, nin_present, count(*) from rcbill_my.rep_custextract_compare20200114 group by 1,2;
 -- select * from rcbill_my.rep_custextract_compare20200114 where client_nin_status='Changed Client NIN' and nin_present='NOT PRESENT';
 
