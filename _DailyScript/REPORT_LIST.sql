@@ -27,8 +27,9 @@ select * from rcbill_my.rep_paycol_pos;
 
 select * from rcbill_my.rep_allcust;
 select * from rcbill_my.rep_clientcontractdevices;
-select * from rcbill_my.rep_customers_collection2018;
-select * from rcbill_my.rep_customers_collection2019;
+select * from rcbill_my.rep_customers_collection2018  where TotalPaymentAmount2018>0;
+select * from rcbill_my.rep_customers_collection2019 where TotalPaymentAmount2019>0;
+select * from rcbill_my.rep_customers_collection where TotalPaymentAmount2020>0;
 select * from rcbill_my.rep_cust_cont_payment_cmts_mxk;
 select * from rcbill_my.rep_cust_cont_payment_cmts_mxk_trail;
 
