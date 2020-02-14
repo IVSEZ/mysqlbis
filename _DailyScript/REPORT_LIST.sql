@@ -8,6 +8,7 @@ select * from rcbill_my.rep_custconsolidated where clientphone like '%2819602%';
 -- PARCEL REPORT
 
 select * from rcbill.rcb_clientparcels;
+-- SHOW INDEX FROM rcbill.rcb_clientparcels;
 
 select CONCAT_WS( "|", a1_parcel,a2_parcel,a3_parcel ) as client_parcels
 from rcbill.rcb_clientparcels;

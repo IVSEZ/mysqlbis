@@ -83,6 +83,27 @@ where
 
 ;
 
+
+##############################################################
+## praslin issues
+## Approved as per Praslin MXK Outage
+## Approved as per Praslin damaged cable.
+## as per Praslin Fiber cut.
+## AS PER PRASLIN VOD OUTAGE
+## 
+
+### praslin fiber cut customers
+select 
+*
+from rcbill_my.clientticket_cmmtjourney 
+where 
+(comment like '%intelenovela%')
+;
+
+
+
+
+
 select * from rcbill_my.rep_custconsolidated 
 where
 connection_type like '%HFC|GPON%'

@@ -167,6 +167,17 @@ order by reportdate desc
 
 #ALL STATS FROM CMTSMXK TRAIL TABLE
 select * from rcbill_my.rep_cmtsmxk_trail order by reportdate desc;
+select * from rcbill.rcb_techregions;
+
+select a.*, ifnull(b.district,a.clean_hfc_nodename) as district from rcbill_my.rep_cmtsmxk_trail a 
+left join 
+-- rcbill.rcb_techregions 
+(
+select distinct nodename, district from rcbill.rcb_techregions
+)
+b 
+on a.clean_hfc_nodename=b.nodename 
+order by a.reportdate desc;
 
 #ONLY HFC TV CUSTOMERS
 select * from rcbill_my.rep_cmtsmxk_trail 

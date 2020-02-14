@@ -12,13 +12,24 @@
 
 -- select * from rcbill.rcb_tclients;
 -- select * from rcbill.rcb_clientparcels;
+-- SELECT * from rcbill.rcb_regions;
+-- select * from rcbill.rcb_clientaddress;
+-- select distinct settlementname, areaname from rcbill.rcb_address
+-- select * from rcbill.rcb_address;
+-- select * from rcbill.rcb_devices where CSID=b.ID order by UserName asc
+-- select * from rcbill.rcb_users;
+-- show index from rcbill.rcb_users;
+-- SELECT * FROM rcbill.rcb_clientparcels;
 
 use rcbill;
 
 select 
-0
-, substring_index(trim(replace(FIRM,',','')),' ',1) as FirstName
+-- 0
+-- , ID
+ substring_index(trim(replace(FIRM,',','')),' ',1) as FirstName
 , substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',','')))) as LastName
+/*
+-- REMOVED FROM CA AS IT IS MAPPED WITH SA
 , case 
 	when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='VIP' THEN 'RESIDENTIAL'
 	when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='EMPLOYEE' THEN 'RESIDENTIAL'
@@ -31,23 +42,65 @@ select
 	when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='INTELVISION OFFICE' THEN 'INTELVISION OFFICE'
     ELSE (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS) 
    end as CUSTOMERSUBSEGMENT
-
-, TRIM(REPLACE(ADDRESS,'CITY','')) AS ADDRESSONE
-, TRIM(REPLACE(MOLADDRESS,'CITY','')) AS ADDRESSTWO
+*/
+, TRIM(REPLACE(MOLADDRESS,'CITY','')) AS ADDRESSONE
+, TRIM(REPLACE(ADDRESS,'CITY','')) AS ADDRESSTWO
 , TRIM(REPLACE(MOLRegistrationAddress,'CITY','')) AS ADDRESSTHREE
 , CITY AS CITY
-, '' AS STATE
-, RegionID
-, (SELECT `Name` FROM rcbill.rcb_regions WHERE ID=RegionID) as REGION
+, (SELECT ClientSubDistrict from rcbill.rcb_clientaddress where ClientCode=a.KOD) as SUBDISTRICT
+, (SELECT ClientLocation from rcbill.rcb_clientaddress where ClientCode=a.KOD) as DISTRICT
+-- , '' AS STATE
+-- , RegionID
+, (SELECT `NAME` FROM rcbill.rcb_regions WHERE ID=a.RegionID) as STATE
 , 'SEYCHELLES' AS COUNTRY
-	
-
+-- , (select SETTLEMENTNAME from rcbill.rcb_address where AREANAME=(SELECT `NAME` FROM rcbill.rcb_regions WHERE ID=RegionID) and SETTLEMENTNAME LIKE ADDRESS LIMIT 1) AS DISTRICT	
+, POSTALCODE AS ZIPCODE
+, MEMAIL AS EMAILID
+, BEMAIL AS BUSINESSEMAILID
+, MPHONE AS MOBILENUMBER
+, MPHONE AS PHONEHOME
+, BPHONE AS PHONEOFFICE
+, FAX AS FAXNUMBER
+, '' AS PARENTACCOUNTNUMBER
+, KOD AS ACCOUNTNUMBER
+, ID AS ACCOUNTID
+, ACTIVE AS ACTIVE
+, (SELECT USERNAME FROM rcbill.rcb_users where CLID=a.ID LIMIT 1) as USERNAME
+, UPDDATE AS CREATEDDATE
+, BEGDATE AS ACTIVATIONDATE
+, '' AS STATUSCHANGEDATE
+-- , USERID AS CREATEDBYID
+, DANNO AS NINNUMBER
+, PASSNo AS PASSPORTNUMBER
+, BULSTAT AS BUSREGNNUMBER
+, MEGN AS TAXNUMBER
+, DANNO AS CORPORATETAXNUMBER
+-- , FIZLICE AS TAXNUMBERINDICATOR #(0=Business, 1=Residential, 2=Expatriate)
+, 
+	case 
+		when FIZLICE=0 then 'BUSINESS'
+		when FIZLICE=1 then 'RESIDENTIAL'
+		when FIZLICE=2 then 'EXPATRIATE'
+	end as TAXNUMBERINDICATOR
+, '' AS BUILDINGNAME
+, '' AS BIRTHDATE
+, '' AS STREETNAME
+, 'ENGLISH' AS PREFERREDLANGUAGE
+, '' AS PROPERTYTYPE
+, (select a1_parcel from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER1
+, (select a2_parcel from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER2
+, (select a3_parcel from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER3
+, (select CONCAT_WS( "|", a1_parcel,a2_parcel,a3_parcel) from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER
+, MOLADDRESS AS LANDMARK     
+    
+    
 from rcbill.rcb_tclients a 
 where
 0=0
 -- and a.CLClass in (13)
 
 ORDER BY a.ID DESC
+-- limit 1000
 ;
 
 
