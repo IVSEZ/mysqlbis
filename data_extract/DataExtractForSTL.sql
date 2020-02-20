@@ -23,11 +23,13 @@
 
 use rcbill;
 
+
+####	CUSTOMER ACCOUNT
 select 
 -- 0
 -- , ID
- substring_index(trim(replace(FIRM,',','')),' ',1) as FirstName
-, substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',','')))) as LastName
+ substring_index(trim(replace(FIRM,',','')),' ',1) as FIRSTNAME
+, substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',','')))) as LASTNAME
 /*
 -- REMOVED FROM CA AS IT IS MAPPED WITH SA
 , case 
@@ -64,7 +66,7 @@ select
 , '' AS PARENTACCOUNTNUMBER
 , KOD AS ACCOUNTNUMBER
 , ID AS ACCOUNTID
-, ACTIVE AS ACTIVE
+, ACTIVE AS ACCOUNTSTATUS
 , (SELECT USERNAME FROM rcbill.rcb_users where CLID=a.ID LIMIT 1) as USERNAME
 , UPDDATE AS CREATEDDATE
 , BEGDATE AS ACTIVATIONDATE
@@ -98,10 +100,72 @@ from rcbill.rcb_tclients a
 where
 0=0
 -- and a.CLClass in (13)
+and kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
 
 ORDER BY a.ID DESC
 -- limit 1000
 ;
+
+
+###################################################################################
+
+
+####	BILLING ACCOUNT
+select 
+-- 0
+-- , ID
+ substring_index(trim(replace(FIRM,',','')),' ',1) as FIRSTNAME
+, substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',','')))) as LASTNAME
+, 'DEFAULT' as BILLCYCLE
+, 'EMAIL' AS BILLDELIVERYMODE
+, 'SCR' AS CURRENCY
+
+
+, TRIM(REPLACE(MOLADDRESS,'CITY','')) AS ADDRESSONE
+, TRIM(REPLACE(ADDRESS,'CITY','')) AS ADDRESSTWO
+, TRIM(REPLACE(MOLRegistrationAddress,'CITY','')) AS ADDRESSTHREE
+, CITY AS CITY
+, (SELECT ClientSubDistrict from rcbill.rcb_clientaddress where ClientCode=a.KOD) as SUBDISTRICT
+, (SELECT ClientLocation from rcbill.rcb_clientaddress where ClientCode=a.KOD) as DISTRICT
+, (SELECT `NAME` FROM rcbill.rcb_regions WHERE ID=a.RegionID) as STATE
+, 'SEYCHELLES' AS COUNTRY
+, POSTALCODE AS ZIPCODE
+, MEMAIL AS EMAILID
+, BEMAIL AS BUSINESSEMAILID
+, MPHONE AS MOBILENUMBER
+, MPHONE AS PHONEHOME
+, BPHONE AS PHONEOFFICE
+, FAX AS FAXNUMBER
+, KOD AS CUSTOMERACCOUNTNUMBER
+, concat('B_',KOD) AS BILLINGACCOUNTNUMBER
+, ACTIVE AS ACCOUNTSTATUS
+, (SELECT USERNAME FROM rcbill.rcb_users where CLID=a.ID LIMIT 1) as USERNAME
+, UPDDATE AS CREATEDDATE
+, BEGDATE AS ACTIVATIONDATE
+, '' AS STATUSCHANGEDATE
+-- , USERID AS CREATEDBYID
+, 'SUMMARY' AS BILLFORMATTYPE
+
+, '' AS BUILDINGNAME
+, '' AS BUILDINGTYPE
+, '' AS STREETNAME
+, '' AS PROPERTYTYPE
+, (select a1_parcel from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER1
+, (select a2_parcel from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER2
+, (select a3_parcel from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER3
+, (select CONCAT_WS( "|", a1_parcel,a2_parcel,a3_parcel) from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER
+, MOLADDRESS AS LANDMARK     
+    
+    
+from rcbill.rcb_tclients a 
+where
+0=0
+-- and a.CLClass in (13)
+and kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
+ORDER BY a.ID DESC
+-- limit 1000
+;
+
 
 
 
