@@ -77,7 +77,7 @@ CREATE TABLE `rcb_tclients` (
 use rcbill;
 -- SET SESSION sql_mode = '';
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTClients-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTClients-20022020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_tclients` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_tclients` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -211,38 +211,42 @@ drop table if exists rcbill.rcb_clientparcels;
 
 create table rcbill.rcb_clientparcels as 
 (
-
-		select id as clientid, firm as clientname, kod as clientcode
-		, address, moladdress, molregistrationaddress
-		, a1_parcel1 as a1_parcel
-		, a2_parcel1 as a2_parcel
-		, a3_parcel1 as a3_parcel
-		from 
-		(
-			select *
-			, trim(replace(replace(replace(regex_replace('[^a-zA-Z0-9/\d\s ]','',a1_parcel),'NO',''),'NUMBER',''),'NUM','')) as a1_parcel1
-			-- , regex_replace('[^A-Za-z0-9]+', '', a1_parcel) as a1_parcel1
-			, trim(replace(replace(replace(regex_replace('[^a-zA-Z0-9/\d\s ]','',a2_parcel),'NO',''),'NUMBER',''),'NUM','')) as a2_parcel1
-			, trim(replace(replace(replace(regex_replace('[^a-zA-Z0-9/\d\s ]','',a3_parcel),'NO',''),'NUMBER',''),'NUM','')) as a3_parcel1
-
-			from
+	select * from 
+    (
+			select id as clientid, firm as clientname, kod as clientcode
+			, address, moladdress, molregistrationaddress
+			, a1_parcel1 as a1_parcel
+			, a2_parcel1 as a2_parcel
+			, a3_parcel1 as a3_parcel
+			, ifnull(NULLIF(a1_parcel1,''),ifnull(NULLIF(a2_parcel1,''),NULLIF(a3_parcel1,''))) as clientparcel        
+			from 
 			(
-				select id, firm, kod, address, moladdress, MOLRegistrationAddress 
-				,locate('PARCEL',upper(address)) as a1_location
-				,locate('PARCEL',upper(moladdress)) as a2_location
-				,locate('PARCEL',upper(MOLRegistrationAddress)) as a3_location
-				, if(locate('PARCEL',upper(address))>0,substring_index(upper(address),'PARCEL',-1),'') as a1_parcel
-				, if(locate('PARCEL',upper(moladdress))>0,substring_index(upper(moladdress),'PARCEL',-1),'') as a2_parcel
-				, if(locate('PARCEL',upper(MOLRegistrationAddress))>0,substring_index(upper(MOLRegistrationAddress),'PARCEL',-1),'') as a3_parcel
-				from rcbill.rcb_tclients 
-				where 
-				upper(address) like '%PARCEL%'
-				or
-				upper(moladdress) like '%PARCEL%'
-				or
-				upper(MOLRegistrationAddress) like '%PARCEL%'
-			) a
+				select *
+				, trim(replace(replace(replace(regex_replace('[^a-zA-Z0-9/\d\s ]','',a1_parcel),'NO',''),'NUMBER',''),'NUM','')) as a1_parcel1
+				-- , regex_replace('[^A-Za-z0-9]+', '', a1_parcel) as a1_parcel1
+				, trim(replace(replace(replace(regex_replace('[^a-zA-Z0-9/\d\s ]','',a2_parcel),'NO',''),'NUMBER',''),'NUM','')) as a2_parcel1
+				, trim(replace(replace(replace(regex_replace('[^a-zA-Z0-9/\d\s ]','',a3_parcel),'NO',''),'NUMBER',''),'NUM','')) as a3_parcel1
+
+				from
+				(
+					select id, firm, kod, address, moladdress, MOLRegistrationAddress 
+					,locate('PARCEL',upper(address)) as a1_location
+					,locate('PARCEL',upper(moladdress)) as a2_location
+					,locate('PARCEL',upper(MOLRegistrationAddress)) as a3_location
+					, if(locate('PARCEL',upper(address))>0,substring_index(upper(address),'PARCEL',-1),'') as a1_parcel
+					, if(locate('PARCEL',upper(moladdress))>0,substring_index(upper(moladdress),'PARCEL',-1),'') as a2_parcel
+					, if(locate('PARCEL',upper(MOLRegistrationAddress))>0,substring_index(upper(MOLRegistrationAddress),'PARCEL',-1),'') as a3_parcel
+					from rcbill.rcb_tclients 
+					where 
+					upper(address) like '%PARCEL%'
+					or
+					upper(moladdress) like '%PARCEL%'
+					or
+					upper(MOLRegistrationAddress) like '%PARCEL%'
+				) a
+			) a 
 		) a 
+        where clientparcel is not null
 )
 ;
 
@@ -250,6 +254,7 @@ CREATE INDEX IDXcparcel1
 ON rcbill.rcb_clientparcels (clientcode);
 
 select count(*) as rcb_clientparcels from rcbill.rcb_clientparcels;
+-- select * from rcbill.rcb_clientparcels;
 
 #===============================================================================
 
@@ -418,7 +423,7 @@ CREATE TABLE `rcb_contracts` (
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContracts-19022020.csv'
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContracts-20022020.csv'
 -- REPLACE INTO TABLE `rcbill`.`rcb_contracts` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_contracts` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -612,7 +617,7 @@ CREATE TABLE `rcb_contractdiscounts` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractDiscounts-19022020.csv'
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractDiscounts-20022020.csv'
 -- REPLACE INTO TABLE `rcbill`.`rcb_contractdiscounts` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_contractdiscounts` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -766,7 +771,7 @@ CREATE TABLE `rcb_devices` (
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevices-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevices-20022020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_devices` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_devices` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1055,7 +1060,7 @@ CREATE TABLE `rcb_tickets` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTickets-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTickets-20022020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1203,7 +1208,7 @@ show index from rcbill.rcb_tickettechusers;
 create index IDXttu1 on rcbill.rcb_tickettechusers (RCBUSERID);
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketTechUsers-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketTechUsers-20022020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_tickettechusers` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 2 LINES 
@@ -1290,7 +1295,7 @@ CREATE INDEX IDXtxtass1
 ON rcb_ticketassignments (TICKETID);
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketAssignments-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketAssignments-20022020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_ticketassignments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1381,7 +1386,7 @@ CREATE TABLE `rcb_ticketcomments` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketComments-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketComments-20022020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_ticketcomments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_ticketcomments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1463,7 +1468,7 @@ CREATE TABLE `rcb_comments` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllComments-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllComments-20022020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1557,7 +1562,7 @@ CREATE TABLE `rcb_devicesold` (
 
 ) ENGINE=InnoDB CHARSET UTF8;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevicesOld-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevicesOld-20022020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_devicesold` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_devicesold` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1674,7 +1679,7 @@ CREATE TABLE `rcb_contractservices` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractServices-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractServices-20022020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_contractservices` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_contractservices` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1780,7 +1785,7 @@ CREATE TABLE `rcb_invoicescontents` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesContents-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesContents-20022020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_invoicescontents` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_invoicescontents` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1951,7 +1956,7 @@ CREATE TABLE `rcb_invoicesheader` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesHeader-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesHeader-20022020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_invoicesheader` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_invoicesheader` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2135,7 +2140,7 @@ CREATE TABLE `rcb_casa` (
 
 #NOTE: PAYTYPE in CASA is the same as negative of ID in rcb_services 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllCASA-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllCASA-20022020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_casa` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_casa` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2315,7 +2320,7 @@ CREATE TABLE `rcb_users` (
 use rcbill;
 -- SET SESSION sql_mode = '';
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUsers-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUsers-20022020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_users` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 -- IGNORE 1 LINES 
@@ -2443,7 +2448,7 @@ CREATE TABLE `rcb_useractions` (
 
 
 -- SET SESSION sql_mode = '';
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUserActions2019-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUserActions2019-20022020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_useractions` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_useractions` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2543,7 +2548,7 @@ CREATE TABLE `rcb_ipusage1` (
 
 use rcbill;
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-14052018.csv' 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-19022020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-20022020.csv' 
 
 -- REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_ipusage1` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 

@@ -3,6 +3,13 @@ select * from rcbill_my.rep_custconsolidated;
 
 select * from rcbill.rcb_clientparcels;
 
+select clientcode, clientname, clientparcel
+-- , a1_parcel, a2_parcel, a3_parcel, NULLIF(a1_parcel,''), NULLIF(a2_parcel,''), NULLIF(a3_parcel,'') 
+-- , ifnull(NULLIF(a1_parcel,''),ifnull(NULLIF(a2_parcel,''),NULLIF(a3_parcel,''))) as PARCEL
+from rcbill.rcb_clientparcels
+where clientparcel is not null
+; 
+
 select * from rcbill_my.matched_clients group by DEDUPE_CLIENT_CODE;
 
 
