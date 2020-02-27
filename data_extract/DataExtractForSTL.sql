@@ -167,8 +167,78 @@ ORDER BY a.ID DESC
 ;
 
 
+###################################################################################
 
 
+####	SERVICE ACCOUNT
+
+select 'SERVICE ACCOUNT' AS TABLENAME;
+-- sele
+
+select
+ substring_index(trim(replace(a.FIRM,',','')),' ',1) as FIRSTNAME
+, substring(trim(replace(a.FIRM,',','')),position(' ' in trim(replace(a.FIRM,',',''))),length(trim(replace(a.FIRM,',','')))) as LASTNAME
+, TRIM(REPLACE(a.MOLADDRESS,'CITY','')) AS ADDRESSONE
+, TRIM(REPLACE(a.ADDRESS,'CITY','')) AS ADDRESSTWO
+, TRIM(REPLACE(a.MOLRegistrationAddress,'CITY','')) AS ADDRESSTHREE
+, a.CITY AS CITY
+, (SELECT ClientSubDistrict from rcbill.rcb_clientaddress where ClientCode=a.KOD) as SUBDISTRICT
+, (SELECT ClientLocation from rcbill.rcb_clientaddress where ClientCode=a.KOD) as DISTRICT
+, (SELECT `NAME` FROM rcbill.rcb_regions WHERE ID=a.RegionID) as STATE
+, 'SEYCHELLES' AS COUNTRY
+, a.POSTALCODE AS ZIPCODE
+, a.MEMAIL AS EMAILID
+, a.BEMAIL AS BUSINESSEMAILID
+, a.MPHONE AS MOBILENUMBER
+, a.MPHONE AS PHONEHOME
+, a.BPHONE AS PHONEOFFICE
+, a.FAX AS FAXNUMBER
+, a.KOD AS CUSTOMERACCOUNTNUMBER
+
+, b.
+
+
+, b.CreditPolicyId as CreditPolicyId
+, (select NAME from RCBill.dbo.CreditPolicy where id=b.CreditPolicyId) as CreditPolicyName
+, (select BillingPeriod from RCBill.dbo.CreditPolicy where id=b.CreditPolicyId) as BILLCYCLE
+, b.CommChanelID as CommChanelID
+, (select LABEL from RCBill.dbo.ContractCommChannels_LNG where LNG='en' and id=b.CommChanelID) as BILLDELIVERYMODE
+, b.Currency as CURRENCY
+, b.Active as Active
+, (select LABEL from RCBill.dbo.ContractStates_view_LNG where LNG='en' and id=b.Active) as CONTRACTSTATUS
+, b.ActivatedDate as ACTIVATIONDATE
+, b.LastActionID as LastActionID
+, (select LABEL from RCBill.dbo.ContractActions_view_LNG where LNG='en' and id=b.LastActionID) as LASTACTION
+
+, b.DATA as CONTRACTDATE
+, b.StartDate as CONTRACTSTARTDATE
+, b.EndDate as CONTRACTENDDATE
+, b.ValidityPeriod AS CONTRACTVALIDITYPERIOD
+, b.RatingPlanID AS RatingPlanID
+, (select name from [RCBill].[dbo].[RatingPlans] where ID=b.RatingPlanID) as RatingPlanName
+, b.UPDDATE AS CREATEDDATE
+, b.USERID AS CREATEDBYID
+, (SELECT NAME FROM RCBill.dbo.USERS where id=b.USERID) as CREATEDBYNAME
+
+
+
+FROM 
+ ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (13) order by ID desc)as a
+-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (10,14) order by ID desc)as a
+-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (16) order by ID desc)as a
+-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (6) order by ID desc)as a
+-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (7) order by ID desc)as a
+-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (3) order by ID desc)as a
+-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (2) order by ID desc)as a
+
+inner join 
+RCBill.dbo.Contracts as b
+on a.ID=b.CLID
+ORDER BY a.ID DESC
+;
+
+
+###################################################################################
 
 
 /*

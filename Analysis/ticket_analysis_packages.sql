@@ -100,7 +100,13 @@ where
 (comment like '%intelenovela%')
 ;
 
-
+### praslin fiber cut customers
+select 
+*
+from rcbill_my.clientticket_cmmtjourney 
+where 
+(comment like '%intelenovela%')
+;
 
 
 
