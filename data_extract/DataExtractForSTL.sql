@@ -65,7 +65,6 @@ select
 , FAX AS FAXNUMBER
 , '' AS PARENTACCOUNTNUMBER
 , KOD AS ACCOUNTNUMBER
-, ID AS ACCOUNTID
 , ACTIVE AS ACCOUNTSTATUS
 , (SELECT USERNAME FROM rcbill.rcb_users where CLID=a.ID LIMIT 1) as USERNAME
 , UPDDATE AS CREATEDDATE
@@ -94,6 +93,7 @@ select
 , (select a3_parcel from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER3
 , (select CONCAT_WS( "|", a1_parcel,a2_parcel,a3_parcel) from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER
 , MOLADDRESS AS LANDMARK     
+, ID AS ACCOUNTID
     
     
 from rcbill.rcb_tclients a 

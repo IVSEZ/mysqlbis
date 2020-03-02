@@ -3,6 +3,10 @@ select * from rcbill_my.rep_custconsolidated;
 
 select * from rcbill.rcb_clientparcels;
 
+select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
+select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
+
+
 select clientcode, clientname, clientparcel
 -- , a1_parcel, a2_parcel, a3_parcel, NULLIF(a1_parcel,''), NULLIF(a2_parcel,''), NULLIF(a3_parcel,'') 
 -- , ifnull(NULLIF(a1_parcel,''),ifnull(NULLIF(a2_parcel,''),NULLIF(a3_parcel,''))) as PARCEL

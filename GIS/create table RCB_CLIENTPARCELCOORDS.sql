@@ -18,4 +18,8 @@ create index IDXrcbcps1 on rcbill.rcb_clientparcelcoords (clientcode);
 
 create index IDXrcbcps2 on rcbill.rcb_clientparcelcoords (INSERTEDON);
 
-select * from rcbill.rcb_clientparcelcoords where latitude <> 0;
+-- select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)=(select max(date(insertedon)) from rcbill.rcb_clientparcelcoords);
+
+
+select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
+-- 
