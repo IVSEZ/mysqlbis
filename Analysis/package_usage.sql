@@ -2,8 +2,8 @@
 
 -- duration 1883.640 sec
 
-set @startdate='2018-01-01';
-set @enddate='2018-12-31';
+set @startdate='2020-01-01';
+set @enddate='2020-01-31';
 -- select * from rcbill_my.customercontractactivity where period>=@startdate and period<=@enddate
 
 drop table if exists rcbill_my.tempcpp;

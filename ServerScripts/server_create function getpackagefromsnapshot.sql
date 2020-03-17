@@ -7,6 +7,7 @@ BEGIN
 					clientcode=clcode
 					and
 					contractcode=concode
+                    order by lastcontractdate desc
 					limit 1
 				);
 

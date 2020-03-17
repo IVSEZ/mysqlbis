@@ -88,6 +88,9 @@ ON dailyactivenumber (CLIENTCODE);
 CREATE INDEX IDXdan10
 ON dailyactivenumber (CONTRACTCODE);
 
+CREATE INDEX IDXdan11
+ON dailyactivenumber (PERIODMTH, PERIODYEAR);
+
 
 CREATE INDEX IDXdan11
 ON dailyactivenumber (CLIENTNAME);

@@ -9,7 +9,7 @@ SET @startdate='2020-01-01';
 
 
 -- select @enddate := subdate(current_date(),1);
-SET @enddate='2020-01-31';
+SET @enddate='2020-02-29';
 
 
 -- set @package='INTELENOVELA';
@@ -19,9 +19,9 @@ SET @package='VOD';
 
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
 
-select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.firstactive from 
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region, a.firstactive from 
 (
-	select clientcode, clientclass, clienttype, min(period) as firstactive
+	select clientcode, clientclass, clienttype, min(period) as firstactive, region
 	from rcbill_my.customercontractactivity 
 	where 
 	clientcode in 
@@ -41,9 +41,9 @@ SET @package='INTELENOVELA';
 
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
 
-select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.firstactive from 
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region, a.firstactive from 
 (
-	select clientcode, clientclass, clienttype, min(period) as firstactive
+	select clientcode, clientclass, clienttype, min(period) as firstactive, region
 	from rcbill_my.customercontractactivity 
 	where 
 	clientcode in 
@@ -63,9 +63,9 @@ SET @package='DUALVIEW';
 
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
 
-select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.firstactive from 
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region, a.firstactive from 
 (
-	select clientcode, clientclass, clienttype, min(period) as firstactive
+	select clientcode, clientclass, clienttype, min(period) as firstactive, region
 	from rcbill_my.customercontractactivity 
 	where 
 	clientcode in 
@@ -84,9 +84,9 @@ where a.firstactive>=@startdate
 SET @package='MULTIVIEW';
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
 
-select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.firstactive from 
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region, a.firstactive from 
 (
-	select clientcode, clientclass, clienttype, min(period) as firstactive
+	select clientcode, clientclass, clienttype, min(period) as firstactive, region
 	from rcbill_my.customercontractactivity 
 	where 
 	clientcode in 
@@ -106,9 +106,9 @@ SET @package='IGO';
 
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
 
-select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.firstactive from 
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region, a.firstactive from 
 (
-	select clientcode, clientclass, clienttype, min(period) as firstactive
+	select clientcode, clientclass, clienttype, min(period) as firstactive, region
 	from rcbill_my.customercontractactivity 
 	where 
 	clientcode in 
@@ -127,9 +127,9 @@ where a.firstactive>=@startdate
 SET @package='INDIAN';
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
 
-select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.firstactive from 
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region, a.firstactive from 
 (
-	select clientcode, clientclass, clienttype, min(period) as firstactive
+	select clientcode, clientclass, clienttype, min(period) as firstactive, region
 	from rcbill_my.customercontractactivity 
 	where 
 	clientcode in 
@@ -148,9 +148,9 @@ where a.firstactive>=@startdate
 SET @package='FRENCH';
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
 
-select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.firstactive from 
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region, a.firstactive from 
 (
-	select clientcode, clientclass, clienttype, min(period) as firstactive
+	select clientcode, clientclass, clienttype, min(period) as firstactive, region
 	from rcbill_my.customercontractactivity 
 	where 
 	clientcode in 
