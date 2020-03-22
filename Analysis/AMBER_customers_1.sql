@@ -92,7 +92,8 @@ from
 
 	where a.clientcode in 
 	(
-	 select distinct clientcode from rcbill_my.customercontractactivity where upper(package) in ('AMBER','AMBER CORPORATE')
+	 -- select distinct clientcode from rcbill_my.customercontractactivity where upper(package) in ('AMBER','AMBER CORPORATE')
+     select distinct clientcode from rcbill_my.customercontractsnapshot where upper(package) in ('AMBER','AMBER CORPORATE')
      -- select distinct clientcode from rcbill_my.customercontractactivity where upper(package) in ('AMBER','AMBER CORPORATE') and period='2019-03-31'
 	) 
 ) a 
