@@ -23,3 +23,8 @@ create index IDXrcbcps2 on rcbill.rcb_clientparcelcoords (INSERTEDON);
 
 select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
 -- 
+
+/*
+set sql_safe_updates=0;
+delete from rcbill.rcb_clientparcelcoords where date(insertedon)='2020-03-22';
+*/

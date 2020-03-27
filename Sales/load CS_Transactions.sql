@@ -76,7 +76,8 @@
 
 
 -- 	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/CyberSource/CS_Transactions_20190821-20190902.csv'
- 	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/CyberSource/CS_Transactions_20190903-20190904.csv'
+-- 	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/CyberSource/CS_Transactions_20190903-20190904.csv'
+ 	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/CyberSource/CS_Transactions_20200325.csv'
 
 
 REPLACE INTO TABLE `rcbill_my`.`cs_transactions` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 

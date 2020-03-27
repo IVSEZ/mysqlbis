@@ -66,3 +66,39 @@ from
 ) a
 ;
 
+select * from rcbill_my.onlinepayments;
+
+select year(paymentdate) as paymentyear, month(paymentdate) as paymentmonth, count(distinct clientcode) as d_clients
+from rcbill_my.onlinepayments
+group by 1, 2
+;
+
+
+-- select * from rcbill_my.rep_paycol_channel;
+-- select * from rcbill_my.rep_paycol_pos;
+
+select payyear, paymth, pay_pos, sum(pay_amount) as pay_amount
+from rcbill_my.rep_paycol_pos
+group by 1,2,3
+order by 1 desc, 2 desc, 4 desc
+;
+
+
+select payyear, paymth,  pay_channel, sum(pay_amount) as pay_amount
+from rcbill_my.rep_paycol_channel
+group by 1,2,3
+order by 1 desc, 2 desc, 4 desc
+;
+
+select payyear, paymth, payday, pay_pos, sum(pay_amount) as pay_amount
+from rcbill_my.rep_paycol_pos
+group by 1,2,3, 4
+order by 1 desc, 2 desc, 3 desc, 5 desc
+;
+
+
+select payyear, paymth, payday, pay_channel, sum(pay_amount) as pay_amount
+from rcbill_my.rep_paycol_channel
+group by 1,2,3, 4
+order by 1 desc, 2 desc, 3 desc, 5 desc
+;

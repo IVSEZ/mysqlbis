@@ -5,11 +5,12 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 ####################################################################################
+#DAILY SCRIPT BATCH CODE
 #RUN DAILY-SCRIPT-TELEMETRY.sql first#
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@#mysql 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20200321_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20200326_1.out
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
@@ -91,6 +92,8 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 exit
 
+#DAILY SCRIPT BATCH CODE
+####################################################################################
 
 
 
@@ -99,8 +102,6 @@ exit
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\sales-to-activenumber.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-
-####################################################################################
 
 select * from rcbill_my.rep_livetvstats;
 select * from rcbill_my.rep_vodstats;
@@ -111,7 +112,7 @@ use rcbill_my;
 
 call sp_ActiveNumber(31,07,2019,'','');
 
-call sp_GetActiveNumberFromTo('2020-03-06','2020-03-19');
+call sp_GetActiveNumberFromTo('2020-03-20','2020-03-24');
 
 
 select * from rcbill_my.clientstats where VOD>0 and DualView>0

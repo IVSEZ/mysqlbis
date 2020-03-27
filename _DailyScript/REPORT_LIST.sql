@@ -380,6 +380,15 @@ where year(commentdate)=year(now())
 group by commentuser
 order by 2 desc;
 
+select commentuser, date(commentdate) as cmt_date,  count(comment) as comments, count(distinct ticketid) as d_tickets
+from 
+rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=year(now())
+and commentuser in ('Rahul Walavalkar')
+group by commentuser,2
+order by 2 desc;
+
+
 
 ### tickets by user for 2019
 select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
