@@ -92,6 +92,8 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 exit
 
+
+
 #DAILY SCRIPT BATCH CODE
 ####################################################################################
 
