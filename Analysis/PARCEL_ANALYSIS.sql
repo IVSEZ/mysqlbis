@@ -3,11 +3,16 @@ select * from rcbill_my.rep_custconsolidated;
 
 select * from rcbill.rcb_clientparcels;
 
+select date(insertedon) as dateinserted, count(clientparcel) as parcels
+from rcbill.rcb_clientparcelcoords 
+group by 1
+order by 1 desc
+;
+
 select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
 select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
 
 select * from rcbill.rcb_clientparcelcoords where latitude = 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
-
 
 
 select clientcode, clientname, clientparcel
@@ -117,7 +122,7 @@ select * from rcbill_my.rep_custextract20191211; -- where orig_clientcode='I.000
 
 -- drop table if exists rcbill_my.rep_custextract_compare20200116;
 
-create table rcbill_my.rep_custextract_compare20200325 as 
+create table rcbill_my.rep_custextract_compare20200329 as 
 (
 	select -- a.*,b.*
 		a.orig_reportdate , b.reportdate ,
@@ -227,9 +232,9 @@ create table rcbill_my.rep_custextract_compare20200325 as
 )
 ;
 
-select * from rcbill_my.rep_custextract_compare20200325 where 0=0 ;
+select * from rcbill_my.rep_custextract_compare20200329 where 0=0 ;
 
-select * from rcbill_my.rep_custextract_compare20200325 where 0=0 and ONE_YEAR='ONE YEAR';
+select * from rcbill_my.rep_custextract_compare20200329 where 0=0 and ONE_YEAR='ONE YEAR';
 
 
 
