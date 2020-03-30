@@ -23,7 +23,10 @@ group by 1,2,3,4,5, 6
 order by commentdate asc
 ;
 
-select * from rcbill.rcb_casa where CLID in (select id from rcbill.rcb_tclients where kod='I.000005861');
+select * from rcbill.rcb_casa where CLID in (select id from rcbill.rcb_tclients where kod='I.000005861') order by ID desc;
+select * from rcbill.rcb_invoicesheader where CLID in (select id from rcbill.rcb_tclients where kod='I.000005861') order by ID desc;
+select * from rcbill.rcb_invoicescontents where CLID in (select id from rcbill.rcb_tclients where kod='I.000005861') order by ID desc;
+
 
 
 select clientcode, clientname, contractcode, month(OPENDATE) as OPENMONTH, year(OPENDATE) as OPENYEAR,  count(distinct ticketid) as d_tickets from  rcbill_my.clientticketjourney 
