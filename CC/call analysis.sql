@@ -1,6 +1,11 @@
-select a.*, upper(b.CCAGENT) as CCAGENT from rcbill_my.callstats a left join rcbill_my.ccrota b on a.calldate=b.ccdate and a.shift=b.ccshift and upper(a.callagent)=upper(b.ccnumber) order by a.calldate desc;
+select a.*, upper(b.CCAGENT) as CCAGENT from rcbill_my.callstats a left join rcbill_my.ccrota b on a.calldate=b.ccdate and upper(trim(a.shift))=upper(trim(b.ccshift)) and upper(trim(a.callagent))=upper(trim(b.ccnumber)) order by a.calldate desc;
+
+select * from rcbill_my.callstats order by calldate desc;
+select * from rcbill_my.ccrota order by ccrotaid desc;
+
 
 show index from rcbill_my.callstats;
+
 show index from rcbill_my.ccrota;
 
 
