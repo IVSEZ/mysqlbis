@@ -283,6 +283,8 @@ select * from rcbill_my.dailyactivenumber where period in ('2018-04-02','2018-04
 
 delete from rcbill_my.dailyactivenumber where period in ('2018-04-02','2018-04-03','2018-04-04','2018-04-05','2018-04-06','2018-04-07','2018-04-08','2018-04-09','2018-04-10')
 
+delete from rcbill_my.dailyactivenumber where period in ('2020-03-28')
+
 */
 
 
@@ -406,6 +408,7 @@ select * from rcbill_my.customercontractactivity where period in ('2018-04-02','
 
 delete from rcbill_my.customercontractactivity where period in ('2018-04-02','2018-04-03','2018-04-04','2018-04-05','2018-04-06','2018-04-07','2018-04-08','2018-04-09','2018-04-10')
 
+delete from rcbill_my.customercontractactivity where period in ('2020-03-28')
 
 -- select *, rcbill_my.GetServiceCategory2(service) from rcbill_my.activeccl where clientcode='I.000011750';
 
