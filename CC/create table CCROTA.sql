@@ -14,3 +14,7 @@ CREATE TABLE `ccrota` (
 primary key (`CCROTAID`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+drop index IDXCD1 on ccrota;
+
+CREATE INDEX IDXCD1
+ON ccrota (CCDATE, CCSHIFT, CCNUMBER);

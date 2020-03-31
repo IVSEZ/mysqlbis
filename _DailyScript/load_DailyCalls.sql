@@ -339,7 +339,7 @@ order by a.calldate desc
 
 
 drop table if exists rcbill_my.callstats;
-create table rcbill_my.callstats(index idxcd(CALLDATE)) as 
+create table rcbill_my.callstats(index idxcd(CALLDATE, SHIFT, CALLAGENT)) as 
 (
 	SELECT call_date as CALLDATE, `SHIFT`, trim(upper(CALLAGENT)) as CALLAGENT, CALLEVENTNAME, count(1) as CALLCOUNT
 	FROM 

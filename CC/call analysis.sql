@@ -1,3 +1,4 @@
+explain
 select a.*, upper(b.CCAGENT) as CCAGENT from rcbill_my.callstats a left join rcbill_my.ccrota b on a.calldate=b.ccdate and upper(trim(a.shift))=upper(trim(b.ccshift)) and upper(trim(a.callagent))=upper(trim(b.ccnumber)) order by a.calldate desc;
 
 select * from rcbill_my.callstats order by calldate desc;
