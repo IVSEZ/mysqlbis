@@ -1,3 +1,10 @@
+select a.*, upper(b.CCAGENT) as CCAGENT from rcbill_my.callstats a left join rcbill_my.ccrota b on a.calldate=b.ccdate and a.shift=b.ccshift and upper(a.callagent)=upper(b.ccnumber) order by a.calldate desc;
+
+show index from rcbill_my.callstats;
+show index from rcbill_my.ccrota;
+
+
+
 
 select a.*, b.mphone, b.firm as ClientName,  b.kod as ClientCode 
 from rcbill_my.dailycalls a left join 
