@@ -7,6 +7,9 @@ and (trim(upper(comment)) REGEXP 'VOUCHER')
 order by commentdate desc
 ;
 
+
+#### VOUCHER STATS FOR REPORT
+
 select a.*
 -- , b.*
 , b.IsAccountActive, b.AccountActivityStage, b.activenetwork, b.activeservices, b.clientclass, b.clientaddress, b.clientarea
@@ -33,6 +36,11 @@ inner join
 rcbill_my.rep_custconsolidated b
 on a.clientcode=b.clientcode
 ;
+
+
+
+
+
 
 select * from rcbill.rcb_casa where CLID in (select id from rcbill.rcb_tclients where kod='I.000005861') order by ID desc;
 select * from rcbill.rcb_invoicesheader where CLID in (select id from rcbill.rcb_tclients where kod='I.000005861') order by ID desc;
