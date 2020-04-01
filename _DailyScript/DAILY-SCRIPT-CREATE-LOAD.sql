@@ -865,7 +865,7 @@ create table client contract devices
 */
 
 drop table if exists rcbill.clientcontractdevices;
-create table rcbill.clientcontractdevices(INDEX idxccd1 (mac), INDEX idxccd2 (contractcode), INDEX idxccd3 (clientcode), INDEX idxccd4 (phoneno)) as 
+create table rcbill.clientcontractdevices(INDEX idxccd1 (mac), INDEX idxccd2 (contractcode), INDEX idxccd3 (clientcode), INDEX idxccd4 (phoneno), INDEX idxccd5(CSID)) as 
 (
 /*
 select a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, b.id as ContractId,b.kod as ContractCode, b.ContractType
