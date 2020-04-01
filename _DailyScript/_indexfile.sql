@@ -116,9 +116,9 @@ select * from rcbill_my.rep_radiostats;
 
 use rcbill_my;
 
-call sp_ActiveNumber(31,07,2019,'','');
+call sp_ActiveNumber(31,03,2020,'','');
 
-call sp_GetActiveNumberFromTo('2020-03-25','2020-03-30');
+call sp_GetActiveNumberFromTo('2020-03-31','2020-03-31');
 
 
 select * from rcbill_my.clientstats where VOD>0 and DualView>0

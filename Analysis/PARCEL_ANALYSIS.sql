@@ -74,6 +74,7 @@ as
 -- show index from rcbill_my.rep_custextract;
 select * from rcbill_my.rep_custextract;
 select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR'; -- and clientclass='CORPORATE LARGE';
+select * from rcbill_my.rep_custextract where PARCEL_PRESENT='PRESENT'; -- and clientclass='CORPORATE LARGE';
 
 ### to put in a table to verify data against.
 -- drop table if exists rcbill_my.rep_custextract20191211;
@@ -122,7 +123,7 @@ select * from rcbill_my.rep_custextract20191211; -- where orig_clientcode='I.000
 
 -- drop table if exists rcbill_my.rep_custextract_compare20200116;
 
-create table rcbill_my.rep_custextract_compare20200329 as 
+create table rcbill_my.rep_custextract_compare20200331 as 
 (
 	select -- a.*,b.*
 		a.orig_reportdate , b.reportdate ,
@@ -232,9 +233,9 @@ create table rcbill_my.rep_custextract_compare20200329 as
 )
 ;
 
-select * from rcbill_my.rep_custextract_compare20200329 where 0=0 ;
+select * from rcbill_my.rep_custextract_compare20200331 where 0=0 ;
 
-select * from rcbill_my.rep_custextract_compare20200329 where 0=0 and ONE_YEAR='ONE YEAR';
+select * from rcbill_my.rep_custextract_compare20200331 where 0=0 and ONE_YEAR='ONE YEAR';
 
 
 
