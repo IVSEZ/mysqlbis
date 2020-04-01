@@ -9,7 +9,7 @@ use rcbill_my;
 -- SET @rundate='2020-03-01';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-25082019-02092019.csv'
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-30032020.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-31032020.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -100,7 +100,7 @@ reported = (select reported from rcbill_my.lkpreported where servicenewtype=serv
 ;
 
 select period, count(1) from rcbill_my.activenumber group by period order by period desc
-limit 6
+limit 5
 ;
 
 drop table if exists rcbill_my.packagelist;
@@ -172,8 +172,8 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2020-03-27'; SET @perioddate=str_to_date('2020-03-27','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-03-27;2020-03-27.csv'
 -- 	SET @rundate='2020-03-28'; SET @perioddate=str_to_date('2020-03-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-03-28;2020-03-28.csv'
 -- 	SET @rundate='2020-03-29'; SET @perioddate=str_to_date('2020-03-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-03-29;2020-03-29.csv'
- 	SET @rundate='2020-03-30'; SET @perioddate=str_to_date('2020-03-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-03-30;2020-03-30.csv'
--- 	SET @rundate='2020-03-31'; SET @perioddate=str_to_date('2020-03-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-03-31;2020-03-31.csv'
+-- 	SET @rundate='2020-03-30'; SET @perioddate=str_to_date('2020-03-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-03-30;2020-03-30.csv'
+ 	SET @rundate='2020-03-31'; SET @perioddate=str_to_date('2020-03-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-03-31;2020-03-31.csv'
 
 
 REPLACE INTO TABLE `rcbill_my`.`dailyactivenumber` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
