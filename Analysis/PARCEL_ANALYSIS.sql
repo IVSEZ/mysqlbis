@@ -15,6 +15,25 @@ select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(inserte
 select * from rcbill.rcb_clientparcelcoords where latitude = 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
 
 
+select date(insertedon) as inserteddate
+, count(clientcode) as clients
+from rcbill.rcb_clientparcelcoords
+group by 1
+order by 1 desc
+;  
+
+select date(insertedon) as inserteddate
+, case when coord_x='MISSING' then 'INVALID'
+		else 'VALID' 
+        end as `PARCEL_STATUS`
+
+, count(clientcode) as clients
+from rcbill.rcb_clientparcelcoords
+group by 1,2
+order by 1 desc
+;  
+
+
 select clientcode, clientname, clientparcel
 -- , a1_parcel, a2_parcel, a3_parcel, NULLIF(a1_parcel,''), NULLIF(a2_parcel,''), NULLIF(a3_parcel,'') 
 -- , ifnull(NULLIF(a1_parcel,''),ifnull(NULLIF(a2_parcel,''),NULLIF(a3_parcel,''))) as PARCEL
