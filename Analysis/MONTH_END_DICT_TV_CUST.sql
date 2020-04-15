@@ -29,7 +29,10 @@
 -- set @period='2019-09-30';
 -- set @period='2019-10-31';
 -- set @period='2019-11-30';
- set @period='2019-12-31';
+-- set @period='2019-12-31';
+ set @period='2020-01-31';
+-- set @period='2020-02-29';
+-- set @period='2020-03-31';
 
 /*
 select * from rcbill_my.customercontractactivity 
@@ -70,6 +73,7 @@ select servicecategory, package
 , `20190430`, `20190531`, `20190630`
 , `20190731`, `20190831`, `20190930`
 , `20191031`, `20191130`, `20191231`
+, `20200131`, `20200229`, `20200331`
  from rcbill_my.rep_activenumberlastday_pv;
 
 
