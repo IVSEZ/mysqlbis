@@ -195,9 +195,10 @@ select
 , a.FAX AS FAXNUMBER
 , a.KOD AS CUSTOMERACCOUNTNUMBER
 
-, b.
+, b.KOD AS SERVICEACCCOUNTNUMBER
+, (select cs.LABEL from rcbill.rcb_ContractStates cs where cs.ID=b.Active) as CONTRACTSTATUS
 
-
+/*
 , b.CreditPolicyId as CreditPolicyId
 , (select NAME from RCBill.dbo.CreditPolicy where id=b.CreditPolicyId) as CreditPolicyName
 , (select BillingPeriod from RCBill.dbo.CreditPolicy where id=b.CreditPolicyId) as BILLCYCLE
@@ -205,7 +206,6 @@ select
 , (select LABEL from RCBill.dbo.ContractCommChannels_LNG where LNG='en' and id=b.CommChanelID) as BILLDELIVERYMODE
 , b.Currency as CURRENCY
 , b.Active as Active
-, (select LABEL from RCBill.dbo.ContractStates_view_LNG where LNG='en' and id=b.Active) as CONTRACTSTATUS
 , b.ActivatedDate as ACTIVATIONDATE
 , b.LastActionID as LastActionID
 , (select LABEL from RCBill.dbo.ContractActions_view_LNG where LNG='en' and id=b.LastActionID) as LASTACTION
@@ -220,19 +220,19 @@ select
 , b.USERID AS CREATEDBYID
 , (SELECT NAME FROM RCBill.dbo.USERS where id=b.USERID) as CREATEDBYNAME
 
-
+*/
 
 FROM 
- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (13) order by ID desc)as a
+-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (13) order by ID desc)as a
 -- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (10,14) order by ID desc)as a
 -- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (16) order by ID desc)as a
 -- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (6) order by ID desc)as a
 -- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (7) order by ID desc)as a
 -- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (3) order by ID desc)as a
 -- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (2) order by ID desc)as a
-
+ rcbill.rcb_tclients a 
 inner join 
-RCBill.dbo.Contracts as b
+rcbill.rcb_contracts b
 on a.ID=b.CLID
 ORDER BY a.ID DESC
 ;
