@@ -182,7 +182,7 @@ ORDER BY ID DESC;
 
 select
  quote(substring_index(trim(replace(FIRM,',','')),' ',1)) as FIRSTNAME
-, quote(substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',',''))))) as LASTNAME
+, quote(trim(substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',','')))))) as LASTNAME
 , quote(TRIM(REPLACE(a.MOLADDRESS,'CITY',''))) AS ADDRESSONE
 , quote(TRIM(REPLACE(a.ADDRESS,'CITY',''))) AS ADDRESSTWO
 , quote(TRIM(REPLACE(a.MOLRegistrationAddress,'CITY',''))) AS ADDRESSTHREE
