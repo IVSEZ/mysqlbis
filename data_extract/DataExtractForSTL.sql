@@ -176,7 +176,9 @@ ORDER BY a.ID DESC
 select 'SERVICE ACCOUNT' AS TABLENAME;
 -- sele
 
-select * from rcbill.rcb_contracts ORDER BY ID DESC;
+select * from rcbill.rcb_contracts
+-- where clid in (select CLID from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR') 
+ORDER BY ID DESC;
 
 select
  quote(substring_index(trim(replace(FIRM,',','')),' ',1)) as FIRSTNAME
