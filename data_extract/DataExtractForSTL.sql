@@ -29,7 +29,7 @@ select
 -- 0
 -- , ID
  quote(substring_index(trim(replace(FIRM,',','')),' ',1)) as FIRSTNAME
-, quote(substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',',''))))) as LASTNAME
+, quote(trim(substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',','')))))) as LASTNAME
 /*
 -- REMOVED FROM CA AS IT IS MAPPED WITH SA
 , case 
@@ -71,10 +71,28 @@ select
 , BEGDATE AS ACTIVATIONDATE
 , '' AS STATUSCHANGEDATE
 -- , USERID AS CREATEDBYID
-, DANNO AS NINNUMBER
-, PASSNo AS PASSPORTNUMBER
-, BULSTAT AS BUSREGNNUMBER
-, MEGN AS TAXNUMBER
+, case 
+	when FIZLICE = 0 then 'BUSINESS REGISTRATION NUMBER'
+    when FIZLICE = 1 then 'NIN NUMBER'
+    when FIZLICE = 2 then 'PASSPORT NUMBER'
+    
+    end as `PRIMARY_ID_TYPE`
+
+, case 
+	when FIZLICE = 0 then BULSTAT
+    when FIZLICE = 1 then DANNO
+    when FIZLICE = 2 then PASSNO
+    
+    end as `PRIMARY_ID_VALUE`    
+
+, case
+	when length(MEGN)>0 then 'TAX NUMBER'
+    end as `SECONDARY_ID_TYPE`
+    
+, case
+	when length(MEGN)>0 then MEGN
+    end as `SECONDARY_ID_VALUE`
+
 -- , DANNO AS CORPORATETAXNUMBER
 -- , FIZLICE AS TAXNUMBERINDICATOR #(0=Business, 1=Residential, 2=Expatriate)
 , 
@@ -98,6 +116,10 @@ select
 , (select coord_y from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS YCOORDINATE
     
 , ID AS ACCOUNTID
+, DANNO AS NINNUMBER
+, PASSNo AS PASSPORTNUMBER
+, BULSTAT AS BUSREGNNUMBER
+, MEGN AS TAXNUMBER
     
     
 from rcbill.rcb_tclients a 
@@ -119,15 +141,15 @@ select
 -- 0
 -- , ID
  quote(substring_index(trim(replace(FIRM,',','')),' ',1)) as FIRSTNAME
-, quote(substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',',''))))) as LASTNAME
+, quote(trim(substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',','')))))) as LASTNAME
 , 'DEFAULT' as BILLCYCLE
 , 'EMAIL' AS BILLDELIVERYMODE
 , 'SCR' AS CURRENCY
 
 
-, TRIM(REPLACE(MOLADDRESS,'CITY','')) AS ADDRESSONE
-, TRIM(REPLACE(ADDRESS,'CITY','')) AS ADDRESSTWO
-, TRIM(REPLACE(MOLRegistrationAddress,'CITY','')) AS ADDRESSTHREE
+-- , TRIM(REPLACE(MOLADDRESS,'CITY','')) AS ADDRESSONE
+-- , TRIM(REPLACE(ADDRESS,'CITY','')) AS ADDRESSTWO
+-- , TRIM(REPLACE(MOLRegistrationAddress,'CITY','')) AS ADDRESSTHREE
 , CITY AS CITY
 , (SELECT ClientSubDistrict from rcbill.rcb_clientaddress where ClientCode=a.KOD) as SUBDISTRICT
 , (SELECT ClientLocation from rcbill.rcb_clientaddress where ClientCode=a.KOD) as DISTRICT
@@ -156,6 +178,13 @@ select
 , '' AS PROPERTYTYPE
 , (select CLIENTPARCEL from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER
 , MOLADDRESS AS LANDMARK     
+, (select latitude from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS LATITUDE
+, (select longitude from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS LONGITUDE
+, '' AS FLOOR
+
+, 'PREPAID' AS CHARGINGPATTERN
+, (select coord_x from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS XCOORDINATE
+, (select coord_y from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS YCOORDINATE
     
     
 from rcbill.rcb_tclients a 
@@ -294,6 +323,98 @@ where a.kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR=
 ORDER BY b.ID DESC
 
 ;
+
+
+
+-- =========================================================
+
+-- SERVICE INSTANCES
+select 'SERVICE INSTANCE' AS TABLENAME;
+-- SELECT * from RCBill.dbo.Contracts where clid in (select top 1000 id from RCBill.dbo.tCLIENTS order by ID desc)
+
+-- SELECT * FROM rcbill.rcb_ContractServices ;
+-- select * from RCBill.dbo.VPNRates
+-- SELECT TOP 100 * FROM RCBill.dbo.Devices ORDER BY ID DESC WHERE CSID=2205116
+
+-- SELECT TOP 100 * FROM RCBill.dbo.Devices ORDER BY ID DESC
+
+-- show index from rcbill.rcb_contracts;
+
+SELECT
+
+(select concat('B_',KOD) from rcbill.rcb_tclients where id=a.clid) as BILLINGACCOUNTNUMBER
+, a.KOD as SERVICEACCOUNTNUMBER
+, (select Name from rcbill.rcb_vpnrates where ID=b.ServiceRateID) as PACKAGENAME
+, b.ID as SERVICEINSTANCENUMBER
+, b.Active as SERVICESTATUS
+, c.username as USERNAME
+, a.DATA AS CREATEDDATE
+, b.StartDate as ACTIVATIONDATE
+, b.UpdDate as STATUSCHANGEDDATE
+, a.LastActionID as LastActionID
+, (select `Value` from rcbill.rcb_contractslastaction where id=a.LastActionID) as CONTRACTLASTACTION
+, (select Price from rcbill.rcb_vpnrates where ID=b.ServiceRateID) as PACKAGEAMOUNT
+
+, '' as CPE_TYPE
+, c.mac as CPE_ID
+, c.phoneno as PHONENO
+, c.NATIP as NATIP
+
+, b.ServiceID as ServiceID
+, b.ServiceRateID as ServiceRateID
+, (select Name from rcbill.rcb_services where ID=b.ServiceID) as SERVICETYPE
+, (select Name from rcbill.rcb_vpnrates where ID=b.ServiceRateID) as CPETYPE
+
+
+/*
+, (select UserName from rcbill.rcb_devices where CSID=b.ID order by UserName asc limit 1) as USERNAME
+, (select PhoneNo from rcbill.rcb_devices where CSID=b.ID order by PhoneNo asc limit 1) as CPEID_PHONE
+, (select NATIP from rcbill.rcb_devices where CSID=b.ID  order by NATIP asc limit 1) as CPEID_NATIP
+, (select MAC from rcbill.rcb_devices where CSID=b.ID  order by MAC asc limit 1) as CPEID_MAC
+, (select SerNo from rcbill.rcb_devices where CSID=b.ID  order by SerNo asc limit 1) as CPEID_SERNO
+*/
+
+
+-- , a.DATA as CONTRACTDATE
+, a.StartDate as CONTRACTSTARTDATE
+, a.EndDate as CONTRACTENDDATE
+, '' as SERVICEREMARKS
+, '' as EXPIRYDATE
+
+, a.ValidityPeriod AS CONTRACTVALIDITYPERIOD
+, b.StartDate as SERVICESTARTDATE
+, b.EndDate as SERVICEENDDATE
+from 
+rcbill.rcb_contracts a 
+left join 
+rcbill.rcb_contractservices b
+on 
+a.ID=b.CID
+
+-- left join rcbill.rcb_devices c 
+left join rcbill.clientcontractdevices c
+on 
+b.id=c.csid
+
+
+
+where a.clid 
+in 
+(select id from rcbill.rcb_tclients where kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR'))
+-- (select top 1000 id from RCBill.dbo.tCLIENTS  where CLClass in (13)  order by ID desc)
+-- (select top 1000 id from RCBill.dbo.tCLIENTS  where CLClass in (10,14)  order by ID desc)
+-- (select top 1000 id from RCBill.dbo.tCLIENTS  where CLClass in (16)  order by ID desc)
+-- (select top 1000 id from RCBill.dbo.tCLIENTS  where CLClass in (6)  order by ID desc)
+-- (select top 1000 id from RCBill.dbo.tCLIENTS  where CLClass in (7)  order by ID desc)
+-- (select top 1000 id from RCBill.dbo.tCLIENTS  where CLClass in (3)  order by ID desc)
+-- (select top 1000 id from RCBill.dbo.tCLIENTS  where CLClass in (2)  order by ID desc)
+
+
+
+ORDER BY a.CLID desc
+
+;
+-- =========================================================
 
 
 ###################################################################################
