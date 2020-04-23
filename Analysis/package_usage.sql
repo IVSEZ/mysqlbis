@@ -49,7 +49,8 @@ create table rcbill_my.tempcppd as
 	ON rcbill_my.tempcppd (period);
 	CREATE INDEX idxtempcppd3
 	ON rcbill_my.tempcppd (csid);
-
+	CREATE INDEX idxtempcppd4
+	ON rcbill_my.tempcppd (contractid, csid, period);
 
 -- select * from rcbill_my.tempcpp where contractcode='I.000344969' limit 100;
 -- show index from rcbill_my.tempcpp;
@@ -85,7 +86,8 @@ create table rcbill_my.tempipusage as
 	ON rcbill_my.tempipusage (usagedate);
 	CREATE INDEX idxtempipusage3
 	ON rcbill_my.tempipusage (csid);
-
+	CREATE INDEX idxtempipusage4
+	ON rcbill_my.tempipusage (cid, csid, usagedate);
 
 -- show index from rcbill_my.tempipusage;
 -- select * from rcbill_my.tempipusage where cid=2124054;
@@ -111,8 +113,18 @@ create table rcbill_my.tempipusageold as
 	CREATE INDEX idxtempipusageold3
 	ON rcbill_my.tempipusageold (csid);
     
+	CREATE INDEX idxtempipusageold4
+	ON rcbill_my.tempipusageold (cid, csid, usagedate);
+    
+    
 -- select * from rcbill_my.tempipusageold;
 
+/*
+select count(*) from rcbill_my.tempipusage;
+select count(*) from rcbill_my.tempcppd;
+
+
+*/
 
 drop table if exists rcbill_my.package_ip_usage;
 create table rcbill_my.package_ip_usage as
@@ -198,8 +210,9 @@ create table rcbill_my.package_ip_usage as
 -- )
 ;
 
-
+-- select count(1) from rcbill_my.package_ip_usage;
 -- select * from rcbill_my.package_ip_usage where clientcode='I.000011750';
+
 -- TrafficType
 -- select *, (select name from rcbill.rcb_traffictypes where id=TRAFFICTYPE) as ttype from rcbill_my.package_ip_usage where package in ('Crimson','Crimson Corporate');
 -- select *, (select name from rcbill.rcb_traffictypes where id=TRAFFICTYPE) as ttype from rcbill_my.package_ip_usage where package in ('Amber','Amber Corporate');
