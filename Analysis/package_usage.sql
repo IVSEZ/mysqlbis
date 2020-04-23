@@ -3,7 +3,7 @@
 -- duration 1883.640 sec
 
 set @startdate='2020-01-01';
-set @enddate='2020-01-31';
+set @enddate='2020-04-21';
 -- select * from rcbill_my.customercontractactivity where period>=@startdate and period<=@enddate
 
 drop table if exists rcbill_my.tempcpp;
@@ -53,7 +53,7 @@ create table rcbill_my.tempcppd as
 
 -- select * from rcbill_my.tempcpp where contractcode='I.000344969' limit 100;
 -- show index from rcbill_my.tempcpp;
--- select * from rcbill_my.tempcppd where contractcode='I.000344969' contractid=2164698 limit 100;
+-- select * from rcbill_my.tempcppd where contractcode='I.000290470' contractid=2164698 limit 100;
 -- show index from rcbill_my.tempcppd;
 
 -- select count(*) as tempcpp from rcbill_my.tempcpp;
@@ -61,8 +61,58 @@ create table rcbill_my.tempcppd as
 
 
 -- show index from rcbill.rcb_ipusage;
--- select * from rcbill.rcb_ipusage where usagedate>=@startdate and cid=2164698;
+-- select * from rcbill.rcb_ipusage where usagedate>=@startdate and cid=2124054;
 -- select * from rcbill.rcb_ipusage where usagedate>=@startdate and cid=2181700;
+
+-- RENAME TABLE rcbill_my.package_ip_usage TO rcbill_my.package_ip_usage2018;
+
+drop table if exists rcbill_my.tempipusage;
+create table rcbill_my.tempipusage as
+(
+		select *
+
+		from 
+		rcbill.rcb_ipusage a 
+        where 0=0
+        and a.USAGEDATE>=@startdate
+        and a.USAGEDATE<=@enddate
+
+);
+
+	CREATE INDEX idxtempipusage1
+	ON rcbill_my.tempipusage (cid);
+	CREATE INDEX idxtempipusage2
+	ON rcbill_my.tempipusage (usagedate);
+	CREATE INDEX idxtempipusage3
+	ON rcbill_my.tempipusage (csid);
+
+
+-- show index from rcbill_my.tempipusage;
+-- select * from rcbill_my.tempipusage where cid=2124054;
+
+
+drop table if exists rcbill_my.tempipusageold;
+create table rcbill_my.tempipusageold as
+(
+		select *
+
+		from 
+		rcbill.rcb_ipusageold a 
+        where 0=0
+        and a.USAGEDATE>=@startdate
+        and a.USAGEDATE<=@enddate
+
+);
+
+	CREATE INDEX idxtempipusageold1
+	ON rcbill_my.tempipusageold (cid);
+	CREATE INDEX idxtempipusageold2
+	ON rcbill_my.tempipusageold (usagedate);
+	CREATE INDEX idxtempipusageold3
+	ON rcbill_my.tempipusageold (csid);
+    
+-- select * from rcbill_my.tempipusageold;
+
 
 drop table if exists rcbill_my.package_ip_usage;
 create table rcbill_my.package_ip_usage as
@@ -87,7 +137,8 @@ create table rcbill_my.package_ip_usage as
         , b.contractid
 		,a.TRAFFICTYPE
 		from 
-		rcbill.rcb_ipusage a 
+		-- rcbill.rcb_ipusage a 
+        rcbill_my.tempipusage a
 		-- (
 		-- 	select * from rcbill.rcb_ipusage a where a.USAGEDATE>='2018-01-01 00:00:00'
         -- ) a
@@ -97,13 +148,14 @@ create table rcbill_my.package_ip_usage as
         and a.csid=b.csid
 		and a.USAGEDATE=b.period
         
-        where 0=0
-        and a.USAGEDATE>=@startdate
-        and a.USAGEDATE<=@enddate
+--        where 0=0
+--        and a.USAGEDATE>=@startdate
+--        and a.USAGEDATE<=@enddate
         -- where date(a.USAGEDATE)>='2018-01-01'
 		-- and a.deviceid=b.Deviceid
 	
     )
+    /*
     union
     (
     	select  a.USAGEDATE, a.CLIENTIP, 
@@ -125,7 +177,8 @@ create table rcbill_my.package_ip_usage as
         , b.contractid
 		,a.TRAFFICTYPE
 		from 
-		rcbill.rcb_ipusageold a 
+		-- rcbill.rcb_ipusageold a 
+        rcbill_my.tempipusageold
         -- (
 		-- select * from rcbill.rcb_ipusageold a where a.USAGEDATE>='2018-01-01 00:00:00'
         -- ) a 
@@ -140,7 +193,7 @@ create table rcbill_my.package_ip_usage as
         -- and a.deviceid=b.Deviceid
         -- where date(a.USAGEDATE)>='2018-01-01'
     ) 
-    
+    */
     
 -- )
 ;
