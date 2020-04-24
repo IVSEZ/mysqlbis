@@ -127,8 +127,54 @@ select count(*) from rcbill_my.tempcppd;
 */
 
 drop table if exists rcbill_my.package_ip_usage;
-create table rcbill_my.package_ip_usage as
+create table rcbill_my.package_ip_usage as 
+(
+
+  		select  a.USAGEDATE, a.CLIENTIP, 
+		-- all negative integers to be added with this number https://it.toolbox.com/question/function-required-to-convert-negative-ip-addresses-to-dotted-notation-021513
+		case when a.clientip<0 then INET_NTOA((a.clientip+4294967296)) 
+		else INET_NTOA(a.clientip)
+		end as processedclientip 
+		-- INET_NTOA(a.clientip) as processedclientip, INET_NTOA((a.clientip+4294967296)) as PIP
+		, b.contractcode
+        , b.package
+        , b.contracttype, b.clientcode
+        -- , b.clientname, b.clientaddress
+		, a.usagedirection, a.octets
+		, (a.octets)/(1024.0*1024.0) as MB_USED
+		, b.clientid, a.cid, a.csid, a.serviceid  
+		-- , b.phoneno, b.mac
+        , a.deviceid
+        -- , b.address
+        , b.contractid
+		,a.TRAFFICTYPE
+		from 
+		-- rcbill.rcb_ipusage a 
+        rcbill_my.tempipusage a
+		-- (
+		-- 	select * from rcbill.rcb_ipusage a where a.USAGEDATE>='2018-01-01 00:00:00'
+        -- ) a
+        left join 
+		rcbill_my.tempcppd  b 
+		on a.cid=b.contractid
+        and a.csid=b.csid
+		and a.USAGEDATE=b.period
+        
+--        where 0=0
+--        and a.USAGEDATE>=@startdate
+--        and a.USAGEDATE<=@enddate
+        -- where date(a.USAGEDATE)>='2018-01-01'
+		-- and a.deviceid=b.Deviceid
+        -- limit 10000000
+        
+
+)
+;
+
+
+-- create table rcbill_my.package_ip_usage as
 -- (
+/*
 	(
 		select  a.USAGEDATE, a.CLIENTIP, 
 		-- all negative integers to be added with this number https://it.toolbox.com/question/function-required-to-convert-negative-ip-addresses-to-dotted-notation-021513
@@ -167,6 +213,7 @@ create table rcbill_my.package_ip_usage as
 		-- and a.deviceid=b.Deviceid
 	
     )
+    */
     /*
     union
     (
@@ -208,14 +255,52 @@ create table rcbill_my.package_ip_usage as
     */
     
 -- )
-;
+-- ;
 
 -- select count(1) from rcbill_my.package_ip_usage;
--- select * from rcbill_my.package_ip_usage where clientcode='I.000011750';
+-- select * from rcbill_my.package_ip_usage where clientcode='I.000011750' and traffictype=9 and package='TURQUOISE HIGH TIDE';
+--  select * from rcbill_my.package_ip_usage where contracttype is null;
+-- select distinct contracttype from rcbill_my.package_ip_usage;
 
 -- TrafficType
+-- select * from rcbill.rcb_traffictypes;
 -- select *, (select name from rcbill.rcb_traffictypes where id=TRAFFICTYPE) as ttype from rcbill_my.package_ip_usage where package in ('Crimson','Crimson Corporate');
 -- select *, (select name from rcbill.rcb_traffictypes where id=TRAFFICTYPE) as ttype from rcbill_my.package_ip_usage where package in ('Amber','Amber Corporate');
+
+/*
+	select Month(usagedate) as USAGEMONTH, PACKAGE, NETWORK, TRAFFIC, count(distinct date(usagedate)) as usagedays
+	, count(clientcode) as clients, count(distinct clientcode) as d_clients
+	, sum(mb_used) as mb_used
+	from 
+	(
+		select *
+		, (select name from rcbill.rcb_traffictypes where id=TRAFFICTYPE) as TRAFFIC 
+		,
+		   case 
+				when contracttype='GNET' then 'GPON'
+                when contracttype='CAPPED GNET' then 'GPON'
+				when contracttype='BUNDLE (GPON)' then 'GPON'
+				when contracttype='BUNDLE (CI)' then 'HFC'
+				when contracttype='INTERNET' then 'HFC'
+                when contracttype='CAPPED INTERNET' then 'HFC'
+                when contracttype='INTERNET,' then 'HFC'
+                when contracttype='INTERNET, VOICE' then 'HFC'
+			end as NETWORK
+		from rcbill_my.package_ip_usage 
+        where 
+        0=0
+        -- and package in ('Crimson','Crimson Corporate')
+        -- and package in ('Amber','Amber Corporate')
+        -- and clientcode='I.000002333'
+	) a 
+	where
+	0=0 
+	and TRAFFIC='Default'
+	-- and date(usagedate)='2018-12-01'
+	group by 1, 2, 3, 4, 5
+
+*/
+
 
 
 select PACKAGE, NETWORK, TRAFFIC, mb_used, usagedays, clients, d_clients
@@ -234,9 +319,13 @@ from
 		,
 		   case 
 				when contracttype='GNET' then 'GPON'
+                when contracttype='CAPPED GNET' then 'GPON'
 				when contracttype='BUNDLE (GPON)' then 'GPON'
 				when contracttype='BUNDLE (CI)' then 'HFC'
 				when contracttype='INTERNET' then 'HFC'
+                when contracttype='CAPPED INTERNET' then 'HFC'
+                when contracttype='INTERNET,' then 'HFC'
+                when contracttype='INTERNET, VOICE' then 'HFC'
 			end as NETWORK
 		from rcbill_my.package_ip_usage 
         where 
