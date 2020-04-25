@@ -1,9 +1,11 @@
 -- select * from rcbill.clientcontractdevices limit 100;
 
 -- duration 1883.640 sec
+use rcbill_my;
 
 set @startdate='2020-01-01';
 set @enddate='2020-04-21';
+set @clientcode='I11044';
 -- select * from rcbill_my.customercontractactivity where period>=@startdate and period<=@enddate
 
 drop table if exists rcbill_my.tempcpp;
@@ -15,6 +17,7 @@ as
     0=0
     and servicecategory='Internet'
     and period>=@startdate and period<=@enddate
+    -- and clientcode=@clientcode
 );
 	CREATE INDEX tdxtempcpp1
 	ON rcbill_my.tempcpp (contractcode);
@@ -154,7 +157,7 @@ create table rcbill_my.package_ip_usage as
 		-- (
 		-- 	select * from rcbill.rcb_ipusage a where a.USAGEDATE>='2018-01-01 00:00:00'
         -- ) a
-        left join 
+        inner join 
 		rcbill_my.tempcppd  b 
 		on a.cid=b.contractid
         and a.csid=b.csid
@@ -258,7 +261,7 @@ create table rcbill_my.package_ip_usage as
 -- ;
 
 -- select count(1) from rcbill_my.package_ip_usage;
--- select * from rcbill_my.package_ip_usage where clientcode='I.000011750' and traffictype=9 and package='TURQUOISE HIGH TIDE';
+-- select * from rcbill_my.package_ip_usage where clientcode='I.000011750' and traffictype=9 and package='PERFORMANCE';
 --  select * from rcbill_my.package_ip_usage where contracttype is null;
 -- select distinct contracttype from rcbill_my.package_ip_usage;
 
@@ -291,25 +294,25 @@ create table rcbill_my.package_ip_usage as
         0=0
         -- and package in ('Crimson','Crimson Corporate')
         -- and package in ('Amber','Amber Corporate')
-        -- and clientcode='I.000002333'
+        and clientcode='I.000011750'
 	) a 
 	where
 	0=0 
 	and TRAFFIC='Default'
 	-- and date(usagedate)='2018-12-01'
-	group by 1, 2, 3, 4, 5
+	group by 1, 2, 3, 4
 
 */
 
 
 
-select PACKAGE, NETWORK, TRAFFIC, mb_used, usagedays, clients, d_clients
+select USAGEMONTH, PACKAGE, NETWORK, TRAFFIC, mb_used, usagedays, clients, d_clients
 , (mb_used/d_clients) as usageperclient
 , (mb_used/usagedays) as usageperday
 , ((mb_used/d_clients)/usagedays) as usageperclientperday
 from
 (
-	select PACKAGE, NETWORK, TRAFFIC, count(distinct date(usagedate)) as usagedays
+	select Month(usagedate) as USAGEMONTH, PACKAGE, NETWORK, TRAFFIC, count(distinct date(usagedate)) as usagedays
 	, count(clientcode) as clients, count(distinct clientcode) as d_clients
 	, sum(mb_used) as mb_used
 	from 
@@ -338,7 +341,7 @@ from
 	0=0 
 	and TRAFFIC='Default'
 	-- and date(usagedate)='2018-12-01'
-	group by 1, 2, 3
+	group by 1, 2, 3, 4
 ) a
 ;
 
