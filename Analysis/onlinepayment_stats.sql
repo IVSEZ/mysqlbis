@@ -76,7 +76,7 @@ group by 1, 2
 
 -- select * from rcbill_my.rep_paycol_channel;
 -- select * from rcbill_my.rep_paycol_pos;
-
+### REPORT FOR CHAIRMAN
 select payyear, paymth, pay_pos, sum(pay_amount) as pay_amount
 from rcbill_my.rep_paycol_pos
 group by 1,2,3
@@ -89,6 +89,8 @@ from rcbill_my.rep_paycol_channel
 group by 1,2,3
 order by 1 desc, 2 desc, 4 desc
 ;
+### REPORT FOR CHAIRMAN
+
 
 select payyear, paymth, payday, pay_pos, sum(pay_amount) as pay_amount
 from rcbill_my.rep_paycol_pos
