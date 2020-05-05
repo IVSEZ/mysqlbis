@@ -1,6 +1,6 @@
 select date(max(PAYMENTDATE)) as LASTPAYMENTDATE from rcbill_my.onlinepayments;
 
-select * from rcbill_my.onlinepayments;
+select * from rcbill_my.onlinepayments order by PAYMENTDATE desc li;
 
 select * from 
 (
@@ -18,7 +18,7 @@ order by 1 desc, 2 desc, 3 desc
 -- limit 5
 ;
 
-
+##REPORT TO FIND HOW MANY CUSTOMERS PAID ONLINE
 select * from 
 (
 select 
