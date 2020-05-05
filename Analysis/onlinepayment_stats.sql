@@ -1,5 +1,6 @@
 select date(max(PAYMENTDATE)) as LASTPAYMENTDATE from rcbill_my.onlinepayments;
 
+select * from rcbill_my.onlinepayments;
 
 select * from 
 (
@@ -22,10 +23,12 @@ select * from
 (
 select 
 -- date(paymentdate) as paymentdate, 
-year(paymentdate) as paymentyear, month(paymentdate) as paymentmonth, count(1) as onlinepayments, sum(paymentamount) as onlinepaymentamount 
+year(paymentdate) as paymentyear, month(paymentdate) as paymentmonth
+, count(distinct CLIENTCODE) as clients
+, count(1) as onlinepayments, sum(paymentamount) as onlinepaymentamount 
 from rcbill_my.onlinepayments
 group by 1, 2
-with rollup
+-- with rollup
 ) t
 order by 1 desc, 2 desc
 -- limit 5
