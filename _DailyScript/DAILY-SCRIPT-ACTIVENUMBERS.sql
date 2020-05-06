@@ -396,6 +396,9 @@ CREATE INDEX IDXaccl6
 ON rcbill_my.activeccl (cl_longitude);
 
 
+-- select * from rcbill_my.activeccl where clientcode='I.000004055';
+
+
 select count(1) as countbefore from rcbill_my.customercontractactivity;
 #now insert the daily activity table into the customer contract activity table. 
 insert into rcbill_my.customercontractactivity
@@ -495,7 +498,7 @@ ON rcbill_my.customercontractsnapshot (ClientName);
 CREATE INDEX IDXccs3
 ON rcbill_my.customercontractsnapshot (contractcode);
 
--- select * from rcbill_my.customercontractsnapshot where clientcode='I.000005828';
+-- select * from rcbill_my.customercontractsnapshot where clientcode='I.000004055';
 
 
 -- LOCATIONS FOR MAP
@@ -536,7 +539,7 @@ as
 ;
 
 
--- select * from rcbill_my.activeccl_clsum;
+-- select * from rcbill_my.activeccl_clsum ;
 -- select * from rcbill_my.activeccl_consum;
 
 
@@ -595,7 +598,9 @@ create table rcbill_my.clientnetworkservicepkg as
 	select a.period, a.clientname, a.clientcode, a.clientclass, a.clienttype, a.region, a.service
 	, a.network, a.package, a.servicecategory
 	,a.contractcode
-	, count(distinct a.period) as ServiceCount, sum(distinct a.ACTIVECOUNT) as ActiveCount
+	, count(distinct a.period) as ServiceCount
+    -- , sum(distinct a.ACTIVECOUNT) as ActiveCount
+    , sum(a.ACTIVECOUNT) as ActiveCount
 	from rcbill_my.customercontractactivity a
 	where a.period=@rundate and a.reported='Y'
 	group by 1,2,3,4,5,6,7,8,9,10,11
@@ -677,7 +682,7 @@ order by a.clientname
 
 
 
--- select * from rcbill_my.clientnetworkservicepkg where clientcode='I.000005828';
+-- select * from rcbill_my.clientnetworkservicepkg where clientcode='I.000004055';
 
 /*
 select clientcode, clientname, clientclass, clienttype, region, network, 
