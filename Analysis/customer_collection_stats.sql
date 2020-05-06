@@ -23,7 +23,7 @@
 		-- limit 100
 	) a 
 	group by 1,2,3
-    order by 2 desc, 1 desc
+    -- order by 2 desc-- , 1 desc
 -- )
 ; 
 -- select count(*) as rep_paycol_channel from rcbill_my.rep_paycol_channel;
@@ -50,7 +50,7 @@
 		-- limit 100
 	) a 
 	group by 1,2,3
-    order by 2 desc , 1 desc
+    -- order by 2 desc , 1 desc
 -- )
 ; 
 -- select count(*) as rep_paycol_pos from rcbill_my.rep_paycol_pos;
