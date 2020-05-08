@@ -5,7 +5,7 @@
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-05052020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-07052020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_vodtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -53,6 +53,10 @@ set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_vodtelemetry where InsertedOn > '2019-09-03 10:17:00';
 delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2019-09-14';
 
+
+set SQL_SAFE_UPDATES=0;
+delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2020-05-07';
+
 */
 
 ################################################################
@@ -63,7 +67,7 @@ delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2019-09-14';
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-Missing-Daily-05052020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-Missing-Daily-07052020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_vodtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -110,6 +114,10 @@ limit 15
 select * from rcbill.rcb_vodtelemetry order by insertedon desc limit 10000;
 set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_vodtelemetry where InsertedOn = '2018-09-25 07:12:50';
+
+set SQL_SAFE_UPDATES=0;
+delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2020-05-07';
+
 */
 
 ########################################################
@@ -118,7 +126,7 @@ delete from rcbill.rcb_vodtelemetry where InsertedOn = '2018-09-25 07:12:50';
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-05052020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-07052020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_tstelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -158,6 +166,8 @@ explain select count(1) as tstelemetry from rcbill.rcb_tstelemetry;
 select * from rcbill.rcb_tstelemetry order by insertedon desc limit 100;
 set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_tstelemetry where InsertedOn = '2019-09-03 10:18:05';
+delete from rcbill.rcb_tstelemetry where date(InsertedOn) = '2020-05-07';
+
 */
 /*
 select date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) from rcbill.rcb_tstelemetry
@@ -175,7 +185,7 @@ limit 15
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllLIVETVTelemetry-05052020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllLIVETVTelemetry-07052020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_livetvtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -222,6 +232,11 @@ limit 15
 select * from rcbill.rcb_livetvtelemetry order by insertedon desc limit 10000;
 set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_livetvtelemetry where InsertedOn = '2019-09-03 10:18:05';
+
+
+set SQL_SAFE_UPDATES=0;
+delete from rcbill.rcb_livetvtelemetry where date(InsertedOn) = '2020-05-07';
+
 */
 ########################################################
 
@@ -230,7 +245,7 @@ delete from rcbill.rcb_livetvtelemetry where InsertedOn = '2019-09-03 10:18:05';
 use rcbill;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllRADIOTelemetry-05052020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllRADIOTelemetry-07052020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_radiotelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -275,5 +290,8 @@ select * from rcbill.rcb_radiotelemetry order by insertedon desc limit 10000;
 
 set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_radiotelemetry where InsertedOn = '2019-09-03 10:18:07';
+
+set SQL_SAFE_UPDATES=0;
+delete from rcbill.rcb_radiotelemetry where date(InsertedOn) = '2020-05-07';
 */
 ##############################################################################
