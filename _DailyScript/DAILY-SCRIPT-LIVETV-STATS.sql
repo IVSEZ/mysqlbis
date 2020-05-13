@@ -316,6 +316,52 @@ group by clientcode, clientname, contractcode
 order by 2, 4 desc;
 */
 
+/*
+-- MOST WATCHED TS CHANNELS PER DAY
+drop table if exists rcbill_my.rep_livetvstats2018;
+
+create table rcbill_my.rep_livetvstats2018 as
+(
+	select date(sessionstart) as view_date, day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year
+    , upper(trim(resource)) as resource, count(*) as sessions
+	, sum(duration) as duration_sec
+	-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
+	-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
+	from rcbill.clientlivetvstats
+    where year(sessionstart)=2018
+	group by 1,2,3,4,5
+	-- order by 3 desc,2 desc,1 desc,5 desc
+    order by 1 asc
+)
+;
+
+select * from rcbill_my.rep_livetvstats2018;
+
+
+drop table if exists rcbill_my.rep_livetvstats2019;
+
+create table rcbill_my.rep_livetvstats2019 as
+(
+	select date(sessionstart) as view_date, day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year
+    , upper(trim(resource)) as resource, count(*) as sessions
+	, sum(duration) as duration_sec
+	-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
+	-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
+	from rcbill.clientlivetvstats
+    where year(sessionstart)=2019
+	group by 1,2,3,4,5
+	-- order by 3 desc,2 desc,1 desc,5 desc
+    order by 1 asc
+)
+;
+
+select * from rcbill_my.rep_livetvstats2019;
+
+*/
+
+
+
+
 -- MOST WATCHED TS CHANNELS PER DAY
 drop table if exists rcbill_my.rep_livetvstats;
 
@@ -327,6 +373,7 @@ create table rcbill_my.rep_livetvstats as
 	-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
 	-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
 	from rcbill.clientlivetvstats
+    where year(sessionstart)=year(now())
 	group by 1,2,3,4,5
 	-- order by 3 desc,2 desc,1 desc,5 desc
     order by 1 asc
