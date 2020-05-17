@@ -100,6 +100,9 @@ select * from rcbill_my.rep_extravagance_peak_activity;
 select * from rcbill_my.rep_extravagance_peakcustomer_activity;
 
 
+select IsAccountActive, activenetwork, AccountActivityStage, count(clientcode) from rcbill_my.rep_custconsolidated
+group by 1, 2,3
+;
 
 select * from rcbill_my.rep_custconsolidated where clientcode='I.000012657';
 select * from rcbill_my.rep_custconsolidated where clientname like '%ballanty%';
@@ -125,7 +128,7 @@ select servicecategory, package
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2020-05-01','2020-05-05');
+call sp_GetActiveNumberFromTo('2020-05-06','2020-05-12');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
