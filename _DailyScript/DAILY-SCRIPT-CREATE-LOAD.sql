@@ -314,9 +314,14 @@ group by clientid, clientname, clientcode, clientaddress
 */
 
 select distinct a.id as ClientId, a.firm as ClientName, a.kod as ClientCode, a.MOLADDRESS as ClientAddress
-, min(ifnull(b.SettlementName,'SILHOUETTE ISLAND')) as ClientLocation
-, min(ifnull(b.areaname,'SILHOUETTE ISLAND')) as ClientArea
-, min(ifnull(b.districtname,'SILHOUETTE ISLAND')) as ClientSubDistrict
+-- , min(ifnull(b.SettlementName,'SILHOUETTE ISLAND')) as ClientLocation
+-- , min(ifnull(b.areaname,'UNKNOWN')) as ClientArea
+-- , min(ifnull(b.districtname,'UNKNOWN')) as ClientSubDistrict
+
+, (ifnull(b.SettlementName,'SILHOUETTE ISLAND')) as ClientLocation
+, (ifnull(b.areaname,'')) as ClientArea
+, (ifnull(b.districtname,'')) as ClientSubDistrict
+
 from 
 rcbill.rcb_tclients a
 left join
@@ -343,10 +348,13 @@ order by SETTLEMENTNAME, areaname, districtname
 
 
 ) b
+-- on
+-- (a.moladdress like concat('%', b.SETTLEMENTNAME , '%') and a.moladdress like concat('%', b.areaname , '%') and a.moladdress like concat('%', b.districtname , '%'))
+-- group by clientid, clientname, clientcode, clientaddress
 on
-(a.moladdress like concat('%', b.SETTLEMENTNAME , '%') and a.moladdress like concat('%', b.areaname , '%') and a.moladdress like concat('%', b.districtname , '%'))
+(a.moladdress like concat('%', b.SETTLEMENTNAME , '%') -- or a.moladdress like concat('%', b.areaname , '%') 
+or a.moladdress like concat('%', b.districtname , '%'))
 group by clientid, clientname, clientcode, clientaddress
-
 )
 ;
 
