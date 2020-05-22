@@ -142,7 +142,7 @@ select * from rcbill_my.rep_custextract20191211; -- where orig_clientcode='I.000
 
 -- drop table if exists rcbill_my.rep_custextract_compare20200422;
 
-create table rcbill_my.rep_custextract_compare20200517 as 
+create table rcbill_my.rep_custextract_compare20200521 as 
 (
 	select -- a.*,b.*
 		a.orig_reportdate , b.reportdate ,
@@ -252,9 +252,25 @@ create table rcbill_my.rep_custextract_compare20200517 as
 )
 ;
 
-select * from rcbill_my.rep_custextract_compare20200517 where 0=0 ;
+select * from rcbill_my.rep_custextract_compare20200521 where 0=0 ;
 
-select * from rcbill_my.rep_custextract_compare20200517 where 0=0 and ONE_YEAR='ONE YEAR';
+select * from rcbill_my.rep_custextract_compare20200521 where 0=0 and ONE_YEAR='ONE YEAR';
+
+select * from rcbill_my.rep_custextract_compare20200521 where 0=0 and ONE_YEAR='ONE YEAR' and clientname like '%STAFF%';
+select 
+reportdate, clientcode, CLIENTNAME, isaccountactive, AccountActivityStage
+, clientclass, clientaddress, clientlocation, clientemail, clientnin, clientphone
+, a1_parcel, a2_parcel, a3_parcel
+, PARCEL_PRESENT, EMAIL_PRESENT, NIN_PRESENT, ADDRESS_PRESENT,ONE_YEAR, CLIENT_STATUS   
+from rcbill_my.rep_custextract_compare20200521 
+where 0=0 
+and ONE_YEAR='ONE YEAR' 
+and ( clientname like '%STAFF%' or clientclass in ('CORPORATE BULK','CORPORATE BUNDLE','CORPORATE'))
+-- and IsAccountActive='Active' 
+and clientclass not in ('EMPLOYEE')
+-- and PARCEL_PRESENT='PRESENT'
+;
+
 
 
 
