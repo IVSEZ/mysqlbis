@@ -3,11 +3,24 @@ select * from rcbill_my.rep_custconsolidated;
 
 select * from rcbill.rcb_clientparcels;
 
+/*
+set SQL_SAFE_UPDATES=0;
+delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)=date(now());
+*/
+
+select date(insertedon) as dateinserted, count(clientparcel) as parcels
+from rcbill.rcb_clientparcelcoords 
+where latitude<>0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))
+;
+
 select date(insertedon) as dateinserted, count(clientparcel) as parcels
 from rcbill.rcb_clientparcelcoords 
 group by 1
 order by 1 desc
 ;
+
+
+
 
 select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
 select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));

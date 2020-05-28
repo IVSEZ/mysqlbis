@@ -29,10 +29,7 @@
 -- set @period='2019-09-30';
 -- set @period='2019-10-31';
 -- set @period='2019-11-30';
--- set @period='2019-12-31';
--- set @period='2020-01-31';
--- set @period='2020-02-29';
- set @period='2020-03-31';
+ set @period='2019-12-31';
 
 /*
 select * from rcbill_my.customercontractactivity 
@@ -69,13 +66,22 @@ order by 4 desc
 
 select servicecategory, package
 -- , `20181031`, `20181130`, `20181231`
--- , `20190131`, `20190228`, `20190331`
--- , `20190430`, `20190531`, `20190630`
--- , `20190731`, `20190831`, `20190930`
--- , `20191031`, `20191130`, `20191231`
-, `20200131`, `20200229`, `20200331`
+, `20161130`
+, `20161231`
+, `20190131`, `20190228`, `20190331`
+, `20190430`, `20190531`, `20190630`
+, `20190731`, `20190831`, `20190930`
+, `20191031`, `20191130`, `20191231`
  from rcbill_my.rep_activenumberlastday_pv;
 
+select servicecategory
+, sum(`20161231`)
+, sum(`20171231`)
+, sum(`20181231`)
+, sum(`20191231`)
+ from rcbill_my.rep_activenumberlastday_pv
+ group by servicecategory
+ ;
 
 
 set @message = 'EXTRA + INDIAN';
