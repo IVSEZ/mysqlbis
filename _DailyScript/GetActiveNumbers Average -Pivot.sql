@@ -132,6 +132,17 @@ drop table if exists rcbill_my.rep_activenumberavg;
 create table rcbill_my.rep_activenumberavg as 
 (
 	select servicecategory, servicesubcategory, servicecategory2, package, clientclass, clienttype, region, reported, decommissioned
+	, ifnull(sum(`202012`),0) as `202012`
+	, ifnull(sum(`202011`),0) as `202011`
+	, ifnull(sum(`202010`),0) as `202010`
+	, ifnull(sum(`202009`),0) as `202009`
+	, ifnull(sum(`202008`),0) as `202008`
+	, ifnull(sum(`202007`),0) as `202007`
+	, ifnull(sum(`202006`),0) as `202006`
+	, ifnull(sum(`202005`),0) as `202005`
+	, ifnull(sum(`202004`),0) as `202004`
+	, ifnull(sum(`202003`),0) as `202003`
+	, ifnull(sum(`202002`),0) as `202002`
 	, ifnull(sum(`202001`),0) as `202001`
 	, ifnull(sum(`201912`),0) as `201912`
 	, ifnull(sum(`201911`),0) as `201911`
@@ -188,6 +199,17 @@ create table rcbill_my.rep_activenumberavg as
 	(
 		select 
 		servicecategory, servicesubcategory, servicecategory2, package, clientclass, clienttype, region, reported, decommissioned 
+			, case when periodyear=2020 and periodmth=12 then open_a end as `202012`
+			, case when periodyear=2020 and periodmth=11 then open_a end as `202011`
+			, case when periodyear=2020 and periodmth=10 then open_a end as `202010`
+			, case when periodyear=2020 and periodmth=09 then open_a end as `202009`
+			, case when periodyear=2020 and periodmth=08 then open_a end as `202008`
+			, case when periodyear=2020 and periodmth=07 then open_a end as `202007`
+			, case when periodyear=2020 and periodmth=06 then open_a end as `202006`
+			, case when periodyear=2020 and periodmth=05 then open_a end as `202005`
+			, case when periodyear=2020 and periodmth=04 then open_a end as `202004`
+			, case when periodyear=2020 and periodmth=03 then open_a end as `202003`
+			, case when periodyear=2020 and periodmth=02 then open_a end as `202002`
 			, case when periodyear=2020 and periodmth=01 then open_a end as `202001`
 			, case when periodyear=2019 and periodmth=12 then open_a end as `201912`
 			, case when periodyear=2019 and periodmth=11 then open_a end as `201911`
