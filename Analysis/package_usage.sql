@@ -4,7 +4,7 @@
 use rcbill_my;
 
 set @startdate='2020-01-01';
-set @enddate='2020-04-21';
+set @enddate='2020-06-16';
 set @clientcode='I11044';
 -- select * from rcbill_my.customercontractactivity where period>=@startdate and period<=@enddate
 

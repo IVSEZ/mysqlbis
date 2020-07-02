@@ -162,6 +162,17 @@ create table rcbill_my.rep_servicetickets_2020 as
 
 select count(*) as rep_servicetickets_2020 from rcbill_my.rep_servicetickets_2020;
 -- select * from rcbill_my.rep_servicetickets_2020;
+/*
+select * 
+, case 
+	when service in ('IPTV','gNET','gVOICE') then 'GPON'
+    when service in ('DTV','Internet','VOIP') then 'HFC'
+    end as `NETWORK`
+    
+from rcbill_my.rep_servicetickets_2020
+;
+*/
+
 -- select * from rcbill_my.rep_servicetickets_2020 where ticketid=909247;
 -- select *, (packageprice/30) as  priceperday from rcbill_my.rep_servicetickets_2020 where ticketid=910797;
 

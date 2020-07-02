@@ -28,6 +28,42 @@ select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(inserte
 select * from rcbill.rcb_clientparcelcoords where latitude = 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
 
 
+####### parcel extract for maps
+select a.latitude as lat, a.longitude as lng
+-- , concat(a.clientcode, ':', a.clientname, '[',a.clientparcel,']') as `name`
+,
+/*
+case when a.isaccountactive='InActive' then '#00FF00'
+else '#ff0000' end as `color`
+*/
+case when a.activenetwork is null then '#ff0000'
+when a.activenetwork='HFC' then '#0000ff' 
+when a.activenetwork='GPON' then '#00ff00' end as `color`
+, concat(a.clientcode, ':', a.clientname, '[',a.clientparcel,'] ', a.AccountActivityStage,'|',a.clientclass,'|', a.activenetwork,'|',a.activeservices,'|',a.activecontracts,'|',a.activesubscriptions) as `note`
+from
+(
+	select a.*
+	-- , b.*
+	, b.IsAccountActive, b.AccountActivityStage, b.clientclass, b.activenetwork, b.activeservices, b.activecontracts, b.activesubscriptions
+
+	from
+	(
+	select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))
+	) a 
+	left join 
+	rcbill_my.rep_custconsolidated b
+	on 
+	a.clientcode=b.clientcode
+) a 
+ limit 900
+;
+
+###############################
+
+
+
+
+
 select date(insertedon) as inserteddate
 , count(clientcode) as clients
 from rcbill.rcb_clientparcelcoords
@@ -57,6 +93,7 @@ where clientparcel is not null
 select * from rcbill_my.matched_clients group by DEDUPE_CLIENT_CODE;
 
 
+select * from rcbill_my.rep_custconsolidated;
 
 drop table if exists rcbill_my.rep_custextract;
 
@@ -68,6 +105,8 @@ as
 	, a.clientaddress
 	, a.clientlocation, a.clientarea
     , a.clientemail
+    , a.activenetwork
+    
     -- , 'a@a.com' as clientemail
     , a.clientnin, a.clientphone
 	-- , a.dayssincelastactive
@@ -107,6 +146,7 @@ as
 select * from rcbill_my.rep_custextract;
 select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR'; -- and clientclass='CORPORATE LARGE';
 select * from rcbill_my.rep_custextract where PARCEL_PRESENT='PRESENT'; -- and clientclass='CORPORATE LARGE';
+select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and PARCEL_PRESENT='NOT PRESENT' and clientclass in ('CORPORATE BULK','CORPORATE'); -- and clientclass='CORPORATE LARGE';
 
 ### to put in a table to verify data against.
 -- drop table if exists rcbill_my.rep_custextract20191211;
@@ -155,7 +195,7 @@ select * from rcbill_my.rep_custextract20191211; -- where orig_clientcode='I.000
 
 -- drop table if exists rcbill_my.rep_custextract_compare20200422;
 
-create table rcbill_my.rep_custextract_compare20200521 as 
+create table rcbill_my.rep_custextract_compare20200624 as 
 (
 	select -- a.*,b.*
 		a.orig_reportdate , b.reportdate ,
@@ -163,6 +203,7 @@ create table rcbill_my.rep_custextract_compare20200521 as
 		a.orig_IsAccountActive , b.IsAccountActive ,
 		a.orig_AccountActivityStage , b.AccountActivityStage ,
 		a.orig_CLIENTNAME , b.CLIENTNAME ,
+        b.activenetwork , 
 		a.orig_clientclass , b.clientclass ,
 		a.orig_clientaddress , b.clientaddress ,
 		a.orig_clientlocation , b.clientlocation ,
@@ -265,17 +306,18 @@ create table rcbill_my.rep_custextract_compare20200521 as
 )
 ;
 
-select * from rcbill_my.rep_custextract_compare20200521 where 0=0 ;
+select * from rcbill_my.rep_custextract_compare20200624 where 0=0 ;
 
-select * from rcbill_my.rep_custextract_compare20200521 where 0=0 and ONE_YEAR='ONE YEAR';
+select * from rcbill_my.rep_custextract_compare20200624 where 0=0 and ONE_YEAR='ONE YEAR';
 
-select * from rcbill_my.rep_custextract_compare20200521 where 0=0 and ONE_YEAR='ONE YEAR' and clientname like '%STAFF%';
+select * from rcbill_my.rep_custextract_compare20200624 where 0=0 and ONE_YEAR='ONE YEAR' and clientname like '%STAFF%';
+
 select 
 reportdate, clientcode, CLIENTNAME, isaccountactive, AccountActivityStage
 , clientclass, clientaddress, clientlocation, clientemail, clientnin, clientphone
 , a1_parcel, a2_parcel, a3_parcel
 , PARCEL_PRESENT, EMAIL_PRESENT, NIN_PRESENT, ADDRESS_PRESENT,ONE_YEAR, CLIENT_STATUS   
-from rcbill_my.rep_custextract_compare20200521 
+from rcbill_my.rep_custextract_compare20200624 
 where 0=0 
 and ONE_YEAR='ONE YEAR' 
 and ( clientname like '%STAFF%' or clientclass in ('CORPORATE BULK','CORPORATE BUNDLE','CORPORATE'))

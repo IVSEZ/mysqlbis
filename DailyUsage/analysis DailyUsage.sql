@@ -163,6 +163,8 @@ as
             order by a.clientcode
 )
 ;
+
+
 select * from temp1;
 select * from temp1 where clientname like 'adrien%';
 

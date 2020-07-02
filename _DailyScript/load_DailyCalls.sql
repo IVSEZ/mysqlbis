@@ -2,10 +2,10 @@ use rcbill_my;
 
 
 #FOR Daily calls script
--- SET @date1='2020-05-20';
--- SET @date2='2020-05-21';
+-- SET @date1='2020-05-29';
+-- SET @date2='2020-05-30';
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-12062020.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-01072020.csv'
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-24082019-02092019.csv'  
  
@@ -45,9 +45,10 @@ INSERTEDON=now()
 -- select * from rcbill_my.dailycalls where date(calldate)>='2018-05-13' order by calldate;
 -- select * from rcbill_my.dailycalls order by calldate desc;
 -- select * from rcbill_my.dailycalls where callnumber=2719841;
+-- select date(CALLDATE), count(*) from rcbill_my.dailycalls group by 1 order by 1 desc;
 
 -- SET SQL_SAFE_UPDATES = 0;
--- delete from rcbill_my.dailycalls where date(insertedon)='2018-11-19';
+-- delete from rcbill_my.dailycalls where date(insertedon)='2020-07-01';
 -- delete from rcbill_my.dailycalls where insertedon = '2018-10-18 11:07:48';
 -- select * from rcbill_my.dailycalls where date(insertedon)='2018-02-12' order by CALL_DATE, CALL_TIME;
 
@@ -157,7 +158,7 @@ order by a.calldate
 -- select * from rcbill_my.dailycalls where date(insertedon)='2018-02-12' order by CALL_DATE, CALL_TIME;
 -- select * from rcbill_my.callingclients order by CALL_DATE, CALL_TIME;
 
--- select CALL_DATE, count(1) from rcbill_my.callingclients group by CALL_DATE order by CALL_DATE desc;
+-- select CALL_DATE, count(*) from rcbill_my.callingclients group by CALL_DATE order by 1 desc;
 
 -- select * from rcbill_my.callingclients where call_date in ('2018-02-09');
 
