@@ -1,4 +1,4 @@
-
+/*
 select * from rcbill_my.clientstats where (DualView>0 or MultiView>0 or IGO>0 or VOD>0) ; -- and clientclass in ('EMPLOYEE','INTELVISION OFFICE');
 
 
@@ -16,6 +16,7 @@ where clientcode in
 )
 
 ;
+*/
 
 select * from  rcbill_my.customercontractactivity where period='2020-07-01';
 
