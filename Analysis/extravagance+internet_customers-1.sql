@@ -119,7 +119,9 @@ where `Extravagance`>0 and `Amber`>0
 -- group by period, clientclass
 ;
 
-select period, clientclass, count(*)
+select period
+-- , clientclass
+, count(*)
 from 
 (
 
@@ -133,21 +135,93 @@ from
 		, case when package = 'Amber' or package = 'Amber Corporate' then 1 else 0 end as `Amber`
 		from 
 		(
-		select period, clientcode, clientclass, network, package from rcbill_my.customercontractactivity
-		where 
-		-- clientcode ='I.000018187' and 
-		clientclass in ('Corporate','Corporate Bulk','Corporate Bundle','Residential')
-		and 
-		(
-		package in ('EXTRAVAGANCE','EXTRAVAGANCE CORPORATE','AMBER','AMBER CORPORATE')
-		)
-
-
+			select period, clientcode, clientclass, network, package from rcbill_my.customercontractactivity
+			where 
+			-- clientcode ='I.000018187' and 
+			clientclass in ('Corporate','Corporate Bulk','Corporate Bundle','Residential')
+			and 
+			(
+			package in ('EXTRAVAGANCE','EXTRAVAGANCE CORPORATE','AMBER','AMBER CORPORATE')
+			)
+			and period>='2020-01-01'
+			-- and period='2020-04-05'
 		) a 
 		group by period, clientcode, clientclass, package
 	) a 
 	group by period, clientcode, clientclass
 ) a 
 where `Extravagance`>0 and `Amber`>0
-group by period, clientclass
+group by period
+-- , clientclass
 ;
+
+
+select * from 
+(
+	select period, clientcode, clientclass
+	, sum(Extravagance) as `Extravagance`
+	, sum(Amber) as `Amber`
+	from 
+	(
+		select period, clientcode, clientclass
+		, case when package = 'Extravagance' or package = 'Extravagance Corporate' then 1 else 0 end as `Extravagance`
+		, case when package = 'Amber' or package = 'Amber Corporate' then 1 else 0 end as `Amber`
+		from 
+		(
+			select period, clientcode, clientclass, network, package from rcbill_my.customercontractactivity
+			where 
+			-- clientcode ='I.000018187' and 
+			clientclass in ('Corporate','Corporate Bulk','Corporate Bundle','Residential')
+			and 
+			(
+			package in ('EXTRAVAGANCE','EXTRAVAGANCE CORPORATE','AMBER','AMBER CORPORATE')
+			)
+			-- and period>='2020-01-01'
+			and period='2020-05-05'
+		) a 
+		group by period, clientcode, clientclass, package
+	) a 
+	group by period, clientcode, clientclass
+) a 
+where `Extravagance`>0 and `Amber`>0
+;
+-- 2020-05-05
+
+
+select * from rcbill_my.clientstats where
+clientcode in 
+(
+
+	select clientcode from 
+	(
+		select period, clientcode, clientclass
+		, sum(Extravagance) as `Extravagance`
+		, sum(Amber) as `Amber`
+		from 
+		(
+			select period, clientcode, clientclass
+			, case when package = 'Extravagance' or package = 'Extravagance Corporate' then 1 else 0 end as `Extravagance`
+			, case when package = 'Amber' or package = 'Amber Corporate' then 1 else 0 end as `Amber`
+			from 
+			(
+				select period, clientcode, clientclass, network, package from rcbill_my.customercontractactivity
+				where 
+				-- clientcode ='I.000018187' and 
+				clientclass in ('Corporate','Corporate Bulk','Corporate Bundle','Residential')
+				and 
+				(
+				package in ('EXTRAVAGANCE','EXTRAVAGANCE CORPORATE','AMBER','AMBER CORPORATE')
+				)
+				-- and period>='2020-01-01'
+				and period='2020-05-05'
+			) a 
+			group by period, clientcode, clientclass, package
+		) a 
+		group by period, clientcode, clientclass
+	) a 
+	where `Extravagance`>0 and `Amber`>0
+)
+;
+
+
+select * from rcbill_my.clientstats where (`Amber`>0 or `Amber Corporate`>0) and clientclass in ('Corporate','Corporate Bulk','Corporate Bundle','Residential');

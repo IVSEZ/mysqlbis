@@ -1721,6 +1721,64 @@ create table rcbill_my.rep_custconsolidated as
 
 select count(*) as rep_custconsolidated from rcbill_my.rep_custconsolidated;
 
+
+#####################################
+### CUST EXTRACT FOR PARCELS
+
+drop table if exists rcbill_my.rep_custextract;
+select 'creating rcbill_my.rep_custextract' as message;
+
+create table rcbill_my.rep_custextract (index idxrce1 (clientcode))
+as 
+(
+	select a.reportdate, a.CLIENTCODE, a.IsAccountActive, a.AccountActivityStage, a.CLIENTNAME, a.clientclass
+	, a.clientaddress
+	, a.clientlocation, a.clientarea
+    , a.clientemail
+    , a.activenetwork
+    
+    -- , 'a@a.com' as clientemail
+    , a.clientnin, a.clientphone
+	-- , a.dayssincelastactive
+	, b.address, b.moladdress, b.MOLRegistrationAddress
+    , a.dayssincelastactive
+	, b.a1_parcel, b.a2_parcel, b.a3_parcel
+	, case when (b.a1_parcel is null or length(b.a1_parcel)=0) and (b.a2_parcel is null or length(b.a2_parcel)=0) and (b.a3_parcel is null or length(b.a3_parcel)=0) 
+		then 'NOT PRESENT'
+		else 'PRESENT' end as `PARCEL_PRESENT` 
+	, case when a.clientemail is null or length(a.clientemail)=0
+		then 'NOT PRESENT'
+		else 'PRESENT' end as `EMAIL_PRESENT` 
+	, case when a.clientnin is null or length(a.clientnin)=0 
+		then 'NOT PRESENT'
+		when locate("-",a.clientnin)=0 then 'INVALID'
+		else 'PRESENT' end as `NIN_PRESENT`
+	, case when (a.clientaddress is null or length(a.clientaddress)=0) and (b.address is null or length(b.address)=0) and (b.moladdress is null or length(b.moladdress)=0) and (b.MOLRegistrationAddress is null or length(b.MOLRegistrationAddress)=0)
+		then 'NOT PRESENT'
+		else 'PRESENT' end as `ADDRESS_PRESENT`
+    , case when a.dayssincelastactive <=365 
+		then 'ONE YEAR'
+		else 'MORE THAN ONE YEAR' end as `ONE_YEAR`
+
+	from 
+	rcbill_my.rep_custconsolidated a 
+	left join
+	rcbill.rcb_clientparcels b
+	on 
+	a.CLIENTCODE=b.clientcode
+	-- where a.AccountActivityStage not in ('4. Hibernating (31 to 90 days)','5. Dormant (more than 90 days)')
+	-- where a.AccountActivityStage in ('4. Hibernating (31 to 90 days)','5. Dormant (more than 90 days)')
+	order by 3 asc, 16 asc
+)
+;
+
+select count(*) as rep_custextract from rcbill_my.rep_custextract;
+-- select * from rcbill_my.rep_custextract;
+
+#####################################
+
+
+
 set session group_concat_max_len = 1024;
 
 -- select * from rcbill_my.rep_custconsolidated where clientcode='I.000011750';
