@@ -11,25 +11,31 @@ create table rcbill_extract.IV_PARCELEXTRACTStaging as
 	-- , concat(a.clientcode, ':', a.clientname, '[',a.clientparcel,']') as `title`
     , concat('<font face=verdana size=0.5>',a.reportdate,'</font><br>','<font face=verdana size=1>','Parcel: [',a.clientparcel,'] </font><hr>') as `title`
 	-- , concat(a.clientcode, ':', a.clientname, '[',a.clientparcel,'] ', a.AccountActivityStage,'|',a.clientclass,'|', a.activenetwork,'|',a.activeservices,'|',a.activecontracts,'|',a.activesubscriptions) as `description`
-	, ifnull(concat('<font face=verdana size=1><a href="http://dashboard.intelvision.sc/anreports/report/customercontractreport_main.php?custcode=', a.clientcode, '" target=_main>', a.clientcode, '</a>:', a.clientname, '[',a.clientparcel,']</font><br><font face=verdana size=0.5>', a.AccountActivityStage,'|',a.clientclass,'|', a.activenetwork,'|',a.activeservices,'|',a.activecontracts,'|',a.activesubscriptions, '</font><hr>'), concat('<font face=verdana size=1><a href="http://dashboard.intelvision.sc/anreports/report/customercontractreport_main.php?custcode=', a.clientcode, '" target=_main>', a.clientcode, '</a>:', a.clientname, '[',a.clientparcel,']</font><br><font face=verdana size=0.5>','INACTIVE','</font><hr>')) as `description`
+	, ifnull(concat('<font face=verdana size=1><a href="http://dashboard.intelvision.sc/anreports/report/customercontractreport_main.php?custcode=', a.clientcode, '" target=_main>', a.clientcode, '</a>:', a.clientname, '[',a.clientparcel,']</font><br><font face=verdana size=0.5><font color=green>', a.AccountActivityStage,'</font>|',a.clientclass,'|', a.activenetwork,'|',a.activeservices,'|',a.activecontracts,'|',a.activesubscriptions, '</font><hr>'), concat('<font face=verdana size=1><a href="http://dashboard.intelvision.sc/anreports/report/customercontractreport_main.php?custcode=', a.clientcode, '" target=_main>', a.clientcode, '</a>:', a.clientname, '[',a.clientparcel,']</font><br><font face=verdana size=0.5><font color=red>','INACTIVE</font> [since: ',ifnull(a.lastactivedate,'before 2016'),']</font><hr>')) as `description`
 	/*
 	case when a.isaccountactive='InActive' then '#00FF00'
 	else '#ff0000' end as `color`
 	*/
 	,activenetwork
-    , case when a.activenetwork is null then 'ylw-circle-lv.png'
-	when a.activenetwork='HFC' then 'red-square-lv.png' 
-	when a.activenetwork='GPON' then 'grn-diamond-lv.png' 
-    else 'blu-blank-lv.png' end as `icon`
+    , 
+    case 
+    when a.activenetwork is null and a.AccountActivityStage='2. Snoozing (1 to 7 days)' then 'icon/wht-circle-lv.png'
+    when a.activenetwork is null and a.AccountActivityStage='3. Asleep (8 to 30 days)' then 'icon/ylw-circle-lv.png'
+    when a.activenetwork is null and a.AccountActivityStage='4. Hibernating (31 to 90 days)' then 'icon/pink-circle-lv.png'
+    when a.activenetwork is null and a.AccountActivityStage='5. Dormant (more than 90 days)' then 'icon/purple-circle-lv.png'
+	when a.activenetwork='HFC' then 'icon/red-square-lv.png' 
+	when a.activenetwork='GPON' then 'icon/grn-diamond-lv.png' 
+    else 'icon/blu-blank-lv.png' end as `icon`
 	, '13,13' as `iconSize`
 	, '-8,-8' as `iconOffset`
     , date(a.insertedon) as insertedon
+    , a.accountactivitystage
 	from
 	(
 		select a.*
 		-- , b.*
 		, b.IsAccountActive, b.AccountActivityStage, b.clientclass, b.activenetwork, b.activeservices, b.activecontracts, b.activesubscriptions
-		, b.reportdate
+		, b.reportdate, b.lastactivedate
 		from
 		(
 		select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords)) order by clientparcel
@@ -62,18 +68,56 @@ create table rcbill_extract.IV_PARCELFORMAP as
 
 select * from rcbill_extract.IV_PARCELFORMAP;
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_Inactive;
-create table rcbill_extract.IV_PARCELFORMAP_Inactive as 
+drop table if exists rcbill_extract.IV_PARCELFORMAP_Inactive_2;
+create table rcbill_extract.IV_PARCELFORMAP_Inactive_2 as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
         from rcbill_extract.IV_PARCELEXTRACTStaging 
-        where activenetwork is null
+        where activenetwork is null and AccountActivityStage='2. Snoozing (1 to 7 days)'
         group by lat, lon, title
         
 );
+select * from rcbill_extract.IV_PARCELFORMAP_Inactive_2;
 
-select * from rcbill_extract.IV_PARCELFORMAP_Inactive;
+drop table if exists rcbill_extract.IV_PARCELFORMAP_Inactive_3;
+create table rcbill_extract.IV_PARCELFORMAP_Inactive_3 as 
+(
+        select lat, lon, title, group_concat(description separator '<br>') as description 
+        , icon, iconSize, iconOffset
+        from rcbill_extract.IV_PARCELEXTRACTStaging 
+        where activenetwork is null and AccountActivityStage='3. Asleep (8 to 30 days)'
+        group by lat, lon, title
+        
+);
+select * from rcbill_extract.IV_PARCELFORMAP_Inactive_3;
+
+drop table if exists rcbill_extract.IV_PARCELFORMAP_Inactive_4;
+create table rcbill_extract.IV_PARCELFORMAP_Inactive_4 as 
+(
+        select lat, lon, title, group_concat(description separator '<br>') as description 
+        , icon, iconSize, iconOffset
+        from rcbill_extract.IV_PARCELEXTRACTStaging 
+        where activenetwork is null and AccountActivityStage='4. Hibernating (31 to 90 days)'
+        group by lat, lon, title
+        
+);
+select * from rcbill_extract.IV_PARCELFORMAP_Inactive_4;
+
+drop table if exists rcbill_extract.IV_PARCELFORMAP_Inactive_5;
+create table rcbill_extract.IV_PARCELFORMAP_Inactive_5 as 
+(
+        select lat, lon, title, group_concat(description separator '<br>') as description 
+        , icon, iconSize, iconOffset
+        from rcbill_extract.IV_PARCELEXTRACTStaging 
+        where activenetwork is null and AccountActivityStage='5. Dormant (more than 90 days)'
+        group by lat, lon, title
+        
+);
+select * from rcbill_extract.IV_PARCELFORMAP_Inactive_5;
+
+
+
 
 drop table if exists rcbill_extract.IV_PARCELFORMAP_HFC;
 create table rcbill_extract.IV_PARCELFORMAP_HFC as 
@@ -108,7 +152,7 @@ create table rcbill_extract.IV_PARCELFORMAP_MIX as
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
         from rcbill_extract.IV_PARCELEXTRACTStaging 
-        where icon='blu-blank-lv.png'
+        where icon='icon/blu-blank-lv.png'
         group by lat, lon, title
         
 );

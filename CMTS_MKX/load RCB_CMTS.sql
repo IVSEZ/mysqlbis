@@ -15,6 +15,8 @@
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20191211-1300.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20200106-1000.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20200422-0800.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20200720-1048.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20200727-1439.csv' 
 
 REPLACE INTO TABLE `rcbill`.`rcb_cmts` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -71,6 +73,16 @@ order by 1, 2 desc
 /*
 
 SET SQL_SAFE_UPDATES = 0;
+delete from rcbill.rcb_cmts where date(insertedon)='2020-07-27' and mac_address='';
+delete from rcbill.rcb_cmts where date(insertedon)='2020-07-27' and mac_address='MAC';
+
+
+
+delete from rcbill.rcb_cmts where date(insertedon)='2020-07-20' and mac_address='';
+delete from rcbill.rcb_cmts where date(insertedon)='2020-07-20' and mac_address='MAC';
+
+
+
 delete from rcbill.rcb_cmts where date(insertedon)='2018-10-13';
 delete from rcbill.rcb_cmts where date(insertedon)='2018-12-20' and mac_address='';
 delete from rcbill.rcb_cmts where date(insertedon)='2019-01-01' and mac_address='';

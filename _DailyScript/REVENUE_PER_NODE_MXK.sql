@@ -304,6 +304,7 @@ create table rcbill_my.customers_mxk as
 
 select 'created rcbill_my.customers_mxk' as message;
 -- select * from rcbill_my.customers_mxk where mxk_name='MXK-ANSEETOILE';
+-- select * from rcbill_my.customers_mxk where CLIENT_CODE='I14';
 
 drop table if exists rcbill_my.tempcustmxk1;
 drop table if exists rcbill_my.tempcustmxk2;
@@ -536,7 +537,7 @@ create table rcbill_my.customers_cmts as
 
 select 'created rcbill_my.customers_cmts' as message;
 
-
+-- select * from rcbill_my.customers_cmts where CLIENT_CODE='I14';
 drop table if exists rcbill_my.tempcustcmts1;
 drop table if exists rcbill_my.tempcustcmts2;
 
@@ -585,7 +586,7 @@ as
 ;
 -- select * from rcbill_my.customers_cmts_mxk where client_code='I.000011750';
 -- select * from rcbill_my.customers_cmts_mxk where client_code='I.000018640';
-
+-- select * from rcbill_my.customers_cmts_mxk where client_code='I14';
 select 'created rcbill_my.customers_cmts_mxk' as message;
 
 create temporary table a (index idxa1(CL_CLIENTID), index idxa2(CON_CONTRACTID)) as 
@@ -619,6 +620,13 @@ as
 		CL_CLIENTID, CL_CLIENTNAME, CL_CLIENTCODE, CL_CLCLASSNAME, CON_CONTRACTID, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, VPNR_SERVICEPRICE, CONTRACTCURRENTSTATUS
 	) */
     a
+	-- left join
+	-- customers_contracts_cmts_mxk b 
+    -- customers_cmts_mxk b
+	-- on 
+	-- a.CL_CLIENTID=b.client_id
+	-- and 
+	-- a.CON_CONTRACTID=b.contract_id
 	left join
 	rcbill_my.customers_cmts_mxk b 
 	on 
@@ -682,6 +690,7 @@ select 'updated rcbill_my.customers_contracts_cmts_mxk' as message;
 
 
 -- select * from rcbill_my.customers_contracts_cmts_mxk where cl_clientcode='I.000011750';
+-- select * from rcbill_my.customers_contracts_cmts_mxk where cl_clientcode='I14';
 
 /*
 (

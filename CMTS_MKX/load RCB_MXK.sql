@@ -106,6 +106,28 @@
 -- set @mxk_name='MXK-BEAUVALLON'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_BeauVallon_20200422_1.csv'
 -- set @mxk_name='MXK-PRASLIN'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Praslin_20200422_1.csv' 
 
+
+-- set @mxk_name='MXK-MAHE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Mahe_20200720_1.csv'
+-- set @mxk_name='MXK-ANSEETOILE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_AnseEtoile_20200720_1.csv'
+-- set @mxk_name='MXK-ANSEROYALE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_AnseRoyale_20200720_1.csv'
+-- set @mxk_name='MXK-PERSEVERANCE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Perseverance_20200720_1.csv'
+-- set @mxk_name='MXK-BEAUVALLON'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_BeauVallon_20200720_1.csv'
+-- set @mxk_name='MXK-PRASLIN'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Praslin_20200720_1.csv' 
+
+
+-- set @mxk_name='MXK-MAHE-PROVIDENCE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Providence_20200727_1.csv'
+-- set @mxk_name='MXK-MAHE-ANSEAUXPINS'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_AnseAuxPins_20200727_1.csv'
+-- set @mxk_name='MXK-MAHE-ANSEETOILE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_AnseEtoile_20200727_1.csv'
+-- set @mxk_name='MXK-MAHE-ANSEROYALE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_AnseRoyale_20200727_1.csv'
+-- set @mxk_name='MXK-MAHE-BAIELAZARE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_BaieLazare_20200727_1.csv'
+-- set @mxk_name='MXK-MAHE-PERSEVERANCE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Perseverance_20200727_1.csv'
+-- set @mxk_name='MXK-MAHE-MONTFLEURI'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_MontFleuri_20200727_1.csv'
+-- set @mxk_name='MXK-MAHE-BEAUVALLON-1'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_BeauVallon-1_20200727_1.csv'
+-- set @mxk_name='MXK-MAHE-BEAUVALLON-2'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_BeauVallon-2_20200727_1.csv'
+-- set @mxk_name='MXK-PRASLIN-GRANDANSE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Praslin-1_20200727_1.csv' 
+-- set @mxk_name='MXK-PRASLIN-BAIESTEANNE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Praslin-2_20200727_1.csv' 
+
+
 REPLACE INTO TABLE `rcbill`.`rcb_mxk` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
  IGNORE 3 LINES 
@@ -143,7 +165,7 @@ INSERTEDON=now()
 -- update rcbill.rcb_cmts
 -- set mac_address_clean = 
 
-select count(*) as cmts from rcbill.rcb_mxk;
+select count(*) as mxk from rcbill.rcb_mxk;
 
 -- select * from rcbill.rcb_mxk where mxk_interface='';
 
@@ -173,12 +195,12 @@ order by 1 desc, 2 asc
 /*
 
 SET SQL_SAFE_UPDATES = 0;
-delete from rcbill.rcb_mxk where date(insertedon)='2018-10-13';
+-- delete from rcbill.rcb_mxk where date(insertedon)='2018-10-13';
 
 delete from rcbill.rcb_mxk 
-where mxk_interface in ('','==========','====================','CPEs','Interface','ONUs','Serial','13','14');
+where mxk_interface in ('','==========','====================','CPEs','Interface','ONUs','Serial','13','14','for','exit');
 
 select * from rcbill.rcb_mxk 
-where mxk_interface in ('','==========','====================','CPEs','Interface','ONUs','Serial','13','14');
+where mxk_interface in ('','==========','====================','CPEs','Interface','ONUs','Serial','13','14','for','exit');
 
 */

@@ -15,10 +15,10 @@ create table rcbill_extract.IV_PARCELEXTRACTStaging_orig as
 	else '#ff0000' end as `color`
 	*/
 	,a.orig_network
-    , case when a.orig_network is null then 'ylw-circle-lv.png'
-	when a.orig_network='HFC' then 'red-square-lv.png' 
-	when a.orig_network='GPON' then 'grn-diamond-lv.png' 
-    else 'blu-blank-lv.png' end as `icon`
+    , case when a.orig_network is null then 'icon/ylw-circle-lv.png'
+	when a.orig_network='HFC' then 'icon/red-square-lv.png' 
+	when a.orig_network='GPON' then 'icon/grn-diamond-lv.png' 
+    else 'icon/blu-blank-lv.png' end as `icon`
 	, '13,13' as `iconSize`
 	, '-8,-8' as `iconOffset`
     , a.orig_reportdate as insertedon
@@ -160,7 +160,7 @@ create table rcbill_extract.IV_PARCELFORMAP_MIX_orig as
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
         from rcbill_extract.IV_PARCELEXTRACTStaging_orig 
-        where icon='blu-blank-lv.png'
+        where icon='icon/blu-blank-lv.png'
         group by lat, lon, title
         
 );

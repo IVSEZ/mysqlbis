@@ -128,7 +128,7 @@ select servicecategory, package
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2020-06-01','2020-06-30');
+call sp_GetActiveNumberFromTo('2020-07-17','2020-07-28');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
@@ -396,6 +396,24 @@ and commentuser in ('Rahul Walavalkar')
 group by commentuser,2
 order by 2 desc;
 
+
+select commentuser, date(commentdate) as cmt_date,  count(comment) as comments, count(distinct ticketid) as d_tickets
+from 
+rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=year(now())
+and commentuser in ('Brandon')
+group by commentuser,2
+order by 2 desc;
+
+select commentuser, date(commentdate) as cmt_date
+, ticketid, tickettype, clientcode , comment
+-- ,  count(comment) as comments, count(distinct ticketid) as d_tickets
+from 
+rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=year(now())
+and commentuser in ('Brandon')
+-- group by commentuser,2
+order by 2 desc;
 
 
 ### tickets by user for 2019
