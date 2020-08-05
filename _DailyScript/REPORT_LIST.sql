@@ -128,7 +128,7 @@ select servicecategory, package
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2020-07-17','2020-07-28');
+call sp_GetActiveNumberFromTo('2020-07-01','2020-07-31');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
@@ -212,6 +212,9 @@ select * from rcbill.clientcontractip where CLIENTCODE='I.000009236' order by us
 
 select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='41.220.111.243';
 select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='154.70.175.82';
+
+-- capital trading ip
+select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='41.220.110.30';
 
 
 select CLIENTCODE, CLIENTNAME, CONTRACTCODE, USAGEDATE, PROCESSEDCLIENTIP as IP from rcbill.clientcontractip where CLIENTCODE='I.000009236' order by usagedate desc;
@@ -376,7 +379,7 @@ from rcbill_my.rep_servicetickets_2019 order by ticketid desc, assgnopendate asc
 
 
 ### tickets by user for current year
-select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
+select commentuser, count(distinct ticketid) as d_tickets, count(comment) as comments 
 , min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
 , datediff(date_add(max(date(commentdate)),INTERVAL 1 day), min(date(commentdate))) as totaldays
 , count(distinct ticketid)/count(distinct date(commentdate)) as avgtktday
@@ -417,7 +420,7 @@ order by 2 desc;
 
 
 ### tickets by user for 2019
-select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
+select commentuser, count(distinct ticketid) as d_tickets,  count(comment) as comments
 , min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
 , datediff(date_add(max(date(commentdate)),INTERVAL 1 day), min(date(commentdate))) as totaldays
 , count(distinct ticketid)/count(distinct date(commentdate)) as avgtktday
@@ -430,7 +433,7 @@ group by commentuser
 order by 2 desc;
 
 ### tickets by user for 2018
-select commentuser,  count(comment) as comments, count(distinct ticketid) as d_tickets
+select commentuser, count(distinct ticketid) as d_tickets,  count(comment) as comments
 , min(date(commentdate)) as firstdate, max(date(commentdate)) as lastdate, count(distinct date(commentdate)) as cmmtdays
 , datediff(date_add(max(date(commentdate)),INTERVAL 1 day), min(date(commentdate))) as totaldays
 , count(distinct ticketid)/count(distinct date(commentdate)) as avgtktday

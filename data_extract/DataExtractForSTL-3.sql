@@ -420,9 +420,11 @@ create table rcbill_extract.IV_BILLINGACCOUNT (index idxivba1(BILLINGACCCOUNTNUM
 -- select * from rcbill_extract.IV_BILLINGACCOUNT where accountstatus=1;
 -- select length(BILLINGACCCOUNTNUMBER) from rcbill_extract.IV_BILLINGACCOUNT;
 
- select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187');
- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187');
- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187');
+ select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998');
+ select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998');
+ select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998');
+ 
+ 
  /*
  SELECT a.*,b.* 
  from rcbill_extract.IV_CUSTOMERACCOUNT a inner join rcbill_extract.IV_SERVICEACCOUNT b 
@@ -510,7 +512,7 @@ b.id=c.csid
 where a.clid 
 in 
 -- (select id from rcbill.rcb_tclients where kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR'))
-(select id from rcbill.rcb_tclients where kod in ('I.000011750')) -- ('I.000009787','I.000011750','I.000018187'))
+(select id from rcbill.rcb_tclients where kod in ('I7')) -- ,'I.000011750')) -- ('I.000009787','I.000011750','I.000018187'))
 
 
 ORDER BY a.CLID desc

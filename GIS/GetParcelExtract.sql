@@ -1,3 +1,5 @@
+use rcbill_extract;
+
 ###############################
 ## make sure the parcel coords table has been populated
 
