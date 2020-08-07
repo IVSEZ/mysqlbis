@@ -214,9 +214,13 @@ create table rcbill_extract.IV_SERVICEACCOUNT(index idxivsa1(SERVICEACCCOUNTNUMB
 	, '' AS VLANID
 
 	, case
+		when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='PREPAID' THEN 'RESIDENTIAL'
+		when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='STANDING ORDER' THEN 'RESIDENTIAL'
 		when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='VIP' THEN 'RESIDENTIAL'
 		when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='EMPLOYEE' THEN 'RESIDENTIAL'
 		when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='INTELVISION OFFICE' THEN 'CORPORATE LARGE'
+		when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='CORPORATE' THEN 'CORPORATE BULK'
+		when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='CORPORATE BUNDLE' THEN 'CORPORATE BULK'
 		ELSE (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS) 
 	   end AS SERVICECATEGORY
 
@@ -228,8 +232,11 @@ create table rcbill_extract.IV_SERVICEACCOUNT(index idxivsa1(SERVICEACCCOUNTNUMB
 	, case 
 		when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='VIP' THEN 'VIP'
 		when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='EMPLOYEE' THEN 'EMPLOYEE'
+		when (trim(upper(firm)) like ('%RETENTION') or trim(upper(firm)) like ('%RETENTION%') or trim(upper(firm)) like ('RETENTION%'))THEN 'RETENTION'
+		when (trim(upper(firm)) like ('%TEST') or trim(upper(firm)) like ('%TEST%') or trim(upper(firm)) like ('TEST%')) THEN 'TEST'
 		when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='INTELVISION OFFICE' THEN 'INTELVISION OFFICE'
-		ELSE (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS) 
+		-- ELSE (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS) 
+        ELSE ''
 	   end as CUSTOMERSUBCATEGORY
 
 	, (select coord_x from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS XCOORDINATE
