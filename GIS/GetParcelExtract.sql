@@ -1,13 +1,13 @@
-use rcbill_extract;
+use rcbill_maps;
 
 ###############################
 ## make sure the parcel coords table has been populated
 
 -- select * from rcbill_my.rep_custconsolidated;
 
-drop table if exists rcbill_extract.IV_PARCELEXTRACTStaging;
+drop table if exists rcbill_maps.IV_PARCELEXTRACTStaging;
 
-create table rcbill_extract.IV_PARCELEXTRACTStaging as 
+create table rcbill_maps.IV_PARCELEXTRACTStaging as 
 (
 	select a.latitude as lat, a.longitude as lon
 	-- , concat(a.clientcode, ':', a.clientname, '[',a.clientparcel,']') as `title`
@@ -53,113 +53,113 @@ create table rcbill_extract.IV_PARCELEXTRACTStaging as
 )
 ;
 
-SELECT * FROM rcbill_extract.IV_PARCELEXTRACTStaging;
+SELECT * FROM rcbill_maps.IV_PARCELEXTRACTStaging;
 
 
 
 set session group_concat_max_len = 30000;
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP;
-create table rcbill_extract.IV_PARCELFORMAP as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP;
+create table rcbill_maps.IV_PARCELFORMAP as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging group by lat, lon, title
+        from rcbill_maps.IV_PARCELEXTRACTStaging group by lat, lon, title
         
 );
 
-select * from rcbill_extract.IV_PARCELFORMAP;
+select * from rcbill_maps.IV_PARCELFORMAP;
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_Inactive_2;
-create table rcbill_extract.IV_PARCELFORMAP_Inactive_2 as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP_Inactive_2;
+create table rcbill_maps.IV_PARCELFORMAP_Inactive_2 as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging 
+        from rcbill_maps.IV_PARCELEXTRACTStaging 
         where activenetwork is null and AccountActivityStage='2. Snoozing (1 to 7 days)'
         group by lat, lon, title
         
 );
-select * from rcbill_extract.IV_PARCELFORMAP_Inactive_2;
+select * from rcbill_maps.IV_PARCELFORMAP_Inactive_2;
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_Inactive_3;
-create table rcbill_extract.IV_PARCELFORMAP_Inactive_3 as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP_Inactive_3;
+create table rcbill_maps.IV_PARCELFORMAP_Inactive_3 as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging 
+        from rcbill_maps.IV_PARCELEXTRACTStaging 
         where activenetwork is null and AccountActivityStage='3. Asleep (8 to 30 days)'
         group by lat, lon, title
         
 );
-select * from rcbill_extract.IV_PARCELFORMAP_Inactive_3;
+select * from rcbill_maps.IV_PARCELFORMAP_Inactive_3;
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_Inactive_4;
-create table rcbill_extract.IV_PARCELFORMAP_Inactive_4 as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP_Inactive_4;
+create table rcbill_maps.IV_PARCELFORMAP_Inactive_4 as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging 
+        from rcbill_maps.IV_PARCELEXTRACTStaging 
         where activenetwork is null and AccountActivityStage='4. Hibernating (31 to 90 days)'
         group by lat, lon, title
         
 );
-select * from rcbill_extract.IV_PARCELFORMAP_Inactive_4;
+select * from rcbill_maps.IV_PARCELFORMAP_Inactive_4;
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_Inactive_5;
-create table rcbill_extract.IV_PARCELFORMAP_Inactive_5 as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP_Inactive_5;
+create table rcbill_maps.IV_PARCELFORMAP_Inactive_5 as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging 
+        from rcbill_maps.IV_PARCELEXTRACTStaging 
         where activenetwork is null and AccountActivityStage='5. Dormant (more than 90 days)'
         group by lat, lon, title
         
 );
-select * from rcbill_extract.IV_PARCELFORMAP_Inactive_5;
+select * from rcbill_maps.IV_PARCELFORMAP_Inactive_5;
 
 
 
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_HFC;
-create table rcbill_extract.IV_PARCELFORMAP_HFC as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP_HFC;
+create table rcbill_maps.IV_PARCELFORMAP_HFC as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging 
+        from rcbill_maps.IV_PARCELEXTRACTStaging 
         where activenetwork = 'HFC'
         group by lat, lon, title
         
 );
 
-select * from rcbill_extract.IV_PARCELFORMAP_HFC;
+select * from rcbill_maps.IV_PARCELFORMAP_HFC;
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_GPON;
-create table rcbill_extract.IV_PARCELFORMAP_GPON as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP_GPON;
+create table rcbill_maps.IV_PARCELFORMAP_GPON as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging 
+        from rcbill_maps.IV_PARCELEXTRACTStaging 
         where activenetwork = 'GPON'
         group by lat, lon, title
         
 );
 
-select * from rcbill_extract.IV_PARCELFORMAP_GPON;
+select * from rcbill_maps.IV_PARCELFORMAP_GPON;
 
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_MIX;
-create table rcbill_extract.IV_PARCELFORMAP_MIX as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP_MIX;
+create table rcbill_maps.IV_PARCELFORMAP_MIX as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging 
+        from rcbill_maps.IV_PARCELEXTRACTStaging 
         where icon='icon/blu-blank-lv.png'
         group by lat, lon, title
         
 );
 
-select * from rcbill_extract.IV_PARCELFORMAP_MIX;
+select * from rcbill_maps.IV_PARCELFORMAP_MIX;
 ##
 /*
 this table is to be extracted as a TAB separated file
