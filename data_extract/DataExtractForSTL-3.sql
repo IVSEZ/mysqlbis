@@ -420,9 +420,14 @@ create table rcbill_extract.IV_BILLINGACCOUNT (index idxivba1(BILLINGACCCOUNTNUM
 -- select * from rcbill_extract.IV_BILLINGACCOUNT where accountstatus=1;
 -- select length(BILLINGACCCOUNTNUMBER) from rcbill_extract.IV_BILLINGACCOUNT;
 
- select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998');
- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998');
- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998');
+ select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7');
+ select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7');
+ select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7');
+ 
+ 
+ -- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERSUBCATEGORY in ('STANDING ORDER');
+ -- select distinct technology, count(*) from rcbill_extract.IV_SERVICEACCOUNT group by 1;
+ -- select * from rcbill_extract.IV_SERVICEACCOUNT where technology in ('MOBILE TV');
  
  
  /*
