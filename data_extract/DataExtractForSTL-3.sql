@@ -307,6 +307,7 @@ create table rcbill_extract.IV_SERVICEACCOUNT(index idxivsa1(SERVICEACCOUNTNUMBE
 ;
 
 -- select * from rcbill_extract.IV_SERVICEACCOUNT ;
+-- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I748');
 ###################################################################################
 
 ####	BILLING ACCOUNT
@@ -346,7 +347,67 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT1(index idxipba1(clientcode), 
 )
 ;
 
+-- select * from rcbill_my.rep_custextract where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1;
+-- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice;
+-- select * from rcbill_my.rep_clientcontractdevices where CLIENT_CODE in ('I14');
+
+select 'IV_PREP_clientcontractsservicepackagepricedevice' AS TABLENAME;
+
+drop table if exists rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice;
+
+create table rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice(index idxipccsppd1(clientcode), index idxipccsppd2(contractcode)) as 
+(
+			select a.*
+            , case 
+				when a.contractstatus=0 then 'Not Active'
+                when a.contractstatus=1 then 'Active' end as CurrentStatus
+            , ifnull(a.contractenddate,(select reportdate from rcbill_my.rep_custextract where clientcode=a.clientcode)) as LastContractDate
+            , (select technology from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER = concat('CA_',a.clientcode)) as network
+            , b.CONTRACT_TYPE,b.SERVICE_TYPE,b.FSAN,b.MAC,b.UID,b.username
+			, case when a.serviceenddate is null then 1 
+				else 0 end as servicestatus
+
+			 from rcbill.clientcontractsservicepackageprice a 
+			 left join 
+			 rcbill_my.rep_clientcontractdevices b 
+			 on a.clientcode=b.CLIENT_CODE and a.contractcode=b.CONTRACT_CODE and a.service=b.SERVICE_TYPE
+             where a.clientcode in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
+        
+             order by a.contractstatus asc, a.contractcode desc
+);
+
+
+select 'IV_PREP_BILLINGACCOUNT_A1' AS TABLENAME;
+
+
+drop table if exists rcbill_extract.IV_PREP_BILLINGACCOUNT_A1;
+create table rcbill_extract.IV_PREP_BILLINGACCOUNT_A1(index idxipba1(clientcode), index idxipba2(contractcode)) as 
+(
+	select a.clientcode, a.clientname, a.contractcode, a.currentstatus, a.currency, a.ratingplanname, a.creditpolicyname, a.MaxInvDate, a.MinInvDate
+    , a.package, a.service, a.lastcontractdate, a.lastaction
+--    , case when MaxInvDate=0 and MinInvDate=0 then 'PREPAID'
+-- 	else 'POSTPAID' end as `BILLCYCLE`
+    , case when a.MinInvDate=0 then 'PREPAID'
+     when a.MinInvDate is null then 'PREPAID'
+	else 'POSTPAID' end as `BILLCYCLE`
+    , cast(concat('BA_',a.clientcode,'_',a.contractcode) as char(255)) as `BillingAccountNumber`
+	from 
+	rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice a 
+	group by 1,3,4,5,6,7,8,9,10,11,12,13,14,15
+)
+;
+
+
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode in ('I.000011750');
+-- select * from IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I.000011750') order by contractenddate desc;
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I.000011750');
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I.000011750');
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000011750');
+
+
+select 'IV_PREP_BILLINGACCOUNT2' AS TABLENAME;
+
 
 drop table if exists rcbill_extract.IV_PREP_BILLINGACCOUNT2;
 create table rcbill_extract.IV_PREP_BILLINGACCOUNT2(index idxipba21(clientcode), index idxipba22(contractcode), index idxipba23(BillingKey), index idxipba24(BillingAccountNumber)) as 
@@ -369,7 +430,8 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT2(index idxipba21(clientcode),
 		-- , creditpolicyname
 		, count(contractcode) as ContractCount
 		from 
-		rcbill_extract.IV_PREP_BILLINGACCOUNT1 a 
+		-- rcbill_extract.IV_PREP_BILLINGACCOUNT1 a 
+        rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 a 
 		-- where a.currentstatus='Active'
 		-- group by 1,2,3,4,5,6,7
 		group by 1,2,3,4
@@ -383,6 +445,8 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT2(index idxipba21(clientcode),
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2;
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1;
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2;
+
+select 'IV_PREP_BILLINGACCOUNT3' AS TABLENAME;
 
 drop table if exists rcbill_extract.IV_PREP_BILLINGACCOUNT3;
 create table rcbill_extract.IV_PREP_BILLINGACCOUNT3(index idxipba31(clientcode), index idxipba33(BillingKey)) as 
@@ -402,6 +466,8 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT3(index idxipba31(clientcode),
 
 
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode in ('I.000011750');
+-- select * from IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I.000011750');
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000011750');
 
@@ -433,6 +499,8 @@ where a.clientcode in ('I.000011750')
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I14554');
 
 -- select a.*,b.* from rcbill_extract.IV_PREP_BILLINGACCOUNT2 a inner join rcbill_extract.IV_PREP_BILLINGACCOUNT1 b on a.clientcode=b.clientcode where a.clientcode in ('I.000011750');
+
+select 'BILLING ACCOUNT' AS TABLENAME;
 
 drop table if exists rcbill_extract.IV_BILLINGACCOUNT;
 
@@ -474,7 +542,8 @@ create table rcbill_extract.IV_BILLINGACCOUNT (index idxivba1(BILLINGACCOUNTNUMB
 	, cast(concat('CA_',a.clientcode) as char(255)) AS CUSTOMERACCOUNTNUMBER
 	, cast(a.BillingAccountNumber as char(255)) AS BILLINGACCOUNTNUMBER
 	-- , b.ACTIVE AS ACCOUNTSTATUS
-	, case when (select currentstatus from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode=a.clientcode and contractcode=a.contractcode order by lastcontractdate desc limit 1) = 'Active' then 1 else 0 end as ACCOUNTSTATUS
+	
+    , case when (select currentstatus from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode=a.clientcode and contractcode=a.contractcode order by lastcontractdate desc limit 1) = 'Active' then 1 else 0 end as ACCOUNTSTATUS
 
 	-- , b.BEGDATE AS CREATEDDATE
 	-- , b.BEGDATE AS ACTIVATIONDATE
@@ -482,7 +551,8 @@ create table rcbill_extract.IV_BILLINGACCOUNT (index idxivba1(BILLINGACCOUNTNUMB
 	, (select startdate from rcbill.rcb_contracts where kod=a.contractcode) as CREATEDDATE
 	, (select startdate from rcbill.rcb_contracts where kod=a.contractcode) as ACTIVATIONDATE
 	, (select upddate from rcbill.rcb_contracts where kod=a.contractcode) as STATUSCHANGEDATE
-	, (select lastaction from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode=a.clientcode and contractcode=a.contractcode order by lastcontractdate desc limit 1) as LASTACTION
+	
+    , (select lastaction from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode=a.clientcode and contractcode=a.contractcode order by lastcontractdate desc limit 1) as LASTACTION
 
 	, 'SUMMARY' AS BILLFORMATTYPE
 	, '' AS BUILDINGNAME
@@ -498,7 +568,7 @@ create table rcbill_extract.IV_BILLINGACCOUNT (index idxivba1(BILLINGACCOUNTNUMB
 	, (select coord_x from rcbill.rcb_clientparcelcoords where clientcode=a.clientcode and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS XCOORDINATE
 	, (select coord_y from rcbill.rcb_clientparcelcoords where clientcode=a.clientcode and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS YCOORDINATE
 	, a.ratingplanname as RATINGPLAN
-	, (select creditpolicyname from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode=a.clientcode and contractcode=a.contractcode order by lastcontractdate desc limit 1) AS CREDITCLASSNAME
+	, (select creditpolicyname from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode=a.clientcode and contractcode=a.contractcode order by lastcontractdate desc limit 1) AS CREDITCLASSNAME
 
 	from 
 	rcbill_extract.IV_PREP_BILLINGACCOUNT3 a 
@@ -519,16 +589,19 @@ create table rcbill_extract.IV_BILLINGACCOUNT (index idxivba1(BILLINGACCOUNTNUMB
 -- 'I.000009787','I.000011750','I.000018187','I.000011998','I13703','I7'
 
 
- select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7') order by ACCOUNTNUMBER;
- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7') order by CUSTOMERACCOUNTNUMBER;
- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7') 
+ -- select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7') order by ACCOUNTNUMBER;
+ -- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7') order by CUSTOMERACCOUNTNUMBER;
+ -- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7') 
  -- and ACCOUNTSTATUS=1
- order by CUSTOMERACCOUNTNUMBER;
+ -- order by CUSTOMERACCOUNTNUMBER;
  
-select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode in ('I.000011750');
-select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I.000011750');
-select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000011750');
-select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000011750');
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode in ('I.000011750');
+
+-- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I.000011750');
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I.000011750');
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I.000011750');
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000011750');
+-- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000011750');
 
  /*
  SELECT a.*,b.* 
@@ -552,6 +625,8 @@ SELECT a.*,b.*
 -- select * from rcbill.rcb_contracts where clid in (select id from rcbill.rcb_tclients where kod='I.000011750');
 ## MAKE A TABLE OF CUSTOMER ACCOUNT, SERVICE ACCOUNT AND BILLING ACCOUNT TOGETHER
 
+select 'IV_PREP_SERVICEINSTANCE1' AS TABLENAME;
+
 drop table if exists rcbill_extract.IV_PREP_SERVICEINSTANCE1;
 
 create table rcbill_extract.IV_PREP_SERVICEINSTANCE1 (index idxipsi1(clientcode), index idxipsi2(contractcode), index idxipsi3(BillingKey), index idxipsi4(BILLINGACCOUNTNUMBER), index idxipsi5(CUSTOMERACCOUNTNUMBER), index idxipsi6(SERVICEACCOUNTNUMBER)) as 
@@ -559,7 +634,10 @@ create table rcbill_extract.IV_PREP_SERVICEINSTANCE1 (index idxipsi1(clientcode)
 	select a.*
 	, b.BillingKey
 	, c.contractcode
-	, d.clientname, d.servicecategory, d.servicecategory2, d.service, d.package, d.packagetype, d.network, d.currentstatus, d.lastcontractdate
+	-- , d.*
+    , e.currency, e.ratingplanname, e.LASTACTION, e.contractstartdate, e.contractenddate, e.contractstatus, e.servicestartdate, e.serviceenddate, e.servicestatus, e.servicerateid
+    , e.package, e.price, e.service, e.CurrentStatus, e.LastContractDate, e.network, e.CONTRACT_TYPE, e.SERVICE_TYPE, e.FSAN, e.MAC, e.UID, e.username
+	, e.serviceinstancenumber, e.StatusChangedDate, e.serviceid    
 	from 
 	(
 		select a.ACCOUNTNUMBER as CUSTOMERACCOUNTNUMBER, replace(a.ACCOUNTNUMBER,'CA_','') as clientcode
@@ -582,43 +660,316 @@ create table rcbill_extract.IV_PREP_SERVICEINSTANCE1 (index idxipsi1(clientcode)
 					on a.AccountNumber=d.CUSTOMERACCOUNTNUMBER
 
 		-- where a.ACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7') 
+        -- where a.ACCOUNTNUMBER in ('CA_I.000011750') 
 		group by 1,2,3,4
 
 
 	) a 
-	INNER JOIN 
+	LEFT JOIN 
 	rcbill_extract.IV_PREP_BILLINGACCOUNT3 b
 	on a.BILLINGACCOUNTNUMBER=b.BillingAccountNumber
 
-	INNER JOIN 
+	LEFT JOIN 
 	rcbill_extract.IV_PREP_BILLINGACCOUNT2 c 
 	on b.BillingKey=c.BillingKey
 
-	INNER JOIN 
-	rcbill_extract.IV_PREP_BILLINGACCOUNT1 d 
-	on c.contractcode=d.contractcode
+	-- LEFT JOIN 
+	-- rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 d 
+	-- on c.contractcode=d.contractcode
+    
+	LEFT JOIN 
+	rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice e 
+	on c.contractcode=e.contractcode
+    
 )
 ;
 
--- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7') ;
-select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where CUSTOMERACCOUNTNUMBER in ('CA_I.000011750') ;
-select * from rcbill.rcb_contracts where clid in (select id from rcbill.rcb_tclients where kod='I.000011750');
 
+
+-- show index from rcbill_extract.IV_PREP_SERVICEINSTANCE1;
+-- 'I.000004181','0010'
+-- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7') ;
+-- select * from rcbill.rcb_contracts where clid in (select id from rcbill.rcb_tclients where kod='I.000011750');
+-- select * from rcbill.rcb_contractservices where cid in (select id from rcbill.rcb_contracts where clid in (select id from rcbill.rcb_tclients where kod='I.000011750'));
+-- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I.000011750') ;
+
+####################################################################################################
 -- SERVICE INSTANCES
 select 'SERVICE INSTANCE' AS TABLENAME;
 
+drop table if exists rcbill_extract.IV_SERVICEINSTANCE;
 
-select a.*
-, b.*
+create table rcbill_extract.IV_SERVICEINSTANCE as
+(
+
+	select 
+	-- a.*
+	-- , b.*
+
+
+
+	a.CustomerAccountNumber as CUSTOMERACCOUNTNUMBER
+	, a.BillingAccountNumber as BILLINGACCOUNTNUMBER
+	, a.ServiceAccountNumber as SERVICEACCOUNTNUMBER
+	, a.SERVICEINSTANCEIDENTIFIER as SERVICEINSTANCEIDENTIFIER
+	, a.SERVICEINSTANCENUMBER2 as SERVICEINSTANCENUMBER
+	, a.PackageName as PACKAGENAME
+	, a.ServiceStatus as SERVICESTATUS
+	, a.username as USERNAME
+	, a.CREATEDDATE
+	, a.ACTIVATIONDATE
+	, a.STATUSCHANGEDDATE
+	, a.LASTACTION
+	, a.PACKAGEAMOUNT
+	, a.CPE_TYPE
+	, a.CPE_ID
+	, a.CONTRACTSTARTDATE
+	, a.CONTRACTENDDATE
+	, a.SERVICEREMARKS
+	, a.EXPIRYDATE
+	, a.OVERRIDDEN
+	, a.FSAN
+	, a.ServiceID
+	, a.ServiceRateID
+	-- , a.CONTRACTVALIDITYPERIOD
+	, a.SERVICESTARTDATE
+	, a.SERVICEENDDATE
+	, a.clientcode
+	, a.contractcode
+	, a.serviceinstancestatus	
+
+	-- , (select ips.CUSTOMERACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as CUSTOMERACCOUNTNUMBER
+	-- , (select ips.BILLINGACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as BILLINGACCOUNTNUMBER
+	-- , (select ips.SERVICEACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICEACCOUNTNUMBER
+	-- , (select ips.currentstatus from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICESTATUS
+
+
+	from 
+	(
+
+			SELECT
+			 (@cnt := @cnt + 1) AS rowNumber,
+			  ips1.CustomerAccountNumber as CUSTOMERACCOUNTNUMBER
+			, ips1.BillingAccountNumber as BILLINGACCOUNTNUMBER
+			, ips1.ServiceAccountNumber as SERVICEACCOUNTNUMBER
+			, ips1.clientcode
+			, ips1.contractcode 
+			, ips1.package as PACKAGENAME
+			, ips1.serviceinstancenumber as SERVICEINSTANCENUMBER
+			, cast(concat('SIN_',ips1.serviceinstancenumber,'_',@cnt) as char(255)) as SERVICEINSTANCENUMBER2
+			, cast(concat('SII_',ips1.contractcode) as char(255)) as SERVICEINSTANCEIDENTIFIER
+			, ips1.CurrentStatus as SERVICESTATUS
+            , case when ips1.servicestatus = 0 then 'Not Active'
+				else 'Active' end as SERVICEINSTANCESTATUS
+
+
+			, case when ips1.username is null then ips1.UID
+				when length(ips1.username)=0 then ips1.UID
+                when service_type in ('VOICE','GVOICE') then ips1.UID
+				else ips1.username end as USERNAME
+
+			-- , ifnull(c.username,c.phoneno) as USERNAME
+			, ips1.contractstartdate AS CREATEDDATE
+			, ips1.servicestartdate as ACTIVATIONDATE
+			, ips1.StatusChangedDate as STATUSCHANGEDDATE
+			-- , a.LastActionID as LastActionID
+			, ips1.LASTACTION as LASTACTION
+			, ips1.price as PACKAGEAMOUNT
+			-- , '' as CPE_TYPE
+			, ips1.service as CPE_TYPE
+			, case when service_type in ('VOICE','GVOICE') then ips1.username
+                else ips1.MAC end as CPE_ID
+			, ips1.contractstartdate as CONTRACTSTARTDATE
+			, ips1.contractenddate as CONTRACTENDDATE
+			, '' as SERVICEREMARKS
+			, '' as EXPIRYDATE
+			, 'Y' as OVERRIDDEN
+			-- , c.phoneno as PHONENO
+			, ips1.FSAN as FSAN
+
+			, ips1.serviceid as ServiceID
+			, ips1.servicerateid as ServiceRateID
+
+
+			/*
+			, (select UserName from rcbill.rcb_devices where CSID=b.ID order by UserName asc limit 1) as USERNAME
+			, (select PhoneNo from rcbill.rcb_devices where CSID=b.ID order by PhoneNo asc limit 1) as CPEID_PHONE
+			, (select NATIP from rcbill.rcb_devices where CSID=b.ID  order by NATIP asc limit 1) as CPEID_NATIP
+			, (select MAC from rcbill.rcb_devices where CSID=b.ID  order by MAC asc limit 1) as CPEID_MAC
+			, (select SerNo from rcbill.rcb_devices where CSID=b.ID  order by SerNo asc limit 1) as CPEID_SERNO
+			*/
+
+
+			-- , a.DATA as CONTRACTDATE
+
+			-- , a.ValidityPeriod AS CONTRACTVALIDITYPERIOD
+			, ips1.servicestartdate as SERVICESTARTDATE
+			, ips1.serviceenddate as SERVICEENDDATE
+			from 
+			rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips1
+
+			CROSS JOIN (SELECT @cnt := 0) AS dummy
+
+
+			-- where ips1.clientcode in  
+			-- (select id from rcbill.rcb_tclients where kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR'))
+			-- ('I.000011750') -- ,'I.000011750')) -- ('I.000009787','I.000011750','I.000018187'))
+			-- ('I.000021409')
+
+			ORDER BY ips1.clientcode desc
+	) a 
+)
+;
+
+
+-- select * from rcbill_extract.IV_SERVICEINSTANCE where clientcode in ('I.000021409');
+-- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I7') ;
+-- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I748') ;
+-- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I14') ;
+-- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I.000009787 ') ;
+
+-- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I.000011750') ;
+-- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I.000021409') ;
+-- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I.000021390') ;
+
+
+####################################################################################################
+
+/*
+select 
+si.SERVICEINSTANCENUMBER
+, count(*)
+from 
+rcbill_extract.IV_SERVICEINSTANCE si
+group by si.SERVICEINSTANCENUMBER
+;
+
+select * from rcbill_extract.IV_SERVICEINSTANCE where SERVICEINSTANCENUMBER is null;
+
+select cpe_type, count(*)
+from 
+rcbill_extract.IV_SERVICEINSTANCE si
+group by cpe_type
+;
+
+
+select packagename, count(*)
+from 
+rcbill_extract.IV_SERVICEINSTANCE si
+group by packagename
+;
+
+
+select cpe_type, packagename, count(*)
+from 
+rcbill_extract.IV_SERVICEINSTANCE si
+group by cpe_type, packagename
+;
+
+select 
+si.SERVICEINSTANCENUMBER
+, si.CPE_TYPE
+, si.PACKAGENAME
+, si.PACKAGEAMOUNT
+, case 
+	when (cpe_type like '%RENT%' or cpe_type like '%MONTHLY%' or cpe_type like '%SUBSCRIPTION%') then 'MONTHLY CHARGE'
+    else 'ONETIME CHARGE' end as CHARGENAME
+from 
+rcbill_extract.IV_SERVICEINSTANCE si
+;
+
+select * from rcbill_extract.IV_SERVICEINSTANCE;
+*/
+
+
+
+-- SERVICE INSTANCE CHARGE
+select 'SERVICE INSTANCE CHARGE' AS TABLENAME;
+
+drop table if exists rcbill_extract.IV_SERVICEINSTANCECHARGE;
+
+-- create table rcbill_extract.IV_SERVICEINSTANCECHARGE as
+-- (
+
+
+select 
+si.SERVICEINSTANCENUMBER
+, si.CPE_TYPE
+, si.PACKAGENAME
+, si.PACKAGEAMOUNT
+, case 
+	when (cpe_type like '%RENT%' or cpe_type like '%MONTHLY%' or cpe_type like '%SUBSCRIPTION%') then 'MONTHLY CHARGE'
+    else 'ONETIME CHARGE' end as CHARGENAME
+from 
+rcbill_extract.IV_SERVICEINSTANCE si
+;
+
+
+
+
+
+
+ select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  order by ACCOUNTNUMBER;
+ select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  order by CUSTOMERACCOUNTNUMBER;
+ select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390') 
+ -- and ACCOUNTSTATUS=1
+ order by CUSTOMERACCOUNTNUMBER;
+ 
+select * from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390') 
+;
+
+/*
+
+select 
+-- a.*
+-- , b.*
+
+
+-- , b.CustomerAccountNumber as CUSTOMERACCOUNTNUMBER
+-- , b.BillingAccountNumber as BILLINGACCOUNTNUMBER
+-- , b.ServiceAccountNumber as SERVICEACCOUNTNUMBER
+a.clientcode
+, a.contractcode
+, a.PackageName as PACKAGENAME
+, a.SERVICEINSTANCENUMBER2 as SERVICEINSTANCENUMBER
+-- , b.currentstatus as SERVICESTATUS
+, a.username as USERNAME
+, a.CREATEDDATE
+, a.ACTIVATIONDATE
+, a.STATUSCHANGEDDATE
+, a.LASTACTION
+, a.PACKAGEAMOUNT
+, a.CPE_TYPE
+, a.CPE_ID
+, a.CONTRACTSTARTDATE
+, a.CONTRACTENDDATE
+, a.SERVICEREMARKS
+, a.EXPIRYDATE
+, a.OVERRIDDEN
+, a.FSAN
+, a.ServiceID
+, a.ServiceRateID
+, a.CONTRACTVALIDITYPERIOD
+, a.SERVICESTARTDATE
+, a.SERVICEENDDATE
+
+
+-- , (select ips.CUSTOMERACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as CUSTOMERACCOUNTNUMBER
+-- , (select ips.BILLINGACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as BILLINGACCOUNTNUMBER
+-- , (select ips.SERVICEACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICEACCOUNTNUMBER
+-- , (select ips.currentstatus from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICESTATUS
+
+
 from 
 (
 
 		SELECT
-
-		(select KOD from rcbill.rcb_tclients where id=a.clid) as CLIENTCODE
+		 (@cnt := @cnt + 1) AS rowNumber,
+        (select KOD from rcbill.rcb_tclients where id=a.clid) as CLIENTCODE
 		, a.KOD as CONTRACTCODE
 		, (select Name from rcbill.rcb_vpnrates where ID=b.ServiceRateID) as PACKAGENAME
 		, b.ID as SERVICEINSTANCENUMBER
+        , cast(concat(b.id,'_',@cnt) as char(255)) as SERVICEINSTANCENUMBER2
 		, b.Active as SERVICESTATUS
 		, case when c.username is null then c.phoneno
 			when length(c.username)=0 then c.phoneno
@@ -646,13 +997,7 @@ from
 		, b.ServiceRateID as ServiceRateID
 
 
-		/*
-		, (select UserName from rcbill.rcb_devices where CSID=b.ID order by UserName asc limit 1) as USERNAME
-		, (select PhoneNo from rcbill.rcb_devices where CSID=b.ID order by PhoneNo asc limit 1) as CPEID_PHONE
-		, (select NATIP from rcbill.rcb_devices where CSID=b.ID  order by NATIP asc limit 1) as CPEID_NATIP
-		, (select MAC from rcbill.rcb_devices where CSID=b.ID  order by MAC asc limit 1) as CPEID_MAC
-		, (select SerNo from rcbill.rcb_devices where CSID=b.ID  order by SerNo asc limit 1) as CPEID_SERNO
-		*/
+
 
 
 		-- , a.DATA as CONTRACTDATE
@@ -672,6 +1017,7 @@ from
 		on 
 		b.id=c.csid
 
+		CROSS JOIN (SELECT @cnt := 0) AS dummy
 
 
 		where a.clid 
@@ -682,15 +1028,8 @@ from
 
 		ORDER BY a.CLID desc
 ) a 
-left join 
-rcbill_extract.IV_PREP_SERVICEINSTANCE1 b 
-on 
-a.clientcode=b.clientcode
-and 
-a.contractcode=b.contractcode
-and 
-a.packagename=b.package
+
 ;
 
-
+*/
 
