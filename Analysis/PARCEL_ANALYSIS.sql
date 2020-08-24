@@ -8,19 +8,45 @@ set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)=date(now());
 */
 
+
+
+select a.*, b.valid_parcels, c.invalid_parcels
+from 
+	(
+		select date(insertedon) as dateinserted, count(clientparcel) as total_parcels
+		from rcbill.rcb_clientparcelcoords 
+		group by 1
+		order by 1 desc
+		-- ;
+	) a 
+inner join 
+	(
+		select date(insertedon) as dateinserted, count(clientparcel) as valid_parcels
+		from rcbill.rcb_clientparcelcoords 
+		where latitude<>0
+		group by 1
+		order by 1 desc
+		-- ;
+	) b 
+on a.dateinserted=b.dateinserted
+
+inner join 
+	(
+		select date(insertedon) as dateinserted, count(clientparcel) as invalid_parcels
+		from rcbill.rcb_clientparcelcoords 
+		where latitude=0
+		group by 1
+		order by 1 desc
+		-- ;
+	) c
+on a.dateinserted=c.dateinserted
+;
+
+
 select date(insertedon) as dateinserted, count(clientparcel) as parcels
 from rcbill.rcb_clientparcelcoords 
 where latitude<>0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))
 ;
-
-select date(insertedon) as dateinserted, count(clientparcel) as parcels
-from rcbill.rcb_clientparcelcoords 
-group by 1
-order by 1 desc
-;
-
-
-
 
 select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
 select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));

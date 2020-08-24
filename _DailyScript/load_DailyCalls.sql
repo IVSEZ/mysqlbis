@@ -5,7 +5,7 @@ use rcbill_my;
 -- SET @date1='2020-05-29';
 -- SET @date2='2020-05-30';
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-10082020.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-23082020.csv'
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-24082019-02092019.csv'  
  
