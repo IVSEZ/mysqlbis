@@ -128,7 +128,7 @@ select servicecategory, package
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2020-07-01','2020-07-31');
+call sp_GetActiveNumberFromTo('2020-08-01','2020-08-31');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
@@ -211,9 +211,10 @@ select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='41.220.107.242' o
 select * from rcbill.clientcontractip where CLIENTCODE='I.000009236' order by usagedate desc;
 
 select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='41.220.111.243';
+select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='41.220.111.246';
 select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='154.70.175.82';
 
--- capital trading ip
+-- capital trading ipc
 select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='41.220.110.30';
 
 
@@ -398,6 +399,16 @@ where year(commentdate)=year(now())
 and commentuser in ('Rahul Walavalkar')
 group by commentuser,2
 order by 2 desc;
+select commentuser, date(commentdate) as cmt_date
+, ticketid, tickettype, clientcode , comment
+-- ,  count(comment) as comments, count(distinct ticketid) as d_tickets
+from 
+rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=year(now())
+and commentuser in ('Rahul Walavalkar')
+-- group by commentuser,2
+order by 2 desc;
+
 
 
 select commentuser, date(commentdate) as cmt_date,  count(comment) as comments, count(distinct ticketid) as d_tickets
@@ -417,6 +428,33 @@ where year(commentdate)=year(now())
 and commentuser in ('Brandon')
 -- group by commentuser,2
 order by 2 desc;
+
+
+select * from rcbill.rcb_tickettechregions;
+select * from rcbill.rcb_tickettechusers ;
+
+select commentuser, date(commentdate) as cmt_date,  count(comment) as comments, count(distinct ticketid) as d_tickets
+from 
+rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=year(now())
+and commentuser in 
+(select `name` from rcbill.rcb_tickettechusers where TECHREGIONID in (select id from rcbill.rcb_tickettechregions where `name` in ('NOC')))
+group by commentuser,2
+order by 2 desc
+;
+
+select commentuser, date(commentdate) as cmt_date
+, ticketid, tickettype, clientcode , comment
+-- ,  count(comment) as comments, count(distinct ticketid) as d_tickets
+from 
+rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=year(now())
+and commentuser in (select `name` from rcbill.rcb_tickettechusers where TECHREGIONID in 
+(select id from rcbill.rcb_tickettechregions where `name` in ('NOC')))
+-- group by commentuser,2
+order by 2 desc, 1 asc,  ticketid desc
+;
+
 
 
 ### tickets by user for 2019

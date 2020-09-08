@@ -3,6 +3,19 @@ use rcbill_maps;
 ###############################
 ## make sure the parcel coords table has been populated
 
+select date(insertedon) as dateinserted, count(clientparcel) as parcels
+from rcbill.rcb_clientparcelcoords 
+where latitude<>0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))
+;
+
+select date(insertedon) as dateinserted, count(clientparcel) as parcels
+from rcbill.rcb_clientparcelcoords 
+group by 1
+order by 1 desc
+;
+
+
+
 -- select * from rcbill_my.rep_custconsolidated;
 
 drop table if exists rcbill_maps.IV_PARCELEXTRACTStaging;

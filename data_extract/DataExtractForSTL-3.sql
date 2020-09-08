@@ -3,7 +3,7 @@
 use rcbill_extract;
 
 
-
+select 'CUSTOMER ACCOUNT' AS TABLENAME;
 
 drop table if exists rcbill_extract.IV_CUSTOMERACCOUNT;
 
@@ -894,41 +894,171 @@ select * from rcbill_extract.IV_SERVICEINSTANCE;
 */
 
 
-
+##################################################################################################################
 -- SERVICE INSTANCE CHARGE
 select 'SERVICE INSTANCE CHARGE' AS TABLENAME;
 
 drop table if exists rcbill_extract.IV_SERVICEINSTANCECHARGE;
 
--- create table rcbill_extract.IV_SERVICEINSTANCECHARGE as
--- (
+create table rcbill_extract.IV_SERVICEINSTANCECHARGE(index idxisic1(SERVICEINSTANCENUMBER)) as -- , index idxisic2(CPE_TYPE), index idxisic3(PACKAGENAME)) as
+(
+	select 
+	si.SERVICEINSTANCENUMBER
+	, case 
+		when (si.cpe_type like '%RENT%' or si.cpe_type like '%MONTHLY%' or si.cpe_type like '%SUBSCRIPTION%') then 'MONTHLY CHARGE'
+		else 'ONETIME CHARGE' end as CHARGENAME
+	, si.PACKAGEAMOUNT as CHARGEPRICE
+	-- , si.CPE_TYPE
+	-- , si.PACKAGENAME
+	from 
+	rcbill_extract.IV_SERVICEINSTANCE si
+)
+;
 
+-- select * from rcbill_extract.IV_SERVICEINSTANCECHARGE where CHARGENAME='ONETIME CHARGE'; -- CPE_TYPE like '%RENT%' ; -- CHARGENAME='MONTHLY CHARGE';
+
+
+
+##################################################################################################################
+-- INVENTORY
+select 'INVENTORY' AS TABLENAME;
+
+drop table if exists rcbill_extract.IV_INVENTORY;
+
+create table rcbill_extract.IV_INVENTORY(index idxisic1(SERVICEINSTANCENUMBER)) as -- , index idxisic2(CPE_TYPE), index idxisic3(PACKAGENAME)) as
+(
 
 select 
-si.SERVICEINSTANCENUMBER
-, si.CPE_TYPE
-, si.PACKAGENAME
-, si.PACKAGEAMOUNT
-, case 
-	when (cpe_type like '%RENT%' or cpe_type like '%MONTHLY%' or cpe_type like '%SUBSCRIPTION%') then 'MONTHLY CHARGE'
-    else 'ONETIME CHARGE' end as CHARGENAME
-from 
-rcbill_extract.IV_SERVICEINSTANCE si
+	si.SERVICEINSTANCENUMBER
+	-- , si.CUSTOMERACCOUNTNUMBER
+    -- , si.BILLINGACCOUNTNUMBER
+    -- , si.SERVICEACCOUNTNUMBER
+    -- , si.SERVICEINSTANCEIDENTIFIER
+    
+	, si.USERNAME as INVENTORYNUMBER
+    , case when si.CPE_TYPE in ('GVOICE','VOICE') then si.CPE_ID 
+		   when length(si.FSAN)>0 then si.FSAN
+           else si.USERNAME end as SERIALNUMBER
+    , si.CPE_TYPE as INVENTORYSUBTYPE
+    
+    -- , si.PACKAGENAME
+    -- , si.CPE_TYPE
+    -- , si.CPE_ID
+    -- , si.FSAN
+    -- , si.USERNAME
+    , '' as REMARK
+    , '' as STAFFNAME
+    , si.SERVICESTARTDATE
+    , si.SERVICEENDDATE
+    , si.SERVICESTATUS
+    , si.serviceinstancestatus as SERVICEINSTANCESTATUS
+    , '' as SOURCECHANNEL
+
+
+from rcbill_extract.IV_SERVICEINSTANCE si where 
+-- CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  
+-- and 
+((si.fsan is not null) or (si.CPE_ID is not null) or (si.USERNAME is not null))
+
+)
+;
+
+
+
+##################################################################################################################
+-- SUBSCRIBER ADDON
+select 'SUBSCRIBER ADDON' AS TABLENAME;
+
+drop table if exists rcbill_extract.IV_ADDON;
+
+create table rcbill_extract.IV_ADDON(index idxisic1(SERVICEINSTANCENUMBER)) as -- , index idxisic2(CPE_TYPE), index idxisic3(PACKAGENAME)) as
+(
+
+select 
+	si.SERVICEINSTANCENUMBER
+	-- , si.CUSTOMERACCOUNTNUMBER
+    -- , si.BILLINGACCOUNTNUMBER
+    -- , si.SERVICEACCOUNTNUMBER
+    -- , si.SERVICEINSTANCEIDENTIFIER
+    , si.PACKAGENAME
+    , si.SERVICESTARTDATE
+    , si.SERVICEENDDATE
+
+    -- , si.PACKAGENAME
+    -- , si.CPE_TYPE
+    -- , si.CPE_ID
+    -- , si.FSAN
+    -- , si.USERNAME
+    , 'Y' as OVERRIDDEN
+
+
+from rcbill_extract.IV_SERVICEINSTANCE si where 
+-- CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  
+-- and 
+cpe_type like '%SUBSCRIPTION%'
+
+)
+;
+
+
+##################################################################################################################
+-- SUBSCRIBER ADDON CHARGE
+select 'SUBSCRIBER ADDON CHARGE' AS TABLENAME;
+
+drop table if exists rcbill_extract.IV_ADDONCHARGE;
+
+create table rcbill_extract.IV_ADDONCHARGE(index idxisic1(SERVICEINSTANCENUMBER)) as -- , index idxisic2(CPE_TYPE), index idxisic3(PACKAGENAME)) as
+(
+
+select 
+	si.SERVICEINSTANCENUMBER
+	-- , si.CUSTOMERACCOUNTNUMBER
+    -- , si.BILLINGACCOUNTNUMBER
+    -- , si.SERVICEACCOUNTNUMBER
+    -- , si.SERVICEINSTANCEIDENTIFIER
+    -- , si.PACKAGENAME
+    , 'MONTHLY CHARGE' as CHARGENAME
+	, si.PACKAGEAMOUNT as CHARGEPRICE
+    -- , si.PACKAGENAME
+    -- , si.CPE_TYPE
+    -- , si.CPE_ID
+    -- , si.FSAN
+    -- , si.USERNAME
+    -- , 'Y' as OVERRIDDEN
+
+
+from rcbill_extract.IV_SERVICEINSTANCE si where 
+-- CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  
+-- and 
+cpe_type like '%SUBSCRIPTION%'
+
+)
 ;
 
 
 
 
-
-
- select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  order by ACCOUNTNUMBER;
- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  order by CUSTOMERACCOUNTNUMBER;
- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390') 
+select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  order by ACCOUNTNUMBER;
+select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  order by CUSTOMERACCOUNTNUMBER;
+select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390') 
  -- and ACCOUNTSTATUS=1
  order by CUSTOMERACCOUNTNUMBER;
  
 select * from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390') 
 ;
+
+select * from rcbill_extract.IV_SERVICEINSTANCECHARGE where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390') )
+;
+
+select * from rcbill_extract.IV_INVENTORY where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390') )
+;
+
+select * from rcbill_extract.IV_ADDON where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390') )
+;
+
+select * from rcbill_extract.IV_ADDONCHARGE where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390') )
+;
+
 
 /*
 

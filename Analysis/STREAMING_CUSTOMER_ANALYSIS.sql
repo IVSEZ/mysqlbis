@@ -12,7 +12,13 @@ use rcbill_my;
 set @streamingcategory='STREAMING';
 set @streamingname='NETFLIX';
 
-SELECT * FROM rcbill_my.dailystreamingusage where STREAMINGCATEGORY=@streamingcategory AND STREAMINGNAME=@streamingname;
+SELECT * FROM rcbill_my.dailystreamingusage where STREAMINGCATEGORY=@streamingcategory AND STREAMINGNAME=@streamingname
+and year(DATESTART)=2020
+;
+
+-- 
+SELECT * FROM rcbill.clientcontractipmonth where USAGE_YR=2020 and clientcode='I.000011750';
+select * from rcbill_my.dailystreamingusage where ip in ('154.70.175.168','41.220.111.133');
 
 SELECT A.*, B.*
 FROM 
@@ -33,21 +39,41 @@ drop table if exists rcbill_my.a;
 
 create table rcbill_my.a(index idxa1(datestart),index idxa2(dateend), index idxa3(from_date),index idxa4(to_date)) as
 (
-SELECT A.*, B.*
-FROM 
-rcbill_my.dailystreamingusage A 
-LEFT JOIN
-rcbill.clientcontractipmonth B
-ON 
-A.IP=B.PROCESSEDCLIENTIP
-/*
-AND
-(A.DATESTART>=B.FROM_DATE AND A.DATESTART<=B.TO_DATE)
-AND
-(A.DATEEND>=B.FROM_DATE AND A.DATEEND<=B.TO_DATE)
-*/
+	SELECT dsu.*, ccim.*
+	FROM 
+	rcbill_my.dailystreamingusage dsu
+	LEFT JOIN
+	rcbill.clientcontractipmonth ccim
+	ON 
+	dsu.IP=ccim.PROCESSEDCLIENTIP
+	/*
+	AND
+	(A.DATESTART>=B.FROM_DATE AND A.DATESTART<=B.TO_DATE)
+	AND
+	(A.DATEEND>=B.FROM_DATE AND A.DATEEND<=B.TO_DATE)
+	*/
+
+	where year(dsu.datestart)=2020 and ccim.USAGE_YR=2020
 )
 ;
+
+
+select datestart, dateend, STREAMINGCATEGORY, streamingname, ip, INCOMINGBYTES, OUTGOINGBYTES, TOTALBYTES, CLIENTCODE, CLIENTID, CONTRACTCODE 
+from rcbill_my.a 
+-- where CLIENTCODE in ('I.000018187')
+;
+
+
+select distinct datestart, dateend, STREAMINGCATEGORY, streamingname, ip, INCOMINGBYTES, OUTGOINGBYTES, TOTALBYTES, CLIENTCODE, CLIENTID, CONTRACTCODE 
+from rcbill_my.a 
+-- where CLIENTCODE in ('I.000018187')
+;
+
+-- SELECT * FROM rcbill.clientcontractipmonth where USAGE_YR=2020 and clientcode='I.000011750';
+-- select * from rcbill_my.dailystreamingusage where ip in ('154.70.175.168','41.220.111.133');
+-- select * from rcbill_my.a where CLIENTCODE in ('I.000011750');
+
+
 
 select * , (INCOMINGBYTES)/(1024.0*1024.0) as INCOMING_MB
 , (OUTGOINGBYTES)/(1024.0*1024.0) as OUTGOING_MB, (TOTALBYTES)/(1024.0*1024.0) as TOTAL_MB
