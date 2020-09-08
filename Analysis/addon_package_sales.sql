@@ -9,7 +9,7 @@ SET @startdate='2020-01-01';
 
 
 -- select @enddate := subdate(current_date(),1);
-SET @enddate='2020-06-30';
+SET @enddate='2020-07-31';
 
 
 -- set @package='INTELENOVELA';

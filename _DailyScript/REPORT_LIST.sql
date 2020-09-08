@@ -128,7 +128,7 @@ select servicecategory, package
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2020-07-01','2020-07-31');
+call sp_GetActiveNumberFromTo('2020-08-01','2020-08-31');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
@@ -211,6 +211,7 @@ select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='41.220.107.242' o
 select * from rcbill.clientcontractip where CLIENTCODE='I.000009236' order by usagedate desc;
 
 select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='41.220.111.243';
+select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='41.220.111.246';
 select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='154.70.175.82';
 
 -- capital trading ipc
