@@ -1,9 +1,9 @@
 ###############################
 ## make sure the parcel coords table has been populated
 
-drop table if exists rcbill_extract.IV_PARCELEXTRACTStaging_orig;
+drop table if exists rcbill_maps.IV_PARCELEXTRACTStaging_orig;
 
-create table rcbill_extract.IV_PARCELEXTRACTStaging_orig as 
+create table rcbill_maps.IV_PARCELEXTRACTStaging_orig as 
 (
 	select a.orig_lat as lat, a.orig_lon as lon
 	-- , concat(a.clientcode, ':', a.clientname, '[',a.clientparcel,']') as `title`
@@ -99,73 +99,73 @@ create table rcbill_extract.IV_PARCELEXTRACTStaging_orig as
 )
 ;
 
-SELECT * FROM rcbill_extract.IV_PARCELEXTRACTStaging_orig;
+SELECT * FROM rcbill_maps.IV_PARCELEXTRACTStaging_orig;
 
 set session group_concat_max_len = 30000;
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_orig;
-create table rcbill_extract.IV_PARCELFORMAP_orig as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP_orig;
+create table rcbill_maps.IV_PARCELFORMAP_orig as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging_orig group by lat, lon, title
+        from rcbill_maps.IV_PARCELEXTRACTStaging_orig group by lat, lon, title
         
 );
 
-select * from rcbill_extract.IV_PARCELFORMAP_orig;
+select * from rcbill_maps.IV_PARCELFORMAP_orig;
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_Inactive_orig;
-create table rcbill_extract.IV_PARCELFORMAP_Inactive_orig as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP_Inactive_orig;
+create table rcbill_maps.IV_PARCELFORMAP_Inactive_orig as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging_orig 
+        from rcbill_maps.IV_PARCELEXTRACTStaging_orig 
         where orig_network is null
         group by lat, lon, title
         
 );
 
-select * from rcbill_extract.IV_PARCELFORMAP_Inactive_orig;
+select * from rcbill_maps.IV_PARCELFORMAP_Inactive_orig;
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_HFC_orig;
-create table rcbill_extract.IV_PARCELFORMAP_HFC_orig as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP_HFC_orig;
+create table rcbill_maps.IV_PARCELFORMAP_HFC_orig as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging_orig 
+        from rcbill_maps.IV_PARCELEXTRACTStaging_orig 
         where orig_network = 'HFC'
         group by lat, lon, title
         
 );
 
-select * from rcbill_extract.IV_PARCELFORMAP_HFC_orig;
+select * from rcbill_maps.IV_PARCELFORMAP_HFC_orig;
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_GPON_orig;
-create table rcbill_extract.IV_PARCELFORMAP_GPON_orig as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP_GPON_orig;
+create table rcbill_maps.IV_PARCELFORMAP_GPON_orig as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging_orig 
+        from rcbill_maps.IV_PARCELEXTRACTStaging_orig 
         where orig_network = 'GPON'
         group by lat, lon, title
         
 );
 
-select * from rcbill_extract.IV_PARCELFORMAP_GPON_orig;
+select * from rcbill_maps.IV_PARCELFORMAP_GPON_orig;
 
 
-drop table if exists rcbill_extract.IV_PARCELFORMAP_MIX_orig;
-create table rcbill_extract.IV_PARCELFORMAP_MIX_orig as 
+drop table if exists rcbill_maps.IV_PARCELFORMAP_MIX_orig;
+create table rcbill_maps.IV_PARCELFORMAP_MIX_orig as 
 (
         select lat, lon, title, group_concat(description separator '<br>') as description 
         , icon, iconSize, iconOffset
-        from rcbill_extract.IV_PARCELEXTRACTStaging_orig 
+        from rcbill_maps.IV_PARCELEXTRACTStaging_orig 
         where icon='icon/blu-blank-lv.png'
         group by lat, lon, title
         
 );
 
-select * from rcbill_extract.IV_PARCELFORMAP_MIX_orig;
+select * from rcbill_maps.IV_PARCELFORMAP_MIX_orig;
 ##
 /*
 this table is to be extracted as a TAB separated file

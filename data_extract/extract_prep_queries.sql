@@ -44,6 +44,14 @@ select * from rcbill_my.customercontractsnapshot where clientcode='I.000018187';
 
 select * from rcbill.rcb_contracts where kod='I.000326316';
 
+select SERVICECATEGORY, CUSTOMERSUBCATEGORY, count(*) from rcbill_extract.IV_SERVICEACCOUNT group by 1,2;
+
+select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACTIVATIONDATE > STATUSCHANGEDATE;
+
+select * from rcbill_extract.IV_CUSTOMERACCOUNT where CREATEDDATE is null;
+
+
+select * from rcbill.rcb_tclients where kod='I13703';
 
 /*
 select kod, clid, currency
@@ -54,3 +62,29 @@ where b.clid in (721746)
 group by 1,2,3,4,5
 ; 
 */
+
+
+
+select a.ACCOUNTNUMBER, replace(a.ACCOUNTNUMBER,'CA_','') as clientcode
+, b.SERVICEACCCOUNTNUMBER
+-- , c.contractcode
+-- , c.billingkey
+, d.BILLINGACCCOUNTNUMBER
+
+from 
+	rcbill_extract.IV_CUSTOMERACCOUNT a 
+		left join 
+	rcbill_extract.IV_SERVICEACCOUNT b
+			on a.ACCOUNTNUMBER=b.CUSTOMERACCOUNTNUMBER
+	-- 	left join  
+	-- rcbill_extract.IV_PREP_BILLINGACCOUNT3 c
+	-- 		on replace(a.ACCOUNTNUMBER,'CA_','')=c.clientcode
+	  	left join 
+	rcbill_extract.IV_BILLINGACCOUNT d 
+	  		-- on c.billingaccountnumber=d.BILLINGACCCOUNTNUMBER
+            on a.AccountNumber=d.CUSTOMERACCOUNTNUMBER
+
+where a.ACCOUNTNUMBER='CA_I.000011750'
+group by 1,2,3,4
+;
+

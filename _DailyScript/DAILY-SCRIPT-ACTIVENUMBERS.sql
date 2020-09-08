@@ -9,7 +9,7 @@ use rcbill_my;
 -- SET @rundate='2020-03-01';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-25082019-02092019.csv'
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-04082020.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-10082020.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -146,13 +146,13 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2020-08-01'; SET @perioddate=str_to_date('2020-08-01','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-01;2020-08-01.csv'
 -- 	SET @rundate='2020-08-02'; SET @perioddate=str_to_date('2020-08-02','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-02;2020-08-02.csv'
 -- 	SET @rundate='2020-08-03'; SET @perioddate=str_to_date('2020-08-03','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-03;2020-08-03.csv'
- 	SET @rundate='2020-08-04'; SET @perioddate=str_to_date('2020-08-04','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-04;2020-08-04.csv'
+-- 	SET @rundate='2020-08-04'; SET @perioddate=str_to_date('2020-08-04','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-04;2020-08-04.csv'
 -- 	SET @rundate='2020-08-05'; SET @perioddate=str_to_date('2020-08-05','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-05;2020-08-05.csv'
 -- 	SET @rundate='2020-08-06'; SET @perioddate=str_to_date('2020-08-06','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-06;2020-08-06.csv'
 -- 	SET @rundate='2020-08-07'; SET @perioddate=str_to_date('2020-08-07','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-07;2020-08-07.csv'
 -- 	SET @rundate='2020-08-08'; SET @perioddate=str_to_date('2020-08-08','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-08;2020-08-08.csv'
 -- 	SET @rundate='2020-08-09'; SET @perioddate=str_to_date('2020-08-09','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-09;2020-08-09.csv'
--- 	SET @rundate='2020-08-10'; SET @perioddate=str_to_date('2020-08-10','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-10;2020-08-10.csv'
+ 	SET @rundate='2020-08-10'; SET @perioddate=str_to_date('2020-08-10','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-10;2020-08-10.csv'
 -- 	SET @rundate='2020-08-11'; SET @perioddate=str_to_date('2020-08-11','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-11;2020-08-11.csv'
 -- 	SET @rundate='2020-08-12'; SET @perioddate=str_to_date('2020-08-12','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-12;2020-08-12.csv'
 -- 	SET @rundate='2020-08-13'; SET @perioddate=str_to_date('2020-08-13','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-08-13;2020-08-13.csv'
@@ -312,7 +312,12 @@ a.period, a.periodday, a.periodmth, a.periodyear, a.clientcode, a.clientname, a.
 , GetServiceCategory2(a.service) as servicecategory2
 , a.servicesubcategory, upper(a.servicetype) as package 
 , a.price, a.region, a.ACTIVECOUNT, a.DEVICESCOUNT, a.REPORTED
-, rcbill_my.GetNetwork(@rundate, a.contractcode) as Network
+-- , rcbill_my.GetNetwork(@rundate, a.contractcode) as Network
+
+, case when rcbill_my.GetNetwork(@rundate, a.contractcode) not in ('HFC','GPON') then (select lkp1.network from rcbill_my.lkpcontracttypenetwork lkp1 where lkp1.contracttype=(select rc1.contracttype from rcbill.rcb_contracts rc1 where rc1.kod=a.contractcode)) 
+	else rcbill_my.GetNetwork(@rundate, a.contractcode) end as Network
+
+
 from
 rcbill_my.dailyactivenumber a
 left join 
@@ -397,7 +402,7 @@ CREATE INDEX IDXaccl6
 ON rcbill_my.activeccl (cl_longitude);
 
 
--- select * from rcbill_my.activeccl where clientcode='I.000004055';
+-- select * from rcbill_my.activeccl where clientcode='I.000002691';
 
 
 select count(1) as countbefore from rcbill_my.customercontractactivity;
@@ -429,7 +434,7 @@ servicecategory2 is null;
 
 select count(1) as countafter from rcbill_my.customercontractactivity;
 
--- select * from rcbill_my.customercontractactivity where period=@rundate and clientcode='I.000005828';
+-- select * from rcbill_my.customercontractactivity where period=@rundate and clientcode='I.000011750';
 
 select period, count(1) as customercontractactivity from rcbill_my.customercontractactivity 
 group by period order by period desc
@@ -442,6 +447,7 @@ limit 5
 #################################################################################################################
 #################################################################################################################
 -- select * from rcbill.contractsservicepackageprice where  contractcode='I.000197138';
+-- select * from rcbill.contractsservicepackageprice where  contractcode in ();
 
 -- CREATE A CUSTOMER CONTRACT SNAPSHOT TABLE
 drop table if exists rcbill_my.customercontractsnapshot;
