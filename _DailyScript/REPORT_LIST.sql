@@ -121,8 +121,11 @@ select servicecategory, package
 , `20190731`, `20190831`, `20190930`
 , `20191031`, `20191130`, `20191231`
 , `20200131`, `20200229`, `20200331`
-, `20200430`
+, `20200430`, `20200531`, `20200630`
+, `20200731`, `20200831`
  from rcbill_my.rep_activenumberlastday_pv;
+ 
+select * from rcbill_my.rep_activenumberavg3 where lastday='2020-06-30'; 
  
 ## MONTHLY AVERAGE REPORT FOR SUBMISSION
 select * from rcbill_my.rep_activenumberavg3;

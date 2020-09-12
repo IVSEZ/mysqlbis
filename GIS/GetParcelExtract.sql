@@ -184,3 +184,38 @@ then convert the .csv to .txt and upload to maptest folder on the dashboard.inte
 
 
 ###############################
+
+drop table if exists rcbill_maps.IV_HFCNODEStaging;
+
+create table rcbill_maps.IV_HFCNODEStaging as 
+(
+	select a.DECIMALLAT as lat, a.DECIMALLONG as lon
+	-- , concat(a.clientcode, ':', a.clientname, '[',a.clientparcel,']') as `title`
+    , concat('<font face=verdana size=1>',a.NODENAME,'</font><hr>') as `title`
+	-- , concat(a.clientcode, ':', a.clientname, '[',a.clientparcel,'] ', a.AccountActivityStage,'|',a.clientclass,'|', a.activenetwork,'|',a.activeservices,'|',a.activecontracts,'|',a.activesubscriptions) as `description`
+	, concat('<font face=verdana size=1>', a.NODENAME, '[',a.INTERFACENAME,']</font><br><font face=verdana size=0.5>', a.SUBDISTRICT,'</font>', '</font>') as `description`
+    ,'icon/letter_g.png' end as `icon`
+	, '16,16' as `iconSize`
+	, '-8,-8' as `iconOffset`
+    , date(a.insertedon) as insertedon
+	from
+	rcbill.rcb_techregions a 
+)
+;
+
+SELECT * FROM rcbill_maps.IV_HFCNODEStaging;
+
+drop table if exists rcbill_maps.IV_HFC_NODES;
+create table rcbill_maps.IV_HFC_NODES as 
+(
+        select lat, lon, title, group_concat(description separator '<br>') as description 
+        , icon, iconSize, iconOffset
+        from rcbill_maps.IV_HFCNODEStaging 
+        where icon='icon/blu-blank-lv.png'
+        group by lat, lon, title
+        
+);
+
+select * from rcbill_maps.IV_HFC_NODES;
+
+-- SELECT * FROM rcbill.rcb_techregions;
