@@ -833,6 +833,7 @@ create table rcbill_extract.IV_SERVICEINSTANCE as
 
 
 -- select * from rcbill_extract.IV_SERVICEINSTANCE where clientcode in ('I.000021409');
+-- select * from rcbill_extract.IV_SERVICEINSTANCE where clientcode in ('I9991');
 -- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I7') ;
 -- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I748') ;
 -- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I14') ;
@@ -1072,6 +1073,7 @@ set @custid5 = 'CA_I.000011998';
 set @custid6 = 'CA_I7';
 set @custid7 = 'CA_I.000021409';
 set @custid8 = 'CA_I.000021390';
+set @custid9 = 'CA_I9991';
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8)  order by CUSTOMERACCOUNTNUMBER;
