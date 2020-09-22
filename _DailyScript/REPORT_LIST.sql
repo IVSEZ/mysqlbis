@@ -121,14 +121,17 @@ select servicecategory, package
 , `20190731`, `20190831`, `20190930`
 , `20191031`, `20191130`, `20191231`
 , `20200131`, `20200229`, `20200331`
-, `20200430`
+, `20200430`, `20200531`, `20200630`
+, `20200731`, `20200831`
  from rcbill_my.rep_activenumberlastday_pv;
+ 
+select * from rcbill_my.rep_activenumberavg3 where lastday='2020-06-30'; 
  
 ## MONTHLY AVERAGE REPORT FOR SUBMISSION
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2020-08-01','2020-08-31');
+call sp_GetActiveNumberFromTo('2020-08-25','2020-09-13');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
@@ -504,6 +507,16 @@ select reportdate, service, tickettype, openreason, ticketid, opendate, closedat
 				, activenetwork, activeservices, clientlocation, mxk_name, mxk_interface,nodename, hfc_node, hfc_district, hfc_subdistrict
 
 				from rcbill_my.rep_servicetickets_2019 order by ticketid desc, assgnopendate asc 
+;
+
+select reportdate, service, upper(tickettype) as tickettype, openreason, ticketid, opendate, closedate, assgntechregion, assgnopendate
+				, assgnclosedate, service_workdays,  service_workdays2, service_alldays, packageprice, priceperday, agreeddays, penaltydays, penaltyamount, client_code, contractcode, clientname, clientclass
+				, activenetwork, activeservices, clientlocation, mxk_name, mxk_interface,nodename, hfc_node, hfc_district, hfc_subdistrict
+
+				from rcbill_my.rep_servicetickets_2020 
+where 0=0
+-- and month(opendate)=7                
+order by ticketid desc, assgnopendate asc
 ;
 
 select assgntechregion, date(assgnopendate), count(distinct ticketid) as d_tickets, count(ticketid) as ticket_instances

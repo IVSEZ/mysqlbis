@@ -82,9 +82,9 @@ order by clientcode, period
 -- set @date2='2017-09-30';
 -- set @date2='2017-10-12';
 -- set @date1='2018-09-05';
-set @date1='2018-12-21';
+set @date1='2020-01-01';
 -- set @date2='2019-10-31';
-set @date2='2019-11-11';
+set @date2='2020-06-30';
 
 ##1
 drop table if exists t1;
