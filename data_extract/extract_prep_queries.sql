@@ -88,3 +88,10 @@ where a.ACCOUNTNUMBER='CA_I.000011750'
 group by 1,2,3,4
 ;
 
+
+set @custid='I.000021390';
+
+SELECT * from rcbill.rcb_casa where CLID=(select rcbill.GetClientId(@custid));
+
+select * from rcbill.rcb_invoicesheader where CLID=(select rcbill.GetClientId(@custid));
+select * from rcbill.rcb_invoicescontents where CLID=(select rcbill.GetClientId(@custid));

@@ -1,4 +1,4 @@
-select * from rcbill_my.rep_custconsolidated;
+select * from rcbill_my.rep_custconsolidated; -- limit 100;
 
 
 select * from rcbill.rcb_clientparcels;
