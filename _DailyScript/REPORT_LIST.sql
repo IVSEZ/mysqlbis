@@ -217,6 +217,8 @@ select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='154.70.175.8
 -- capital trading ipc
 select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='41.220.110.30';
 
+select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='154.70.185.208';
+
 
 select CLIENTCODE, CLIENTNAME, CONTRACTCODE, USAGEDATE, PROCESSEDCLIENTIP as IP from rcbill.clientcontractip where CLIENTCODE='I.000009236' order by usagedate desc;
 select CLIENTCODE, CLIENTNAME, CONTRACTCODE, USAGE_MTH, USAGE_YR, PROCESSEDCLIENTIP as IP, FROM_DATE, TO_DATE 
