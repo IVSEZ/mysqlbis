@@ -63,11 +63,33 @@ with rollup
 
 select * from rcbill_my.rep_clientstats1;
 select * from rcbill_my.rep_clientstats2;
-select * from rcbill_my.rep_anreport_all;
-select * from rcbill_my.rep_anreport_i;
-select * from rcbill_my.rep_anreport_t;
-select * from rcbill_my.rep_anreport_v;
-select * from rcbill_my.rep_anreport_o;
+select * from rcbill_my.rep_anreport_all order by period desc;
+select * from rcbill_my.rep_anreport_i order by period desc;
+select * from rcbill_my.rep_anreport_t order by period desc;
+select * from rcbill_my.rep_anreport_v order by period desc;
+select * from rcbill_my.rep_anreport_o order by period desc;
+
+select a.period, a.activecount as all_active, b.activecount as int_active, c.activecount as tv_active, d.activecount as vc_active, e.activecount as ott_active
+from 
+rcbill_my.rep_anreport_all a 
+inner join 
+rcbill_my.rep_anreport_i b
+on a.period=b.period
+
+inner join 
+rcbill_my.rep_anreport_t c
+on a.period=c.period
+
+inner join 
+rcbill_my.rep_anreport_v d
+on a.period=d.period
+
+inner join 
+rcbill_my.rep_anreport_o e
+on a.period=e.period
+
+order by a.period desc
+;
 
 select * from rcbill_my.rep_addon;
 select * from rcbill_my.rep_housingestates;
@@ -131,7 +153,7 @@ select * from rcbill_my.rep_activenumberavg3 where lastday='2020-06-30';
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2020-09-14','2020-09-24');
+call sp_GetActiveNumberFromTo('2020-09-25','2020-09-30');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
@@ -587,3 +609,10 @@ SELECT * FROM rcbill_my.rep_livetvranking2018;
 SELECT * FROM rcbill_my.rep_livetvranking2019;
 SELECT * FROM rcbill_my.rep_livetvranking2020;
 
+
+#####################
+
+select period, count(1) as customercontractactivity from rcbill_my.customercontractactivity 
+group by period order by period desc
+-- limit 5
+;

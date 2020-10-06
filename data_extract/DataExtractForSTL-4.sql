@@ -413,6 +413,7 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT_A1(index idxipba1(clientcode)
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I.000009787');
 
+
 select 'IV_PREP_BILLINGACCOUNT2' AS TABLENAME;
 
 
@@ -459,6 +460,8 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT2(index idxipba21(clientcode),
 )
 ;
 
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2;
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1;
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2;
 
 select 'IV_PREP_BILLINGACCOUNT3' AS TABLENAME;
@@ -551,7 +554,7 @@ create table rcbill_extract.IV_BILLINGACCOUNT (index idxivba1(BILLINGACCOUNTNUMB
     
     
     , 'EMAIL' AS BILLDELIVERYMODE
-	, case when (a.currency <> 'SCR' and a.currency <> 'USD') then 'SCR'
+	, case when (a.currency <> 'SCR' AND a.currency <> 'USD') then 'SCR'
 		else a.currency end as CURRENCY
 	, ifnull(if(b.CITY='',NULL,b.CITY),'TBU') AS CITY
 	, ifnull((SELECT ClientLocation from rcbill.rcb_clientaddress where ClientCode=a.clientcode),'TBU') as DISTRICT

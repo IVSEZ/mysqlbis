@@ -5,7 +5,7 @@
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-27092020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-05102020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_vodtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -55,7 +55,7 @@ delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2019-09-14';
 
 
 set SQL_SAFE_UPDATES=0;
-delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2020-05-07';
+delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2020-10-01';
 
 */
 
@@ -67,7 +67,7 @@ delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2020-05-07';
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-Missing-Daily-27092020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-Missing-Daily-05102020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_vodtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -116,7 +116,7 @@ set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_vodtelemetry where InsertedOn = '2018-09-25 07:12:50';
 
 set SQL_SAFE_UPDATES=0;
-delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2020-05-07';
+delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2020-10-01';
 
 */
 
@@ -126,7 +126,7 @@ delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2020-05-07';
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-27092020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-05102020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_tstelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -166,7 +166,7 @@ explain select count(1) as tstelemetry from rcbill.rcb_tstelemetry;
 select * from rcbill.rcb_tstelemetry order by insertedon desc limit 100;
 set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_tstelemetry where InsertedOn = '2019-09-03 10:18:05';
-delete from rcbill.rcb_tstelemetry where date(InsertedOn) = '2020-05-07';
+delete from rcbill.rcb_tstelemetry where date(InsertedOn) = '2020-10-01';
 
 */
 /*
@@ -185,7 +185,7 @@ limit 15
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllLIVETVTelemetry-27092020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllLIVETVTelemetry-05102020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_livetvtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -235,7 +235,7 @@ delete from rcbill.rcb_livetvtelemetry where InsertedOn = '2019-09-03 10:18:05';
 
 
 set SQL_SAFE_UPDATES=0;
-delete from rcbill.rcb_livetvtelemetry where date(InsertedOn) = '2020-05-07';
+delete from rcbill.rcb_livetvtelemetry where date(InsertedOn) = '2020-10-01';
 
 */
 ########################################################
@@ -245,7 +245,7 @@ delete from rcbill.rcb_livetvtelemetry where date(InsertedOn) = '2020-05-07';
 use rcbill;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllRADIOTelemetry-27092020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllRADIOTelemetry-05102020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_radiotelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -292,6 +292,6 @@ set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_radiotelemetry where InsertedOn = '2019-09-03 10:18:07';
 
 set SQL_SAFE_UPDATES=0;
-delete from rcbill.rcb_radiotelemetry where date(InsertedOn) = '2020-05-07';
+delete from rcbill.rcb_radiotelemetry where date(InsertedOn) = '2020-10-01';
 */
 ##############################################################################
