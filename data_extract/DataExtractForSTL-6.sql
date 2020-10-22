@@ -1347,6 +1347,21 @@ select * from rcbill_extract.IV_INVENTORY where SERVICEINSTANCENUMBER in (select
 select * from rcbill_extract.IV_ADDON where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) );
 select * from rcbill_extract.IV_ADDONCHARGE where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) );
 
+set @custid1 = 'CA_I14';
+set @custid2 = 'CA_I.000009787';
+set @custid3 = 'CA_I.000011750';
+set @custid4 = 'CA_I.000018187';
+set @custid5 = 'CA_I.000011998';
+set @custid6 = 'CA_I7';
+set @custid7 = 'CA_I.000021409';
+set @custid8 = 'CA_I.000021390';
+set @custid9 = 'CA_I9991';
+set @custid10 = 'CA_I.000021467';
+set @custid11 = 'CA_I.000020888';
+set @custid11 = 'CA_I16192';
+
+set @custid1 = 'CA_I.000009787';
+
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
