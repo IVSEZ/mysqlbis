@@ -13,6 +13,8 @@ set @kod8 = 'I.000021390';
 set @kod9 = 'I9991';
 set @kod10 = 'I.000021467';
 set @kod11 = 'I.000020888';
+set @kod11 = 'I16192';
+
 
 
 set @custid1 = 'CA_I14';
@@ -26,6 +28,7 @@ set @custid8 = 'CA_I.000021390';
 set @custid9 = 'CA_I9991';
 set @custid10 = 'CA_I.000021467';
 set @custid11 = 'CA_I.000020888';
+set @custid11 = 'CA_I16192';
 
 
 select 'CUSTOMER ACCOUNT' AS TABLENAME;
@@ -527,7 +530,9 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT3(index idxipba31(clientcode),
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I9991');
  select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I7');
  select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I7');
+ select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I7');
  select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I9991');
+ select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in (@kod11);
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000018187');
 
 /*
@@ -645,8 +650,36 @@ create table rcbill_extract.IV_BILLINGACCOUNT (index idxivba1(BILLINGACCOUNTNUMB
 )
 ;
 
+/*
+
+-- select * from rcbill_extract.IV_BILLINGACCOUNT order by customeraccountnumber asc, accountstatus desc, billcycle, currency, chargingpattern;
+select * from 
+( select * from rcbill_extract.IV_BILLINGACCOUNT order by customeraccountnumber asc, accountstatus asc, billcycle, currency, chargingpattern ) a
+-- where CUSTOMERACCOUNTNUMBER in ('CA_I7') 
+group by CUSTOMERACCOUNTNUMBER, billcycle, currency, chargingpattern order by customeraccountnumber asc, accountstatus asc, billcycle, currency, chargingpattern;
+
+
+select a.* 
+, (@cnt := @cnt + 1) AS rowNumber
+
+from 
+(select * from rcbill_extract.IV_BILLINGACCOUNT 
+-- where CUSTOMERACCOUNTNUMBER in ('CA_I7') 
+group by CUSTOMERACCOUNTNUMBER, billcycle, currency, chargingpattern order by customeraccountnumber asc, accountstatus desc, billcycle, currency, chargingpattern) a 
+
+CROSS JOIN (SELECT @cnt := 0) AS dummy
+
+
+
+;
+
+*/
+
 -- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I7') order by CUSTOMERACCOUNTNUMBER;
 -- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000011750') order by CUSTOMERACCOUNTNUMBER;
+
+-- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid11) order by CUSTOMERACCOUNTNUMBER;
+
 
 -- select * from rcbill_extract.IV_BILLINGACCOUNT where accountstatus=1;
 -- select length(BILLINGACCCOUNTNUMBER) from rcbill_extract.IV_BILLINGACCOUNT;
