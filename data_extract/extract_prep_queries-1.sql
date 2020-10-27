@@ -4,7 +4,18 @@ select * from rcbill.rcb_casa limit 100;
 select * from rcbill.rcb_invoicesheader limit 100;
 select * from rcbill.rcb_invoicescontents limit 100;
 
-
+set @clid1 = 699807;
+set @clid2 = 721746;
+set @clid3 = 723711;
+set @clid4 = 730174;
+set @clid5 = 723959;
+set @clid6 = 711581;
+set @clid7 = 734460;
+set @clid8 = 734440;
+set @clid9 = 691038;
+set @clid10 = 691038;
+set @clid11 = 733908;
+set @clid11 = 708755;
 
 
 select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR';
@@ -206,12 +217,30 @@ from
 	rcbill.rcb_invoicesheader a 
 	-- where clid in (select rcbill.GetClientID(CLIENTCODE) from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
 	where clid in (@clid9)
+    
 ) a 
 ;
 
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid9) order by CUSTOMERACCOUNTNUMBER;
 select * from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid9);
 
+/*
+
+discount = PRT13
+subscription = PRT00
+prepaid = PRT00
+addon = PRT00
+video on demand = PRT00
+installation = PRT06
+materials = PRT06
+hardware = PRT06
+other charges = PRT06
+usage = PRT10
+bundle = PRT00
+convert contract = PRT99
+MO BALANCE = PRT98
+
+*/
 
 select 
 * ,
@@ -222,28 +251,58 @@ select
 		, a.INVOICENO as DEBITDOCUMENTNUMBER
         , a.TEXT as NAME
         , a.SCOST as RATE
+        , a.NUMBER as ITEMCOUNT
+        , a.COST as SUBTOTAL
         , a.CostVAT as TAX
-        , a.Discount as DISCOUNT
+        , a.DiscountCost as DISCOUNT
+        , a.Discount as DISCOUNTPERCENT
+        , a.CostTotal as TOTALAMOUNT
+		, a.COST as DISCOUNTABLE
+		, a.DiscountCost as DISCOUNTED
+		, a.COST as TAXABLE
         , 0 as UNPAID
         , 0 as WRITEOFF
         , '' as REMARK
 		, a.FROMDATE
         , a.TODATE
-        , a.CostTotal as TOTALAMOUNT
-        , a.COST as SUBTOTAL
 		, ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as BILLINGACCOUNTNUMBER
 		, ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
 		, ifnull((select serviceinstancenumber from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=a.ServiceID),'NOT PRESENT') as SERVICEINSTANCENUMBER
 		, ifnull((select BILLCYCLE from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as BILLCYCLE
 
+		, case when a.TEXT like '%DISCOUNT%' then 'PRT13'
+			   when a.TEXT like '%SUBSCRIPTION%' then 'PRT00'
+			   when a.TEXT like '%PREPAID%' then 'PRT00'
+			   when a.TEXT like '%ADDON%' then 'PRT00'
+			   when a.TEXT like '%VIDEO ON DEMAND%' then 'PRT00'
+			   when a.TEXT like '%INSTALLATION%' then 'PRT06'
+			   when a.TEXT like '%MATERIALS%' then 'PRT06'
+			   when a.TEXT like '%HARDWARE%' then 'PRT06'
+			   when a.TEXT like '%OTHER CHARGES%' then 'PRT06'
+			   when a.TEXT like '%USAGE%' then 'PRT10'
+			   when a.TEXT like '%BUNDLE%' then 'PRT00'
+			   when a.TEXT like '%CONVERT CONTRACT%' then 'PRT00'
+			   when a.TEXT like '%MO BALANCE%' then 'PRT00'
+               else '' end as `PRODUCTTYPEID`
+
+        
+        , case when a.TEXT like '%DEPOSIT%' then a.CostTotal
+			else 0 end as DEPOSIT
+
+		, case when (a.Discount=0 and a.SCOST>a.COST) then 'Y' 
+			else 'N' end as PRORATIONTYPE
 
         , a.CLID as CLIENT_ID
         , a.CID as CONTRACT_ID
 
 from 
 rcbill.rcb_invoicescontents a 
-where clid in (@clid9)
 
+where date(UPDDATE)='2020-10-20'
+-- limit 1000
+-- where clid in (701369)
+-- where clid in (select rcbill.GetClientID(CLIENTCODE) from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
+-- where a.clid in (@clid1) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11)
 ;
 
 
