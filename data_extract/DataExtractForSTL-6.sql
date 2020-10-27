@@ -153,7 +153,8 @@ select
 -- , MEGN AS TAXNUMBER
 , a.CLCLASS    
 , a.FIZLICE
-    
+
+, a.ID as CLIENT_ID
 from rcbill.rcb_tclients a 
 where
 0=0
@@ -229,8 +230,8 @@ drop table if exists rcbill_extract.IV_PREP_clientcontractsservicepackagepricede
 create table rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice(index idxipccsppd1(clientcode), index idxipccsppd2(contractcode)) as 
 (
 			select a.*
-            , rcbill.GetClientID(a.clientcode) as CLIENT_ID
-            , rcbill.GetContractID(a.contractcode) as CONTRACT_ID
+            -- , rcbill.GetClientID(a.clientcode) as CLIENT_ID
+            -- , rcbill.GetContractID(a.contractcode) as CONTRACT_ID
             , case 
 				when a.contractstatus=0 then 'Not Active'
                 when a.contractstatus=1 then 'Active' end as CurrentStatus
@@ -251,7 +252,7 @@ create table rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice(ind
              
         
              -- order by a.clientcode asc, a.contractstatus desc, a.contractcode desc
-             order by CLIENT_ID asc, a.contractstatus desc, CONTRACT_ID desc
+             order by a.CLIENT_ID asc, a.contractstatus desc, a.CONTRACT_ID desc
 );
 
 
@@ -564,6 +565,52 @@ create table rcbill_extract.IV_BILLINGACCOUNT (index idxivba1(BillingAccountNumb
 )
 ;
 
+
+select 'BILLINGACCOUNT_KEY' AS TABLENAME;
+drop table if exists rcbill_extract.BILLINGACCOUNT_KEY;
+
+create table rcbill_extract.BILLINGACCOUNT_KEY(index idxivba1(BillingAccountNumber), index idxivba2(clientcode), index idxivba3(contractcode), index idxivba4(client_id), index idxivba5(contract_id)) AS
+(
+
+
+	select 
+	a2.clientcode
+	, a2.contractcode
+	, a2.client_id
+	, a2.contract_id
+	, a2.BillingKey as a2_BillingKey
+	, a2.BillingAccountNumber_STG as a2_BillingAccountNumber_STG
+
+	, a3.BillingKey as a3_BillingKey
+	, a3.BillingAccountNumber_STG as a3_BillingAccountNumber_STG
+
+	, a4.BILLINGACCOUNTNUMBER as a4_BILLINGACCOUNTNUMBER
+	, a4.BillingAccountNumber_STG as a4_BillingAccountNumber_STG
+	, a4.BK4
+
+	, a.BILLINGACCOUNTNUMBER
+    , a.CUSTOMERACCOUNTNUMBER
+    , a.BILLCYCLE
+
+	from 
+	rcbill_extract.IV_PREP_BILLINGACCOUNT2 a2
+	inner join rcbill_extract.IV_PREP_BILLINGACCOUNT3 a3
+	on a2.BillingKey = a3.BillingKey
+
+
+	inner join rcbill_extract.IV_PREP_BILLINGACCOUNT4 a4
+	on a3.BillingAccountNumber_STG = a4.BillingAccountNumber_STG
+
+
+	inner join rcbill_extract.IV_BILLINGACCOUNT a 
+	on a4.BK4 = a.BK4
+
+
+)
+;
+
+-- select * from rcbill_extract.BILLINGACCOUNT_KEY;
+
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1;
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2;
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3;
@@ -735,7 +782,7 @@ create table rcbill_extract.IV_SERVICEACCOUNT(index idxivsa1(SERVICEACCOUNTNUMBE
 	, b.clean_hfc_node as HFCNODE
 	, b.clean_hfc_nodename as HFCNODENAME
 
-
+	, a.ID as CLIENT_ID
 	-- , b.StartDate as CONTRACTSTARTDATE
 	-- , b.EndDate as CONTRACTENDDATE
 
@@ -893,7 +940,8 @@ create table rcbill_extract.IV_PREP_SERVICEINSTANCE1 (index idxipsi1(clientcode)
 	-- , d.*
     , e.currency, e.ratingplanname, e.LASTACTION, e.contractstartdate, e.contractenddate, e.contractstatus, e.servicestartdate, e.serviceenddate, e.servicestatus, e.servicerateid
     , e.package, e.price, e.service, e.CurrentStatus, e.LastContractDate, e.network, e.CONTRACT_TYPE, e.SERVICE_TYPE, e.FSAN, e.MAC, e.UID, e.username
-	, e.serviceinstancenumber, e.StatusChangedDate, e.serviceid    
+	, e.serviceinstancenumber, e.StatusChangedDate, e.serviceid
+    , e.CLIENT_ID, e.CONTRACT_ID
 	from 
 	(
 		select a.ACCOUNTNUMBER as CUSTOMERACCOUNTNUMBER, replace(a.ACCOUNTNUMBER,'CA_','') as clientcode
@@ -1004,6 +1052,8 @@ create table rcbill_extract.IV_SERVICEINSTANCE as
 	, a.contractcode
 	, a.serviceinstancestatus	
 
+	, a.CLIENT_ID
+    , a.CONTRACT_ID
 	-- , (select ips.CUSTOMERACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as CUSTOMERACCOUNTNUMBER
 	-- , (select ips.BILLINGACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as BILLINGACCOUNTNUMBER
 	-- , (select ips.SERVICEACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICEACCOUNTNUMBER
@@ -1056,6 +1106,8 @@ create table rcbill_extract.IV_SERVICEINSTANCE as
 
 			, ips1.serviceid as ServiceID
 			, ips1.servicerateid as ServiceRateID
+            , ips1.CLIENT_ID as CLIENT_ID
+            , ips1.CONTRACT_ID as CONTRACT_ID
 
 
 			/*
@@ -1297,18 +1349,72 @@ cpe_type like '%SUBSCRIPTION%'
 -- BILL SUMMARY
 select 'BILL SUMMARY' AS TABLENAME;
 
-select * 
+drop table if exists rcbill_extract.IV_BILLSUMMARY;
 
-from 
+-- HARD= 101, 9999 (ANNULED)
+-- HARD = 0 (CREDITED)
+-- HARD = 1 (DEBIT)
+-- TYPE = 11,21 (CREDIT OR DEBIT)
 
-rcbill.rcb_invoicesheader a 
--- where clid in (select rcbill.GetClientID(CLIENTCODE) from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
-where clid in (@clid11)
+create table rcbill_extract.IV_BILLSUMMARY(index idxivbs1(CUSTOMERACCOUNTNUMBER),index idxivbs2(BILLINGACCOUNTNUMBER),index idxivbs3(DEBITDOCUMENTNUMBER))
+(
+	select * 
+	, concat(a.BILLINGACCOUNTNUMBER,'-',a.DEBITDOCUMENTNUMBER,'-','.pdf') as INVOICE_PDF_NAME
+
+	from 
+	(
+
+		select 
+		-- *, 
+		a.ID as INVOICESUMMARYID
+		, a.INVOICENO as DEBITDOCUMENTNUMBER
+		, a.DATA as CREATEDATE
+		, a.SUMA as SUBTOTAL
+		, a.DDS as TAX
+		, a.DEBT as UNPAID
+		, 0 as WRITEOFF
+		, a.REASON as REMARK
+		, a.DUEDATE as DUEDATE
+		, a.TOTAL as TOTALDUE
+		, 'N' as DISPUTED
+		, a.UPDDATE as BILLDATE
+		, 0 as SURCHARGE
+		, a.RATE as SYSCURRENCYEXCHANGERATE
+		, a.TOTAL as TOTALAMOUNT
+		, a.SUMA as DISCOUNTABLE
+		, a.Avance as DISCOUNTED
+		, a.SUMA as TAXABLE
+		, a.BEGDATE as FROMDATE
+		, a.ENDDATE as TODATE
+		, 0 as DEPOSIT
+		-- , ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),concat('BA_', rcbill.GetClientCode(a.CLID))) as BILLINGACCOUNTNUMBER
+		, ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as BILLINGACCOUNTNUMBER
+		, ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
+
+		, a.TOTAL as ADJUSTEDAMOUNT 
+
+		, ifnull((select BILLCYCLE from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as BILLCYCLE
+
+		, a.Currency as CURRENCYALIAS
+		, a.OriginalCurrency as ORIGINALCURRENCY
+        , a.CREATOR as CREATEDBY
+		, a.PROFORMANO as PROFORMAINVOICENUMBER
+		, a.SRCNO as CREDITINVOICENUMBER
+		, a.DKINO as DEBITINVOICENUMBER
+		, a.TYPE as INVOICETYPE
+		, a.HARD as INVOICEHARD
+        , a.CLID as CLIENT_ID
+        , a.CID as CONTRACT_ID
+		from 
+
+		rcbill.rcb_invoicesheader a 
+		where a.clid in (select rcbill.GetClientID(CLIENTCODE) from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
+		-- where clid in (@clid9)
+		-- where a.clid in (@clid1,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11)
+
+	) a 
+)
 ;
-
-
-
-
 
 ##################################################################################################################
 -- PAYMENT HISTORY
@@ -1360,7 +1466,7 @@ set @custid10 = 'CA_I.000021467';
 set @custid11 = 'CA_I.000020888';
 set @custid11 = 'CA_I16192';
 
-set @custid1 = 'CA_I.000009787';
+set @custid1 = 'CA_I14';
 
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
@@ -1372,6 +1478,8 @@ select * from rcbill_extract.IV_INVENTORY where SERVICEINSTANCENUMBER in (select
 select * from rcbill_extract.IV_ADDON where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1) );
 select * from rcbill_extract.IV_ADDONCHARGE where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1) );
 
+
+select * from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID;
 
 /*
 

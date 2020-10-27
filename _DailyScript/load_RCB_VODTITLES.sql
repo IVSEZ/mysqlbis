@@ -9,7 +9,7 @@ delete from rcbill.rcb_vodtitles where id>1000;
 
 -- UPLOAD LATEST TITLES
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\ALLVOD2TITLES-21102020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\ALLVOD2TITLES-26102020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_vodtitles` CHARACTER SET UTF8 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' 
 LINES TERMINATED BY '\r\n' 
