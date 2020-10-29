@@ -15,7 +15,7 @@ set @clid8 = 734440;
 set @clid9 = 691038;
 set @clid10 = 691038;
 set @clid11 = 733908;
-set @clid11 = 708755;
+set @clid12 = 708755;
 
 
 select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR';
@@ -216,13 +216,13 @@ from
 
 	rcbill.rcb_invoicesheader a 
 	-- where clid in (select rcbill.GetClientID(CLIENTCODE) from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
-	where clid in (@clid9)
+	where clid in (@clid2)
     
 ) a 
 ;
 
-select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid9) order by CUSTOMERACCOUNTNUMBER;
-select * from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid9);
+-- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid9) order by CUSTOMERACCOUNTNUMBER;
+-- select * from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid9);
 
 /*
 
@@ -243,7 +243,7 @@ MO BALANCE = PRT98
 */
 
 select * from rcbill.rcb_invoicescontents a 
-where InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY where CLID in (@clid1,@clid2,@clid3))-- ,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
+where InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY where CLIENT_ID in (@clid2)) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
 ;
 
 select 
@@ -274,14 +274,20 @@ select
 		, ifnull((select serviceinstancenumber from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=a.ServiceID limit 1),'NOT PRESENT') as SERVICEINSTANCENUMBER
 		, ifnull((select BILLCYCLE from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLCYCLE
 		*/
-		, case when a.TEXT like '%DISCOUNT%' then 'PRT13'
+		, case 
+			   when (a.Discount <> 0 or a.DiscountCost <> 0) then 'PRT13' 
+			   when a.TEXT like '%DISCOUNT%' then 'PRT13'
+		       when a.TEXT like '%\%' then 'PRT13'
+               when trim(a.TEXT) = 'VOUCHERS' then 'PRT13'
 			   when a.TEXT like '%SUBSCRIPTION%' then 'PRT00'
 			   when a.TEXT like '%PREPAID%' then 'PRT00'
 			   when a.TEXT like '%ADDON%' then 'PRT00'
 			   when a.TEXT like '%VIDEO ON DEMAND%' then 'PRT00'
 			   when a.TEXT like 'TURQUOISE%' then 'PRT00'
-               when a.TEXT = 'GVOICE' then 'PRT00'
-               when a.TEXT = 'INDIAN CORPORATE' then 'PRT00'
+               when trim(a.TEXT) = 'GVOICE' then 'PRT00'
+               when trim(a.TEXT) = 'INDIAN CORPORATE' then 'PRT00'
+               when trim(a.TEXT) = 'CAPPED INTERNET' then 'PRT00'
+               when trim(a.TEXT) = 'ITERMIZED BILL' then 'PRT00'
 			   when a.TEXT like '%INSTALLATION%' then 'PRT06'
 			   when a.TEXT like '%MATERIALS%' then 'PRT06'
 			   when a.TEXT like '%HARDWARE%' then 'PRT06'
@@ -289,8 +295,8 @@ select
 			   when a.TEXT like 'RELOCATION%' then 'PRT06'
 			   when a.TEXT like '%USAGE%' then 'PRT10'
 			   when a.TEXT like '%BUNDLE%' then 'PRT00'
-			   when a.TEXT = 'CONVERT CONTRACT' then 'PRT00'
-			   when a.TEXT = 'MO BALANCE' then 'PRT00'
+			   when trim(a.TEXT) = 'CONVERT CONTRACT' then 'PRT00'
+			   when trim(a.TEXT) = 'MQ BALANCE' then 'PRT00'
                else '' end as `PRODUCTTYPEID`
 		
         
@@ -308,7 +314,7 @@ select
 from 
 rcbill.rcb_invoicescontents a 
 
-where a.InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY where CLID in (@clid1,@clid2,@clid3))-- ,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
+where a.InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY where CLIENT_ID in (@clid2)) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
 -- limit 1000
 -- where a.clid in (701369)
 -- where clid in (select rcbill.GetClientID(CLIENTCODE) from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
@@ -318,5 +324,37 @@ where a.InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY
 
 -- select * from rcbill.rcb_invoicesheader where clid in (@clid9);
 
+select * from rcbill.rcb_casa where CLID in (@clid2);
+
+
+select 
+		a.ID as PAYMENTRECEIPTID
+		, ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLINGACCOUNTNUMBER
+		, ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
+		, ifnull((select serviceinstancenumber from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=(a.PAYTYPE*-1) limit 1),'NOT PRESENT') as SERVICEINSTANCENUMBER
+
+		, a.PAYDATE as PAYMENTDATE
+        , a.UPDDATE as PAYMENTPROCESSEDDATE
+        , a.ZAB as PAYMENTDESC
+        , 'SCR' as PAYMENTCURRENCYALIAS
+        , (select name from rcbill.rcb_payobjects where id=a.PAYOBJECTID) as PAYMENTMODE
+        , a.MONEY as PAYMENTTRANSACTIONAMOUNT
+        , a.ID as SERIALNUMBER
+        , a.INVID as DEBITDOCUMENTNUMBER
+		, a.CLID as CLIENT_ID
+        , a.CID as CONTRACT_ID
+        , a.MONEY as PAYMENTAMOUNT
+        , a.BankReference as PAYMENTREASON
+        , '' as EXCHANGERATE
+        , a.DiscountMoney as DISCOUNT
+        , a.hard as INVOICEHARD
+		, a.USERID AS EMPLOYEEID
+		, (SELECT `NAME` FROM rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) as EMPLOYEENAME
+		, (SELECT `NAME` FROM rcbill.rcb_tickettechregions where ID = (select TechRegionID from rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) LIMIT 1) AS EMPLOYEEDEPARTMENT
+
+from rcbill.rcb_casa a 
+where CLID in (@clid1,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11)
+
+;
 
 

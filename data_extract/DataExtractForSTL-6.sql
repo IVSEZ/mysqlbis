@@ -1420,7 +1420,46 @@ create table rcbill_extract.IV_BILLSUMMARY(index idxivbs1(CUSTOMERACCOUNTNUMBER)
 -- PAYMENT HISTORY
 select 'PAYMENT HISTORY' AS TABLENAME;
 
+drop table if exists rcbill_extract.IV_PAYMENTHISTORY;
 
+-- HARD= 101, 9999 (ANNULED)
+-- HARD = 0 (CREDITED)
+-- HARD = 1 (DEBIT)
+-- TYPE = 11,21 (CREDIT OR DEBIT)
+
+create table rcbill_extract.IV_PAYMENTHISTORY(index idxivbs1(CUSTOMERACCOUNTNUMBER),index idxivbs2(BILLINGACCOUNTNUMBER),index idxivbs3(DEBITDOCUMENTNUMBER), index idxivbs4(PAYMENTRECEIPTID))
+(
+
+
+	select 
+			a.ID as PAYMENTRECEIPTID
+			, ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLINGACCOUNTNUMBER
+			, ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
+			, ifnull((select serviceinstancenumber from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=(a.PAYTYPE*-1) limit 1),'NOT PRESENT') as SERVICEINSTANCENUMBER
+
+			, a.PAYDATE as PAYMENTDATE
+			, a.UPDDATE as PAYMENTPROCESSEDDATE
+			, a.ZAB as PAYMENTDESC
+			, 'SCR' as PAYMENTCURRENCYALIAS
+			, (select name from rcbill.rcb_payobjects where id=a.PAYOBJECTID) as PAYMENTMODE
+			, a.MONEY as PAYMENTTRANSACTIONAMOUNT
+			, a.ID as SERIALNUMBER
+			, a.INVID as DEBITDOCUMENTNUMBER
+			, a.CLID as CLIENT_ID
+			, a.CID as CONTRACT_ID
+			, a.MONEY as PAYMENTAMOUNT
+			, a.BankReference as PAYMENTREASON
+			, '' as EXCHANGERATE
+			, a.DiscountMoney as DISCOUNT
+			, a.hard as INVOICEHARD
+			, a.USERID AS EMPLOYEEID
+			, (SELECT `NAME` FROM rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) as EMPLOYEENAME
+			, (SELECT `NAME` FROM rcbill.rcb_tickettechregions where ID = (select TechRegionID from rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) LIMIT 1) AS EMPLOYEEDEPARTMENT
+
+	from rcbill.rcb_casa a 
+	where CLID in (select rcbill.GetClientID(CLIENTCODE) from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
+
+);
 
 ##################################################################################################################
 
