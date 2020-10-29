@@ -324,7 +324,20 @@ where a.InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY
 
 -- select * from rcbill.rcb_invoicesheader where clid in (@clid9);
 
-select * from rcbill.rcb_casa where CLID in (@clid2);
+
+drop temporary table if exists tempt1;
+
+create temporary table tempt1
+(
+	select id from rcbill.rcb_tclients order by id desc limit 10000
+)
+;
+
+select * from rcbill.rcb_casa 
+where CLID in 
+-- (@clid2)
+(select id from tempt1)
+;
 
 
 select 
@@ -353,8 +366,7 @@ select
 		, (SELECT `NAME` FROM rcbill.rcb_tickettechregions where ID = (select TechRegionID from rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) LIMIT 1) AS EMPLOYEEDEPARTMENT
 
 from rcbill.rcb_casa a 
-where CLID in (@clid1,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11)
-
+where CLID in (select id from tempt1)
 ;
 
 

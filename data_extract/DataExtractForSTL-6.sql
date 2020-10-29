@@ -49,7 +49,7 @@ select 'CUSTOMER ACCOUNT' AS TABLENAME;
 
 drop table if exists rcbill_extract.IV_CUSTOMERACCOUNT;
 
-create table rcbill_extract.IV_CUSTOMERACCOUNT (index idxIVCA1(ACCOUNTNUMBER)) AS
+create table rcbill_extract.IV_CUSTOMERACCOUNT (index idxIVCA1(ACCOUNTNUMBER), index idxIVCA12(CLIENT_ID)) AS
 (
 
 ####	CUSTOMER ACCOUNT
@@ -1013,7 +1013,7 @@ select 'SERVICE INSTANCE' AS TABLENAME;
 
 drop table if exists rcbill_extract.IV_SERVICEINSTANCE;
 
-create table rcbill_extract.IV_SERVICEINSTANCE as
+create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index idxipsi2(contract_id), index idxipsi3(SERVICEINSTANCENUMBER), index idxipsi4(BILLINGACCOUNTNUMBER), index idxipsi5(CUSTOMERACCOUNTNUMBER), index idxipsi6(SERVICEACCOUNTNUMBER), index idxipsi7(servicerateid), index idxipsi8(serviceid)) as
 (
 
 	select 
@@ -1349,6 +1349,9 @@ cpe_type like '%SUBSCRIPTION%'
 -- BILL SUMMARY
 select 'BILL SUMMARY' AS TABLENAME;
 
+
+
+
 drop table if exists rcbill_extract.IV_BILLSUMMARY;
 
 -- HARD= 101, 9999 (ANNULED)
@@ -1389,7 +1392,8 @@ create table rcbill_extract.IV_BILLSUMMARY(index idxivbs1(CUSTOMERACCOUNTNUMBER)
 		, 0 as DEPOSIT
 		-- , ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),concat('BA_', rcbill.GetClientCode(a.CLID))) as BILLINGACCOUNTNUMBER
 		, ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as BILLINGACCOUNTNUMBER
-		, ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
+		-- , ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
+        , ifnull((select ACCOUNTNUMBER from rcbill_extract.IV_CUSTOMERACCOUNT where client_id=a.CLID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
 
 		, a.TOTAL as ADJUSTEDAMOUNT 
 
@@ -1434,7 +1438,8 @@ create table rcbill_extract.IV_PAYMENTHISTORY(index idxivbs1(CUSTOMERACCOUNTNUMB
 	select 
 			a.ID as PAYMENTRECEIPTID
 			, ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLINGACCOUNTNUMBER
-			, ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
+		-- , ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
+			, ifnull((select ACCOUNTNUMBER from rcbill_extract.IV_CUSTOMERACCOUNT where client_id=a.CLID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
 			, ifnull((select serviceinstancenumber from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=(a.PAYTYPE*-1) limit 1),'NOT PRESENT') as SERVICEINSTANCENUMBER
 
 			, a.PAYDATE as PAYMENTDATE
@@ -1491,6 +1496,9 @@ select * from rcbill_extract.IV_SERVICEINSTANCECHARGE where SERVICEINSTANCENUMBE
 select * from rcbill_extract.IV_INVENTORY where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) );
 select * from rcbill_extract.IV_ADDON where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) );
 select * from rcbill_extract.IV_ADDONCHARGE where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) );
+select * from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) order by INVOICESUMMARYID;
+select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) order by PAYMENTRECEIPTID;
+
 
 set @custid1 = 'CA_I14';
 set @custid2 = 'CA_I.000009787';
@@ -1519,6 +1527,10 @@ select * from rcbill_extract.IV_ADDONCHARGE where SERVICEINSTANCENUMBER in (sele
 
 
 select * from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID;
+
+select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1) order by PAYMENTRECEIPTID;
+
+select * from rcbill_extract.IV_PAYMENTHISTORY where customeraccountnumber ='NOT PRESENT';
 
 /*
 
