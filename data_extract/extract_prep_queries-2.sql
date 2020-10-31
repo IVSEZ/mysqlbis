@@ -131,3 +131,13 @@ inner join
     and a.SERVICENAME=d.CPE_TYPE
 ;
     
+
+
+select 
+a.* 
+from rcbill_extract.IV_ADDON a 
+
+
+where a.SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1) )
+
+;

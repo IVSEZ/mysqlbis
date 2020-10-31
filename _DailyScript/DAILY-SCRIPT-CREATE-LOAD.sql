@@ -2678,6 +2678,9 @@ create table rcbill.rcb_ipusage as
     CREATE INDEX idxrcbipu7
 	ON rcbill.rcb_ipusage (processedclientip);
     
+    CREATE INDEX idxrcbipu8
+	ON rcbill.rcb_ipusage (clientid);
+
 select count(*) as ipusage from rcbill.rcb_ipusage;
 
 
