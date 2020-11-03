@@ -71,6 +71,7 @@ SELECT invoiceno, count(*) from rcbill.rcb_invoicesheader group by invoiceno;
 
 -- ##cancellations =  hard not in (100, 101, 102) or hard is null
 set @kod9 = 'I.000011750';
+set @kod9 = 'I.000021856';
 set @kod9 = 'I.000020888';
 
 set @custid9 = 'CA_I.000020888';
