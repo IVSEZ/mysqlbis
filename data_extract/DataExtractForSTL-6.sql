@@ -1611,7 +1611,7 @@ set @custid10 = 'CA_I.000021467';
 set @custid11 = 'CA_I.000020888';
 set @custid11 = 'CA_I16192';
 
-set @custid1 = 'CA_I14';
+set @custid1 = 'CA_I.000021854';
 
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
@@ -1631,6 +1631,9 @@ select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@
 select * from rcbill_extract.IV_PAYMENTHISTORY where customeraccountnumber ='NOT PRESENT';
 
 /*
+
+select billcycle, count(*) from rcbill_extract.IV_NBD group by billcycle
+
 
 select 
 -- a.*
