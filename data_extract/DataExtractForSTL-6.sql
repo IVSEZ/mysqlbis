@@ -1599,7 +1599,7 @@ select * from rcbill_extract.IV_DISCOUNT where CUSTOMERACCOUNTNUMBER in (@custid
 
 
 set @custid1 = 'CA_I14';
-set @custid2 = 'CA_I.000009787';
+set @custid1 = 'CA_I.000009787';
 set @custid3 = 'CA_I.000011750';
 set @custid4 = 'CA_I.000018187';
 set @custid5 = 'CA_I.000011998';
@@ -1611,7 +1611,9 @@ set @custid10 = 'CA_I.000021467';
 set @custid11 = 'CA_I.000020888';
 set @custid11 = 'CA_I16192';
 
+
 set @custid1 = 'CA_I.000021854';
+set @custid1 = 'CA_I.000008363';
 
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
@@ -1627,6 +1629,8 @@ select * from rcbill_extract.IV_ADDONCHARGE where SERVICEINSTANCENUMBER in (sele
 select * from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID;
 
 select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1) order by PAYMENTRECEIPTID;
+select * from rcbill_extract.IV_NBD where CUSTOMERACCOUNTNUMBER in (@custid1) order by BILLINGACCOUNTNUMBER;
+select * from rcbill_extract.IV_DISCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by BILLINGACCOUNTNUMBER;
 
 select * from rcbill_extract.IV_PAYMENTHISTORY where customeraccountnumber ='NOT PRESENT';
 

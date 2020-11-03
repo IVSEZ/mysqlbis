@@ -1,8 +1,8 @@
 select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR';
 
-select * from rcbill.rcb_casa limit 100;
-select * from rcbill.rcb_invoicesheader limit 100;
-select * from rcbill.rcb_invoicescontents limit 100;
+select * from rcbill.rcb_casa order by id desc limit 100;
+select * from rcbill.rcb_invoicesheader order by id desc limit 100;
+select * from rcbill.rcb_invoicescontents order by id desc  limit 100;
 
 set @clid1 = 699807;
 set @clid2 = 721746;
