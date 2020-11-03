@@ -1501,7 +1501,7 @@ select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@
 
 
 set @custid1 = 'CA_I14';
-set @custid2 = 'CA_I.000009787';
+set @custid1 = 'CA_I.000009787';
 set @custid3 = 'CA_I.000011750';
 set @custid4 = 'CA_I.000018187';
 set @custid5 = 'CA_I.000011998';
