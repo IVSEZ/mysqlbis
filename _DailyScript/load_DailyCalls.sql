@@ -5,7 +5,7 @@ use rcbill_my;
 -- SET @date1='2020-05-29';
 -- SET @date2='2020-05-30';
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-31102020.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-02112020.csv'
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-24082019-02092019.csv'  
  
@@ -43,7 +43,7 @@ INSERTEDON=now()
 ;
 
 -- select * from rcbill_my.dailycalls where date(calldate)>='2018-05-13' order by calldate;
--- select * from rcbill_my.dailycalls order by calldate desc;
+-- select * from rcbill_my.dailycalls order by calldate desc limit 10000;
 -- select * from rcbill_my.dailycalls where callnumber=2719841;
 -- select date(CALLDATE), count(*) from rcbill_my.dailycalls group by 1 order by 1 desc;
 

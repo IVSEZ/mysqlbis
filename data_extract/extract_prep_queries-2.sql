@@ -68,6 +68,10 @@ select * from rcbill.rcb_contractdiscounts;
 select * from rcbill.clientcontractdiscounts;
 select * from rcbill.clientcontractlastdiscount;
 
+
+set @kod1 = 'I.000021721';
+set @kod1 = 'I.000011750';
+
 set @custid1='CA_I.000021721';
 set @custid1='CA_I.000011750';
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1);
@@ -140,4 +144,24 @@ from rcbill_extract.IV_ADDON a
 
 where a.SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1) )
 
+;
+-- select * from rcbill.clientcontractdevices limit 100; 
+
+select * from rcbill_my.dailyusage where datestart is null;
+select * from rcbill.rcb_ipusage 
+where CLIENTCODE in (@kod1)
+;
+
+
+select a.*, rcbill.GetContractID(a.contractcode) as CONTRACT_ID
+from 
+(
+						select b.datestart, b.dateend, b.category, b.traffictype, b.device
+						, (select a.contractcode from rcbill.clientcontractdevices a where a.phoneno=b.device and a.clientcode=b.clientcode) as contractcode, b.traffic_mb
+						, b.billable_duration_min, b.actual_duration_min, b.price, b.price_vat 
+						, b.clientid as CLIENT_ID
+						from rcbill_my.dailyusage b 	
+						where b.clientcode in (@kod1)
+						order by b.dateend desc
+) a 
 ;
