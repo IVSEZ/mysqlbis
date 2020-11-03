@@ -73,6 +73,7 @@ SELECT invoiceno, count(*) from rcbill.rcb_invoicesheader group by invoiceno;
 set @kod9 = 'I.000011750';
 set @kod9 = 'I.000021856';
 set @kod9 = 'I.000020888';
+set @kod9 = 'I.000009787';
 
 set @custid9 = 'CA_I.000020888';
 
