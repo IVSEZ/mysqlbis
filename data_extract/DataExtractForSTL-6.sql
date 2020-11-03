@@ -1467,6 +1467,102 @@ create table rcbill_extract.IV_PAYMENTHISTORY(index idxivbs1(CUSTOMERACCOUNTNUMB
 );
 
 ##################################################################################################################
+-- NBD
+select 'NBD' AS TABLENAME;
+
+drop table if exists rcbill_extract.IV_NBD;
+
+drop temporary table if exists tempt1;
+
+create temporary table tempt1 (index idx1(id))
+(
+	select id, invoicingdate from rcbill.rcb_contracts 
+)
+;
+
+drop temporary table if exists tempt2;
+
+create temporary table tempt2 (index idx1(cid))
+(
+	select id, cid, data as INVOICEDATE from rcbill.rcb_invoicesheader 
+)
+;
+
+
+create table rcbill_extract.IV_NBD (index idxnbd1(BILLINGACCOUNTNUMBER),index idxnbd2(CUSTOMERACCOUNTNUMBER))
+(
+	select 
+    a.CUSTOMERACCOUNTNUMBER
+	, a.BILLINGACCOUNTNUMBER
+	, a.LASTBILLINGDATE
+	, case when a.ACCOUNTSTATUS=1 and a.BILLCYCLE<>'DEFAULT' then date_add(LASTBILLINGDATE, interval 1 month) end as NEXTBILLINGDATE
+	, a.BILLCYCLE
+	, a.ACCOUNTSTATUS
+	, a.BILLINGDAY
+	from 
+	(
+		select 
+		a.BILLINGACCOUNTNUMBER
+        , a.CUSTOMERACCOUNTNUMBER
+		, a.BILLCYCLE, a.ACCOUNTSTATUS
+		-- , (select InvoicingDate from rcbill.rcb_contracts where id=a.contract_id order by id desc limit 1) as BILLINGDAY
+		, (select InvoicingDate from tempt1 where id=a.contract_id order by id desc limit 1) as BILLINGDAY
+		-- , (select data from rcbill.rcb_invoicesheader where cid=a.contract_id order by id desc limit 1) as LASTBILLINGDATE
+		, (select INVOICEDATE from tempt2 where cid=a.contract_id order by id desc limit 1) as LASTBILLINGDATE
+		  
+
+		from rcbill_extract.IV_BILLINGACCOUNT a 
+		-- where client_id in (@clid1,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11)
+	) a 
+)
+;
+
+
+
+##################################################################################################################
+
+-- DSCOUNT
+select 'DISCOUNT' AS TABLENAME;
+
+drop table if exists rcbill_extract.IV_DISCOUNT;
+
+
+create table rcbill_extract.IV_DISCOUNT
+(
+	select a.*
+	, d.SERVICEINSTANCENUMBER
+	from 
+	(
+		select
+		-- a.*,
+		a.BILLINGACCOUNTNUMBER
+		, a.CUSTOMERACCOUNTNUMBER
+		-- , d.SERVICEINSTANCENUMBER
+		, a.BILLCYCLE, a.ACCOUNTSTATUS
+		, b.servicename as SERVICENAME, b.percent as DISCOUNTPERCENT, b.amount as DISCOUNTAMOUNT, b.approved as APPROVEDSTATUS, b.approvalreason as APPROVALREASON
+		, 0 as CYCLECOUNT
+		, c.client_id, c.contract_id
+		from rcbill_extract.IV_BILLINGACCOUNT a 
+		-- where client_id in (@clid1,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11)
+		inner join rcbill_extract.BILLINGACCOUNT_KEY c 
+		on a.BILLINGACCOUNTNUMBER=c.BILLINGACCOUNTNUMBER
+		inner join
+		rcbill.clientcontractdiscounts b 
+		on c.client_id=b.clientid and c.contract_id=b.contractid
+		
+		-- where a.CUSTOMERACCOUNTNUMBER in (@custid1)
+	) a 
+	inner join 
+	 rcbill_extract.IV_SERVICEINSTANCE d
+		on a.client_id=d.CLIENT_ID and a.contract_id=d.CONTRACT_ID
+		and a.SERVICENAME=d.CPE_TYPE
+)
+;
+    
+
+##################################################################################################################
+
+
 
 -- select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  order by ACCOUNTNUMBER;
 -- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  order by CUSTOMERACCOUNTNUMBER;
@@ -1498,6 +1594,8 @@ select * from rcbill_extract.IV_ADDON where SERVICEINSTANCENUMBER in (select SER
 select * from rcbill_extract.IV_ADDONCHARGE where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) );
 select * from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) order by INVOICESUMMARYID;
 select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) order by PAYMENTRECEIPTID;
+select * from rcbill_extract.IV_NBD where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) order by BILLINGACCOUNTNUMBER;
+select * from rcbill_extract.IV_DISCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) order by BILLINGACCOUNTNUMBER;
 
 
 set @custid1 = 'CA_I14';

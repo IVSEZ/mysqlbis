@@ -23,7 +23,7 @@ select 	ifnull(FIRSTNAME,""),	ifnull(LASTNAME,""),	ifnull(CITY,""),	ifnull(STATE
 -- select 	ifnull(FIRSTNAME,""),	ifnull(LASTNAME,""),	ifnull(CITY,""),	ifnull(STATE,""),	ifnull(COUNTRY,""),	ifnull(DISTRICT,""),	ifnull(SUBDISTRICT,""),	ifnull(ZIPCODE,""),	ifnull(EMAILID,""),	ifnull(BUSINESSEMAILID,""),	ifnull(MOBILENUMBER,""),	ifnull(PHONEHOME,""),	ifnull(PHONEOFFICE,""),	ifnull(FAXNUMBER,""),	ifnull(PARENTACCOUNTNUMBER,""),	ifnull(ACCOUNTNUMBER,""),	ifnull(ACCOUNTSTATUS,""),	ifnull(USERNAME,""),	ifnull(CREATEDDATE,""),	ifnull(ACTIVATIONDATE,""),	ifnull(STATUSCHANGEDATE,""),	ifnull(PRIMARY_ID_TYPE,""),	ifnull(PRIMARY_ID_VALUE,""),	ifnull(SECONDARY_ID_TYPE,""),	ifnull(SECONDARY_ID_VALUE,""),	ifnull(TAXNUMBERINDICATOR,""),	ifnull(BUILDINGNAME,""),	ifnull(BIRTHDATE,""),	ifnull(STREETNAME,""),	ifnull(PREFERREDLANGUAGE,""),	ifnull(PROPERTYTYPE,""),	ifnull(PARCELNUMBER,""),	ifnull(LANDMARK,""),	ifnull(LATITUDE,""),	ifnull(LONGITUDE,""),	ifnull(FLOOR,""),	ifnull(XCOORDINATE,""),	ifnull(YCOORDINATE,""),	ifnull(CLCLASS,""),	ifnull(FIZLICE,""),	ifnull(CLIENT_ID,"")
 
 
-INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_CUSTOMER_ACCOUNT_20201026-1.csv'
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_CUSTOMER_ACCOUNT_20201029-1.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 ESCAPED BY '\\'
@@ -51,7 +51,7 @@ union all
 
 select 	ifnull(FIRSTNAME,""),	ifnull(LASTNAME,""),	ifnull(BILLCYCLE,""),	ifnull(BILLDELIVERYMODE,""),	ifnull(CURRENCY,""),	ifnull(CITY,""),	ifnull(DISTRICT,""),	ifnull(SUBDISTRICT,""),	ifnull(STATE,""),	ifnull(COUNTRY,""),	ifnull(ZIPCODE,""),	ifnull(EMAILID,""),	ifnull(BUSINESSEMAILID,""),	ifnull(MOBILENUMBER,""),	ifnull(PHONEHOME,""),	ifnull(PHONEOFFICE,""),	ifnull(FAXNUMBER,""),	ifnull(CUSTOMERACCOUNTNUMBER,""),	ifnull(BILLINGACCOUNTNUMBER,""),	ifnull(ACCOUNTSTATUS,""),	ifnull(CREATEDDATE,""),	ifnull(ACTIVATIONDATE,""),	ifnull(STATUSCHANGEDATE,""),	ifnull(LASTACTION,""),	ifnull(BILLFORMATTYPE,""),	ifnull(BUILDINGNAME,""),	ifnull(BUILDINGTYPE,""),	ifnull(STREETNAME,""),	ifnull(PROPERTYTYPE,""),	ifnull(PARCELNUMBER,""),	ifnull(LANDMARK,""),	ifnull(LATITUDE,""),	ifnull(LONGITUDE,""),	ifnull(FLOOR,""),	ifnull(CHARGINGPATTERN,""),	ifnull(XCOORDINATE,""),	ifnull(YCOORDINATE,""),	ifnull(RATINGPLAN,""),	ifnull(CREDITCLASSNAME,"")
 
-INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_BILLING_ACCOUNT_20201026-1.csv'
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_BILLING_ACCOUNT_20201029-1.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 ESCAPED BY '\\'
@@ -80,7 +80,7 @@ union all
 select 	ifnull(FIRSTNAME,""),	ifnull(LASTNAME,""),	ifnull(ADDRESSONE,""),	ifnull(ADDRESSTWO,""),	ifnull(ADDRESSTHREE,""),	ifnull(CITY,""),	ifnull(DISTRICT,""),	ifnull(SUBDISTRICT,""),	ifnull(STATE,""),	ifnull(COUNTRY,""),	ifnull(ZIPCODE,""),	ifnull(EMAILID,""),	ifnull(BUSINESSEMAILID,""),	ifnull(MOBILENUMBER,""),	ifnull(PHONEHOME,""),	ifnull(PHONEOFFICE,""),	ifnull(FAXNUMBER,""),	ifnull(CUSTOMERACCOUNTNUMBER,""),	ifnull(SERVICEACCOUNTNUMBER,""),	ifnull(ACCOUNTSTATUS,""),	ifnull(CREATEDDATE,""),	ifnull(ACTIVATIONDATE,""),	ifnull(STATUSCHANGEDATE,""),	ifnull(TECHNOLOGY,""),	ifnull(BUILDINGNAME,""),	ifnull(BUILDINGTYPE,""),	ifnull(STREETNAME,""),	ifnull(CHANNELPARTNERID,""),	ifnull(PROPERTYTYPE,""),	ifnull(PARCELNUMBER,""),	ifnull(LANDMARK,""),	ifnull(LATITUDE,""),	ifnull(LONGITUDE,""),	ifnull(FLOOR,""),	ifnull(EMPLOYEEID,""),	ifnull(EMPLOYEENAME,""),	ifnull(EMPLOYEEDEPARTMENT,""),	ifnull(MXKCODE,""),	ifnull(MXKNAME,""),	ifnull(CARDNO,""),	ifnull(PORTNO,""),	ifnull(SPLITTER,""),	ifnull(NETWORKACCESSPOINT,""),	ifnull(NETWORKSVLAN,""),	ifnull(VLANID,""),	ifnull(SERVICECATEGORY,""),	ifnull(ACTIVESERVICE,""),	ifnull(CUSTOMERSUBCATEGORY,""),	ifnull(XCOORDINATE,""),	ifnull(YCOORDINATE,""),	ifnull(HFCNODE,""),	ifnull(HFCNODENAME,"")
 
 
-INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_SERVICE_ACCOUNT_20201026-1.csv'
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_SERVICE_ACCOUNT_20201029-1.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 ESCAPED BY '\\'
@@ -107,7 +107,7 @@ union all
 
 select 	ifnull(CUSTOMERACCOUNTNUMBER,""),	ifnull(BILLINGACCOUNTNUMBER,""),	ifnull(SERVICEACCOUNTNUMBER,""),	ifnull(SERVICEINSTANCEIDENTIFIER,""),	ifnull(SERVICEINSTANCENUMBER,""),	ifnull(PACKAGENAME,""),	ifnull(SERVICESTATUS,""),	ifnull(USERNAME,""),	ifnull(CREATEDDATE,""),	ifnull(ACTIVATIONDATE,""),	ifnull(STATUSCHANGEDDATE,""),	ifnull(LASTACTION,""),	ifnull(PACKAGEAMOUNT,""),	ifnull(CPE_TYPE,""),	ifnull(CPE_ID,""),	ifnull(CONTRACTSTARTDATE,""),	ifnull(CONTRACTENDDATE,""),	ifnull(SERVICEREMARKS,""),	ifnull(EXPIRYDATE,""),	ifnull(OVERRIDDEN,""),	ifnull(FSAN,""),	ifnull(ServiceID,""),	ifnull(ServiceRateID,""),	ifnull(SERVICESTARTDATE,""),	ifnull(SERVICEENDDATE,""),	ifnull(clientcode,""),	ifnull(contractcode,""),	ifnull(serviceinstancestatus,"")
 
-INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_SERVICE_INSTANCE_20201026-1.csv'
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_SERVICE_INSTANCE_20201029-1.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 ESCAPED BY '\\'
@@ -132,7 +132,7 @@ union all
 
 select 	ifnull(SERVICEINSTANCENUMBER,""),	ifnull(CHARGENAME ,""),	ifnull(CHARGEPRICE,"")
 
-INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_SERVICE_INSTANCE_CHARGE_20201026-1.csv'
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_SERVICE_INSTANCE_CHARGE_20201029-1.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 ESCAPED BY '\\'
@@ -159,7 +159,7 @@ union all
 
 select 	ifnull(SERVICEINSTANCENUMBER,""),	ifnull(INVENTORYNUMBER,""),	ifnull(SERIALNUMBER,""),	ifnull(INVENTORYSUBTYPE,""),	ifnull(REMARK,""),	ifnull(STAFFNAME,""),	ifnull(SERVICESTARTDATE,""),	ifnull(SERVICEENDDATE,""),	ifnull(SERVICESTATUS,""),	ifnull(SERVICEINSTANCESTATUS,""),	ifnull(SOURCECHANNEL,"")
 
-INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_INVENTORY_20201026-1.csv'
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_INVENTORY_20201029-1.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 ESCAPED BY '\\'
@@ -185,7 +185,7 @@ union all
 
 select 	ifnull(SERVICEINSTANCENUMBER,""),	ifnull(PACKAGENAME,""),	ifnull(SERVICESTARTDATE,""),	ifnull(SERVICEENDDATE,""),	ifnull(OVERRIDDEN,"")
 
-INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_ADDON_20201026-1.csv'
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_ADDON_20201029-1.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 ESCAPED BY '\\'
@@ -210,7 +210,7 @@ union all
 
 select 	ifnull(SERVICEINSTANCENUMBER,""),	ifnull(CHARGENAME,""),	ifnull(CHARGEPRICE,"")
 
-INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_ADDON_CHARGE_20201026-1.csv'
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_ADDON_CHARGE_20201029-1.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 ESCAPED BY '\\'
@@ -234,7 +234,7 @@ select 	"INVOICESUMMARYID",	"DEBITDOCUMENTNUMBER",	"CREATEDATE",	"SUBTOTAL",	"TA
 union all
 select 	ifnull(INVOICESUMMARYID,""),	ifnull(DEBITDOCUMENTNUMBER,""),	ifnull(CREATEDATE,""),	ifnull(SUBTOTAL,""),	ifnull(TAX,""),	ifnull(UNPAID,""),	ifnull(WRITEOFF,""),	ifnull(REMARK,""),	ifnull(DUEDATE,""),	ifnull(TOTALDUE,""),	ifnull(DISPUTED,""),	ifnull(BILLDATE,""),	ifnull(SURCHARGE,""),	ifnull(SYSCURRENCYEXCHANGERATE,""),	ifnull(TOTALAMOUNT,""),	ifnull(DISCOUNTABLE,""),	ifnull(DISCOUNTED,""),	ifnull(TAXABLE,""),	ifnull(FROMDATE,""),	ifnull(TODATE,""),	ifnull(DEPOSIT,""),	ifnull(BILLINGACCOUNTNUMBER,""),	ifnull(CUSTOMERACCOUNTNUMBER,""),	ifnull(ADJUSTEDAMOUNT,""),	ifnull(BILLCYCLE,""),	ifnull(CURRENCYALIAS,""),	ifnull(ORIGINALCURRENCY,""),	ifnull(CREATEDBY,""),	ifnull(PROFORMAINVOICENUMBER,""),	ifnull(CREDITINVOICENUMBER,""),	ifnull(DEBITINVOICENUMBER,""),	ifnull(INVOICETYPE,""),	ifnull(INVOICEHARD,""),	ifnull(INVOICE_PDF_NAME,"")
 
-INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_BILL_SUMMARY_20201026-1.csv'
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_BILL_SUMMARY_20201029-1.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 ESCAPED BY '\\'
@@ -242,4 +242,29 @@ LINES TERMINATED BY '\r\n'
 FROM rcbill_extract.IV_BILLSUMMARY
 ;
 
+#####################################################################
+## PAYMENT HISTORY
+
+select 'PAYMENT HISTORY' AS TABLENAME;
+
+select column_name
+    from information_schema.columns
+    where table_name = 'IV_PAYMENTHISTORY'
+    and table_schema = 'rcbill_extract'
+    order by ordinal_position
+    ;
+
+
+select 	"PAYMENTRECEIPTID",	"BILLINGACCOUNTNUMBER",	"CUSTOMERACCOUNTNUMBER",	"SERVICEINSTANCENUMBER",	"PAYMENTDATE",	"PAYMENTPROCESSEDDATE",	"PAYMENTDESC",	"PAYMENTCURRENCYALIAS",	"PAYMENTMODE",	"PAYMENTTRANSACTIONAMOUNT",	"SERIALNUMBER",	"DEBITDOCUMENTNUMBER",	"CLIENT_ID",	"CONTRACT_ID",	"PAYMENTAMOUNT",	"PAYMENTREASON",	"EXCHANGERATE",	"DISCOUNT",	"INVOICEHARD",	"EMPLOYEEID",	"EMPLOYEENAME",	"EMPLOYEEDEPARTMENT"
+union all
+select 	ifnull(PAYMENTRECEIPTID,""),	ifnull(BILLINGACCOUNTNUMBER,""),	ifnull(CUSTOMERACCOUNTNUMBER,""),	ifnull(SERVICEINSTANCENUMBER,""),	ifnull(PAYMENTDATE,""),	ifnull(PAYMENTPROCESSEDDATE,""),	ifnull(PAYMENTDESC,""),	ifnull(PAYMENTCURRENCYALIAS,""),	ifnull(PAYMENTMODE,""),	ifnull(PAYMENTTRANSACTIONAMOUNT,""),	ifnull(SERIALNUMBER,""),	ifnull(DEBITDOCUMENTNUMBER,""),	ifnull(CLIENT_ID,""),	ifnull(CONTRACT_ID,""),	ifnull(PAYMENTAMOUNT,""),	ifnull(PAYMENTREASON,""),	ifnull(EXCHANGERATE,""),	ifnull(DISCOUNT,""),	ifnull(INVOICEHARD,""),	ifnull(EMPLOYEEID,""),	ifnull(EMPLOYEENAME,""),	ifnull(EMPLOYEEDEPARTMENT,"")
+
+
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_PAYMENT_HISTORY_20201029-1.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+ESCAPED BY '\\'
+LINES TERMINATED BY '\r\n'
+FROM rcbill_extract.IV_PAYMENTHISTORY
+;
 
