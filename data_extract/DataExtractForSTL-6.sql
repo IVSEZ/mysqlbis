@@ -1600,7 +1600,7 @@ select * from rcbill_extract.IV_DISCOUNT where CUSTOMERACCOUNTNUMBER in (@custid
 
 set @custid1 = 'CA_I14';
 set @custid1 = 'CA_I.000009787';
-set @custid3 = 'CA_I.000011750';
+set @custid1 = 'CA_I.000011750';
 set @custid4 = 'CA_I.000018187';
 set @custid5 = 'CA_I.000011998';
 set @custid6 = 'CA_I7';
@@ -1614,6 +1614,9 @@ set @custid11 = 'CA_I16192';
 
 set @custid1 = 'CA_I.000021854';
 set @custid1 = 'CA_I.000008363';
+set @custid1 = 'CA_I9979';
+set @custid1 = 'CA_I.000009596';
+set @custid1 = 'CA_I.000017595';
 
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;

@@ -4,6 +4,8 @@ select * from rcbill.rcb_casa order by id desc limit 100;
 select * from rcbill.rcb_invoicesheader order by id desc limit 100;
 select * from rcbill.rcb_invoicescontents order by id desc  limit 100;
 
+select * from rc
+
 set @clid1 = 699807;
 set @clid2 = 721746;
 set @clid3 = 723711;
