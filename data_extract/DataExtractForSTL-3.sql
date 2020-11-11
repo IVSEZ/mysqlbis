@@ -2,34 +2,6 @@
 
 use rcbill_extract;
 
-set @kod1 = 'I14';
-set @kod2 = 'I.000009787';
-set @kod3 = 'I.000011750';
-set @kod4 = 'I.000018187';
-set @kod5 = 'I.000011998';
-set @kod6 = 'I7';
-set @kod7 = 'I.000021409';
-set @kod8 = 'I.000021390';
-set @kod9 = 'I9991';
-set @kod10 = 'I.000021467';
-set @kod11 = 'I.000020888';
-set @kod11 = 'I16192';
-
-
-
-set @custid1 = 'CA_I14';
-set @custid2 = 'CA_I.000009787';
-set @custid3 = 'CA_I.000011750';
-set @custid4 = 'CA_I.000018187';
-set @custid5 = 'CA_I.000011998';
-set @custid6 = 'CA_I7';
-set @custid7 = 'CA_I.000021409';
-set @custid8 = 'CA_I.000021390';
-set @custid9 = 'CA_I9991';
-set @custid10 = 'CA_I.000021467';
-set @custid11 = 'CA_I.000020888';
-set @custid11 = 'CA_I16192';
-
 
 select 'CUSTOMER ACCOUNT' AS TABLENAME;
 
@@ -137,18 +109,13 @@ select
 -- , PASSNo AS PASSPORTNUMBER
 -- , BULSTAT AS BUSREGNNUMBER
 -- , MEGN AS TAXNUMBER
-, a.CLCLASS    
-, a.FIZLICE
+    
     
 from rcbill.rcb_tclients a 
 where
 0=0
 -- and a.CLClass in (13)
-
-
--- and kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
-and kod in (@kod1,@kod2,@kod3,@kod4,@kod5,@kod6,@kod7,@kod8,@kod9,@kod10, @kod11)
-
+and kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
 
 ORDER BY a.ID DESC
 -- limit 1000
@@ -331,11 +298,9 @@ create table rcbill_extract.IV_SERVICEACCOUNT(index idxivsa1(SERVICEACCOUNTNUMBE
 	-- inner join 
 	-- rcbill.rcb_contracts b
 	-- on a.ID=b.CLID
-	
-    -- where a.kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
-	where a.kod in (@kod1,@kod2,@kod3,@kod4,@kod5,@kod6,@kod7,@kod8,@kod9,@kod10,@kod11)
-	
-    -- where a.kod in ('I.000011750')
+	where a.kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
+	-- where a.kod in ('I.000011750')
+
 
 	ORDER BY a.ID DESC
 )
@@ -343,13 +308,15 @@ create table rcbill_extract.IV_SERVICEACCOUNT(index idxivsa1(SERVICEACCOUNTNUMBE
 
 -- select * from rcbill_extract.IV_SERVICEACCOUNT ;
 -- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I748');
+-- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000013573');
+
 ###################################################################################
 
 ####	BILLING ACCOUNT
 
--- select 'BILLING ACCOUNT' AS TABLENAME;
+select 'BILLING ACCOUNT' AS TABLENAME;
 
-/*
+
 drop table if exists rcbill_extract.IV_PREP_BILLINGACCOUNT1;
 create table rcbill_extract.IV_PREP_BILLINGACCOUNT1(index idxipba1(clientcode), index idxipba2(contractcode)) as 
 (
@@ -381,7 +348,7 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT1(index idxipba1(clientcode), 
     order by a.CurrentStatus asc, a.contractcode desc
 )
 ;
-*/
+
 -- select * from rcbill_my.rep_custextract where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1;
 -- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice;
@@ -407,18 +374,11 @@ create table rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice(ind
 			 left join 
 			 rcbill_my.rep_clientcontractdevices b 
 			 on a.clientcode=b.CLIENT_CODE and a.contractcode=b.CONTRACT_CODE and a.service=b.SERVICE_TYPE
-             
-             -- where a.clientcode in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
-             where a.clientcode in (@kod1,@kod2,@kod3,@kod4,@kod5,@kod6,@kod7,@kod8,@kod9,@kod10,@kod11)
-
-             
+             where a.clientcode in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
         
-             order by a.clientcode asc, a.contractstatus desc, a.contractcode desc
+             order by a.contractstatus asc, a.contractcode desc
 );
 
-
--- select * from IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I.000011750') order by contractenddate desc;
--- select * from IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I9991') order by contractenddate desc;
 
 select 'IV_PREP_BILLINGACCOUNT_A1' AS TABLENAME;
 
@@ -437,20 +397,15 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT_A1(index idxipba1(clientcode)
 	from 
 	rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice a 
 	group by 1,3,4,5,6,7,8,9,10,11,12,13,14,15
-    order by a.clientcode asc, a.currentstatus asc, a.contractcode desc
 )
 ;
 
 
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode in ('I.000011750');
--- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode in ('I9991');
-
+-- select * from IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I.000011750') order by contractenddate desc;
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I.000011750');
--- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I9991');
--- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I.000018187');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000011750');
--- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I.000009787');
 
 
 select 'IV_PREP_BILLINGACCOUNT2' AS TABLENAME;
@@ -467,7 +422,6 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT2(index idxipba21(clientcode),
 		clientcode
 		,
 		cast(concat('BA_',clientcode,'_',currency, ratingplanname, billcycle , CreditPolicyName) as char(255)) as `BillingKey`
-        -- cast(concat('BA_',clientcode,'_',currency, billcycle) as char(255)) as `BillingKey`
 
 		-- , cast(concat('BA_',clientcode,'_',contractcode) as char(255)) as `BillingAccountNumber`
         , BillingAccountNumber
@@ -480,22 +434,13 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT2(index idxipba21(clientcode),
 		from 
 		-- rcbill_extract.IV_PREP_BILLINGACCOUNT1 a 
         rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 a 
-        -- ( 
-		-- 	select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 order by clientcode asc, currentstatus asc, contractcode desc
-        -- ) a
-        
-        
-        -- where a.clientcode='I.000009787'
 		-- where a.currentstatus='Active'
 		-- group by 1,2,3,4,5,6,7
 		group by 1,2,3,4
-        -- group by clientcode, currency, billcycle
-        -- group by 1,2
-        
-		-- order by a.contractcode desc , a.currentstatus asc
+		-- order by a.currentstatus asc, a.contractcode desc
 	) a
     where a.BillingKey is not null
-    order by a.clientcode asc, a.CONTRACTCODE desc, a.billingkey desc
+    
 )
 ;
 
@@ -527,13 +472,6 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT3(index idxipba31(clientcode),
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000011750');
--- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I9991');
- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I7');
- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I7');
- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I7');
- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I9991');
- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in (@kod11);
--- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000018187');
 
 /*
 select a.*, b.contractcode
@@ -562,12 +500,6 @@ where a.clientcode in ('I.000011750')
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode in ('I14554');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I14554');
 
--- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode in ('I.000009787');
--- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I.000009787');
--- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000009787');
-
--- select a.*, b.* from rcbill_extract.IV_PREP_BILLINGACCOUNT3 a left join rcbill.rcb_tclients b on a.clientcode=b.kod where a.clientcode='I.000009787';
-
 -- select a.*,b.* from rcbill_extract.IV_PREP_BILLINGACCOUNT2 a inner join rcbill_extract.IV_PREP_BILLINGACCOUNT1 b on a.clientcode=b.clientcode where a.clientcode in ('I.000011750');
 
 select 'BILLING ACCOUNT' AS TABLENAME;
@@ -595,7 +527,7 @@ create table rcbill_extract.IV_BILLINGACCOUNT (index idxivba1(BILLINGACCOUNTNUMB
     
     
     , 'EMAIL' AS BILLDELIVERYMODE
-	, case when (a.currency <> 'SCR' AND a.currency <> 'USD') then 'SCR'
+	, case when (a.currency <> 'SCR' or a.currency <> 'USD') then 'SCR'
 		else a.currency end as CURRENCY
 	, ifnull(if(b.CITY='',NULL,b.CITY),'TBU') AS CITY
 	, ifnull((SELECT ClientLocation from rcbill.rcb_clientaddress where ClientCode=a.clientcode),'TBU') as DISTRICT
@@ -645,69 +577,15 @@ create table rcbill_extract.IV_BILLINGACCOUNT (index idxivba1(BILLINGACCOUNTNUMB
 	left join 
 	rcbill.rcb_tclients b 
 	on a.clientcode=b.kod
-    -- where a.clientcode='I.000009787'
 	order by a.clientcode desc
 )
 ;
 
-/*
-
--- select * from rcbill_extract.IV_BILLINGACCOUNT order by customeraccountnumber asc, accountstatus desc, billcycle, currency, chargingpattern;
-select * from 
-( select * from rcbill_extract.IV_BILLINGACCOUNT order by customeraccountnumber asc, accountstatus asc, billcycle, currency, chargingpattern ) a
--- where CUSTOMERACCOUNTNUMBER in ('CA_I7') 
-group by CUSTOMERACCOUNTNUMBER, billcycle, currency, chargingpattern order by customeraccountnumber asc, accountstatus asc, billcycle, currency, chargingpattern;
-
-
-select a.* 
-, (@cnt := @cnt + 1) AS rowNumber
-
-from 
-(select * from rcbill_extract.IV_BILLINGACCOUNT 
--- where CUSTOMERACCOUNTNUMBER in ('CA_I7') 
-group by CUSTOMERACCOUNTNUMBER, billcycle, currency, chargingpattern order by customeraccountnumber asc, accountstatus desc, billcycle, currency, chargingpattern) a 
-
-CROSS JOIN (SELECT @cnt := 0) AS dummy
-
-
-
-;
-
-*/
-
 -- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I7') order by CUSTOMERACCOUNTNUMBER;
 -- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000011750') order by CUSTOMERACCOUNTNUMBER;
 
--- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid11) order by CUSTOMERACCOUNTNUMBER;
-
-
 -- select * from rcbill_extract.IV_BILLINGACCOUNT where accountstatus=1;
 -- select length(BILLINGACCCOUNTNUMBER) from rcbill_extract.IV_BILLINGACCOUNT;
-
-/*
- select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I9991');
- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I9991');
- select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I9991');
- 
- 
- select CUSTOMERACCOUNTNUMBER, CURRENCY, CHARGINGPATTERN, ACCOUNTSTATUS,  BILLINGACCOUNTNUMBER
- from 
- ( 
- select * from rcbill_extract.IV_BILLINGACCOUNT 
- where CUSTOMERACCOUNTNUMBER in ('CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I9991') 
- order by CUSTOMERACCOUNTNUMBER asc, ACCOUNTSTATUS desc
- ) a
-  -- where 
- group by CUSTOMERACCOUNTNUMBER, CURRENCY, CHARGINGPATTERN
- order by CUSTOMERACCOUNTNUMBER asc, ACCOUNTSTATUS desc
- ;
- */
- 
- -- select * from rcbill_extract.IV_BILLINGACCOUNT where BILLCYCLE in ('MONTHLY_1_0');
- -- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERSUBCATEGORY in ('STANDING ORDER');
- -- select distinct technology, count(*) from rcbill_extract.IV_SERVICEACCOUNT group by 1;
- -- select * from rcbill_extract.IV_SERVICEACCOUNT where technology in ('MOBILE TV');
- 
 
 
 -- 'I.000009787','I.000011750','I.000018187','I.000011998','I13703','I7'
@@ -947,7 +825,6 @@ create table rcbill_extract.IV_SERVICEINSTANCE as
 
 
 -- select * from rcbill_extract.IV_SERVICEINSTANCE where clientcode in ('I.000021409');
--- select * from rcbill_extract.IV_SERVICEINSTANCE where clientcode in ('I9991');
 -- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I7') ;
 -- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I748') ;
 -- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I14') ;
@@ -1148,13 +1025,8 @@ cpe_type like '%SUBSCRIPTION%'
 )
 ;
 
-##################################################################################################################
--- PAYMENT HISTORY
-select 'PAYMENT HISTORY' AS TABLENAME;
 
 
-
-##################################################################################################################
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  order by CUSTOMERACCOUNTNUMBER;
@@ -1177,21 +1049,6 @@ select * from rcbill_extract.IV_ADDON where SERVICEINSTANCENUMBER in (select SER
 select * from rcbill_extract.IV_ADDONCHARGE where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390') )
 ;
 
-##################################################################################################################
-
-
-
-select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9,@custid10,@custid11)  order by ACCOUNTNUMBER;
-select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11)  order by CUSTOMERACCOUNTNUMBER;
-select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) order by CUSTOMERACCOUNTNUMBER;
-select * from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11);
-select * from rcbill_extract.IV_SERVICEINSTANCECHARGE where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) );
-select * from rcbill_extract.IV_INVENTORY where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) );
-select * from rcbill_extract.IV_ADDON where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) );
-select * from rcbill_extract.IV_ADDONCHARGE where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) );
-
-
-select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid9) order by CUSTOMERACCOUNTNUMBER;
 
 /*
 
