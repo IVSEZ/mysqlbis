@@ -1644,6 +1644,7 @@ set @custid1 = 'CA_I9979';
 set @custid1 = 'CA_I.000009596';
 set @custid1 = 'CA_I.000017595';
 set @custid1 = 'CA_I9452';
+set @custid1 = 'CA_I9589';
 
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
