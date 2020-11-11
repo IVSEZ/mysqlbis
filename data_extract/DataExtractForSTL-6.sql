@@ -1008,6 +1008,23 @@ create table rcbill_extract.IV_PREP_SERVICEINSTANCE1 (index idxipsi1(clientcode)
 -- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I.000011750') ;
 
 ####################################################################################################
+drop table if exists rcbill_extract.CLIENTCONTRACTLASTSUBDATE;
+
+create table rcbill_extract.CLIENTCONTRACTLASTSUBDATE (index idxccls1(CLID), index idxccls2(CID), index idxccls3(RSID))
+(
+
+	select CLID, CID, RSID, max(BEGDATE) as SUBLASTSTARTDATE, max(ENDDATE) as SUBLASTENDDATE, max(PAYDATE) as SUBLASTPAYDATE
+	from 
+	rcbill.rcb_casa
+
+	-- where CLID in (select id from rcbill.rcb_tclients where kod='I9979')
+	group by 
+	CLID, CID, RSID
+
+)
+;
+
+
 -- SERVICE INSTANCES
 select 'SERVICE INSTANCE' AS TABLENAME;
 
@@ -1059,7 +1076,10 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
 	-- , (select ips.SERVICEACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICEACCOUNTNUMBER
 	-- , (select ips.currentstatus from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICESTATUS
 
-
+	, b.SUBLASTSTARTDATE
+	, b.SUBLASTENDDATE
+	, b.SUBLASTPAYDATE
+    
 	from 
 	(
 
@@ -1137,6 +1157,10 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
 
 			ORDER BY ips1.clientcode desc
 	) a 
+    
+    left join 
+    rcbill_extract.CLIENTCONTRACTLASTSUBDATE b 
+    on a.CLIENT_ID=b.CLID and a.CONTRACT_ID=b.CID and a.ServiceRateID=b.RSID
 )
 ;
 
@@ -1293,7 +1317,9 @@ select
     , si.PACKAGENAME
     , si.SERVICESTARTDATE
     , si.SERVICEENDDATE
-
+	, si.SUBLASTSTARTDATE
+	, si.SUBLASTENDDATE
+    
     -- , si.PACKAGENAME
     -- , si.CPE_TYPE
     -- , si.CPE_ID
@@ -1305,7 +1331,7 @@ select
 from rcbill_extract.IV_SERVICEINSTANCE si where 
 -- CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  
 -- and 
-cpe_type like '%SUBSCRIPTION%'
+cpe_type like '%SUBSCRIPTION%' or cpe_type like '%PREPAID%'
 
 )
 ;
@@ -1340,7 +1366,7 @@ select
 from rcbill_extract.IV_SERVICEINSTANCE si where 
 -- CUSTOMERACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  
 -- and 
-cpe_type like '%SUBSCRIPTION%'
+cpe_type like '%SUBSCRIPTION%' or cpe_type like '%PREPAID%'
 
 )
 ;
@@ -1609,7 +1635,7 @@ set @custid8 = 'CA_I.000021390';
 set @custid9 = 'CA_I9991';
 set @custid10 = 'CA_I.000021467';
 set @custid11 = 'CA_I.000020888';
-set @custid11 = 'CA_I16192';
+set @custid1 = 'CA_I16192';
 
 
 set @custid1 = 'CA_I.000021854';
@@ -1617,6 +1643,7 @@ set @custid1 = 'CA_I.000008363';
 set @custid1 = 'CA_I9979';
 set @custid1 = 'CA_I.000009596';
 set @custid1 = 'CA_I.000017595';
+set @custid1 = 'CA_I9452';
 
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
