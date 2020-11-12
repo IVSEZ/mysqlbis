@@ -3,7 +3,7 @@ select * from rcbill.rcb_casa order by id desc limit 100;
 select * from rcbill.rcb_invoicesheader order by id desc limit 100;
 select * from rcbill.rcb_invoicescontents order by id desc  limit 100;
 
-select * from rc
+
 
 set @clid1 = 699807;
 set @clid2 = 721746;
@@ -35,8 +35,13 @@ set @kod9 = 'I9991';
 set @kod10 = 'I.000021467';
 set @kod11 = 'I.000020888';
 
+
+select * from rcbill_extract.IV_BILLSUMMARY where CLIENT_ID in (@clid2) order by INVOICESUMMARYID desc;
+select * from rcbill_extract.IV_PAYMENTHISTORY where CLIENT_ID in (@clid2) order by PAYMENTRECEIPTID desc;
+
 select * from rcbill.rcb_invoicescontents a 
 where InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY where CLIENT_ID in (@clid2)) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
+order by id desc
 ;
 
 select 
