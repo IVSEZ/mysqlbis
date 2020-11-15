@@ -1371,6 +1371,56 @@ cpe_type like '%SUBSCRIPTION%' or cpe_type like '%PREPAID%'
 )
 ;
 
+
+##################################################################################################################
+-- PAYMENT HISTORY
+select 'PAYMENT HISTORY' AS TABLENAME;
+
+drop table if exists rcbill_extract.IV_PAYMENTHISTORY;
+
+-- HARD= 101, 9999 (ANNULED)
+-- HARD = 0 (CREDITED)
+-- HARD = 1 (DEBIT)
+-- TYPE = 11,21 (CREDIT OR DEBIT)
+
+create table rcbill_extract.IV_PAYMENTHISTORY(index idxivbs1(CUSTOMERACCOUNTNUMBER),index idxivbs2(BILLINGACCOUNTNUMBER),index idxivbs3(DEBITDOCUMENTNUMBER), index idxivbs4(PAYMENTRECEIPTID))
+(
+
+
+	select 
+			a.ID as PAYMENTRECEIPTID
+			, ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLINGACCOUNTNUMBER
+		-- , ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
+			, ifnull((select ACCOUNTNUMBER from rcbill_extract.IV_CUSTOMERACCOUNT where client_id=a.CLID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
+			, ifnull((select serviceinstancenumber from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=(a.PAYTYPE*-1) limit 1),'NOT PRESENT') as SERVICEINSTANCENUMBER
+
+			, a.PAYDATE as PAYMENTDATE
+            , a.BegDate as FROMDATE
+            , a.EndDate as TODATE
+			, a.UPDDATE as PAYMENTPROCESSEDDATE
+			, a.ZAB as PAYMENTDESC
+			, 'SCR' as PAYMENTCURRENCYALIAS
+			, (select name from rcbill.rcb_payobjects where id=a.PAYOBJECTID) as PAYMENTMODE
+			, a.MONEY as PAYMENTTRANSACTIONAMOUNT
+			, a.ID as SERIALNUMBER
+			, a.INVID as DEBITDOCUMENTNUMBER
+			, a.CLID as CLIENT_ID
+			, a.CID as CONTRACT_ID
+			, a.MONEY as PAYMENTAMOUNT
+			, a.BankReference as PAYMENTREASON
+			, '' as EXCHANGERATE
+			, a.DiscountMoney as DISCOUNT
+			, a.hard as INVOICEHARD
+			, a.USERID AS EMPLOYEEID
+			, (SELECT `NAME` FROM rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) as EMPLOYEENAME
+			, (SELECT `NAME` FROM rcbill.rcb_tickettechregions where ID = (select TechRegionID from rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) LIMIT 1) AS EMPLOYEEDEPARTMENT
+
+	from rcbill.rcb_casa a 
+	where CLID in (select rcbill.GetClientID(CLIENTCODE) from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
+
+);
+
+
 ##################################################################################################################
 -- BILL SUMMARY
 select 'BILL SUMMARY' AS TABLENAME;
@@ -1446,51 +1496,128 @@ create table rcbill_extract.IV_BILLSUMMARY(index idxivbs1(CUSTOMERACCOUNTNUMBER)
 )
 ;
 
+
 ##################################################################################################################
--- PAYMENT HISTORY
-select 'PAYMENT HISTORY' AS TABLENAME;
+-- BILL DETAILS
+select 'BILL DETAIL' AS TABLENAME;
 
-drop table if exists rcbill_extract.IV_PAYMENTHISTORY;
 
--- HARD= 101, 9999 (ANNULED)
--- HARD = 0 (CREDITED)
--- HARD = 1 (DEBIT)
--- TYPE = 11,21 (CREDIT OR DEBIT)
+drop table if exists rcbill_extract.IV_BILLDETAIL;
 
-create table rcbill_extract.IV_PAYMENTHISTORY(index idxivbs1(CUSTOMERACCOUNTNUMBER),index idxivbs2(BILLINGACCOUNTNUMBER),index idxivbs3(DEBITDOCUMENTNUMBER), index idxivbs4(PAYMENTRECEIPTID))
+create table rcbill_extract.IV_BILLDETAIL(index idxivbd1(CUSTOMERACCOUNTNUMBER),index idxivbd2(BILLINGACCOUNTNUMBER),index idxivbd3(DEBITDOCUMENTNUMBER),index idxivbd4(SERVICEINSTANCENUMBER))
 (
-
-
 	select 
-			a.ID as PAYMENTRECEIPTID
-			, ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLINGACCOUNTNUMBER
+			ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLINGACCOUNTNUMBER
 		-- , ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
 			, ifnull((select ACCOUNTNUMBER from rcbill_extract.IV_CUSTOMERACCOUNT where client_id=a.CLID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
-			, ifnull((select serviceinstancenumber from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=(a.PAYTYPE*-1) limit 1),'NOT PRESENT') as SERVICEINSTANCENUMBER
-
-			, a.PAYDATE as PAYMENTDATE
-			, a.UPDDATE as PAYMENTPROCESSEDDATE
-			, a.ZAB as PAYMENTDESC
-			, 'SCR' as PAYMENTCURRENCYALIAS
-			, (select name from rcbill.rcb_payobjects where id=a.PAYOBJECTID) as PAYMENTMODE
-			, a.MONEY as PAYMENTTRANSACTIONAMOUNT
+			, ifnull((select serviceinstancenumber from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=a.ServiceID limit 1),'NOT PRESENT') as SERVICEINSTANCENUMBER
+			,
+			a.ID as INVOICEDETAILID
+			, a.InvoiceID as INVOICESUMMARYID
 			, a.ID as SERIALNUMBER
-			, a.INVID as DEBITDOCUMENTNUMBER
+			, a.INVOICENO as DEBITDOCUMENTNUMBER
+			, a.TEXT as NAME
+			, a.SCOST as RATE
+			, a.NUMBER as ITEMCOUNT
+			, a.COST as SUBTOTAL
+			, a.CostVAT as TAX
+			, a.DiscountCost as DISCOUNT
+			, a.Discount as DISCOUNTPERCENT
+			, a.CostTotal as TOTALAMOUNT
+			, a.COST as DISCOUNTABLE
+			, a.DiscountCost as DISCOUNTED
+			, a.COST as TAXABLE
+			, 0 as UNPAID
+			, 0 as WRITEOFF
+			, '' as REMARK
+			, a.FROMDATE
+			, a.TODATE
+			
+			/*
+			, ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLINGACCOUNTNUMBER
+			, ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
+			, ifnull((select serviceinstancenumber from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=a.ServiceID limit 1),'NOT PRESENT') as SERVICEINSTANCENUMBER
+			, ifnull((select BILLCYCLE from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLCYCLE
+			*/
+			, ifnull((select BILLCYCLE from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLCYCLE
+			, case 
+				   when (a.Discount <> 0 or a.DiscountCost <> 0) then 'PRT13' 
+				   when a.TEXT like '%DISCOUNT%' then 'PRT13'
+				   when a.TEXT like '%\%' then 'PRT13'
+				   when trim(a.TEXT) = 'VOUCHERS' then 'PRT13'
+				   when a.TEXT like '%SUBSCRIPTION%' then 'PRT00'
+				   when a.TEXT like '%PREPAID%' then 'PRT00'
+				   when a.TEXT like '%ADDON%' then 'PRT00'
+				   when a.TEXT like '%VIDEO ON DEMAND%' then 'PRT00'
+				   when a.TEXT like 'TURQUOISE%' then 'PRT00'
+				   when trim(a.TEXT) = 'GVOICE' then 'PRT00'
+				   when trim(a.TEXT) = 'INDIAN CORPORATE' then 'PRT00'
+				   when trim(a.TEXT) = 'CAPPED INTERNET' then 'PRT00'
+				   when trim(a.TEXT) = 'ITERMIZED BILL' then 'PRT00'
+				   when a.TEXT like '%INSTALLATION%' then 'PRT06'
+				   when a.TEXT like '%MATERIALS%' then 'PRT06'
+				   when a.TEXT like '%HARDWARE%' then 'PRT06'
+				   when a.TEXT like '%OTHER CHARGES%' then 'PRT06'
+				   when a.TEXT like 'RELOCATION%' then 'PRT06'
+				   when a.TEXT like '%USAGE%' then 'PRT10'
+				   when a.TEXT like '%BUNDLE%' then 'PRT00'
+				   when trim(a.TEXT) = 'CONVERT CONTRACT' then 'PRT00'
+				   when trim(a.TEXT) = 'MQ BALANCE' then 'PRT00'
+				   else '' end as `PRODUCTTYPEID`
+			
+			
+			, case when a.TEXT like '%DEPOSIT%' then a.CostTotal
+				else 0 end as DEPOSIT
+
+			, case when ((a.Discount=0 and a.DiscountCost=0) and a.SCOST>a.COST) then 'Y' 
+				else 'N' end as PRORATIONTYPE
+			, 0 as ADJUSTEDAMOUNT
+			, ifnull((select PACKAGENAME from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=a.ServiceID limit 1),'NOT PRESENT') as PACKAGENAME
+			, a.UPDDATE as BILLDATE
+			, ifnull((select CURRENCYALIAS from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER=a.INVOICENO limit 1),'NOT PRESENT') as CURRENCYALIAS
+			
+			
+			, case when a.Discount>0 then 'Y'
+				else 'N' end as D_DISCOUNTPCT
+			
+			, a.Discount as D_PCTDISCOUNT
+			, '' as D_DISCOUNTNAME
+			, a.DiscountCost as D_ABSDISCOUNT
+			
+			, ifnull((select SYSCURRENCYEXCHANGERATE from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER=a.INVOICENO limit 1),'NOT PRESENT') as D_SYSCURRENCYEXCHANGERATE
+			, a.VAT as T_RATE
+			, case when a.VAT>0 then 'VAT' else '' end as T_TAXNAME
+			, 0 as T_EXEMPTIONRATE
+			, 0 as T_UNPAID
+			, 0 as T_WRITEOFF
+			, 'PCT' as T_TAXRATETYPE
+			, 'N' as T_TAXOVERRIDDEN
+			, 0 as T_EXEMPTIONAMT
+			, case when a.VAT>0 then 'NON' else 'BTH' end as T_EXEMPTIONAPPLICABILITY
+			
+			
 			, a.CLID as CLIENT_ID
 			, a.CID as CONTRACT_ID
-			, a.MONEY as PAYMENTAMOUNT
-			, a.BankReference as PAYMENTREASON
-			, '' as EXCHANGERATE
-			, a.DiscountMoney as DISCOUNT
-			, a.hard as INVOICEHARD
-			, a.USERID AS EMPLOYEEID
-			, (SELECT `NAME` FROM rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) as EMPLOYEENAME
-			, (SELECT `NAME` FROM rcbill.rcb_tickettechregions where ID = (select TechRegionID from rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) LIMIT 1) AS EMPLOYEEDEPARTMENT
+			, a.RSID
+			, a.ServiceID
 
-	from rcbill.rcb_casa a 
-	where CLID in (select rcbill.GetClientID(CLIENTCODE) from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
+	from 
+	rcbill.rcb_invoicescontents a 
 
-);
+	where a.InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY) -- where CLIENT_ID in (@clid2, @clid3)) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
+	-- limit 1000
+	-- where a.clid in (701369)
+	-- where clid in (select rcbill.GetClientID(CLIENTCODE) from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
+	-- where a.clid in (@clid1) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11)
+
+
+
+)
+;
+
+
+
+
 
 ##################################################################################################################
 -- NBD
@@ -1658,6 +1785,7 @@ select * from rcbill_extract.IV_ADDONCHARGE where SERVICEINSTANCENUMBER in (sele
 
 
 select * from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID;
+select * from rcbill_extract.IV_BILLDETAIL where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID;
 
 select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1) order by PAYMENTRECEIPTID;
 select * from rcbill_extract.IV_NBD where CUSTOMERACCOUNTNUMBER in (@custid1) order by BILLINGACCOUNTNUMBER;

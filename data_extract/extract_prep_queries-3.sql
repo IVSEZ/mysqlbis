@@ -7,7 +7,7 @@ select * from rcbill.rcb_invoicescontents order by id desc  limit 100;
 
 set @clid1 = 699807;
 set @clid2 = 721746;
-set @clid3 = 723711;
+set @clid2 = 723711;
 set @clid4 = 730174;
 set @clid5 = 723959;
 set @clid6 = 711581;
@@ -35,17 +35,28 @@ set @kod9 = 'I9991';
 set @kod10 = 'I.000021467';
 set @kod11 = 'I.000020888';
 
-
-select * from rcbill_extract.IV_BILLSUMMARY where CLIENT_ID in (@clid2) order by INVOICESUMMARYID desc;
+select * from rcbill.rcb_casa where CLID in (@clid2) order by id desc;
 select * from rcbill_extract.IV_PAYMENTHISTORY where CLIENT_ID in (@clid2) order by PAYMENTRECEIPTID desc;
+select * from rcbill.rcb_invoicesheader  where CLID in (@clid2) order by id desc;
+select * from rcbill_extract.IV_BILLSUMMARY where CLIENT_ID in (@clid2) order by INVOICESUMMARYID desc;
+select * from rcbill.rcb_invoicescontents  where CLID in (@clid2) order by id desc;
+
+select * from rcbill_extract.IV_SERVICEINSTANCE where CLIENT_ID in (@clid2);
+
+select * from rcbill_extract.IV_DISCOUNT where client_id in (@clid2, @clid3);
 
 select * from rcbill.rcb_invoicescontents a 
-where InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY where CLIENT_ID in (@clid2)) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
+where InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY where CLIENT_ID in (@clid2, @clid3)) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
 order by id desc
 ;
 
 select 
-		a.ID as INVOICEDETAILID
+		ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLINGACCOUNTNUMBER
+	-- , ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
+		, ifnull((select ACCOUNTNUMBER from rcbill_extract.IV_CUSTOMERACCOUNT where client_id=a.CLID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
+		, ifnull((select serviceinstancenumber from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=a.ServiceID limit 1),'NOT PRESENT') as SERVICEINSTANCENUMBER
+		,
+        a.ID as INVOICEDETAILID
         , a.InvoiceID as INVOICESUMMARYID
 		, a.ID as SERIALNUMBER
 		, a.INVOICENO as DEBITDOCUMENTNUMBER
@@ -72,6 +83,7 @@ select
 		, ifnull((select serviceinstancenumber from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=a.ServiceID limit 1),'NOT PRESENT') as SERVICEINSTANCENUMBER
 		, ifnull((select BILLCYCLE from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLCYCLE
 		*/
+		, ifnull((select BILLCYCLE from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLCYCLE
 		, case 
 			   when (a.Discount <> 0 or a.DiscountCost <> 0) then 'PRT13' 
 			   when a.TEXT like '%DISCOUNT%' then 'PRT13'
@@ -103,7 +115,31 @@ select
 
 		, case when ((a.Discount=0 and a.DiscountCost=0) and a.SCOST>a.COST) then 'Y' 
 			else 'N' end as PRORATIONTYPE
-		
+		, 0 as ADJUSTEDAMOUNT
+		, ifnull((select PACKAGENAME from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=a.ServiceID limit 1),'NOT PRESENT') as PACKAGENAME
+        , a.UPDDATE as BILLDATE
+        , ifnull((select CURRENCYALIAS from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER=a.INVOICENO),'NOT PRESENT') as CURRENCYALIAS
+        
+        
+        , case when a.Discount>0 then 'Y'
+			else 'N' end as D_DISCOUNTPCT
+        
+		, a.Discount as D_PCTDISCOUNT
+        , '' as D_DISCOUNTNAME
+        , a.DiscountCost as D_ABSDISCOUNT
+        
+        , ifnull((select SYSCURRENCYEXCHANGERATE from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER=a.INVOICENO),'NOT PRESENT') as D_SYSCURRENCYEXCHANGERATE
+        , a.VAT as T_RATE
+        , case when a.VAT>0 then 'VAT' else '' end as T_TAXNAME
+        , 0 as T_EXEMPTIONRATE
+        , 0 as T_UNPAID
+        , 0 as T_WRITEOFF
+        , 'PCT' as T_TAXRATETYPE
+        , 'N' as T_TAXOVERRIDDEN
+        , 0 as T_EXEMPTIONAMT
+        , case when a.VAT>0 then 'NON' else 'BTH' end as T_EXEMPTIONAPPLICABILITY
+        
+        
         , a.CLID as CLIENT_ID
         , a.CID as CONTRACT_ID
         , a.RSID
@@ -112,11 +148,13 @@ select
 from 
 rcbill.rcb_invoicescontents a 
 
-where a.InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY where CLIENT_ID in (@clid2)) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
+where a.InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY where CLIENT_ID in (@clid2, @clid3)) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
 -- limit 1000
 -- where a.clid in (701369)
 -- where clid in (select rcbill.GetClientID(CLIENTCODE) from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
 -- where a.clid in (@clid1) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11)
+
+order by a.ID desc
 ;
 
 
