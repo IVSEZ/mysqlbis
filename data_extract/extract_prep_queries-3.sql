@@ -159,3 +159,34 @@ order by a.ID desc
 
 
 -- select * from rcbill.rcb_invoicesheader where clid in (@clid9);
+
+
+select 
+b.CPE_TYPE, count(*)
+from rcbill_extract.IV_ADDON a
+left join 
+rcbill_extract.IV_SERVICEINSTANCE b 
+on 
+a.SERVICEINSTANCENUMBER=b.SERVICEINSTANCENUMBER
+
+left join 
+rcbill_extract.IV_BILLINGACCOUNT c
+on b.BILLINGACCOUNTNUMBER=c.BILLINGACCOUNTNUMBER
+
+group by b.CPE_TYPE
+;
+
+select 
+a.* , b.*, c.*
+from rcbill_extract.IV_ADDON a
+left join 
+rcbill_extract.IV_SERVICEINSTANCE b 
+on 
+a.SERVICEINSTANCENUMBER=b.SERVICEINSTANCENUMBER
+
+left join 
+rcbill_extract.IV_BILLINGACCOUNT c
+on b.BILLINGACCOUNTNUMBER=c.BILLINGACCOUNTNUMBER
+
+where (b.CPE_TYPE like ('%CAPPED%') or b.CPE_TYPE like ('%PREPAID%'))
+;
