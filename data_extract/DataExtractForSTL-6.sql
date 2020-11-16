@@ -1024,6 +1024,23 @@ create table rcbill_extract.CLIENTCONTRACTLASTSUBDATE (index idxccls1(CLID), ind
 )
 ;
 
+drop table if exists rcbill_extract.CLIENTCONTRACTLASTINVDATE;
+
+create table rcbill_extract.CLIENTCONTRACTLASTINVDATE (index idxccls1(CLID), index idxccls2(CID), index idxccls3(RSID))
+(
+
+	select CLID, CID, RSID, max(FROMDATE) as INVLASTFROMDATE, max(TODATE) as INVLASTTODATE
+	from 
+	rcbill.rcb_invoicescontents
+
+	-- where CLID in (select id from rcbill.rcb_tclients where kod='I.000011750')
+	group by 
+	CLID, CID, RSID
+    order by id desc
+
+)	;
+
+
 
 -- SERVICE INSTANCES
 select 'SERVICE INSTANCE' AS TABLENAME;
@@ -1079,6 +1096,8 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
 	, b.SUBLASTSTARTDATE
 	, b.SUBLASTENDDATE
 	, b.SUBLASTPAYDATE
+    , c.INVLASTFROMDATE
+    , c.INVLASTTODATE
     
 	from 
 	(
@@ -1161,6 +1180,10 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
     left join 
     rcbill_extract.CLIENTCONTRACTLASTSUBDATE b 
     on a.CLIENT_ID=b.CLID and a.CONTRACT_ID=b.CID and a.ServiceRateID=b.RSID
+    
+	left join 
+    rcbill_extract.CLIENTCONTRACTLASTINVDATE c 
+    on a.CLIENT_ID=c.CLID and a.CONTRACT_ID=c.CID and a.ServiceRateID=c.RSID
 )
 ;
 
@@ -1319,7 +1342,8 @@ select
     , si.SERVICEENDDATE
 	, si.SUBLASTSTARTDATE
 	, si.SUBLASTENDDATE
-    
+    , si.INVLASTFROMDATE
+    , si.INVLASTTODATE
     -- , si.PACKAGENAME
     -- , si.CPE_TYPE
     -- , si.CPE_ID

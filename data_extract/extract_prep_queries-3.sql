@@ -50,6 +50,17 @@ where InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY w
 order by id desc
 ;
 
+
+	select CLID, CID, RSID, max(FROMDATE) as INVLASTFROMDATE, max(TODATE) as INVLASTTODATE
+	from 
+	rcbill.rcb_invoicescontents
+
+	where CLID in (select id from rcbill.rcb_tclients where kod='I.000011750')
+	group by 
+	CLID, CID, RSID
+    order by id desc
+	;
+
 select 
 		ifnull((select BILLINGACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID limit 1),'NOT PRESENT') as BILLINGACCOUNTNUMBER
 	-- , ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER

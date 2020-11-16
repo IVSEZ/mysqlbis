@@ -91,6 +91,8 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\Analysis\service_tickets_assignments.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-USAGESTATS.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 exit
 
