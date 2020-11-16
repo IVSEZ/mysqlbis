@@ -159,7 +159,16 @@ order by a.ID desc
 
 
 -- select * from rcbill.rcb_invoicesheader where clid in (@clid9);
+						select b.datestart, b.dateend, b.category, b.traffictype, b.device
+						, (select a.contractcode from rcbill.clientcontractdevices a where a.phoneno=b.device and a.clientcode=b.clientcode) as contractcode, b.traffic_mb
+						, b.billable_duration_min, b.actual_duration_min, b.price, b.price_vat 
 
+						from rcbill_my.dailyusage b 	
+						where b.clientcode=@kod3
+						order by b.dateend desc
+                        ;
+
+select * from rcbill.rcb_ipusage where CLIENTCODE=@kod3;
 
 select 
 b.CPE_TYPE, count(*)
@@ -190,3 +199,29 @@ on b.BILLINGACCOUNTNUMBER=c.BILLINGACCOUNTNUMBER
 
 where (b.CPE_TYPE like ('%CAPPED%') or b.CPE_TYPE like ('%PREPAID%'))
 ;
+
+
+-- drop table if 
+
+select CLIENTCODE, CLIENTID, CID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE
+, ifnull(sum(MB_UL),0) as MB_UL, ifnull(sum(MB_DL),0) as MB_DL, (ifnull(sum(MB_UL),0) + ifnull(sum(MB_DL),0)) as MB_TOTAL
+from 
+(
+	select a.*
+	, case when a.USAGEDIRECTION='O' then MB_USED end as MB_UL
+	, case when a.USAGEDIRECTION='I' then MB_USED end as MB_DL
+
+	from 
+	(
+		select CLIENTCODE, CLIENTID, CID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, (select name from rcbill.rcb_traffictypes where TRAFFICID=TRAFFICTYPE) as TRAFFICTYPE, USAGEDIRECTION, SUM(MB_USED) as MB_USED from rcbill.rcb_ipusage
+		-- where CLIENTCODE=@kod3
+		group by CLIENTCODE, CLIENTID, CID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE, USAGEDIRECTION
+	) a
+) a 
+group by CLIENTCODE, CLIENTID, CID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE
+;
+    
+
+
+
+select count(*) as clientcontractip from rcbill.clientcontractip;

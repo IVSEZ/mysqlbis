@@ -2710,6 +2710,34 @@ create index IDXccip5 on rcbill.clientcontractip (clientid);
 select count(*) as clientcontractip from rcbill.clientcontractip;
 ###########################################################
 
+drop table if exists rcbill.clientcontractipusage;
+create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcciu2(contractcode),index idxcciu3(CLIENT_ID),index idxcciu4(CONTRACT_ID), index idxcciu5(PROCESSEDCLIENTIP)) as 
+(
+	select CLIENTCODE, CLIENTID as CLIENT_ID, CID as CONTRACT_ID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE
+	, ifnull(sum(MB_UL),0) as MB_UL, ifnull(sum(MB_DL),0) as MB_DL, (ifnull(sum(MB_UL),0) + ifnull(sum(MB_DL),0)) as MB_TOTAL
+	from 
+	(
+		select a.*
+		, case when a.USAGEDIRECTION='O' then MB_USED end as MB_UL
+		, case when a.USAGEDIRECTION='I' then MB_USED end as MB_DL
+
+		from 
+		(
+			select CLIENTCODE, CLIENTID, CID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, (select name from rcbill.rcb_traffictypes where TRAFFICID=TRAFFICTYPE) as TRAFFICTYPE, USAGEDIRECTION, SUM(MB_USED) as MB_USED from rcbill.rcb_ipusage
+			-- where CLIENTCODE=@kod3
+			group by CLIENTCODE, CLIENTID, CID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE, USAGEDIRECTION
+		) a
+	) a 
+	group by CLIENTCODE, CLIENTID, CID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE
+
+)
+;
+
+select count(*) as clientcontractip from rcbill.clientcontractipusage;
+###########################################################
+
+
+
 drop table if exists rcbill.clientcontractipmonth;
 create table rcbill.clientcontractipmonth as 
 (
