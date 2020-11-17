@@ -1012,7 +1012,7 @@ drop table if exists rcbill_extract.CLIENTCONTRACTLASTSUBDATE;
 
 create table rcbill_extract.CLIENTCONTRACTLASTSUBDATE (index idxccls1(CLID), index idxccls2(CID), index idxccls3(RSID))
 (
-
+	/*
 	select CLID, CID, RSID, max(BEGDATE) as SUBLASTSTARTDATE, max(ENDDATE) as SUBLASTENDDATE, max(PAYDATE) as SUBLASTPAYDATE
 	from 
 	rcbill.rcb_casa
@@ -1020,15 +1020,31 @@ create table rcbill_extract.CLIENTCONTRACTLASTSUBDATE (index idxccls1(CLID), ind
 	-- where CLID in (select id from rcbill.rcb_tclients where kod='I9979')
 	group by 
 	CLID, CID, RSID
+    */
+    
+			SELECT  a.CLID, a.CID, a.RSID, a.BEGDATE as SUBLASTSTARTDATE, a.ENDDATE as SUBLASTENDDATE, a.PAYDATE as SUBLASTPAYDATE 
+			FROM    rcbill.rcb_casa a
+			INNER JOIN
+			(
+				SELECT  CLID, CID, RSID, max(ID) as MAX_ID 
+				FROM    rcbill.rcb_casa
+				-- where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+				GROUP BY CLID, CID, RSID
+			) b ON -- a.ID = b.ID AND 
+			a.ID = b.max_ID    
+    
 
 )
 ;
+
+
+
 
 drop table if exists rcbill_extract.CLIENTCONTRACTLASTINVDATE;
 
 create table rcbill_extract.CLIENTCONTRACTLASTINVDATE (index idxccls1(CLID), index idxccls2(CID), index idxccls3(RSID))
 (
-
+	/*
 	select CLID, CID, RSID, max(FROMDATE) as INVLASTFROMDATE, max(TODATE) as INVLASTTODATE
 	from 
 	rcbill.rcb_invoicescontents
@@ -1037,7 +1053,20 @@ create table rcbill_extract.CLIENTCONTRACTLASTINVDATE (index idxccls1(CLID), ind
 	group by 
 	CLID, CID, RSID
     order by id desc
-
+	*/
+    
+		SELECT  a.CLID, a.CID, a.RSID, a.FROMDATE as INVLASTFROMDATE, a.TODATE as INVLASTTODATE 
+		FROM    rcbill.rcb_invoicescontents a
+				INNER JOIN
+				(
+					SELECT  CLID, CID, RSID, max(ID) as MAX_ID 
+					FROM    rcbill.rcb_invoicescontents
+					-- where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+					GROUP BY CLID, CID, RSID
+				) b ON -- a.ID = b.ID AND 
+				a.ID = b.max_ID
+				order by id desc
+        
 )	;
 
 
@@ -1796,6 +1825,7 @@ set @custid1 = 'CA_I.000009596';
 set @custid1 = 'CA_I.000017595';
 set @custid1 = 'CA_I9452';
 set @custid1 = 'CA_I9589';
+set @custid1 = 'CA_I.000003551'; -- russian embassy
 
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
@@ -1808,10 +1838,10 @@ select * from rcbill_extract.IV_ADDON where SERVICEINSTANCENUMBER in (select SER
 select * from rcbill_extract.IV_ADDONCHARGE where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1) );
 
 
-select * from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID;
-select * from rcbill_extract.IV_BILLDETAIL where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID;
+select * from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID desc;
+select * from rcbill_extract.IV_BILLDETAIL where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID desc;
 
-select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1) order by PAYMENTRECEIPTID;
+select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1) order by PAYMENTRECEIPTID desc;
 select * from rcbill_extract.IV_NBD where CUSTOMERACCOUNTNUMBER in (@custid1) order by BILLINGACCOUNTNUMBER;
 select * from rcbill_extract.IV_DISCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by BILLINGACCOUNTNUMBER;
 

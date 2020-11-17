@@ -7,10 +7,10 @@ select * from rcbill.rcb_invoicescontents order by id desc  limit 100;
 
 set @clid1 = 699807;
 set @clid1 = 721746;
-set @clid2 = 723711;
+set @clid1 = 723711;
 set @clid1 = 730174;
-set @clid5 = 723959;
-set @clid6 = 711581;
+set @clid1 = 723959;
+set @clid1 = 711581;
 set @clid7 = 734460;
 set @clid8 = 734440;
 set @clid9 = 691038;
@@ -49,6 +49,67 @@ select * from rcbill.rcb_invoicescontents a
 where InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY where CLIENT_ID in (@clid2, @clid3)) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
 order by id desc
 ;
+
+
+select * from rcbill.rcb_casa where CLID in ((select id from rcbill.rcb_tclients where kod='I.000003551')) order by id desc;
+
+	select CLID, CID, RSID, max(BEGDATE) as SUBLASTSTARTDATE, max(ENDDATE) as SUBLASTENDDATE, max(PAYDATE) as SUBLASTPAYDATE
+	from 
+	rcbill.rcb_casa
+
+	where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+	group by 
+	CLID, CID, RSID
+;
+
+
+
+SELECT  a.CLID, a.CID, a.RSID, a.BEGDATE as SUBLASTSTARTDATE, a.ENDDATE as SUBLASTENDDATE, a.PAYDATE as SUBLASTPAYDATE 
+FROM    rcbill.rcb_casa a
+        INNER JOIN
+        (
+            SELECT  CLID, CID, RSID, max(ID) as MAX_ID 
+            FROM    rcbill.rcb_casa
+            where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+            GROUP BY CLID, CID, RSID
+        ) b ON -- a.ID = b.ID AND 
+        a.ID = b.max_ID
+        ;
+
+select CLID, CID, RSID, max(ID) as MAX_ID 
+from rcbill.rcb_casa 
+where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+group by CLID, CID, RSID
+;
+
+
+select * from rcbill.rcb_invoicescontents  where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551') order by id desc;
+
+
+	select CLID, CID, RSID, max(FROMDATE) as INVLASTFROMDATE, max(TODATE) as INVLASTTODATE
+	from 
+	rcbill.rcb_invoicescontents
+	where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+	group by 
+	CLID, CID, RSID
+    order by id desc
+    ;
+
+
+SELECT  a.CLID, a.CID, a.RSID, a.FROMDATE as INVLASTFROMDATE, a.TODATE as INVLASTTODATE 
+FROM    rcbill.rcb_invoicescontents a
+        INNER JOIN
+        (
+            SELECT  CLID, CID, RSID, max(ID) as MAX_ID 
+            FROM    rcbill.rcb_invoicescontents
+            where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+            GROUP BY CLID, CID, RSID
+        ) b ON -- a.ID = b.ID AND 
+        a.ID = b.max_ID
+        order by id desc
+        ;
+
+
 
 
 	select CLID, CID, RSID, max(FROMDATE) as INVLASTFROMDATE, max(TODATE) as INVLASTTODATE
@@ -390,13 +451,17 @@ from
 						-- on b.BILLINGACCOUNTNUMBER=c.BILLINGACCOUNTNUMBER
 						where 0=0
 						and (b.CPE_TYPE like ('%CAPPED%') or b.CPE_TYPE like ('%PREPAID%'))
-
-						and b.client_id=@clid1
+						
+                        and b.SERVICESTATUS='Active'
+						-- and b.client_id=718650
+                        and b.CLIENT_ID=715432
 				) a 
 		) a
 		left join 
 		rcbill.clientcontractipusage b
 		on a.client_id=b.client_id and a.contract_id=b.contract_id and (b.usagedate>=a.subfrom and b.usagedate<=a.subto) and b.TRAFFICTYPE='Default'
+
+
 ) a 
 group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
 ;
