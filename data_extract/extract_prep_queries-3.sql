@@ -6,9 +6,9 @@ select * from rcbill.rcb_invoicescontents order by id desc  limit 100;
 
 
 set @clid1 = 699807;
-set @clid2 = 721746;
+set @clid1 = 721746;
 set @clid2 = 723711;
-set @clid4 = 730174;
+set @clid1 = 730174;
 set @clid5 = 723959;
 set @clid6 = 711581;
 set @clid7 = 734460;
@@ -170,6 +170,7 @@ order by a.ID desc
 
 
 -- select * from rcbill.rcb_invoicesheader where clid in (@clid9);
+/*
 						select b.datestart, b.dateend, b.category, b.traffictype, b.device
 						, (select a.contractcode from rcbill.clientcontractdevices a where a.phoneno=b.device and a.clientcode=b.clientcode) as contractcode, b.traffic_mb
 						, b.billable_duration_min, b.actual_duration_min, b.price, b.price_vat 
@@ -178,8 +179,8 @@ order by a.ID desc
 						where b.clientcode=@kod3
 						order by b.dateend desc
                         ;
-
-select * from rcbill.rcb_ipusage where CLIENTCODE=@kod3;
+*/
+-- select * from rcbill.rcb_ipusage where CLIENTCODE=@kod3;
 
 select 
 b.CPE_TYPE, count(*)
@@ -196,24 +197,83 @@ on b.BILLINGACCOUNTNUMBER=c.BILLINGACCOUNTNUMBER
 group by b.CPE_TYPE
 ;
 
+
 select 
-a.* , b.*, c.*
-from rcbill_extract.IV_ADDON a
-left join 
-rcbill_extract.IV_SERVICEINSTANCE b 
-on 
-a.SERVICEINSTANCENUMBER=b.SERVICEINSTANCENUMBER
+a.*
+, '' as `|`
+, b.*
 
-left join 
-rcbill_extract.IV_BILLINGACCOUNT c
-on b.BILLINGACCOUNTNUMBER=c.BILLINGACCOUNTNUMBER
+from 
+(
 
-where (b.CPE_TYPE like ('%CAPPED%') or b.CPE_TYPE like ('%PREPAID%'))
+		select 
+		a.SERVICEINSTANCENUMBER, a.PACKAGENAME
+		, ifnull(date(a.SUBLASTSTARTDATE),date(a.INVLASTFROMDATE)) as SUBFROM
+		, ifnull(date(a.SUBLASTENDDATE),date(a.INVLASTTODATE)) as SUBTO
+		, a.CUSTOMERACCOUNTNUMBER
+		, a.BILLINGACCOUNTNUMBER
+		, a.SERVICEACCOUNTNUMBER
+		, a.SERVICEINSTANCEIDENTIFIER
+		, a.SERVICESTATUS
+		, a.CPE_TYPE
+		, a.PACKAGEAMOUNT
+		, a.LASTACTION
+		, a.clientcode
+		, a.contractcode
+		, a.client_id
+		, a.contract_id
+
+		from 
+		(
+
+				select 
+
+				--  a.* 
+				-- , '' as `SEP1`
+				-- , b.*
+
+
+
+				a.*
+				, b.CUSTOMERACCOUNTNUMBER
+				, b.BILLINGACCOUNTNUMBER
+				, b.SERVICEACCOUNTNUMBER
+				, b.SERVICEINSTANCEIDENTIFIER
+				, b.SERVICESTATUS
+				, b.PACKAGEAMOUNT
+				, b.CPE_TYPE
+				, b.LASTACTION
+				, b.clientcode
+				, b.contractcode
+				, b.CLIENT_ID
+				, b.CONTRACT_ID
+
+
+
+				from rcbill_extract.IV_ADDON a
+				left join 
+				rcbill_extract.IV_SERVICEINSTANCE b 
+				on 
+				a.SERVICEINSTANCENUMBER=b.SERVICEINSTANCENUMBER
+
+				-- left join 
+				-- rcbill_extract.IV_BILLINGACCOUNT c
+				-- on b.BILLINGACCOUNTNUMBER=c.BILLINGACCOUNTNUMBER
+				where 0=0
+				-- and (b.CPE_TYPE like ('%CAPPED%') or b.CPE_TYPE like ('%PREPAID%'))
+
+				and b.client_id=723711
+		) a 
+) a
+left join 
+rcbill.clientcontractipusage b
+on a.client_id=b.client_id and a.contract_id=b.contract_id and (b.usagedate>=a.subfrom and b.usagedate<=a.subto) and b.TRAFFICTYPE='Default'
+
 ;
 
-
+select * from rcbill.clientcontractipusage where CLIENTCODE=@kod3 order by usagedate desc;
 -- drop table if 
-
+/*
 select CLIENTCODE, CLIENTID, CID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE
 , ifnull(sum(MB_UL),0) as MB_UL, ifnull(sum(MB_DL),0) as MB_DL, (ifnull(sum(MB_UL),0) + ifnull(sum(MB_DL),0)) as MB_TOTAL
 from 
@@ -231,8 +291,113 @@ from
 ) a 
 group by CLIENTCODE, CLIENTID, CID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE
 ;
-    
+  */  
 
 
 
-select count(*) as clientcontractip from rcbill.clientcontractip;
+select 
+a.SERVICEINSTANCENUMBER
+, a.PACKAGENAME
+, a.SUBFROM
+, a.SUBTO
+, a.CUSTOMERACCOUNTNUMBER
+, a.BILLINGACCOUNTNUMBER
+, a.SERVICEACCOUNTNUMBER
+, a.SERVICEINSTANCEIDENTIFIER
+, a.SERVICESTATUS
+, a.CPE_TYPE
+, a.PACKAGEAMOUNT
+, a.LASTACTION
+, a.clientcode
+, a.contractcode
+, a.client_id
+, a.contract_id
+, a.PROCESSEDCLIENTIP
+, a.TRAFFICTYPE
+, max(a.USAGEDATE) as LASTUSAGEDATE
+, sum(a.MB_UL) as MB_UL
+, sum(a.MB_DL) as MB_DL
+, sum(a.MB_TOTAL) as MB_TOTAL
+, (sum(a.MB_TOTAL)/1024) as GB_TOTAL
+from 
+(
+		select 
+		a.*
+		, '' as `|`
+		-- , b.*
+        , b.PROCESSEDCLIENTIP
+        , b.TRAFFICTYPE
+        , b.MB_UL
+        , b.MB_DL
+        , b.MB_TOTAL
+        , b.USAGEDATE
+
+		from 
+		(
+
+				select 
+				a.SERVICEINSTANCENUMBER, a.PACKAGENAME
+				, ifnull(date(a.SUBLASTSTARTDATE),date(a.INVLASTFROMDATE)) as SUBFROM
+				, ifnull(date(a.SUBLASTENDDATE),date(a.INVLASTTODATE)) as SUBTO
+				, a.CUSTOMERACCOUNTNUMBER
+				, a.BILLINGACCOUNTNUMBER
+				, a.SERVICEACCOUNTNUMBER
+				, a.SERVICEINSTANCEIDENTIFIER
+				, a.SERVICESTATUS
+				, a.CPE_TYPE
+				, a.PACKAGEAMOUNT
+				, a.LASTACTION
+				, a.clientcode
+				, a.contractcode
+				, a.client_id
+				, a.contract_id
+
+				from 
+				(
+
+						select 
+
+						--  a.* 
+						-- , '' as `SEP1`
+						-- , b.*
+
+
+
+						a.*
+						, b.CUSTOMERACCOUNTNUMBER
+						, b.BILLINGACCOUNTNUMBER
+						, b.SERVICEACCOUNTNUMBER
+						, b.SERVICEINSTANCEIDENTIFIER
+						, b.SERVICESTATUS
+						, b.PACKAGEAMOUNT
+						, b.CPE_TYPE
+						, b.LASTACTION
+						, b.clientcode
+						, b.contractcode
+						, b.CLIENT_ID
+						, b.CONTRACT_ID
+
+
+
+						from rcbill_extract.IV_ADDON a
+						left join 
+						rcbill_extract.IV_SERVICEINSTANCE b 
+						on 
+						a.SERVICEINSTANCENUMBER=b.SERVICEINSTANCENUMBER
+
+						-- left join 
+						-- rcbill_extract.IV_BILLINGACCOUNT c
+						-- on b.BILLINGACCOUNTNUMBER=c.BILLINGACCOUNTNUMBER
+						where 0=0
+						and (b.CPE_TYPE like ('%CAPPED%') or b.CPE_TYPE like ('%PREPAID%'))
+
+						and b.client_id=@clid1
+				) a 
+		) a
+		left join 
+		rcbill.clientcontractipusage b
+		on a.client_id=b.client_id and a.contract_id=b.contract_id and (b.usagedate>=a.subfrom and b.usagedate<=a.subto) and b.TRAFFICTYPE='Default'
+) a 
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+;
+
