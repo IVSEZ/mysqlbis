@@ -1035,9 +1035,9 @@ create table rcbill_extract.CLIENTCONTRACTLASTSUBDATE (index idxccls1(CLID), ind
     */
     
 		SELECT  a.CLID, a.CID, a.RSID, a.BEGDATE as LASTSUBSTARTDATE, a.ENDDATE as LASTSUBENDDATE, a.PAYDATE as LASTSUBPAYDATE
-		, (select begdate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) ) as CURSUBSTARTDATE
-		, (select enddate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) ) as CURSUBENDDATE
-		, (select paydate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) ) as CURSUBPAYDATE
+		, (select begdate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) limit 1) as CURSUBSTARTDATE
+		, (select enddate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) limit 1) as CURSUBENDDATE
+		, (select paydate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) limit 1) as CURSUBPAYDATE
 		FROM    rcbill.rcb_casa a
 				INNER JOIN
 				(
@@ -1084,8 +1084,8 @@ create table rcbill_extract.CLIENTCONTRACTLASTINVDATE (index idxccls1(CLID), ind
       
 		SELECT  a.CLID, a.CID, a.RSID, a.FROMDATE as LASTINVFROMDATE, a.TODATE as LASTINVTODATE 
 
-		, (select fromdate from rcbill.rcb_invoicescontents where clid=a.clid and cid=a.cid and rsid=a.rsid and fromdate<=date(now()) and todate>=date(now()) ) as CURINVFROMDATE
-		, (select todate from rcbill.rcb_invoicescontents where clid=a.clid and cid=a.cid and rsid=a.rsid and fromdate<=date(now()) and todate>=date(now()) ) as CURINVTODATE
+		, (select fromdate from rcbill.rcb_invoicescontents where clid=a.clid and cid=a.cid and rsid=a.rsid and fromdate<=date(now()) and todate>=date(now()) limit 1) as CURINVFROMDATE
+		, (select todate from rcbill.rcb_invoicescontents where clid=a.clid and cid=a.cid and rsid=a.rsid and fromdate<=date(now()) and todate>=date(now()) limit 1) as CURINVTODATE
 
 		FROM    rcbill.rcb_invoicescontents a
 				INNER JOIN
@@ -1157,6 +1157,13 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
 	, b.LASTSUBPAYDATE
     , c.LASTINVFROMDATE
     , c.LASTINVTODATE
+
+	, b.CURSUBSTARTDATE
+	, b.CURSUBENDDATE
+	, b.CURSUBPAYDATE    
+    , c.CURINVFROMDATE
+    , c.CURINVTODATE
+    
     
 	from 
 	(
@@ -1403,6 +1410,11 @@ select
 	, si.LASTSUBENDDATE
     , si.LASTINVFROMDATE
     , si.LASTINVTODATE
+    , si.CURSUBSTARTDATE
+    , si.CURSUBENDDATE
+    , si.CURSUBPAYDATE
+    , si.CURINVFROMDATE
+    , si.CURINVTODATE
     -- , si.PACKAGENAME
     -- , si.CPE_TYPE
     -- , si.CPE_ID
