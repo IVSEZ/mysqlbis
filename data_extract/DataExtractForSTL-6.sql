@@ -1021,7 +1021,7 @@ create table rcbill_extract.CLIENTCONTRACTLASTSUBDATE (index idxccls1(CLID), ind
 	group by 
 	CLID, CID, RSID
     */
-    
+    /*
 			SELECT  a.CLID, a.CID, a.RSID, a.BEGDATE as SUBLASTSTARTDATE, a.ENDDATE as SUBLASTENDDATE, a.PAYDATE as SUBLASTPAYDATE 
 			FROM    rcbill.rcb_casa a
 			INNER JOIN
@@ -1032,7 +1032,21 @@ create table rcbill_extract.CLIENTCONTRACTLASTSUBDATE (index idxccls1(CLID), ind
 				GROUP BY CLID, CID, RSID
 			) b ON -- a.ID = b.ID AND 
 			a.ID = b.max_ID    
+    */
     
+		SELECT  a.CLID, a.CID, a.RSID, a.BEGDATE as LASTSUBSTARTDATE, a.ENDDATE as LASTSUBENDDATE, a.PAYDATE as LASTSUBPAYDATE
+		, (select begdate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) ) as CURSUBSTARTDATE
+		, (select enddate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) ) as CURSUBENDDATE
+		, (select paydate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) ) as CURSUBPAYDATE
+		FROM    rcbill.rcb_casa a
+				INNER JOIN
+				(
+					SELECT  CLID, CID, RSID, max(ID) as MAX_ID 
+					FROM    rcbill.rcb_casa
+					-- where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+					GROUP BY CLID, CID, RSID
+				) b ON -- a.ID = b.ID AND 
+				a.ID = b.max_ID    
 
 )
 ;
@@ -1054,7 +1068,7 @@ create table rcbill_extract.CLIENTCONTRACTLASTINVDATE (index idxccls1(CLID), ind
 	CLID, CID, RSID
     order by id desc
 	*/
-    
+    /*
 		SELECT  a.CLID, a.CID, a.RSID, a.FROMDATE as INVLASTFROMDATE, a.TODATE as INVLASTTODATE 
 		FROM    rcbill.rcb_invoicescontents a
 				INNER JOIN
@@ -1066,7 +1080,23 @@ create table rcbill_extract.CLIENTCONTRACTLASTINVDATE (index idxccls1(CLID), ind
 				) b ON -- a.ID = b.ID AND 
 				a.ID = b.max_ID
 				order by id desc
-        
+      */
+      
+		SELECT  a.CLID, a.CID, a.RSID, a.FROMDATE as LASTINVFROMDATE, a.TODATE as LASTINVTODATE 
+
+		, (select fromdate from rcbill.rcb_invoicescontents where clid=a.clid and cid=a.cid and rsid=a.rsid and fromdate<=date(now()) and todate>=date(now()) ) as CURINVFROMDATE
+		, (select todate from rcbill.rcb_invoicescontents where clid=a.clid and cid=a.cid and rsid=a.rsid and fromdate<=date(now()) and todate>=date(now()) ) as CURINVTODATE
+
+		FROM    rcbill.rcb_invoicescontents a
+				INNER JOIN
+				(
+					SELECT  CLID, CID, RSID, max(ID) as MAX_ID 
+					FROM    rcbill.rcb_invoicescontents
+					-- where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+					GROUP BY CLID, CID, RSID
+				) b ON -- a.ID = b.ID AND 
+				a.ID = b.max_ID
+				order by id desc      
 )	;
 
 
@@ -1122,11 +1152,11 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
 	-- , (select ips.SERVICEACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICEACCOUNTNUMBER
 	-- , (select ips.currentstatus from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICESTATUS
 
-	, b.SUBLASTSTARTDATE
-	, b.SUBLASTENDDATE
-	, b.SUBLASTPAYDATE
-    , c.INVLASTFROMDATE
-    , c.INVLASTTODATE
+	, b.LASTSUBSTARTDATE
+	, b.LASTSUBENDDATE
+	, b.LASTSUBPAYDATE
+    , c.LASTINVFROMDATE
+    , c.LASTINVTODATE
     
 	from 
 	(
@@ -1369,10 +1399,10 @@ select
     , si.PACKAGENAME
     , si.SERVICESTARTDATE
     , si.SERVICEENDDATE
-	, si.SUBLASTSTARTDATE
-	, si.SUBLASTENDDATE
-    , si.INVLASTFROMDATE
-    , si.INVLASTTODATE
+	, si.LASTSUBSTARTDATE
+	, si.LASTSUBENDDATE
+    , si.LASTINVFROMDATE
+    , si.LASTINVTODATE
     -- , si.PACKAGENAME
     -- , si.CPE_TYPE
     -- , si.CPE_ID

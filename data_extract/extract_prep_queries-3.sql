@@ -51,7 +51,7 @@ order by id desc
 ;
 
 
-select * from rcbill.rcb_casa where CLID in ((select id from rcbill.rcb_tclients where kod='I.000003551')) order by id desc;
+select id, clid, cid, rsid, begdate, enddate, paydate from rcbill.rcb_casa where CLID in ((select id from rcbill.rcb_tclients where kod='I.000003551')) order by id desc;
 
 	select CLID, CID, RSID, max(BEGDATE) as SUBLASTSTARTDATE, max(ENDDATE) as SUBLASTENDDATE, max(PAYDATE) as SUBLASTPAYDATE
 	from 
@@ -64,13 +64,16 @@ select * from rcbill.rcb_casa where CLID in ((select id from rcbill.rcb_tclients
 
 
 
-SELECT  a.CLID, a.CID, a.RSID, a.BEGDATE as SUBLASTSTARTDATE, a.ENDDATE as SUBLASTENDDATE, a.PAYDATE as SUBLASTPAYDATE 
+SELECT  a.CLID, a.CID, a.RSID, a.BEGDATE as SUBLASTSTARTDATE, a.ENDDATE as SUBLASTENDDATE, a.PAYDATE as SUBLASTPAYDATE
+, (select begdate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) ) as CURSUBSTARTDATE
+, (select enddate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) ) as CURSUBENDDATE
+, (select paydate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) ) as CURSUBPAYDATE
 FROM    rcbill.rcb_casa a
         INNER JOIN
         (
             SELECT  CLID, CID, RSID, max(ID) as MAX_ID 
             FROM    rcbill.rcb_casa
-            where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+            where CLID in (select id from rcbill.rcb_tclients where kod='I.000011750')
             GROUP BY CLID, CID, RSID
         ) b ON -- a.ID = b.ID AND 
         a.ID = b.max_ID
@@ -96,7 +99,11 @@ select * from rcbill.rcb_invoicescontents  where CLID in (select id from rcbill.
     ;
 
 
-SELECT  a.CLID, a.CID, a.RSID, a.FROMDATE as INVLASTFROMDATE, a.TODATE as INVLASTTODATE 
+SELECT  a.CLID, a.CID, a.RSID, a.FROMDATE as LASTINVFROMDATE, a.TODATE as LASTINVTODATE 
+
+, (select fromdate from rcbill.rcb_invoicescontents where clid=a.clid and cid=a.cid and rsid=a.rsid and fromdate<=date(now()) and todate>=date(now()) ) as CURINVFROMDATE
+, (select todate from rcbill.rcb_invoicescontents where clid=a.clid and cid=a.cid and rsid=a.rsid and fromdate<=date(now()) and todate>=date(now()) ) as CURINVTODATE
+
 FROM    rcbill.rcb_invoicescontents a
         INNER JOIN
         (
@@ -452,7 +459,7 @@ from
 						where 0=0
 						and (b.CPE_TYPE like ('%CAPPED%') or b.CPE_TYPE like ('%PREPAID%'))
 						
-                        and b.SERVICESTATUS='Active'
+                        -- and b.SERVICESTATUS='Active'
 						-- and b.client_id=718650
                         and b.CLIENT_ID=715432
 				) a 
