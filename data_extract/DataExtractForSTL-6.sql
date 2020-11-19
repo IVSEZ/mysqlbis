@@ -1954,7 +1954,9 @@ set @custid1 = 'CA_I.000017595';
 set @custid1 = 'CA_I9452';
 set @custid1 = 'CA_I9589';
 set @custid1 = 'CA_I.000003551'; -- russian embassy
+set @custid1 = 'CA_I7571'; -- maxwell philoe
 
+set @custid1 = 'CA_I19819'; 
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
