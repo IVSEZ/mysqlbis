@@ -405,8 +405,9 @@ from
 
 				select 
 				a.SERVICEINSTANCENUMBER, a.PACKAGENAME
-				, ifnull(date(a.SUBLASTSTARTDATE),date(a.INVLASTFROMDATE)) as SUBFROM
-				, ifnull(date(a.SUBLASTENDDATE),date(a.INVLASTTODATE)) as SUBTO
+				, if(ifnull(date(a.LASTSUBSTARTDATE),date(a.LASTINVFROMDATE))>a.CURSUBSTARTDATE,a.CURSUBSTARTDATE,ifnull(date(a.LASTSUBSTARTDATE),date(a.LASTINVFROMDATE))) as SUBFROM
+				, if(ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE))>a.CURSUBENDDATE,a.CURSUBENDDATE,ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE))) as SUBTO
+				-- , ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE)) as SUBTO
 				, a.CUSTOMERACCOUNTNUMBER
 				, a.BILLINGACCOUNTNUMBER
 				, a.SERVICEACCOUNTNUMBER
@@ -461,7 +462,10 @@ from
 						
                         -- and b.SERVICESTATUS='Active'
 						-- and b.client_id=718650
-                        and b.CLIENT_ID=715432
+                        -- and b.CLIENT_ID=715432
+                        -- and b.CLIENT_ID=723711
+						-- and b.CLIENT_ID=721030
+                        and b.clientcode='I8002'
 				) a 
 		) a
 		left join 

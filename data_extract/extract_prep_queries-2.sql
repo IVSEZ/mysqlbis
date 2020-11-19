@@ -14,12 +14,24 @@ set @clid10 = 691038;
 set @clid11 = 733908;
 set @clid11 = 708755;
 
+set @clid1 = 715432;
 
 
-select * from rcbill.rcb_contracts where clid in (@clid1,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11) order by id desc;
+
+select * from rcbill.rcb_contracts where clid in (@clid1),@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11) order by id desc;
 select * from rcbill.rcb_invoicesheader where CLID in (@clid1,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11) order by id desc;
 
 
+select * from rcbill.clientcontractsservicepackageprice where CLIENT_ID in (715432);
+select * from rcbill.clientcontractdevices where clid in (715432);
+select * from rcbill.clientcontractdevices where clid in (701473);
+select * from rcbill.clientcontractdevices where ClientCode in ('I.000009071');
+
+
+
+select * from rcbill.clientcontractssubs where cl_clientid in (715432);
+
+select * from rcbill.clientcontracts where CL_CLIENTID in (723711);
 drop temporary table if exists tempt1;
 
 create temporary table tempt1 (index idx1(id))

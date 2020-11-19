@@ -1033,7 +1033,7 @@ create table rcbill_extract.CLIENTCONTRACTLASTSUBDATE (index idxccls1(CLID), ind
 			) b ON -- a.ID = b.ID AND 
 			a.ID = b.max_ID    
     */
-    
+    /*
 		SELECT  a.CLID, a.CID, a.RSID, a.BEGDATE as LASTSUBSTARTDATE, a.ENDDATE as LASTSUBENDDATE, a.PAYDATE as LASTSUBPAYDATE
 		, (select begdate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) limit 1) as CURSUBSTARTDATE
 		, (select enddate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) limit 1) as CURSUBENDDATE
@@ -1047,7 +1047,54 @@ create table rcbill_extract.CLIENTCONTRACTLASTSUBDATE (index idxccls1(CLID), ind
 					GROUP BY CLID, CID, RSID
 				) b ON -- a.ID = b.ID AND 
 				a.ID = b.max_ID    
+		*/
+        
+        
+                
+		select a.*, b.begdate as CURSUBSTARTDATE, b.enddate as CURSUBENDDATE, b.paydate as CURSUBPAYDATE 
+		from 
+		(
 
+				SELECT  a.CLID, a.CID, a.RSID, a.BEGDATE as LASTSUBSTARTDATE, a.ENDDATE as LASTSUBENDDATE, a.PAYDATE as LASTSUBPAYDATE
+				-- , (select begdate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) limit 1) as CURSUBSTARTDATE
+				-- , (select enddate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) limit 1) as CURSUBENDDATE
+				-- , (select paydate from rcbill.rcb_casa where clid=a.clid and cid=a.cid and rsid=a.rsid and begdate<=date(now()) and enddate>=date(now()) limit 1) as CURSUBPAYDATE
+				FROM    rcbill.rcb_casa a
+						INNER JOIN
+						(
+							SELECT  CLID, CID, RSID, max(ID) as MAX_ID 
+							FROM    rcbill.rcb_casa
+							-- where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+							-- where CLID in (718650) 
+							
+								-- and b.client_id=718650
+								-- and b.CLIENT_ID=715432
+								-- and b.CLIENT_ID=723711
+							GROUP BY CLID, CID, RSID
+							-- limit 10000
+						) b ON -- a.ID = b.ID AND 
+						a.ID = b.max_ID  
+
+
+		) a 
+		left join 
+		(
+		-- rcbill.rcb_casa 
+							SELECT  CLID, CID, RSID, count(*) as cnt, BEGDATE, ENDDATE, PAYDATE 
+							FROM    rcbill.rcb_casa
+							-- where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+							-- where CLID in (718650) 
+							
+								-- and b.client_id=718650
+								-- and b.CLIENT_ID=715432
+								-- and b.CLIENT_ID=723711
+							where  BegDate<=date(now()) and EndDate>=date(now())
+							GROUP BY CLID, CID, RSID
+
+		) b
+		on a.clid=b.clid and a.cid=b.cid and a.rsid=b.rsid -- and b.begdate<=date(now()) and b.enddate>=date(now())
+
+        
 )
 ;
 
@@ -1081,7 +1128,7 @@ create table rcbill_extract.CLIENTCONTRACTLASTINVDATE (index idxccls1(CLID), ind
 				a.ID = b.max_ID
 				order by id desc
       */
-      
+      /*
 		SELECT  a.CLID, a.CID, a.RSID, a.FROMDATE as LASTINVFROMDATE, a.TODATE as LASTINVTODATE 
 
 		, (select fromdate from rcbill.rcb_invoicescontents where clid=a.clid and cid=a.cid and rsid=a.rsid and fromdate<=date(now()) and todate>=date(now()) limit 1) as CURINVFROMDATE
@@ -1097,6 +1144,45 @@ create table rcbill_extract.CLIENTCONTRACTLASTINVDATE (index idxccls1(CLID), ind
 				) b ON -- a.ID = b.ID AND 
 				a.ID = b.max_ID
 				order by id desc      
+                
+	*/
+    
+			select a.*, b.FromDate as CURINVFROMDATE, b.ToDate as CURINVTODATE
+			from
+			(
+
+				SELECT  a.CLID, a.CID, a.RSID, a.FROMDATE as LASTINVFROMDATE, a.TODATE as LASTINVTODATE 
+
+				-- , (select fromdate from rcbill.rcb_invoicescontents where clid=a.clid and cid=a.cid and rsid=a.rsid and fromdate<=date(now()) and todate>=date(now()) limit 1) as CURINVFROMDATE
+				-- , (select todate from rcbill.rcb_invoicescontents where clid=a.clid and cid=a.cid and rsid=a.rsid and fromdate<=date(now()) and todate>=date(now()) limit 1) as CURINVTODATE
+
+				FROM    rcbill.rcb_invoicescontents a
+						INNER JOIN
+						(
+							SELECT  CLID, CID, RSID, max(ID) as MAX_ID 
+							FROM    rcbill.rcb_invoicescontents
+							-- where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+							GROUP BY CLID, CID, RSID
+						) b ON -- a.ID = b.ID AND 
+						a.ID = b.max_ID
+						order by id desc  
+			) a 
+			left join 
+			(
+
+							SELECT  CLID, CID, RSID, count(*) as cnt, fromdate, ToDate 
+							FROM    rcbill.rcb_invoicescontents
+							-- where CLID in (select id from rcbill.rcb_tclients where kod='I.000003551')
+							-- where CLID in (718650) 
+							
+								-- and b.client_id=718650
+								-- and b.CLIENT_ID=715432
+								-- and b.CLIENT_ID=723711
+							where  FromDate<=date(now()) and ToDate>=date(now())
+							GROUP BY CLID, CID, RSID
+			) b 
+			on a.clid=b.clid and a.cid=b.cid and a.rsid=b.rsid
+    
 )	;
 
 

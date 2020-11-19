@@ -9,7 +9,7 @@ use rcbill_my;
 -- SET @rundate='2020-03-01';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-25082019-02092019.csv'
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-16112020.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-18112020.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -158,9 +158,9 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2020-11-13'; SET @perioddate=str_to_date('2020-11-13','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-11-13;2020-11-13.csv'
 -- 	SET @rundate='2020-11-14'; SET @perioddate=str_to_date('2020-11-14','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-11-14;2020-11-14.csv'
 -- 	SET @rundate='2020-11-15'; SET @perioddate=str_to_date('2020-11-15','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-11-15;2020-11-15.csv'
- 	SET @rundate='2020-11-16'; SET @perioddate=str_to_date('2020-11-16','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-11-16;2020-11-16.csv'
+-- 	SET @rundate='2020-11-16'; SET @perioddate=str_to_date('2020-11-16','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-11-16;2020-11-16.csv'
 -- 	SET @rundate='2020-11-17'; SET @perioddate=str_to_date('2020-11-17','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-11-17;2020-11-17.csv'
--- 	SET @rundate='2020-11-18'; SET @perioddate=str_to_date('2020-11-18','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-11-18;2020-11-18.csv'
+ 	SET @rundate='2020-11-18'; SET @perioddate=str_to_date('2020-11-18','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-11-18;2020-11-18.csv'
 -- 	SET @rundate='2020-11-19'; SET @perioddate=str_to_date('2020-11-19','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-11-19;2020-11-19.csv'
 -- 	SET @rundate='2020-11-20'; SET @perioddate=str_to_date('2020-11-20','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-11-20;2020-11-20.csv'
 -- 	SET @rundate='2020-11-21'; SET @perioddate=str_to_date('2020-11-21','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2020-11-21;2020-11-21.csv'
