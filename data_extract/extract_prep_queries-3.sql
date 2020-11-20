@@ -386,7 +386,7 @@ a.SERVICEINSTANCENUMBER
 , sum(a.MB_UL) as MB_UL
 , sum(a.MB_DL) as MB_DL
 , sum(a.MB_TOTAL) as MB_TOTAL
-, (sum(a.MB_TOTAL)/1024) as GB_TOTAL
+, sum(a.GB_TOTAL) as GB_TOTAL
 from 
 (
 		select 
@@ -398,6 +398,7 @@ from
         , b.MB_UL
         , b.MB_DL
         , b.MB_TOTAL
+        , ((b.MB_TOTAL)/1024) as GB_TOTAL
         , b.USAGEDATE
 
 		from 
@@ -465,7 +466,10 @@ from
                         -- and b.CLIENT_ID=715432
                         -- and b.CLIENT_ID=723711
 						-- and b.CLIENT_ID=721030
-                        and b.clientcode='I8002'
+                        -- and b.clientcode='I8002'
+                        -- and b.clientcode='I7571'
+                        -- and b.clientcode='I6415' -- farouk baptist
+                        and b.clientcode='I.000000852' -- Julianne Monique Marie
 				) a 
 		) a
 		left join 

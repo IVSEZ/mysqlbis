@@ -1957,6 +1957,9 @@ set @custid1 = 'CA_I.000003551'; -- russian embassy
 set @custid11 = 'CA_I7571'; -- maxwell philoe
 
 set @custid1 = 'CA_I19819'; 
+set @custid1 = 'CA_I6415'; -- Farouk Jean Baptiste
+set @custid1 = 'CA_I.000000852'; -- Julianne Monique Marie
+
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
