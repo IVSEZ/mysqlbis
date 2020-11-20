@@ -1,4 +1,4 @@
-set @rundate='2020-01-01';
+set @rundate='2020-08-01';
 
 drop table if exists rcbill_my.clientnetworkservicepkg_temp;
 create table rcbill_my.clientnetworkservicepkg_temp as
@@ -11,6 +11,8 @@ create table rcbill_my.clientnetworkservicepkg_temp as
     , sum(a.ACTIVECOUNT) as ActiveCount
 	from rcbill_my.customercontractactivity a
 	where a.period=@rundate and a.reported='Y'
+    
+    and a.region='Praslin'
 	group by 1,2,3,4,5,6,7,8,9,10,11
 	order by a.clientname
 

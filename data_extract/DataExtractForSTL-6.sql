@@ -1954,7 +1954,7 @@ set @custid1 = 'CA_I.000017595';
 set @custid1 = 'CA_I9452';
 set @custid1 = 'CA_I9589';
 set @custid1 = 'CA_I.000003551'; -- russian embassy
-set @custid1 = 'CA_I7571'; -- maxwell philoe
+set @custid11 = 'CA_I7571'; -- maxwell philoe
 
 set @custid1 = 'CA_I19819'; 
 
@@ -1978,6 +1978,10 @@ select * from rcbill_extract.IV_DISCOUNT where CUSTOMERACCOUNTNUMBER in (@custid
 select * from rcbill_extract.IV_PAYMENTHISTORY where customeraccountnumber ='NOT PRESENT';
 
 /*
+
+select * from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid11) and ServiceStatus='Active';
+select * from rcbill_extract.IV_ADDON where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid11) );
+
 
 select billcycle, count(*) from rcbill_extract.IV_NBD group by billcycle
 
