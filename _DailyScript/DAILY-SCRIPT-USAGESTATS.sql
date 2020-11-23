@@ -3,6 +3,9 @@ use rcbill;
 -- show index from rcbill.rcb_ipusage1
 -- show index from rcbill.clientcontractdevices
 
+-- select * from rcbill.rcb_ipusage1 limit 1000;
+-- select * from rcbill.clientcontractdevices limit 1000;
+
 drop table if exists rcbill.rcb_ipusage;
 create table rcbill.rcb_ipusage as 
 (

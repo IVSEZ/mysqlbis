@@ -2635,7 +2635,7 @@ INSERTEDON=now()
 
 select count(*) as ipusage1 from rcbill.rcb_ipusage1;
 
--- select * from rcbill.rcb_ipusage;
+-- select * from rcbill.rcb_ipusage1 limit 1000;
 
 ###################################
 -- show index from rcbill.rcb_ipusage1

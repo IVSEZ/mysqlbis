@@ -1,4 +1,4 @@
-set @rundate='2020-08-01';
+set @rundate='2020-02-05';
 
 drop table if exists rcbill_my.clientnetworkservicepkg_temp;
 create table rcbill_my.clientnetworkservicepkg_temp as
@@ -356,6 +356,18 @@ select a.*
 from 
 (
 	select COALESCE(a.clientcode_old,a.clientcode) as clientcode_final, a.period_old, a.period, a.services_old, a.services
+	, a.region_old
+    , a.region
+    , a.network_old
+    , a.network
+    , a.Extravagance_old
+    , a.Extravagance
+    , a.Basic_old
+    , a.Basic
+    , a.Executive_old
+    , a.Executive
+    , a.Intelenovela_old
+    , a.Intelenovela
 	from
 	( 
 		(
@@ -426,6 +438,8 @@ from
 		rcbill_my.clientstats b
 		on 
 		a.CLIENTCODE=b.clientcode
+        
+        where b.region='Praslin'
 		)
 		union
 		(
@@ -496,6 +510,8 @@ from
 		rcbill_my.clientstats b
 		on 
 		a.CLIENTCODE=b.clientcode
+        
+        where a.region='Praslin'
 		)
 	) a
 
@@ -505,6 +521,7 @@ left join
 rcbill_my.rep_custconsolidated b 
 on a.clientcode_final=b.clientcode
 
+-- where a.region_old='Praslin'
 ;
 
 

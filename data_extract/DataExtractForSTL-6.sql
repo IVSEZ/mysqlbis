@@ -1250,6 +1250,8 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
     , c.CURINVFROMDATE
     , c.CURINVTODATE
     
+	, if(ifnull(date(b.LASTSUBSTARTDATE),date(c.LASTINVFROMDATE))>b.CURSUBSTARTDATE,b.CURSUBSTARTDATE,ifnull(date(b.LASTSUBSTARTDATE),date(c.LASTINVFROMDATE))) as SUBFROM
+	, if(ifnull(date(b.LASTSUBENDDATE),date(c.LASTINVTODATE))>b.CURSUBENDDATE,b.CURSUBENDDATE,ifnull(date(b.LASTSUBENDDATE),date(c.LASTINVTODATE))) as SUBTO
     
 	from 
 	(
@@ -1501,6 +1503,9 @@ select
     , si.CURSUBPAYDATE
     , si.CURINVFROMDATE
     , si.CURINVTODATE
+    
+    , si.SUBFROM
+    , si.SUBTO
     -- , si.PACKAGENAME
     -- , si.CPE_TYPE
     -- , si.CPE_ID
