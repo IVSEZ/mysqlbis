@@ -136,6 +136,8 @@ select * from rcbill_my.rep_activenumberavg;
 select * from rcbill_my.rep_activenumberavg2;
 
 ## LAST DAY ACTIVE NUMBER
+select * from rcbill_my.rep_activenumberlastday_pv limit 100;
+
 select servicecategory, package
 -- , `20181031`, `20181130`, `20181231`
 , `20190131`, `20190228`, `20190331`
