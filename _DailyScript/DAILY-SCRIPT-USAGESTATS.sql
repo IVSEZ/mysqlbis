@@ -74,7 +74,7 @@ create index IDXccip5 on rcbill.clientcontractip (clientid);
 
 select count(*) as clientcontractip from rcbill.clientcontractip;
 ###########################################################
-
+-- set @kod3='I.000000852';
 drop table if exists rcbill.clientcontractipusage;
 create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcciu2(contractcode),index idxcciu3(CLIENT_ID),index idxcciu4(CONTRACT_ID), index idxcciu5(PROCESSEDCLIENTIP)) as 
 (
@@ -90,7 +90,9 @@ create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcc
 		(
 			select CLIENTCODE, CLIENTID, CID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, (select name from rcbill.rcb_traffictypes tt where tt.TRAFFICID=i1.TRAFFICTYPE) as TRAFFICTYPE, USAGEDIRECTION, SUM(MB_USED) as MB_USED 
             from rcbill.rcb_ipusage i1
-			-- where CLIENTCODE=@kod3
+            where 0=0
+			-- and CLIENTCODE=@kod3
+            and date(USAGEDATE)<>date(now())
 			group by CLIENTCODE, CLIENTID, CID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE, USAGEDIRECTION
 		) a
 	) a 

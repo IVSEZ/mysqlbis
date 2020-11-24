@@ -362,53 +362,53 @@ group by CLIENTCODE, CLIENTID, CID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSE
   */  
 
 
-
-select 
-a.SERVICEINSTANCENUMBER
-, a.PACKAGENAME
-, a.SUBFROM
-, a.SUBTO
-, a.CUSTOMERACCOUNTNUMBER
-, a.BILLINGACCOUNTNUMBER
-, a.SERVICEACCOUNTNUMBER
-, a.SERVICEINSTANCEIDENTIFIER
-, a.SERVICESTATUS
-, a.CPE_TYPE
-, a.PACKAGEAMOUNT
-, a.LASTACTION
-, a.clientcode
-, a.contractcode
-, a.client_id
-, a.contract_id
-, a.PROCESSEDCLIENTIP
-, a.TRAFFICTYPE
-, max(a.USAGEDATE) as LASTUSAGEDATE
-, sum(a.MB_UL) as MB_UL
-, sum(a.MB_DL) as MB_DL
-, sum(a.MB_TOTAL) as MB_TOTAL
-, sum(a.GB_TOTAL) as GB_TOTAL
+SELECT a.*
+, case when a.SERVICESTATUS='Active' then (a.PACKAGEQUOTA_GB - a.TOTAL_USAGE_GB) 
+	else 0 end as BALANCE_GB
 from 
 (
 		select 
-		a.*
-		, '' as `|`
-		-- , b.*
-        , b.PROCESSEDCLIENTIP
-        , b.TRAFFICTYPE
-        , b.MB_UL
-        , b.MB_DL
-        , b.MB_TOTAL
-        , ((b.MB_TOTAL)/1024) as GB_TOTAL
-        , b.USAGEDATE
-
-		from 
-		(
-
+			a.SERVICEINSTANCENUMBER
+			, a.PACKAGENAME
+			, case when a.PACKAGENAME='STARTER' then 1
+					when a.PACKAGENAME='VALUE' then 3
+					when a.PACKAGENAME='ELITE' then 20
+					when a.PACKAGENAME='EXTREME' then 40
+					when a.PACKAGENAME='EXTREME PLUS' then 80
+					when a.PACKAGENAME='PERFORMANCE' then 150
+					when a.PACKAGENAME='PERFORMANCE PLUS' then 300
+					end as PACKAGEQUOTA_GB
+					
+			
+			, a.SUBFROM
+			, a.SUBTO
+			, a.CUSTOMERACCOUNTNUMBER
+			, a.BILLINGACCOUNTNUMBER
+			, a.SERVICEACCOUNTNUMBER
+			, a.SERVICEINSTANCEIDENTIFIER
+			, a.SERVICESTATUS
+			, a.CPE_TYPE
+			, a.PACKAGEAMOUNT
+			, a.LASTACTION
+			, a.clientcode
+			, a.contractcode
+			, a.client_id
+			, a.contract_id
+			
+			, max(a.LASTUSAGEDATE) as LASTUSAGEDATE
+			, ifnull(sum(a.MB_TOTAL_USAGE),0) as TOTAL_USAGE_PREADDON_MB
+			, max(a.LAST_ADD_ON_DATE) as LAST_ADD_ON_DATE
+			, ifnull(sum(a.ADD_ON_TOTAL),0) as ADD_ON_TOTAL_MB
+			
+			, (ifnull(sum(a.MB_TOTAL_USAGE),0) + ifnull(sum(a.ADD_ON_TOTAL),0)) as TOTAL_USAGE_MB
+			, (ifnull(sum(a.MB_TOTAL_USAGE),0) + ifnull(sum(a.ADD_ON_TOTAL),0))/1024 as TOTAL_USAGE_GB
+			from 
+			(
 				select 
-				a.SERVICEINSTANCENUMBER, a.PACKAGENAME
-				, if(ifnull(date(a.LASTSUBSTARTDATE),date(a.LASTINVFROMDATE))>a.CURSUBSTARTDATE,a.CURSUBSTARTDATE,ifnull(date(a.LASTSUBSTARTDATE),date(a.LASTINVFROMDATE))) as SUBFROM
-				, if(ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE))>a.CURSUBENDDATE,a.CURSUBENDDATE,ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE))) as SUBTO
-				-- , ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE)) as SUBTO
+				a.SERVICEINSTANCENUMBER
+				, a.PACKAGENAME
+				, a.SUBFROM
+				, a.SUBTO
 				, a.CUSTOMERACCOUNTNUMBER
 				, a.BILLINGACCOUNTNUMBER
 				, a.SERVICEACCOUNTNUMBER
@@ -421,63 +421,114 @@ from
 				, a.contractcode
 				, a.client_id
 				, a.contract_id
-
+				, a.PROCESSEDCLIENTIP
+				, a.TRAFFICTYPE
+				-- , max(a.USAGEDATE) as LASTUSAGEDATE
+				, sum(a.MB_UL) as MB_UL
+				, sum(a.MB_DL) as MB_DL
+				-- , sum(a.MB_TOTAL) as MB_TOTAL_USAGE
+				-- , sum(a.GB_TOTAL) as GB_TOTAL_USAGE
+				, case when a.PROCESSEDCLIENTIP = '0.0.0.0' then max(a.USAGEDATE) end as LAST_ADD_ON_DATE
+				, case when a.PROCESSEDCLIENTIP = '0.0.0.0' then sum(a.MB_DL) end as ADD_ON_TOTAL
+				, case when a.PROCESSEDCLIENTIP <> '0.0.0.0' then max(a.USAGEDATE) end as LASTUSAGEDATE
+				, case when a.PROCESSEDCLIENTIP <> '0.0.0.0' then sum(a.MB_TOTAL) end as MB_TOTAL_USAGE
 				from 
 				(
-
 						select 
-
-						--  a.* 
-						-- , '' as `SEP1`
-						-- , b.*
-
-
-
 						a.*
-						, b.CUSTOMERACCOUNTNUMBER
-						, b.BILLINGACCOUNTNUMBER
-						, b.SERVICEACCOUNTNUMBER
-						, b.SERVICEINSTANCEIDENTIFIER
-						, b.SERVICESTATUS
-						, b.PACKAGEAMOUNT
-						, b.CPE_TYPE
-						, b.LASTACTION
-						, b.clientcode
-						, b.contractcode
-						, b.CLIENT_ID
-						, b.CONTRACT_ID
-
-
-
-						from rcbill_extract.IV_ADDON a
-						left join 
-						rcbill_extract.IV_SERVICEINSTANCE b 
-						on 
-						a.SERVICEINSTANCENUMBER=b.SERVICEINSTANCENUMBER
-
-						-- left join 
-						-- rcbill_extract.IV_BILLINGACCOUNT c
-						-- on b.BILLINGACCOUNTNUMBER=c.BILLINGACCOUNTNUMBER
-						where 0=0
-						and (b.CPE_TYPE like ('%CAPPED%') or b.CPE_TYPE like ('%PREPAID%'))
+						, '' as `|`
+						-- , b.*
+						, b.PROCESSEDCLIENTIP
+						, b.TRAFFICTYPE
 						
-                        -- and b.SERVICESTATUS='Active'
-						-- and b.client_id=718650
-                        -- and b.CLIENT_ID=715432
-                        -- and b.CLIENT_ID=723711
-						-- and b.CLIENT_ID=721030
-                        -- and b.clientcode='I8002'
-                        -- and b.clientcode='I7571'
-                        -- and b.clientcode='I6415' -- farouk baptist
-                        and b.clientcode='I.000000852' -- Julianne Monique Marie
+						, b.MB_UL
+						, b.MB_DL
+						, b.MB_TOTAL
+						, ((b.MB_TOTAL)/1024) as GB_TOTAL
+						, b.USAGEDATE
+
+						from 
+						(
+
+								select 
+								a.SERVICEINSTANCENUMBER, a.PACKAGENAME
+								, a.SUBFROM
+								, a.SUBTO
+								-- , if(ifnull(date(a.LASTSUBSTARTDATE),date(a.LASTINVFROMDATE))>a.CURSUBSTARTDATE,a.CURSUBSTARTDATE,ifnull(date(a.LASTSUBSTARTDATE),date(a.LASTINVFROMDATE))) as SUB_FROM
+								-- , if(ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE))>a.CURSUBENDDATE,a.CURSUBENDDATE,ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE))) as SUB_TO
+								-- , ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE)) as SUBTO
+								, a.CUSTOMERACCOUNTNUMBER
+								, a.BILLINGACCOUNTNUMBER
+								, a.SERVICEACCOUNTNUMBER
+								, a.SERVICEINSTANCEIDENTIFIER
+								, a.SERVICESTATUS
+								, a.CPE_TYPE
+								, a.PACKAGEAMOUNT
+								, a.LASTACTION
+								, a.clientcode
+								, a.contractcode
+								, a.client_id
+								, a.contract_id
+
+								from 
+								(
+
+										select 
+
+										--  a.* 
+										-- , '' as `SEP1`
+										-- , b.*
+
+
+
+										a.*
+										, b.CUSTOMERACCOUNTNUMBER
+										, b.BILLINGACCOUNTNUMBER
+										, b.SERVICEACCOUNTNUMBER
+										, b.SERVICEINSTANCEIDENTIFIER
+										, b.SERVICESTATUS
+										, b.PACKAGEAMOUNT
+										, b.CPE_TYPE
+										, b.LASTACTION
+										, b.clientcode
+										, b.contractcode
+										, b.CLIENT_ID
+										, b.CONTRACT_ID
+
+
+
+										from rcbill_extract.IV_ADDON a
+										left join 
+										rcbill_extract.IV_SERVICEINSTANCE b 
+										on 
+										a.SERVICEINSTANCENUMBER=b.SERVICEINSTANCENUMBER
+
+										-- left join 
+										-- rcbill_extract.IV_BILLINGACCOUNT c
+										-- on b.BILLINGACCOUNTNUMBER=c.BILLINGACCOUNTNUMBER
+										where 0=0
+										and (b.CPE_TYPE like ('%CAPPED%') or b.CPE_TYPE like ('%PREPAID%'))
+										
+										-- and b.SERVICESTATUS='Active'
+										-- and b.client_id=718650 -- nelson lalande
+										-- and b.CLIENT_ID=715432 -- russian embassy
+										-- and b.CLIENT_ID=723711
+										-- and b.CLIENT_ID=721030
+										-- and b.clientcode='I8002'
+										-- and b.clientcode='I7571'
+										-- and b.clientcode='I6415' -- farouk baptist (PROBLEM ACCOUNT)
+										-- and b.clientcode='I.000000852' -- Julianne Monique Marie
+								) a 
+						) a
+						left join 
+						rcbill.clientcontractipusage b
+						on a.client_id=b.client_id and a.contract_id=b.contract_id and (b.usagedate>=a.subfrom and b.usagedate<=a.subto) and b.TRAFFICTYPE='Default'
+
+
 				) a 
-		) a
-		left join 
-		rcbill.clientcontractipusage b
-		on a.client_id=b.client_id and a.contract_id=b.contract_id and (b.usagedate>=a.subfrom and b.usagedate<=a.subto) and b.TRAFFICTYPE='Default'
-
-
-) a 
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+				group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+			) a 
+			group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+) a
 ;
 

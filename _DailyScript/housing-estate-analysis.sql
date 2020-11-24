@@ -328,12 +328,12 @@ order by 9 desc
     , ifnull(b.firstactivedate,'') as FIRST_ACTIVE_DATE, ifnull(b.lastactivedate,'') as LAST_ACTIVE_DATE
     , rcbill_my.GetNetworkForClient(a.ClientCode) as LAST_ACTIVE_NETWORK
 	
+    , c.activeservices as ACTIVE_SERVICES
     , c.activenetwork as ACTIVE_NETWORK
     , c.clean_mxk_name as MXK_NAME
     , c.clean_mxk_interface as MXK_INTERFACE
     , c.clean_hfc_nodename as HFC_NODE_NAME
     , c.clean_hfc_node as HFC_NODE_INTERFACE
-    
 	
 
 	from 
@@ -476,6 +476,8 @@ SELECT count(*) as rep_housingestates from rcbill_my.rep_housingestates;
 
 /*
 select * from rcbill_my.rep_housingestates where housing_estate='EDEN ISLAND';
+
+select * from rcbill_my.rep_housingestates where housing_estate='PASCAL' and active_network = 'HFC';
 
 select a.ClientCode, a.ClientName,a.ClientAddress,a.ClientArea,a.ClientLocation 
 from 

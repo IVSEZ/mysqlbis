@@ -53,7 +53,7 @@ INSERTEDON=now()
 
 -- select * from rcb_techregions
 
--- select distinct interfacename, count(*) from rcbill.rcb_techregions group by interfacename;
+-- select interfacename, nodename, count(*) from rcbill.rcb_techregions group by interfacename, nodename;
 /*
 set sql_safe_updates=0;
 delete from rcbill.rcb_techregions where date(insertedon)=date(now());

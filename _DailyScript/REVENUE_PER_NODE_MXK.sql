@@ -342,7 +342,7 @@ create temporary table a (index idxa1(MAC)) as
 
 select 'created temp a' as message;
 
-
+-- select * from rcbill.rcb_techregions
 create temporary table c (index idxc1(MAC_ADDRESS)) as 
 (
 		select a.MAC_ADDRESS_CLEAN2 as MAC_ADDRESS, a.IP_ADDRESS, a.HFC_NODE

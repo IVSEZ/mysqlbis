@@ -53,6 +53,7 @@ where latitude<>0 and date(insertedon)=((select max(date(insertedon)) from rcbil
 ;
 
 select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
+
 select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
 
 select * from rcbill.rcb_clientparcelcoords where latitude = 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));

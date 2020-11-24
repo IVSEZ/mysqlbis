@@ -74,6 +74,11 @@ order by 1, 2 desc
 /*
 
 SET SQL_SAFE_UPDATES = 0;
+delete from rcbill.rcb_cmts where date(insertedon)='2020-11-23' and mac_address='';
+delete from rcbill.rcb_cmts where date(insertedon)='2020-11-23' and mac_address='MAC';
+
+
+
 delete from rcbill.rcb_cmts where date(insertedon)='2020-07-27' and mac_address='';
 delete from rcbill.rcb_cmts where date(insertedon)='2020-07-27' and mac_address='MAC';
 

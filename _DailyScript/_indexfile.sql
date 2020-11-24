@@ -77,14 +77,14 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\reports-sales-addons-prepaid-camera.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\housing-estate-analysis.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
-
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\RCB_ClientAnalyticsReport_Script.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\REVENUE_PER_NODE_MXK.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\housing-estate-analysis.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 
