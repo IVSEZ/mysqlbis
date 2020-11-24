@@ -326,9 +326,15 @@ order by 9 desc
     ,a.ClientArea as CLIENT_AREA
     , a.ClientLocation as CLIENT_SUBAREA
     , ifnull(b.firstactivedate,'') as FIRST_ACTIVE_DATE, ifnull(b.lastactivedate,'') as LAST_ACTIVE_DATE
-    , rcbill_my.GetNetworkForClient(a.ClientCode) as CLIENT_NETWORK
-
-
+    , rcbill_my.GetNetworkForClient(a.ClientCode) as LAST_ACTIVE_NETWORK
+	
+    , c.activenetwork as ACTIVE_NETWORK
+    , c.clean_mxk_name as MXK_NAME
+    , c.clean_mxk_interface as MXK_INTERFACE
+    , c.clean_hfc_nodename as HFC_NODE_NAME
+    , c.clean_hfc_node as HFC_NODE_INTERFACE
+    
+	
 
 	from 
 	(
@@ -455,6 +461,10 @@ order by 9 desc
 	) a
 	on 
 	b.clientcode=a.clientcode
+
+	left join 
+    rcbill_my.rep_custconsolidated c 
+    on a.clientcode=c.clientcode
 
 order by 9 desc
 
