@@ -1195,149 +1195,174 @@ drop table if exists rcbill_extract.IV_SERVICEINSTANCE;
 create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index idxipsi2(contract_id), index idxipsi3(SERVICEINSTANCENUMBER), index idxipsi4(BILLINGACCOUNTNUMBER), index idxipsi5(CUSTOMERACCOUNTNUMBER), index idxipsi6(SERVICEACCOUNTNUMBER), index idxipsi7(servicerateid), index idxipsi8(serviceid)) as
 (
 
-	select 
-	-- a.*
-	-- , b.*
+	select a.*
+
+			, round(( TIMESTAMPDIFF(MONTH, a.SUBFROM, a.SUBTO) +
+			  DATEDIFF(
+				a.SUBTO,
+				a.SUBFROM + INTERVAL
+				  TIMESTAMPDIFF(MONTH, a.SUBFROM, a.SUBTO)
+				MONTH
+			  ) /
+			  DATEDIFF(
+				a.SUBFROM + INTERVAL
+				  TIMESTAMPDIFF(MONTH, a.SUBFROM, a.SUBTO) + 1
+				MONTH,
+				a.SUBFROM + INTERVAL
+				  TIMESTAMPDIFF(MONTH, a.SUBFROM, a.SUBTO)
+				MONTH
+			  ) ) ,0) as SUBPERIOD  
+			
+         
 
 
 
-	a.CustomerAccountNumber as CUSTOMERACCOUNTNUMBER
-	, a.BillingAccountNumber as BILLINGACCOUNTNUMBER
-	, a.ServiceAccountNumber as SERVICEACCOUNTNUMBER
-	, a.SERVICEINSTANCEIDENTIFIER as SERVICEINSTANCEIDENTIFIER
-	, a.SERVICEINSTANCENUMBER2 as SERVICEINSTANCENUMBER
-	, a.PackageName as PACKAGENAME
-	, a.ServiceStatus as SERVICESTATUS
-	, a.username as USERNAME
-	, a.CREATEDDATE
-	, a.ACTIVATIONDATE
-	, a.STATUSCHANGEDDATE
-	, a.LASTACTION
-	, a.PACKAGEAMOUNT
-	, a.CPE_TYPE
-	, a.CPE_ID
-	, a.CONTRACTSTARTDATE
-	, a.CONTRACTENDDATE
-	, a.SERVICEREMARKS
-	, a.EXPIRYDATE
-	, a.OVERRIDDEN
-	, a.FSAN
-	, a.ServiceID
-	, a.ServiceRateID
-	-- , a.CONTRACTVALIDITYPERIOD
-	, a.SERVICESTARTDATE
-	, a.SERVICEENDDATE
-	, a.clientcode
-	, a.contractcode
-	, a.serviceinstancestatus	
-
-	, a.CLIENT_ID
-    , a.CONTRACT_ID
-	-- , (select ips.CUSTOMERACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as CUSTOMERACCOUNTNUMBER
-	-- , (select ips.BILLINGACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as BILLINGACCOUNTNUMBER
-	-- , (select ips.SERVICEACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICEACCOUNTNUMBER
-	-- , (select ips.currentstatus from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICESTATUS
-
-	, b.LASTSUBSTARTDATE
-	, b.LASTSUBENDDATE
-	, b.LASTSUBPAYDATE
-    , c.LASTINVFROMDATE
-    , c.LASTINVTODATE
-
-	, b.CURSUBSTARTDATE
-	, b.CURSUBENDDATE
-	, b.CURSUBPAYDATE    
-    , c.CURINVFROMDATE
-    , c.CURINVTODATE
-    
-	, if(ifnull(date(b.LASTSUBSTARTDATE),date(c.LASTINVFROMDATE))>b.CURSUBSTARTDATE,b.CURSUBSTARTDATE,ifnull(date(b.LASTSUBSTARTDATE),date(c.LASTINVFROMDATE))) as SUBFROM
-	, if(ifnull(date(b.LASTSUBENDDATE),date(c.LASTINVTODATE))>b.CURSUBENDDATE,b.CURSUBENDDATE,ifnull(date(b.LASTSUBENDDATE),date(c.LASTINVTODATE))) as SUBTO
-    
 	from 
 	(
-
-			SELECT
-			 (@cnt := @cnt + 1) AS rowNumber,
-            
-			  ips1.CustomerAccountNumber as CUSTOMERACCOUNTNUMBER
-			, ips1.BillingAccountNumber as BILLINGACCOUNTNUMBER
-			, ips1.ServiceAccountNumber as SERVICEACCOUNTNUMBER
-			, ips1.clientcode
-			, ips1.contractcode 
-			, ips1.package as PACKAGENAME
-			, ips1.serviceinstancenumber as SERVICEINSTANCENUMBER
-			, cast(concat('SIN_',ips1.serviceinstancenumber,'_',@cnt) as char(255)) as SERVICEINSTANCENUMBER2
-			, cast(concat('SII_',ips1.contractcode) as char(255)) as SERVICEINSTANCEIDENTIFIER
-			, ips1.CurrentStatus as SERVICESTATUS
-            , case when ips1.servicestatus = 0 then 'Not Active'
-				else 'Active' end as SERVICEINSTANCESTATUS
+			select 
+			-- a.*
+			-- , b.*
 
 
-			, case when ips1.username is null then ips1.UID
-				when length(ips1.username)=0 then ips1.UID
-                when service_type in ('VOICE','GVOICE') then ips1.UID
-				else ips1.username end as USERNAME
 
-			-- , ifnull(c.username,c.phoneno) as USERNAME
-			, ips1.contractstartdate AS CREATEDDATE
-			, ips1.servicestartdate as ACTIVATIONDATE
-			, ips1.StatusChangedDate as STATUSCHANGEDDATE
-			-- , a.LastActionID as LastActionID
-			, ips1.LASTACTION as LASTACTION
-			, ips1.price as PACKAGEAMOUNT
-			-- , '' as CPE_TYPE
-			, ips1.service as CPE_TYPE
-			, case when service_type in ('VOICE','GVOICE') then ips1.username
-                else ips1.MAC end as CPE_ID
-			, ips1.contractstartdate as CONTRACTSTARTDATE
-			, ips1.contractenddate as CONTRACTENDDATE
-			, '' as SERVICEREMARKS
-			, '' as EXPIRYDATE
-			, 'Y' as OVERRIDDEN
-			-- , c.phoneno as PHONENO
-			, ips1.FSAN as FSAN
+			a.CustomerAccountNumber as CUSTOMERACCOUNTNUMBER
+			, a.BillingAccountNumber as BILLINGACCOUNTNUMBER
+			, a.ServiceAccountNumber as SERVICEACCOUNTNUMBER
+			, a.SERVICEINSTANCEIDENTIFIER as SERVICEINSTANCEIDENTIFIER
+			, a.SERVICEINSTANCENUMBER2 as SERVICEINSTANCENUMBER
+			, a.PackageName as PACKAGENAME
+			, a.ServiceStatus as SERVICESTATUS
+			, a.username as USERNAME
+			, a.CREATEDDATE
+			, a.ACTIVATIONDATE
+			, a.STATUSCHANGEDDATE
+			, a.LASTACTION
+			, a.PACKAGEAMOUNT
+			, a.CPE_TYPE
+			, a.CPE_ID
+			, a.CONTRACTSTARTDATE
+			, a.CONTRACTENDDATE
+			, a.SERVICEREMARKS
+			, a.EXPIRYDATE
+			, a.OVERRIDDEN
+			, a.FSAN
+			, a.ServiceID
+			, a.ServiceRateID
+			-- , a.CONTRACTVALIDITYPERIOD
+			, a.SERVICESTARTDATE
+			, a.SERVICEENDDATE
+			, a.clientcode
+			, a.contractcode
+			, a.serviceinstancestatus	
 
-			, ips1.serviceid as ServiceID
-			, ips1.servicerateid as ServiceRateID
-            , ips1.CLIENT_ID as CLIENT_ID
-            , ips1.CONTRACT_ID as CONTRACT_ID
+			, a.CLIENT_ID
+			, a.CONTRACT_ID
+			-- , (select ips.CUSTOMERACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as CUSTOMERACCOUNTNUMBER
+			-- , (select ips.BILLINGACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as BILLINGACCOUNTNUMBER
+			-- , (select ips.SERVICEACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICEACCOUNTNUMBER
+			-- , (select ips.currentstatus from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICESTATUS
 
+			, b.LASTSUBSTARTDATE
+			, b.LASTSUBENDDATE
+			, b.LASTSUBPAYDATE
+			, c.LASTINVFROMDATE
+			, c.LASTINVTODATE
 
-			/*
-			, (select UserName from rcbill.rcb_devices where CSID=b.ID order by UserName asc limit 1) as USERNAME
-			, (select PhoneNo from rcbill.rcb_devices where CSID=b.ID order by PhoneNo asc limit 1) as CPEID_PHONE
-			, (select NATIP from rcbill.rcb_devices where CSID=b.ID  order by NATIP asc limit 1) as CPEID_NATIP
-			, (select MAC from rcbill.rcb_devices where CSID=b.ID  order by MAC asc limit 1) as CPEID_MAC
-			, (select SerNo from rcbill.rcb_devices where CSID=b.ID  order by SerNo asc limit 1) as CPEID_SERNO
-			*/
-
-
-			-- , a.DATA as CONTRACTDATE
-
-			-- , a.ValidityPeriod AS CONTRACTVALIDITYPERIOD
-			, ips1.servicestartdate as SERVICESTARTDATE
-			, ips1.serviceenddate as SERVICEENDDATE
+			, b.CURSUBSTARTDATE
+			, b.CURSUBENDDATE
+			, b.CURSUBPAYDATE    
+			, c.CURINVFROMDATE
+			, c.CURINVTODATE
+			
+			, if(ifnull(date(b.LASTSUBSTARTDATE),date(c.LASTINVFROMDATE))>b.CURSUBSTARTDATE,b.CURSUBSTARTDATE,ifnull(date(b.LASTSUBSTARTDATE),date(c.LASTINVFROMDATE))) as SUBFROM
+			, if(ifnull(date(b.LASTSUBENDDATE),date(c.LASTINVTODATE))>b.CURSUBENDDATE,b.CURSUBENDDATE,ifnull(date(b.LASTSUBENDDATE),date(c.LASTINVTODATE))) as SUBTO
+			
 			from 
-			rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips1
+			(
 
-			CROSS JOIN (SELECT @cnt := 0, @curType := '') AS dummy
+					SELECT
+					 (@cnt := @cnt + 1) AS rowNumber,
+					
+					  ips1.CustomerAccountNumber as CUSTOMERACCOUNTNUMBER
+					, ips1.BillingAccountNumber as BILLINGACCOUNTNUMBER
+					, ips1.ServiceAccountNumber as SERVICEACCOUNTNUMBER
+					, ips1.clientcode
+					, ips1.contractcode 
+					, ips1.package as PACKAGENAME
+					, ips1.serviceinstancenumber as SERVICEINSTANCENUMBER
+					, cast(concat('SIN_',ips1.serviceinstancenumber,'_',@cnt) as char(255)) as SERVICEINSTANCENUMBER2
+					, cast(concat('SII_',ips1.contractcode) as char(255)) as SERVICEINSTANCEIDENTIFIER
+					, ips1.CurrentStatus as SERVICESTATUS
+					, case when ips1.servicestatus = 0 then 'Not Active'
+						else 'Active' end as SERVICEINSTANCESTATUS
 
 
-			-- where ips1.clientcode in  
-			-- (select id from rcbill.rcb_tclients where kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR'))
-			-- ('I.000011750') -- ,'I.000011750')) -- ('I.000009787','I.000011750','I.000018187'))
-			-- ('I.000021409')
+					, case when ips1.username is null then ips1.UID
+						when length(ips1.username)=0 then ips1.UID
+						when service_type in ('VOICE','GVOICE') then ips1.UID
+						else ips1.username end as USERNAME
 
-			ORDER BY ips1.clientcode desc
+					-- , ifnull(c.username,c.phoneno) as USERNAME
+					, ips1.contractstartdate AS CREATEDDATE
+					, ips1.servicestartdate as ACTIVATIONDATE
+					, ips1.StatusChangedDate as STATUSCHANGEDDATE
+					-- , a.LastActionID as LastActionID
+					, ips1.LASTACTION as LASTACTION
+					, ips1.price as PACKAGEAMOUNT
+					-- , '' as CPE_TYPE
+					, ips1.service as CPE_TYPE
+					, case when service_type in ('VOICE','GVOICE') then ips1.username
+						else ips1.MAC end as CPE_ID
+					, ips1.contractstartdate as CONTRACTSTARTDATE
+					, ips1.contractenddate as CONTRACTENDDATE
+					, '' as SERVICEREMARKS
+					, '' as EXPIRYDATE
+					, 'Y' as OVERRIDDEN
+					-- , c.phoneno as PHONENO
+					, ips1.FSAN as FSAN
+
+					, ips1.serviceid as ServiceID
+					, ips1.servicerateid as ServiceRateID
+					, ips1.CLIENT_ID as CLIENT_ID
+					, ips1.CONTRACT_ID as CONTRACT_ID
+
+
+					/*
+					, (select UserName from rcbill.rcb_devices where CSID=b.ID order by UserName asc limit 1) as USERNAME
+					, (select PhoneNo from rcbill.rcb_devices where CSID=b.ID order by PhoneNo asc limit 1) as CPEID_PHONE
+					, (select NATIP from rcbill.rcb_devices where CSID=b.ID  order by NATIP asc limit 1) as CPEID_NATIP
+					, (select MAC from rcbill.rcb_devices where CSID=b.ID  order by MAC asc limit 1) as CPEID_MAC
+					, (select SerNo from rcbill.rcb_devices where CSID=b.ID  order by SerNo asc limit 1) as CPEID_SERNO
+					*/
+
+
+					-- , a.DATA as CONTRACTDATE
+
+					-- , a.ValidityPeriod AS CONTRACTVALIDITYPERIOD
+					, ips1.servicestartdate as SERVICESTARTDATE
+					, ips1.serviceenddate as SERVICEENDDATE
+					from 
+					rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips1
+
+					CROSS JOIN (SELECT @cnt := 0, @curType := '') AS dummy
+
+
+					-- where ips1.clientcode in  
+					-- (select id from rcbill.rcb_tclients where kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR'))
+					-- ('I.000011750') -- ,'I.000011750')) -- ('I.000009787','I.000011750','I.000018187'))
+					-- ('I.000021409')
+
+					ORDER BY ips1.clientcode desc
+			) a 
+			
+			left join 
+			rcbill_extract.CLIENTCONTRACTLASTSUBDATE b 
+			on a.CLIENT_ID=b.CLID and a.CONTRACT_ID=b.CID and a.ServiceRateID=b.RSID
+			
+			left join 
+			rcbill_extract.CLIENTCONTRACTLASTINVDATE c 
+			on a.CLIENT_ID=c.CLID and a.CONTRACT_ID=c.CID and a.ServiceRateID=c.RSID
 	) a 
-    
-    left join 
-    rcbill_extract.CLIENTCONTRACTLASTSUBDATE b 
-    on a.CLIENT_ID=b.CLID and a.CONTRACT_ID=b.CID and a.ServiceRateID=b.RSID
-    
-	left join 
-    rcbill_extract.CLIENTCONTRACTLASTINVDATE c 
-    on a.CLIENT_ID=c.CLID and a.CONTRACT_ID=c.CID and a.ServiceRateID=c.RSID
 )
 ;
 
@@ -1506,6 +1531,7 @@ select
     
     , si.SUBFROM
     , si.SUBTO
+    , si.SUBPERIOD
     -- , si.PACKAGENAME
     -- , si.CPE_TYPE
     -- , si.CPE_ID
@@ -1899,6 +1925,235 @@ create table rcbill_extract.IV_DISCOUNT
 ;
     
 
+
+
+
+##################################################################################################################
+
+-- BALANCE
+select 'BALANCE' AS TABLENAME;
+
+drop table if exists rcbill_extract.IV_BALANCE;
+
+
+create table rcbill_extract.IV_BALANCE(index idxbal1(SERVICEINSTANCENUMBER),index idxbal2(CUSTOMERACCOUNTNUMBER),index idxbal3(BILLINGACCOUNTNUMBER),index idxbal4(SERVICEINSTANCEIDENTIFIER))
+(
+
+		SELECT a.*
+
+
+		, case when a.SUBTO>date(SUBDATE(NOW(),1)) then round( ( TIMESTAMPDIFF(MONTH, date(SUBDATE(NOW(),1)) , a.SUBTO) +
+		  DATEDIFF(
+			a.SUBTO,
+			date(SUBDATE(NOW(),1))  + INTERVAL
+			  TIMESTAMPDIFF(MONTH, date(SUBDATE(NOW(),1)) , a.SUBTO)
+			MONTH
+		  ) /
+		  DATEDIFF(
+			date(SUBDATE(NOW(),1))  + INTERVAL
+			  TIMESTAMPDIFF(MONTH, date(SUBDATE(NOW(),1)) , a.SUBTO) + 1
+			MONTH,
+			date(SUBDATE(NOW(),1))  + INTERVAL
+			  TIMESTAMPDIFF(MONTH, date(SUBDATE(NOW(),1)) , a.SUBTO)
+			MONTH
+		  ) ),0) end as REMAININGSUBPERIOD  
+
+		, ((a.PACKAGEQUOTA_GB)*CEIL(a.SUBPERIOD)) as TOTAL_PACKAGEQUOTA_GB
+		, case when a.SERVICESTATUS='Active' then ((a.PACKAGEQUOTA_GB)*CEIL(a.SUBPERIOD) - a.TOTAL_USAGE_GB) 
+			else 0 end as BALANCE_GB
+		from 
+		(
+				select 
+					a.SERVICEINSTANCENUMBER
+					, a.PACKAGENAME
+					, case when a.PACKAGENAME='STARTER' then 1
+							when a.PACKAGENAME='VALUE' then 3
+							when a.PACKAGENAME='ELITE' then 20
+							when a.PACKAGENAME='EXTREME' then 40
+							when a.PACKAGENAME='EXTREME PLUS' then 80
+							when a.PACKAGENAME='PERFORMANCE' then 150
+							when a.PACKAGENAME='PERFORMANCE PLUS' then 300
+							end as PACKAGEQUOTA_GB
+							
+					
+					, a.SUBFROM
+					, a.SUBTO
+					, a.SUBPERIOD
+					/*
+					,  TIMESTAMPDIFF(MONTH, a.SUBFROM, a.SUBTO) +
+					  DATEDIFF(
+						a.SUBTO,
+						a.SUBFROM + INTERVAL
+						  TIMESTAMPDIFF(MONTH, a.SUBFROM, a.SUBTO)
+						MONTH
+					  ) /
+					  DATEDIFF(
+						a.SUBFROM + INTERVAL
+						  TIMESTAMPDIFF(MONTH, a.SUBFROM, a.SUBTO) + 1
+						MONTH,
+						a.SUBFROM + INTERVAL
+						  TIMESTAMPDIFF(MONTH, a.SUBFROM, a.SUBTO)
+						MONTH
+					  ) as SUBPERIOD  
+					  
+					  */
+					, a.CUSTOMERACCOUNTNUMBER
+					, a.BILLINGACCOUNTNUMBER
+					, a.SERVICEACCOUNTNUMBER
+					, a.SERVICEINSTANCEIDENTIFIER
+					, a.SERVICESTATUS
+					, a.CPE_TYPE
+					, a.PACKAGEAMOUNT
+					, a.LASTACTION
+					, a.clientcode
+					, a.contractcode
+					, a.client_id
+					, a.contract_id
+					
+					, max(a.LASTUSAGEDATE) as LASTUSAGEDATE
+					, ifnull(sum(a.MB_TOTAL_USAGE),0) as TOTAL_USAGE_PREADDON_MB
+					, max(a.LAST_ADD_ON_DATE) as LAST_ADD_ON_DATE
+					, ifnull(sum(a.ADD_ON_TOTAL),0) as ADD_ON_TOTAL_MB
+					
+					, (ifnull(sum(a.MB_TOTAL_USAGE),0) + ifnull(sum(a.ADD_ON_TOTAL),0)) as TOTAL_USAGE_MB
+					, (ifnull(sum(a.MB_TOTAL_USAGE),0) + ifnull(sum(a.ADD_ON_TOTAL),0))/1024 as TOTAL_USAGE_GB
+					from 
+					(
+						select 
+						a.SERVICEINSTANCENUMBER
+						, a.PACKAGENAME
+						, a.SUBFROM
+						, a.SUBTO
+						, a.SUBPERIOD
+						, a.CUSTOMERACCOUNTNUMBER
+						, a.BILLINGACCOUNTNUMBER
+						, a.SERVICEACCOUNTNUMBER
+						, a.SERVICEINSTANCEIDENTIFIER
+						, a.SERVICESTATUS
+						, a.CPE_TYPE
+						, a.PACKAGEAMOUNT
+						, a.LASTACTION
+						, a.clientcode
+						, a.contractcode
+						, a.client_id
+						, a.contract_id
+						, a.PROCESSEDCLIENTIP
+						, a.TRAFFICTYPE
+						-- , max(a.USAGEDATE) as LASTUSAGEDATE
+						, sum(a.MB_UL) as MB_UL
+						, sum(a.MB_DL) as MB_DL
+						-- , sum(a.MB_TOTAL) as MB_TOTAL_USAGE
+						-- , sum(a.GB_TOTAL) as GB_TOTAL_USAGE
+						, case when a.PROCESSEDCLIENTIP = '0.0.0.0' then max(a.USAGEDATE) end as LAST_ADD_ON_DATE
+						, case when a.PROCESSEDCLIENTIP = '0.0.0.0' then sum(a.MB_DL) end as ADD_ON_TOTAL
+						, case when a.PROCESSEDCLIENTIP <> '0.0.0.0' then max(a.USAGEDATE) end as LASTUSAGEDATE
+						, case when a.PROCESSEDCLIENTIP <> '0.0.0.0' then sum(a.MB_TOTAL) end as MB_TOTAL_USAGE
+						from 
+						(
+								select 
+								a.*
+								, '' as `|`
+								-- , b.*
+								, b.PROCESSEDCLIENTIP
+								, b.TRAFFICTYPE
+								
+								, b.MB_UL
+								, b.MB_DL
+								, b.MB_TOTAL
+								, ((b.MB_TOTAL)/1024) as GB_TOTAL
+								, b.USAGEDATE
+
+								from 
+								(
+
+										select 
+										a.SERVICEINSTANCENUMBER, a.PACKAGENAME
+										, a.SUBFROM
+										, a.SUBTO
+										, a.SUBPERIOD
+										-- , if(ifnull(date(a.LASTSUBSTARTDATE),date(a.LASTINVFROMDATE))>a.CURSUBSTARTDATE,a.CURSUBSTARTDATE,ifnull(date(a.LASTSUBSTARTDATE),date(a.LASTINVFROMDATE))) as SUB_FROM
+										-- , if(ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE))>a.CURSUBENDDATE,a.CURSUBENDDATE,ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE))) as SUB_TO
+										-- , ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE)) as SUBTO
+										, a.CUSTOMERACCOUNTNUMBER
+										, a.BILLINGACCOUNTNUMBER
+										, a.SERVICEACCOUNTNUMBER
+										, a.SERVICEINSTANCEIDENTIFIER
+										, a.SERVICESTATUS
+										, a.CPE_TYPE
+										, a.PACKAGEAMOUNT
+										, a.LASTACTION
+										, a.clientcode
+										, a.contractcode
+										, a.client_id
+										, a.contract_id
+
+										from 
+										(
+
+												select 
+
+												--  a.* 
+												-- , '' as `SEP1`
+												-- , b.*
+
+
+
+												a.*
+												, b.CUSTOMERACCOUNTNUMBER
+												, b.BILLINGACCOUNTNUMBER
+												, b.SERVICEACCOUNTNUMBER
+												, b.SERVICEINSTANCEIDENTIFIER
+												, b.SERVICESTATUS
+												, b.PACKAGEAMOUNT
+												, b.CPE_TYPE
+												, b.LASTACTION
+												, b.clientcode
+												, b.contractcode
+												, b.CLIENT_ID
+												, b.CONTRACT_ID
+
+
+
+												from rcbill_extract.IV_ADDON a
+												left join 
+												rcbill_extract.IV_SERVICEINSTANCE b 
+												on 
+												a.SERVICEINSTANCENUMBER=b.SERVICEINSTANCENUMBER
+
+												-- left join 
+												-- rcbill_extract.IV_BILLINGACCOUNT c
+												-- on b.BILLINGACCOUNTNUMBER=c.BILLINGACCOUNTNUMBER
+												where 0=0
+												and (b.CPE_TYPE like ('%CAPPED%') or b.CPE_TYPE like ('%PREPAID%'))
+												
+												-- and b.SERVICESTATUS='Active'
+												-- and b.client_id=718650 -- nelson lalande
+												-- and b.CLIENT_ID=715432 -- russian embassy
+												-- and b.CLIENT_ID=723711
+												-- and b.CLIENT_ID=721030
+												-- and b.clientcode='I8002'
+												-- and b.clientcode='I7571'
+												-- and b.clientcode='I6415' -- farouk baptist (PROBLEM ACCOUNT)
+												-- and b.clientcode='I.000000852' -- Julianne Monique Marie
+												-- and b.clientcode='I.000012979' -- Selma Lesperance Sey Police Bulk
+												-- and b.clientcode='I.000008120' -- Four Seasons IPTV Housing - Block No 6 (PROBLEM)
+												-- and b.clientcode='I.000003756'
+												-- and b.clientcode='I.000009391' -- surman apartment
+										) a 
+								) a
+								left join 
+								rcbill.clientcontractipusage b
+								on a.client_id=b.client_id and a.contract_id=b.contract_id and (b.usagedate>=a.subfrom and b.usagedate<=a.subto) and b.TRAFFICTYPE='Default'
+
+
+						) a 
+						group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
+					) a 
+					group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
+		) a
+
+)
+;
 ##################################################################################################################
 
 
@@ -1982,6 +2237,8 @@ select * from rcbill_extract.IV_BILLDETAIL where CUSTOMERACCOUNTNUMBER in (@cust
 select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1) order by PAYMENTRECEIPTID desc;
 select * from rcbill_extract.IV_NBD where CUSTOMERACCOUNTNUMBER in (@custid1) order by BILLINGACCOUNTNUMBER;
 select * from rcbill_extract.IV_DISCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by BILLINGACCOUNTNUMBER;
+select * from rcbill_extract.IV_BALANCE where CUSTOMERACCOUNTNUMBER in (@custid1) order by SERVICEINSTANCENUMBER desc;
+
 
 select * from rcbill_extract.IV_PAYMENTHISTORY where customeraccountnumber ='NOT PRESENT';
 

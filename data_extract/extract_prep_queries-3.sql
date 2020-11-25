@@ -35,6 +35,8 @@ set @kod9 = 'I9991';
 set @kod10 = 'I.000021467';
 set @kod11 = 'I.000020888';
 
+set @clid2=720074;
+
 select * from rcbill.rcb_casa where CLID in (@clid2) order by id desc;
 select * from rcbill_extract.IV_PAYMENTHISTORY where CLIENT_ID in (@clid2) order by PAYMENTRECEIPTID desc;
 select * from rcbill.rcb_invoicesheader  where CLID in (@clid2) order by id desc;
@@ -363,7 +365,26 @@ group by CLIENTCODE, CLIENTID, CID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSE
 
 
 SELECT a.*
-, case when a.SERVICESTATUS='Active' then (a.PACKAGEQUOTA_GB - a.TOTAL_USAGE_GB) 
+
+
+, case when a.SUBTO>date(SUBDATE(NOW(),1)) then round( ( TIMESTAMPDIFF(MONTH, date(SUBDATE(NOW(),1)) , a.SUBTO) +
+  DATEDIFF(
+	a.SUBTO,
+	date(SUBDATE(NOW(),1))  + INTERVAL
+	  TIMESTAMPDIFF(MONTH, date(SUBDATE(NOW(),1)) , a.SUBTO)
+	MONTH
+  ) /
+  DATEDIFF(
+	date(SUBDATE(NOW(),1))  + INTERVAL
+	  TIMESTAMPDIFF(MONTH, date(SUBDATE(NOW(),1)) , a.SUBTO) + 1
+	MONTH,
+	date(SUBDATE(NOW(),1))  + INTERVAL
+	  TIMESTAMPDIFF(MONTH, date(SUBDATE(NOW(),1)) , a.SUBTO)
+	MONTH
+  ) ),0) end as REMAININGSUBPERIOD  
+
+, ((a.PACKAGEQUOTA_GB)*CEIL(a.SUBPERIOD)) as TOTAL_PACKAGEQUOTA_GB
+, case when a.SERVICESTATUS='Active' then ((a.PACKAGEQUOTA_GB)*CEIL(a.SUBPERIOD) - a.TOTAL_USAGE_GB) 
 	else 0 end as BALANCE_GB
 from 
 (
@@ -382,6 +403,25 @@ from
 			
 			, a.SUBFROM
 			, a.SUBTO
+            , a.SUBPERIOD
+            /*
+			,  TIMESTAMPDIFF(MONTH, a.SUBFROM, a.SUBTO) +
+			  DATEDIFF(
+				a.SUBTO,
+				a.SUBFROM + INTERVAL
+				  TIMESTAMPDIFF(MONTH, a.SUBFROM, a.SUBTO)
+				MONTH
+			  ) /
+			  DATEDIFF(
+				a.SUBFROM + INTERVAL
+				  TIMESTAMPDIFF(MONTH, a.SUBFROM, a.SUBTO) + 1
+				MONTH,
+				a.SUBFROM + INTERVAL
+				  TIMESTAMPDIFF(MONTH, a.SUBFROM, a.SUBTO)
+				MONTH
+			  ) as SUBPERIOD  
+              
+              */
 			, a.CUSTOMERACCOUNTNUMBER
 			, a.BILLINGACCOUNTNUMBER
 			, a.SERVICEACCOUNTNUMBER
@@ -409,6 +449,7 @@ from
 				, a.PACKAGENAME
 				, a.SUBFROM
 				, a.SUBTO
+                , a.SUBPERIOD
 				, a.CUSTOMERACCOUNTNUMBER
 				, a.BILLINGACCOUNTNUMBER
 				, a.SERVICEACCOUNTNUMBER
@@ -454,6 +495,7 @@ from
 								a.SERVICEINSTANCENUMBER, a.PACKAGENAME
 								, a.SUBFROM
 								, a.SUBTO
+                                , a.SUBPERIOD
 								-- , if(ifnull(date(a.LASTSUBSTARTDATE),date(a.LASTINVFROMDATE))>a.CURSUBSTARTDATE,a.CURSUBSTARTDATE,ifnull(date(a.LASTSUBSTARTDATE),date(a.LASTINVFROMDATE))) as SUB_FROM
 								-- , if(ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE))>a.CURSUBENDDATE,a.CURSUBENDDATE,ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE))) as SUB_TO
 								-- , ifnull(date(a.LASTSUBENDDATE),date(a.LASTINVTODATE)) as SUBTO
@@ -518,6 +560,10 @@ from
 										-- and b.clientcode='I7571'
 										-- and b.clientcode='I6415' -- farouk baptist (PROBLEM ACCOUNT)
 										-- and b.clientcode='I.000000852' -- Julianne Monique Marie
+                                        -- and b.clientcode='I.000012979' -- Selma Lesperance Sey Police Bulk
+                                        -- and b.clientcode='I.000008120' -- Four Seasons IPTV Housing - Block No 6 (PROBLEM)
+                                        -- and b.clientcode='I.000003756'
+                                        -- and b.clientcode='I.000009391' -- surman apartment
 								) a 
 						) a
 						left join 
@@ -526,9 +572,9 @@ from
 
 
 				) a 
-				group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+				group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
 			) a 
-			group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+			group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
 ) a
 ;
 
