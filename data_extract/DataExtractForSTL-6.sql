@@ -1475,7 +1475,37 @@ select
     , case when si.CPE_TYPE in ('GVOICE','VOICE') then si.CPE_ID 
 		   when length(si.FSAN)>0 then si.FSAN
            else si.USERNAME end as SERIALNUMBER
-    , si.CPE_TYPE as INVENTORYSUBTYPE
+    , si.CPE_TYPE
+    
+/*
+CAPPED INTERNET	Modem
+DTV	STBCONEX/STBBESTCAS
+IPTV	STBRCBOSS
+INTERNET	Modem
+VOICE	Modem
+GNET	ONT
+CAPPED GNET	ONT
+HOTSPOT ACCESS	
+PREPAID INTERNET	
+EMAIL	
+NEXTTV	STBRCBOSS
+GVOICE	ONT
+MOBILE TV	
+PREPAID TRAFFIC	
+MISC SALES	
+	
+*/    
+    , case 
+			when si.CPE_TYPE = 'CAPPED INTERNET' then 'MODEM'
+			when si.CPE_TYPE = 'INTERNET' then 'MODEM'
+			when si.CPE_TYPE = 'VOICE' then 'MODEM'
+			when si.CPE_TYPE = 'DTV' then 'STBCONAX/STBBESTCAS'
+			when si.CPE_TYPE = 'IPTV' then 'STBRCBOSS'
+			when si.CPE_TYPE = 'NEXTTV' then 'STBRCBOSS'
+			when si.CPE_TYPE = 'CAPPED GNET' then 'ONT'
+			when si.CPE_TYPE = 'GNET' then 'ONT'
+			when si.CPE_TYPE = 'GVOICE' then 'ONT'
+            else '' end as INVENTORYSUBTYPE
     
     -- , si.PACKAGENAME
     -- , si.CPE_TYPE

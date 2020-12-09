@@ -578,3 +578,37 @@ from
 ) a
 ;
 
+
+/*
+FOR INVENTORY SUBTYPE CLASSIFICATION
+
+use rcbill_extract;
+
+select * from rcbill_extract.IV_SERVICEINSTANCE where clientcode in ('I.000011750') ;
+
+select * from rcbill_extract.IV_INVENTORY where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where clientcode in ('I.000011750')) ;
+
+
+select CPE_TYPE, inventorysubtype, count(*) from rcbill_extract.IV_INVENTORY
+group by CPE_TYPE, inventorysubtype
+; 
+
+
+select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I.000011750') ;
+
+select * from rcbill_my.rep_clientcontractdevices 
+where service_type = 'PREPAID INTERNET'
+-- CLIENT_CODE in ('I.000011750') 
+;
+
+select service, count(*) from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice si
+where
+service
+; 
+
+
+
+
+
+
+*/
