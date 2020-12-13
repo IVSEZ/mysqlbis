@@ -1740,7 +1740,7 @@ select 'creating rcbill_my.rep_custextract' as message;
 create table rcbill_my.rep_custextract (index idxrce1 (clientcode))
 as 
 (
-	select a.reportdate, a.CLIENTCODE, a.IsAccountActive, a.AccountActivityStage, a.CLIENTNAME, a.clientclass
+	select a.reportdate, a.CLIENTCODE, a.IsAccountActive, a.AccountActivityStage , a.CurrentDebt, a.CLIENTNAME, a.clientclass
 	, a.clientaddress
 	, a.clientlocation, a.clientarea
     , a.clientemail
@@ -1750,6 +1750,10 @@ as
     , a.clientnin, a.clientphone
 	-- , a.dayssincelastactive
 	, b.address, b.moladdress, b.MOLRegistrationAddress
+    , a.firstcontractdate
+    , a.firstinvoicedate
+    , a.firstpaymentdate
+    , a.firstactivedate
     , a.dayssincelastactive
 	, b.a1_parcel, b.a2_parcel, b.a3_parcel
 	, case when (b.a1_parcel is null or length(b.a1_parcel)=0) and (b.a2_parcel is null or length(b.a2_parcel)=0) and (b.a3_parcel is null or length(b.a3_parcel)=0) 
