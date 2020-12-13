@@ -2252,6 +2252,8 @@ set @custid1 = 'CA_I.000000852'; -- Julianne Monique Marie
 
 set @custid1 = 'CA_I23018'; -- amazon betting
 
+set @custid1 = 'CA_I9695';  -- Marlene Rassool
+
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
