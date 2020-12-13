@@ -1544,6 +1544,7 @@ create table rcbill_my.rep_custconsolidated as
 	select 
 	`reportdate`,
 	`clientcode`,
+    rcbill.GetClientID(clientcode) as `clientid`,
 	`currentdebt`,
 	`isaccountactive`,
 	`accountactivitystage`,
@@ -1649,6 +1650,7 @@ create table rcbill_my.rep_custconsolidated as
         d.activeservices,
         d.activenetwork,
 		-- a.clientcode,
+        -- a.CLIENTID,
 		a.AccountActivityStage,
 		a.activesubscriptions,
 		a.clientaddress,
@@ -1740,7 +1742,7 @@ select 'creating rcbill_my.rep_custextract' as message;
 create table rcbill_my.rep_custextract (index idxrce1 (clientcode))
 as 
 (
-	select a.reportdate, a.CLIENTCODE, a.IsAccountActive, a.AccountActivityStage , a.CurrentDebt, a.CLIENTNAME, a.clientclass
+	select a.reportdate, a.CLIENTCODE, a.CLIENTID, a.IsAccountActive, a.AccountActivityStage , a.CurrentDebt, a.CLIENTNAME, a.clientclass
 	, a.clientaddress
 	, a.clientlocation, a.clientarea
     , a.clientemail

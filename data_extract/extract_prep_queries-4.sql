@@ -14,9 +14,11 @@ select * from rcbill_my.rep_custconsolidated;
 
 set @clientcode1='I13400';
 set @clientcode1='I298';
+set @clientcode1 = '91';
 
 set @clientid1=667979;
 set @clientid1=698115;
+set @clientid1=712211;
 
 select * from rcbill.clientreport where CL_CLIENTCODE=@clientcode1;
 
@@ -26,8 +28,7 @@ select clid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),
 		where
 		(hard not in (100, 101, 102) or hard is null)
 		and year(data)>=2016
-        and
-        clid in  (@clientid1)
+        and clid in  (@clientid1)
  		group by clid
         order by 6 desc
         ;
@@ -43,8 +44,7 @@ select clid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),
 			where
 			(hard not in (100, 101, 102) or hard is null)
 			and year(ENTERDATE)>=2016
-            and 
-			clid in  (@clientid1)
+            and clid in  (@clientid1)
 			group by clid -- , cid
 			order by 5 desc
             ;
@@ -57,8 +57,7 @@ select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(to
 		where
 		(hard not in (100, 101, 102) or hard is null)
 		and year(data)>=2016
-        and
-        clid in (@clientid1)
+        -- and clid in (@clientid1)
  		group by clid, cid
         order by 7 desc
         -- with rollup
@@ -75,8 +74,7 @@ select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(to
 			where
 			(hard not in (100, 101, 102) or hard is null)
 			and year(ENTERDATE)>=2016
-			and 
-			clid in (@clientid1)
+			-- and clid in (@clientid1)
 			group by clid, cid
             order by 6 desc
             ;
