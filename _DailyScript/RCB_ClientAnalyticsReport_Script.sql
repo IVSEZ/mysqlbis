@@ -221,26 +221,145 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         
         
         
+        ### CLIENT CONTRACT PAYMENT INVOICE STAGING TABLE
+ 		drop table if exists rcbill.clientcontractinvpmt_stg;
+        
+        create table rcbill.clientcontractinvpmt_stg
+        (
+        
+
+
+			   select  
+                
+				rcbill.GetClientCode( COALESCE(clid, c_clid) ) as CLIENTCODE,
+				rcbill.GetContractCode( COALESCE(cid, c_cid)) as CONTRACTCODE,
+            
+                COALESCE(clid, c_clid) AS clid
+				, COALESCE(cid, c_cid) AS cid
+				, TotalInvoiceAmount, LastInvoiceAmount, TotalInvoices, FirstInvoiceDate, LastInvoiceDate, c_clid, c_cid, TotalPaymentAmount, TotalPayments, FirstPaymentDate, LastPaymentDate
+				from 
+				(
+					(
+						select b.*, c.*
+						from 
+						(
+
+							select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
+									from rcb_invoicesheader
+									where
+									-- (hard not in (100, 101, 102) or hard is null)
+									(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
+									-- and clid=@clientid1
+									group by clid, cid
+						) b 
+						
+						left join 
+						(
+								select clid as c_clid
+								 , cid as c_cid
+								, COALESCE(sum(money),0) as TotalPaymentAmount  
+								-- , sum(money) as LastPaidAmount
+								-- , (select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=clid and date(ac.enterdate)=date(max(EnterDate))) as LastPaidAmount  
+								, COALESCE(count(*),0) as TotalPayments, date(min(ENTERDATE)) as FirstPaymentDate, date(max(ENTERDATE)) as LastPaymentDate
+								from rcb_casa
+								where
+								-- (hard not in (100, 101, 102) or hard is null)
+								(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
+								 
+								-- and clid=@clientid1
+								group by clid, cid
+						) c
+						on b.clid=c.c_clid and b.cid=c.c_cid
+					)
+					union 
+					(
+						select b.*, c.*
+						from 
+						(
+
+							select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
+									from rcb_invoicesheader
+									where
+									-- (hard not in (100, 101, 102) or hard is null)
+									(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
+									-- and clid=@clientid1
+									group by clid, cid
+						) b 
+						
+						right join 
+						(
+								select clid as c_clid
+								 , cid as c_cid
+								, COALESCE(sum(money),0) as TotalPaymentAmount  
+								-- , sum(money) as LastPaidAmount
+								-- , (select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=clid and date(ac.enterdate)=date(max(EnterDate))) as LastPaidAmount  
+								, COALESCE(count(*),0) as TotalPayments, date(min(ENTERDATE)) as FirstPaymentDate, date(max(ENTERDATE)) as LastPaymentDate
+								from rcb_casa
+								where
+								-- (hard not in (100, 101, 102) or hard is null)
+								(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
+								 
+								-- and clid=@clientid1
+								group by clid, cid
+						) c
+						on b.clid=c.c_clid and b.cid=c.c_cid
+					
+					
+					) 
+				) a
+
+
+            
+		)
+		;
+        
+		CREATE INDEX IDXccipstg2
+		ON rcbill.clientcontractinvpmt_stg (CLIENTCODE);
+		CREATE INDEX IDXccipstg3
+		ON rcbill.clientcontractinvpmt_stg (clid);
+		CREATE INDEX IDXccipstg4
+		ON rcbill.clientcontractinvpmt_stg (CONTRACTCODE);
+		CREATE INDEX IDXccipstg5
+		ON rcbill.clientcontractinvpmt_stg (cid);        
         
         
         
+        -- select * from rcbill.clientcontractinvpmt_stg;
         
         
         
-		drop table if exists clientcontractinvpmt;
+		drop table if exists rcbill.clientcontractinvpmt;
 		#QUERY Takes 53 minutes
 		#now it takes 139 seconds
         #415 seconds
 -- 		 SET global innodb_buffer_pool_size=12582912;
 
-		CREATE TABLE IF NOT EXISTS clientcontractinvpmt AS (
+		CREATE TABLE IF NOT EXISTS rcbill.clientcontractinvpmt AS (
+  
+  
+			SELECT 
+				rcbill.GetClientName(a.CLIENTCODE) as cl_clientname,
+					a.CLIENTCODE as CL_CLIENTCODE,
+					a.clid as CL_CLIENTID, 
+					a.CONTRACTCODE as CON_CONTRACTCODE,
+					a.cid as CON_CONTRACTID,
+					TotalInvoiceAmount, LastInvoiceAmount, TotalInvoices, FirstInvoiceDate, LastInvoiceDate, c_clid, c_cid, TotalPaymentAmount, TotalPayments, FirstPaymentDate, LastPaymentDate
+     
+     
+            FROM 
+            rcbill.clientcontractinvpmt_stg a 
+            order by 1, 2, 4
+			-- order by a.cl_clientname, a.CL_CLIENTCODE, a.CON_CONTRACTCODE
+  
+        
+        /*
 		select 
 		distinct(a.cl_clientname) as cl_clientname, 
 		a.CL_CLIENTCODE,
 		a.CL_CLIENTID, 
 		a.CON_CONTRACTCODE,
 		a.CON_CONTRACTID,
-        /*a.CS_SERVICEID,*/
+        --  a.CS_SERVICEID,
         
 		b.TotalInvoiceAmount,
 		b.LastInvoiceAmount,
@@ -269,18 +388,10 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		on a.CL_CLIENTID=b.clid
 		and a.CON_CONTRACTID=b.cid
 
-		/*
-		left join
-		(
-		select clid, cid, COALESCE(sum(money),0) as TotalPaymentAmount , 
-		max(money) as LastPaidAmount, 
-		COALESCE(count(*),0) as TotalPayments, min(ENTERDATE) as FirstPaymentDate, max(ENTERDATE) as LastPaymentDate
-		from rcb_casa
-		-- where
-		-- (hard not in (100, 101, 102) or hard is null)
-		group by clid, cid
-        ) as c
-		*/
+
+        
+        
+
        left join 
        -- right join
        (
@@ -309,22 +420,25 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		on a.CL_CLIENTID=c.clid
 		and a.CON_CONTRACTID=c.cid
 
-		order by a.cl_clientname, a.CL_CLIENTCODE, a.CON_CONTRACTCODE
+		*/
+
 		)
 		;
+        
+        
 
 -- 		 SET global innodb_buffer_pool_size=8388608;
 
 		CREATE INDEX IDXccip1
-		ON clientcontractinvpmt (cl_clientname);
+		ON rcbill.clientcontractinvpmt (cl_clientname);
 		CREATE INDEX IDXccip2
-		ON clientcontractinvpmt (CL_CLIENTCODE);
+		ON rcbill.clientcontractinvpmt (CL_CLIENTCODE);
 		CREATE INDEX IDXccip3
-		ON clientcontractinvpmt (CL_CLIENTID);
+		ON rcbill.clientcontractinvpmt (CL_CLIENTID);
 		CREATE INDEX IDXccip4
-		ON clientcontractinvpmt (CON_CONTRACTCODE);
+		ON rcbill.clientcontractinvpmt (CON_CONTRACTCODE);
 		CREATE INDEX IDXccip5
-		ON clientcontractinvpmt (CON_CONTRACTID);
+		ON rcbill.clientcontractinvpmt (CON_CONTRACTID);
 
 
 
