@@ -1302,7 +1302,7 @@ select 'created rcbill_my.rep_customers_collection' as message;
 
 -- select * from rcbill_my.rep_customers_collection2018 where client_code='I.000001076';
 
-set session group_concat_max_len = 30000;
+set session group_concat_max_len = 2000000;
 
 -- select * from rcbill_my.customers_contracts_cmts_mxk where cl_clientcode='I.000001076';
 
@@ -1530,7 +1530,7 @@ drop table if exists rcbill_my.tempa;
 drop table if exists rcbill_my.tempb;
 
 -- select * from rcbill_my.rep_cust_cont_payment_cmts_mxk where clientcode='I.000001076';
-
+-- select * from rcbill_my.rep_allcust where clientcode='I13400';
 ####################################
 #CREATE CONSOLIDATED CUSTOMER REPORT
 ####################################
