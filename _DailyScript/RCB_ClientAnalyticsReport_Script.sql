@@ -338,7 +338,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
   
   
 			SELECT 
-				rcbill.GetClientName(a.CLIENTCODE) as cl_clientname,
+				-- rcbill.GetClientName(a.CLIENTCODE) as cl_clientname,
 					a.CLIENTCODE as CL_CLIENTCODE,
 					a.clid as CL_CLIENTID, 
 					a.CONTRACTCODE as CON_CONTRACTCODE,
@@ -429,8 +429,8 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
 -- 		 SET global innodb_buffer_pool_size=8388608;
 
-		CREATE INDEX IDXccip1
-		ON rcbill.clientcontractinvpmt (cl_clientname);
+		-- CREATE INDEX IDXccip1
+		-- ON rcbill.clientcontractinvpmt (cl_clientname);
 		CREATE INDEX IDXccip2
 		ON rcbill.clientcontractinvpmt (CL_CLIENTCODE);
 		CREATE INDEX IDXccip3
