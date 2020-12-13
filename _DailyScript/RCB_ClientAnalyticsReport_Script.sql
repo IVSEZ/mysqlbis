@@ -251,7 +251,8 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		(select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
 		from rcb_invoicesheader
 		where
-		(hard not in (100, 101, 102) or hard is null)
+		-- (hard not in (100, 101, 102) or hard is null)
+        (hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
 		group by clid, cid
         ) as b
 
@@ -285,7 +286,9 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 			, COALESCE(count(*),0) as TotalPayments, date(min(ENTERDATE)) as FirstPaymentDate, date(max(ENTERDATE)) as LastPaymentDate
 			from rcb_casa
 			where
-			(hard not in (100, 101, 102) or hard is null)
+			-- (hard not in (100, 101, 102) or hard is null)
+            (hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
+             
 			-- and 
 			-- clid=@custid
 			group by clid, cid

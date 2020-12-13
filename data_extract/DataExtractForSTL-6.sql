@@ -1624,6 +1624,7 @@ drop table if exists rcbill_extract.IV_PAYMENTHISTORY;
 -- HARD = 0 (CREDITED)
 -- HARD = 1 (DEBIT)
 -- TYPE = 11,21 (CREDIT OR DEBIT)
+-- HARD NOT IN (100, 101, 102, 201, 999, 9999)
 
 create table rcbill_extract.IV_PAYMENTHISTORY(index idxivbs1(CUSTOMERACCOUNTNUMBER),index idxivbs2(BILLINGACCOUNTNUMBER),index idxivbs3(DEBITDOCUMENTNUMBER), index idxivbs4(PAYMENTRECEIPTID))
 (
@@ -1676,6 +1677,8 @@ drop table if exists rcbill_extract.IV_BILLSUMMARY;
 -- HARD = 0 (CREDITED)
 -- HARD = 1 (DEBIT)
 -- TYPE = 11,21 (CREDIT OR DEBIT)
+-- HARD NOT IN (100, 101, 102, 201, 999, 9999)
+
 
 create table rcbill_extract.IV_BILLSUMMARY(index idxivbs1(CUSTOMERACCOUNTNUMBER),index idxivbs2(BILLINGACCOUNTNUMBER),index idxivbs3(DEBITDOCUMENTNUMBER))
 (
