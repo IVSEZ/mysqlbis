@@ -219,6 +219,14 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
 		-- select * from clientcontracthistory order by cl_clientname;
         
+        
+        
+        
+        
+        
+        
+        
+        
 		drop table if exists clientcontractinvpmt;
 		#QUERY Takes 53 minutes
 		#now it takes 139 seconds
@@ -248,12 +256,14 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		from 
 		clientcontracts a
 		left join
-		(select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
-		from rcb_invoicesheader
-		where
-		-- (hard not in (100, 101, 102) or hard is null)
-        (hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
-		group by clid, cid
+        -- right join
+		(
+			select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
+			from rcb_invoicesheader
+			where
+			-- (hard not in (100, 101, 102) or hard is null)
+			(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
+			group by clid, cid
         ) as b
 
 		on a.CL_CLIENTID=b.clid
@@ -272,6 +282,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         ) as c
 		*/
        left join 
+       -- right join
        (
 			select a.*, (select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=a.clid 
             and ac.cid=a.cid 
