@@ -16,6 +16,8 @@
                 COALESCE(clid, c_clid) AS clid
 				, COALESCE(cid, c_cid) AS cid
 				, TotalInvoiceAmount, LastInvoiceAmount, TotalInvoices, FirstInvoiceDate, LastInvoiceDate, c_clid, c_cid, TotalPaymentAmount, TotalPayments, FirstPaymentDate, LastPaymentDate
+                
+
 				from 
 				(
 					(

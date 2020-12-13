@@ -344,7 +344,9 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 					a.CONTRACTCODE as CON_CONTRACTCODE,
 					a.cid as CON_CONTRACTID,
 					TotalInvoiceAmount, LastInvoiceAmount, TotalInvoices, FirstInvoiceDate, LastInvoiceDate, c_clid, c_cid, TotalPaymentAmount, TotalPayments, FirstPaymentDate, LastPaymentDate
-     
+                     ,(select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=a.clid 
+						and ac.cid=a.cid 
+						and date(ac.enterdate)=date(a.LastPaymentDate)) as LastPaidAmount
      
             FROM 
             rcbill.clientcontractinvpmt_stg a 
