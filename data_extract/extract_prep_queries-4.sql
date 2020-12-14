@@ -9,6 +9,7 @@ select * from rcbill.rcb_tclients where kod='I.000001217';
 
 select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR';
 
+
 select * from rcbill_my.rep_custconsolidated;
 
 
@@ -24,6 +25,34 @@ set @clientid1=698115;
 set @clientid1=693674;
 set @clientid1=702439;
 set @clientid1=712211;
+set @clientid1=693674; -- dict
+set @clientid1=734518; -- ROGERS CAPITAL TECHNOLOGY SERVICES LTD
+
+
+
+select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and CurrentDebt<>0 and CLIENTID=@clientid1;
+select *
+, (ifnull(TotalPaymentAmount,0)-ifnull(TotalInvoiceAmount,0)) as clientdebt
+ from rcbill.clientcontractinvpmt where CL_CLIENTID=@clientid1;
+
+
+select * from rcbill_extract.IV_BILLINGACCOUNT where client_id=@clientid1;
+
+select * from rcbill_extract.BILLINGACCOUNT_KEY where client_id=@clientid1;
+
+
+
+select a.*, b.totalpaymentamount, b.TotalInvoiceAmount
+from 
+rcbill_extract.IV_BILLINGACCOUNT a 
+left join 
+rcbill.clientcontractinvpmt b
+on 
+
+
+;
+
+
 
 
 select * from rcbill.clientreport where CL_CLIENTCODE=@clientcode1;
