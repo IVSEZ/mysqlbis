@@ -223,15 +223,31 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         
         select count(*) as clientcontracthistory from rcbill.clientcontracthistory;
         
+        drop table if exists rcbill.casa_stg;
+        create table rcbill.casa_stg(index idxcasastg1(clid,cid,enterdate))  -- (index idxcasastg1(clid),index idxcasastg2(cid),index idxcasastg3(enterdate)) 
+        (
+				select clid, cid, date(enterdate) as enterdate, sum(money) as money
+                from rcbill.rcb_casa
+                group by 1,2,3
+                        
+        )
+        ;
         
+        
+        -- select * from rcbill.rcb_casa;
         ### CLIENT CONTRACT PAYMENT INVOICE STAGING TABLE
  		drop table if exists rcbill.clientcontractinvpmt_stg;
         
         create table rcbill.clientcontractinvpmt_stg
         (
-        
-
-
+			/*
+			select a.*
+            ,(select sum(ac.money) from rcbill.casa_stg ac where ac.clid=a.clid 
+				and ac.cid=a.cid 
+				and ac.enterdate=date(a.LastPaymentDate)) as LastPaidAmount
+            from
+            (
+			*/
 			   select  
                 
 				rcbill.GetClientCode( COALESCE(clid, c_clid) ) as CLIENTCODE,
@@ -311,7 +327,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 					) 
 				) a
 
-
+			-- ) a 
             
 		)
 		;
@@ -342,15 +358,21 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
   
   
 			SELECT 
-				-- rcbill.GetClientName(a.CLIENTCODE) as cl_clientname,
+				   -- rcbill.GetClientName(a.CLIENTCODE) as cl_clientname,
 					a.CLIENTCODE as CL_CLIENTCODE,
 					a.clid as CL_CLIENTID, 
 					a.CONTRACTCODE as CON_CONTRACTCODE,
 					a.cid as CON_CONTRACTID,
 					TotalInvoiceAmount, LastInvoiceAmount, TotalInvoices, FirstInvoiceDate, LastInvoiceDate, c_clid, c_cid, TotalPaymentAmount, TotalPayments, FirstPaymentDate, LastPaymentDate
-                     ,(select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=a.clid 
+						,(select ac.money from rcbill.casa_stg ac where ac.clid=a.clid 
+						and ac.cid=a.cid 
+						and ac.enterdate=a.LastPaymentDate) as LastPaidAmount
+                
+                    /*
+                    ,(select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=a.clid 
 						and ac.cid=a.cid 
 						and date(ac.enterdate)=date(a.LastPaymentDate)) as LastPaidAmount
+                        */
      
             FROM 
             rcbill.clientcontractinvpmt_stg a 
