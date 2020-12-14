@@ -18,7 +18,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		drop table if exists rcbill.clientcontracts;
 
 
-		CREATE TABLE IF NOT EXISTS rcbill.clientcontracts AS (
+		CREATE TABLE rcbill.clientcontracts AS (
 		SELECT
 		CL.ID as CL_CLIENTID
 		,CL.FIRM as CL_CLIENTNAME
@@ -154,7 +154,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
 		-- active subscriptions table
 		drop table if exists clientcontractssubs;
-		CREATE TABLE IF NOT EXISTS clientcontractssubs AS (
+		CREATE TABLE clientcontractssubs AS (
 			/*
             select distinct cl_clientid, cl_clientname, cl_clientcode, cl_clclassname, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, CS_SUBSCRIPTIONCOUNT
 			from clientcontracts 
@@ -188,7 +188,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		drop table if exists clientcontracthistory;
 
 
-		CREATE TABLE IF NOT EXISTS clientcontracthistory AS (
+		CREATE TABLE clientcontracthistory AS (
 		select distinct(a.cl_clientname) as cl_clientname, 
 		a.CL_CLIENTCODE,
 		a.CL_CLIENTID, count(*) as TotalServices 
@@ -338,7 +338,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         #415 seconds
 -- 		 SET global innodb_buffer_pool_size=12582912;
 
-		CREATE TABLE IF NOT EXISTS rcbill.clientcontractinvpmt AS (
+		CREATE TABLE rcbill.clientcontractinvpmt AS (
   
   
 			SELECT 
