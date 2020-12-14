@@ -183,6 +183,8 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         )
         ;
 
+		select count(*) as clientcontractssubs from rcbill.clientcontractssubs;
+
 		drop table if exists clientcontracthistory;
 
 
@@ -219,6 +221,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
 		-- select * from clientcontracthistory order by cl_clientname;
         
+        select count(*) as clientcontracthistory from rcbill.clientcontracthistory;
         
         
         ### CLIENT CONTRACT PAYMENT INVOICE STAGING TABLE
@@ -324,8 +327,9 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         
         
         
-        -- select * from rcbill.clientcontractinvpmt_stg;
+        -- select * from rcbill.clientcontractinvpmt_stg limit 100;
         
+        select count(*) as clientcontractinvpmt_stg from rcbill.clientcontractinvpmt_stg;
         
         
 		drop table if exists rcbill.clientcontractinvpmt;
@@ -442,6 +446,8 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		CREATE INDEX IDXccip5
 		ON rcbill.clientcontractinvpmt (CON_CONTRACTID);
 
+
+		select count(*) as clientcontractinvpmt from rcbill.clientcontractinvpmt;
 
 
 #3. Create ClientReport table

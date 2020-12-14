@@ -60,6 +60,8 @@ select * from rcbill.clientextendedreport where CL_CLIENTCODE=@clientcode1;
 select * from clientcontractinvpmt where cl_clientcode=@clientcode1;
 select * from rcbill.clientcontractinvpmt_stg where CLIENT_ID=@clientid1;
 
+
+
 select clid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
 		from rcb_invoicesheader
 		where
