@@ -238,6 +238,7 @@ create table rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice(ind
             , ifnull(a.contractenddate,(select reportdate from rcbill_my.rep_custextract where clientcode=a.clientcode)) as LastContractDate
             , (select technology from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER = concat('CA_',a.clientcode)) as network
             , b.CONTRACT_TYPE,b.SERVICE_TYPE,b.FSAN,b.MAC,b.UID,b.username
+			, b.DEVICE_ID, b.DEVICE_TYPE_ID, b.DEVICE_NAME, b.GATEKEEPER_ID, b.GATEKEEPER_NAME
 			, case when a.serviceenddate is null then 1 
 				else 0 end as servicestatus
 
@@ -941,6 +942,9 @@ create table rcbill_extract.IV_PREP_SERVICEINSTANCE1 (index idxipsi1(clientcode)
     , e.currency, e.ratingplanname, e.LASTACTION, e.contractstartdate, e.contractenddate, e.contractstatus, e.servicestartdate, e.serviceenddate, e.servicestatus, e.servicerateid
     , e.package, e.price, e.service, e.CurrentStatus, e.LastContractDate, e.network, e.CONTRACT_TYPE, e.SERVICE_TYPE, e.FSAN, e.MAC, e.UID, e.username
 	, e.serviceinstancenumber, e.StatusChangedDate, e.serviceid
+
+	, e.DEVICE_ID, e.DEVICE_TYPE_ID, e.DEVICE_NAME, e.GATEKEEPER_ID, e.GATEKEEPER_NAME
+
     , e.CLIENT_ID, e.CONTRACT_ID
 	from 
 	(
@@ -1257,6 +1261,8 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
 
 			, a.CLIENT_ID
 			, a.CONTRACT_ID
+            
+			, a.DEVICE_ID, a.DEVICE_TYPE_ID, a.DEVICE_NAME, a.GATEKEEPER_ID, a.GATEKEEPER_NAME
 			-- , (select ips.CUSTOMERACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as CUSTOMERACCOUNTNUMBER
 			-- , (select ips.BILLINGACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as BILLINGACCOUNTNUMBER
 			-- , (select ips.SERVICEACCOUNTNUMBER from rcbill_extract.IV_PREP_SERVICEINSTANCE1 ips where ips.clientcode=a.clientcode and ips.contractcode=a.contractcode) as SERVICEACCOUNTNUMBER
@@ -1325,7 +1331,8 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
 					, ips1.servicerateid as ServiceRateID
 					, ips1.CLIENT_ID as CLIENT_ID
 					, ips1.CONTRACT_ID as CONTRACT_ID
-
+					
+                    , ips1.DEVICE_ID, ips1.DEVICE_TYPE_ID, ips1.DEVICE_NAME, ips1.GATEKEEPER_ID, ips1.GATEKEEPER_NAME
 
 					/*
 					, (select UserName from rcbill.rcb_devices where CSID=b.ID order by UserName asc limit 1) as USERNAME
@@ -1370,6 +1377,9 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
 -- select * from rcbill_extract.IV_SERVICEINSTANCE where clientcode in ('I.000021409');
 -- select * from rcbill_extract.IV_SERVICEINSTANCE where clientcode in ('I9991');
 -- select * from rcbill_extract.IV_SERVICEINSTANCE where clientcode in ('I.000011750') ;
+-- select * from rcbill_extract.IV_SERVICEINSTANCE where clientcode in ('I.000003064') ;
+
+-- select device_name, gatekeeper_name, cpe_type, count(*) from rcbill_extract.IV_SERVICEINSTANCE group by 1,2, 3;
 
 -- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I7') ;
 -- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I748') ;
@@ -1519,6 +1529,8 @@ MISC SALES
     , si.SERVICESTATUS
     , si.serviceinstancestatus as SERVICEINSTANCESTATUS
     , '' as SOURCECHANNEL
+    , si.DEVICE_NAME
+    , si.GATEKEEPER_NAME
 
 
 from rcbill_extract.IV_SERVICEINSTANCE si where 
@@ -1529,6 +1541,7 @@ from rcbill_extract.IV_SERVICEINSTANCE si where
 )
 ;
 
+-- select * from rcbill_extract.IV_INVENTORY;
 
 
 ##################################################################################################################
@@ -2306,7 +2319,7 @@ select * from rcbill_extract.IV_DEBITNOTE;
 ##################################################################################################################
 
 
-
+/*
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9,@custid10,@custid11)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) order by CUSTOMERACCOUNTNUMBER;
 select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11)  order by CUSTOMERACCOUNTNUMBER;
@@ -2319,7 +2332,7 @@ select * from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@cus
 select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) order by PAYMENTRECEIPTID;
 select * from rcbill_extract.IV_NBD where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) order by BILLINGACCOUNTNUMBER;
 select * from rcbill_extract.IV_DISCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3,@custid4,@custid5,@custid6,@custid7,@custid8,@custid9, @custid10,@custid11) order by BILLINGACCOUNTNUMBER;
-
+*/
 
 set @custid1 = 'CA_I14';
 set @custid1 = 'CA_I.000009787';
@@ -2371,6 +2384,11 @@ select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@
 select * from rcbill_extract.IV_NBD where CUSTOMERACCOUNTNUMBER in (@custid1) order by BILLINGACCOUNTNUMBER;
 select * from rcbill_extract.IV_DISCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by BILLINGACCOUNTNUMBER;
 select * from rcbill_extract.IV_BALANCE where CUSTOMERACCOUNTNUMBER in (@custid1) order by SERVICEINSTANCENUMBER desc;
+
+select * from rcbill_extract.CUSTOMERDEBT where REV_CUSTOMERACCOUNTNUMBER in (@custid1) ;
+
+select * from rcbill_extract.IV_CREDITNOTE where BILLINGACCOUNTNUMBER in (select BILLINGACCOUNTNUMBER from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1));
+select * from rcbill_extract.IV_DEBITNOTE where BILLINGACCOUNTNUMBER in (select BILLINGACCOUNTNUMBER from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1));
 
 
 select * from rcbill_extract.IV_PAYMENTHISTORY where customeraccountnumber ='NOT PRESENT';

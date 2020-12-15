@@ -927,7 +927,7 @@ on a.ServiceId=d.Id
 select 
 
 a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, a.NATIP
-, a.UserName
+, a.UserName, a.DevTypeID, a.GKID
 , b.id as ContractId,b.kod as ContractCode, b.ContractType
 , cs.ID as CSID
  , d.ID as ServiceId, d.Name as ServiceType
@@ -1006,6 +1006,12 @@ create table rcbill_my.rep_clientcontractdevices(INDEX idxrccd1 (MAC), INDEX idx
 	ContractCode as CONTRACT_CODE,
 	ContractType as CONTRACT_TYPE,
 	ServiceType as SERVICE_TYPE,
+    ServiceId as SERVICE_ID,
+    DeviceId as DEVICE_ID,
+    DevTypeID as DEVICE_TYPE_ID,
+    (select name from rcbill.rcb_devicetypes where id=DevTypeID) as DEVICE_NAME,
+    GKID as GATEKEEPER_ID,    
+    (select name from rcbill.rcb_gatekeepers where ﻿id=GKID) as GATEKEEPER_NAME,
 	NATIP as FSAN,
 	mac as MAC,
 	phoneno as UID,
@@ -1018,6 +1024,7 @@ create table rcbill_my.rep_clientcontractdevices(INDEX idxrccd1 (MAC), INDEX idx
 select count(*) as rep_clientcontractdevices from rcbill_my.rep_clientcontractdevices;
 
 -- select * from rcbill_my.rep_clientcontractdevices where client_code='I.000011750';
+-- select * from rcbill_my.rep_clientcontractdevices where client_code='I.000003064';
 -- select * from rcbill.rcb_contractservices;
 ##############################################################
 
