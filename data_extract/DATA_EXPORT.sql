@@ -375,3 +375,60 @@ LINES TERMINATED BY '\r\n'
 FROM rcbill_extract.IV_BALANCE
 ;
 
+#####################################################################
+## CREDIT NOTE
+
+select 'CREDIT NOTE' AS TABLENAME;
+
+select column_name
+    from information_schema.columns
+    where table_name = 'IV_CREDITNOTE'
+    and table_schema = 'rcbill_extract'
+    order by ordinal_position
+    ;
+
+    
+select 	"BILLINGACCOUNTNUMBER",	"CREDITAMOUNT"
+
+union all
+
+select 	ifnull(BILLINGACCOUNTNUMBER,""),	ifnull(CREDITAMOUNT,"")
+
+
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_CREDITNOTE_20201214-1.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+ESCAPED BY '\\'
+LINES TERMINATED BY '\r\n'
+FROM rcbill_extract.IV_CREDITNOTE
+;
+
+#####################################################################
+## DEBIT NOTE
+
+select 'DEBIT NOTE' AS TABLENAME;
+
+select column_name
+    from information_schema.columns
+    where table_name = 'IV_DEBITNOTE'
+    and table_schema = 'rcbill_extract'
+    order by ordinal_position
+    ;
+
+    
+select 	"BILLINGACCOUNTNUMBER",	"DEBITAMOUNT"
+
+union all
+
+select 	ifnull(BILLINGACCOUNTNUMBER,""),	ifnull(DEBITAMOUNT,"")
+
+
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_DEBITNOTE_20201214-1.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+ESCAPED BY '\\'
+LINES TERMINATED BY '\r\n'
+FROM rcbill_extract.IV_DEBITNOTE
+;
+
+#####################################################################

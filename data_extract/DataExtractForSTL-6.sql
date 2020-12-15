@@ -1498,13 +1498,13 @@ MISC SALES
     , case 
 			when si.CPE_TYPE = 'CAPPED INTERNET' then 'MODEM'
 			when si.CPE_TYPE = 'INTERNET' then 'MODEM'
-			when si.CPE_TYPE = 'VOICE' then 'MODEM'
+			when si.CPE_TYPE = 'VOICE' then 'VOIP NUMBER'
 			when si.CPE_TYPE = 'DTV' then 'STBCONAX/STBBESTCAS'
 			when si.CPE_TYPE = 'IPTV' then 'STBRCBOSS'
-			when si.CPE_TYPE = 'NEXTTV' then 'STBRCBOSS'
+			when si.CPE_TYPE = 'NEXTTV' then 'ANDROID BOX'
 			when si.CPE_TYPE = 'CAPPED GNET' then 'ONT'
 			when si.CPE_TYPE = 'GNET' then 'ONT'
-			when si.CPE_TYPE = 'GVOICE' then 'ONT'
+			when si.CPE_TYPE = 'GVOICE' then 'VOIP NUMBER'
             else '' end as INVENTORYSUBTYPE
     
     -- , si.PACKAGENAME
@@ -2189,6 +2189,102 @@ create table rcbill_extract.IV_BALANCE(index idxbal1(SERVICEINSTANCENUMBER),inde
 ;
 ##################################################################################################################
 
+
+-- PREP FOR CUSTOMER DEBT
+-- REP_EXTRACT TABLE NEEDS TO BE READY
+-- BILLING ACCOUNT TABLE NEEDS TO BE READY
+-- rcbill.clientcontractinvpmt NEEDS TO BE READY
+
+drop table if exists rcbill_extract.CUSTOMERDEBT;
+
+create table rcbill_extract.CUSTOMERDEBT 
+(
+
+	select REV_BILLINGACCOUNTNUMBER, REV_CUSTOMERACCOUNTNUMBER, sum(sum_CurrentDebt) as CurrentDebt
+	from 
+	(
+
+		select a.*
+		, ifnull(a.BILLINGACCOUNTNUMBER,
+		-- (select ab.BILLINGACCOUNTNUMBER from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid and ab.accountstatus=1 order by ab.accountstatus desc, ab.billingaccountnumber desc limit 1)) as REV_BILLINGACCOUNTNUMBER
+		(select max(ab.BILLINGACCOUNTNUMBER) from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid 
+		-- and ab.accountstatus=1 
+		limit 1)) as REV_BILLINGACCOUNTNUMBER
+
+		, ifnull(a.CUSTOMERACCOUNTNUMBER,
+		-- (select ab.BILLINGACCOUNTNUMBER from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid and ab.accountstatus=1 order by ab.accountstatus desc, ab.billingaccountnumber desc limit 1)) as REV_BILLINGACCOUNTNUMBER
+		(select max(ab.CUSTOMERACCOUNTNUMBER) from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid 
+		-- and ab.accountstatus=1 
+		limit 1)) as REV_CUSTOMERACCOUNTNUMBER
+
+		from 
+		(
+			select b.clientcode, b.client_id
+			, b.BILLINGACCOUNTNUMBER
+			, b.CUSTOMERACCOUNTNUMBER
+			, b.BILLCYCLE
+			, a.CL_CLIENTCODE
+			, a.CL_CLIENTID
+			, ifnull(sum(a.TotalInvoiceAmount),0) as sum_totalinvoiceamount
+			, ifnull(sum(a.TotalPaymentAmount),0) as sum_TotalPaymentAmount
+			, (ifnull(sum(a.TotalInvoiceAmount),0) - ifnull(sum(a.TotalPaymentAmount),0)) as sum_CurrentDebt
+
+			from 
+			(
+				select * from rcbill.clientcontractinvpmt where cl_clientcode in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and CurrentDebt<>0) -- and CLIENTID=@clientid1) 
+			) a 
+			left join 
+			-- rcbill_extract.IV_BILLINGACCOUNT b
+			rcbill_extract.BILLINGACCOUNT_KEY b
+			on 
+			a.CL_CLIENTID=b.client_id
+			and
+			a.CON_CONTRACTID=b.contract_id
+
+			 group by 1,2,3,4,5,6,7
+		) a 
+
+
+	) a 
+	group by REV_BILLINGACCOUNTNUMBER, REV_CUSTOMERACCOUNTNUMBER
+
+)
+;
+
+-- select * from rcbill_extract.CUSTOMERDEBT;
+
+
+-- CREDIT NOTE
+drop table if exists rcbill_extract.IV_CREDITNOTE;
+
+create table rcbill_extract.IV_CREDITNOTE
+(
+	select REV_BILLINGACCOUNTNUMBER as BILLINGACCOUNTNUMBER, (CurrentDebt*-1) as CREDITAMOUNT 
+    from rcbill_extract.CUSTOMERDEBT
+    where CurrentDebt<0
+
+);
+
+
+-- DEBIT NOTE
+
+drop table if exists rcbill_extract.IV_DEBITNOTE;
+
+create table rcbill_extract.IV_DEBITNOTE
+(
+	select REV_BILLINGACCOUNTNUMBER as BILLINGACCOUNTNUMBER, CurrentDebt as DEBITAMOUNT 
+    from rcbill_extract.CUSTOMERDEBT
+    where CurrentDebt>0
+
+);
+
+
+/*
+select * from rcbill_extract.IV_CREDITNOTE;
+select * from rcbill_extract.IV_DEBITNOTE;
+*/
+
+##################################################################################################################
 
 
 -- select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in ('CA_I14','CA_I.000009787','CA_I.000011750','CA_I.000018187','CA_I.000011998','CA_I7','CA_I.000021409','CA_I.000021390')  order by ACCOUNTNUMBER;
