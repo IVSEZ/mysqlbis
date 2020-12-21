@@ -256,9 +256,11 @@ create table rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice(ind
              order by a.CLIENT_ID asc, a.contractstatus desc, a.CONTRACT_ID desc
 );
 
+-- select * from rcbill.clientcontractsservicepackageprice where clientcode in ('I.000010002');
+-- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I.000010002') order by contractenddate desc;
 
--- select * from IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I.000011750') order by contractenddate desc;
--- select * from IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I9991') order by contractenddate desc;
+-- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I.000011750') order by contractenddate desc;
+-- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I9991') order by contractenddate desc;
 
 select 'IV_PREP_BILLINGACCOUNT_A1' AS TABLENAME;
 
@@ -1009,7 +1011,8 @@ create table rcbill_extract.IV_PREP_SERVICEINSTANCE1 (index idxipsi1(clientcode)
 -- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where CUSTOMERACCOUNTNUMBER in ('CA_I.000011750') ;
 -- select * from rcbill.rcb_contracts where clid in (select id from rcbill.rcb_tclients where kod='I.000011750');
 -- select * from rcbill.rcb_contractservices where cid in (select id from rcbill.rcb_contracts where clid in (select id from rcbill.rcb_tclients where kod='I.000011750'));
--- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I.000011750') ;
+-- select * from rcbill_extract.IV_PREP_SERVICEINSTANCE1 where clientcode in ('I.000010002') ;
+-- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I.000010002') ;
 
 ####################################################################################################
 drop table if exists rcbill_extract.CLIENTCONTRACTLASTSUBDATE;
@@ -1439,6 +1442,52 @@ rcbill_extract.IV_SERVICEINSTANCE si
 select * from rcbill_extract.IV_SERVICEINSTANCE;
 */
 
+
+##### GET ALL NON NULL SUBFROM AND SUBTO DATES
+
+
+drop table if exists rcbill_extract.SERVICEINSTANCE_SUBDATES;
+
+create table rcbill_extract.SERVICEINSTANCE_SUBDATES(index i1(CUSTOMERACCOUNTNUMBER),index i2(BILLINGACCOUNTNUMBER),index i3(SERVICEACCOUNTNUMBER),index i4(SERVICEINSTANCEIDENTIFIER),index i5(SERVICEINSTANCENUMBER))
+(
+	select CUSTOMERACCOUNTNUMBER, BILLINGACCOUNTNUMBER, SERVICEACCOUNTNUMBER, SERVICEINSTANCEIDENTIFIER, SERVICEINSTANCENUMBER
+	, SUBFROM, SUBTO, SUBPERIOD
+	from rcbill_extract.IV_SERVICEINSTANCE
+	where SUBFROM is not null and SUBTO is not null and (CPE_TYPE like '%SUBSCRIPTION%')
+)
+;
+
+-- select * from rcbill_extract.SERVICEINSTANCE_SUBDATES;
+
+#### keep an extract of IV_SERVICEINSTANCE before we update it
+drop table if exists rcbill_extract.SERVICEINSTANCE_temp1;
+create table rcbill_extract.SERVICEINSTANCE_temp1
+(
+select * from rcbill_extract.IV_SERVICEINSTANCE
+) 
+;
+
+### update SERVICEINSTANCE table to change subfrom subto and subperiod where it was null
+
+set sql_safe_updates=0;
+
+update rcbill_extract.IV_SERVICEINSTANCE t1
+inner join 
+rcbill_extract.SERVICEINSTANCE_SUBDATES t2
+on 
+t1.CUSTOMERACCOUNTNUMBER=t2.CUSTOMERACCOUNTNUMBER
+and t1.BILLINGACCOUNTNUMBER=t2.BILLINGACCOUNTNUMBER 
+and t1.SERVICEACCOUNTNUMBER=t2.SERVICEACCOUNTNUMBER 
+and t1.SERVICEINSTANCEIDENTIFIER=t2.SERVICEINSTANCEIDENTIFIER
+
+set 
+t1.SUBFROM=t2.SUBFROM,
+t1.SUBTO=t2.SUBTO,
+t1.SUBPERIOD=t2.SUBPERIOD
+
+
+where t1.SUBFROM is null and t1.SUBTO is null and t1.SUBPERIOD is null and (t1.CPE_TYPE like '%SUBSCRIPTION%')
+;
 
 ##################################################################################################################
 -- SERVICE INSTANCE CHARGE
@@ -2408,6 +2457,11 @@ select * from rcbill_extract.IV_DEBITNOTE where BILLINGACCOUNTNUMBER in (select 
 
 
 select * from rcbill_extract.IV_PAYMENTHISTORY where customeraccountnumber ='NOT PRESENT';
+
+select REV_CUSTOMERACCOUNTNUMBER, count(REV_BILLINGACCOUNTNUMBER) as BillingAccounts, sum(CurrentDebt) as CurrentDebt
+from rcbill_extract.CUSTOMERDEBT
+group by REV_CUSTOMERACCOUNTNUMBER
+;
 
 /*
 

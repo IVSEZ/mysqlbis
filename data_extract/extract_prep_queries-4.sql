@@ -25,6 +25,9 @@ set @clientid1=693674;
 set @clientid1=702439;
 set @clientid1=712211;
 
+set @clientid1=721961;
+
+
 
 select * from rcbill.clientreport where CL_CLIENTCODE=@clientcode1;
 select * from rcbill.clientextendedreport where CL_CLIENTCODE=@clientcode1;
@@ -245,7 +248,7 @@ group by REV_BILLINGACCOUNTNUMBER, REV_CUSTOMERACCOUNTNUMBER
 
 
 select clid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
-		from rcb_invoicesheader
+		from rcbill.rcb_invoicesheader
 		where
 		(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
 		-- and year(data)>=2012
@@ -261,7 +264,7 @@ select clid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),
 			-- , sum(money) as LastPaidAmount
 			-- , (select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=clid and date(ac.enterdate)=date(max(EnterDate))) as LastPaidAmount  
 			, COALESCE(count(*),0) as TotalPayments, date(min(ENTERDATE)) as FirstPaymentDate, date(max(ENTERDATE)) as LastPaymentDate
-			from rcb_casa
+			from rcbill.rcb_casa
 			where
 			(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
 			-- and year(ENTERDATE)>=2012
@@ -274,7 +277,7 @@ select clid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),
 
 
 select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
-		from rcb_invoicesheader
+		from rcbill.rcb_invoicesheader
 		where
 		(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
 		and year(data)>=2016
@@ -291,7 +294,7 @@ select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(to
 			-- , sum(money) as LastPaidAmount
 			-- , (select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=clid and date(ac.enterdate)=date(max(EnterDate))) as LastPaidAmount  
 			, COALESCE(count(*),0) as TotalPayments, date(min(ENTERDATE)) as FirstPaymentDate, date(max(ENTERDATE)) as LastPaymentDate
-			from rcb_casa
+			from rcbill.rcb_casa
 			where
 			(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
 			and year(ENTERDATE)>=2016
@@ -418,7 +421,11 @@ select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(to
 select hard, type, sum(total) from rcb_invoicesheader where clid=@clientid1 group by hard, type;
 
 
-select * from rcb_casa where  clid=@clientid1;
+select * from rcbill.rcb_invoicesheader where CLID=@clientid1;
+select * from rcbill.rcb_casa where  clid=@clientid1;
+select * from rcbill.rcb_invoicescontents where CLID=@clientid1;
+
+select * from  rcbill_extract.CLIENTCONTRACTLASTINVDATE where CLID=@clientid1;
 
 select hard, sum(money) from rcb_casa where  clid=@clientid1 group by hard;
 

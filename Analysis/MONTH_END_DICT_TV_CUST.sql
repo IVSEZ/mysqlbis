@@ -43,6 +43,22 @@
 -- set @period='2020-11-30';
 
 /*
+
+select * from rcbill_my.customercontractactivity 
+where period in ('2020-07-31','2020-08-31','2020-09-30') and REPORTED='Y'
+-- and Network='GPON'
+order by clientcode
+;
+
+
+select period, network, count(distinct clientcode) as d_client, sum(activecount) as active from rcbill_my.customercontractactivity 
+where period in ('2020-07-31','2020-08-31','2020-09-30') and REPORTED='Y'
+-- and Network='GPON'
+group by period, network
+order by period, network
+;
+
+
 select * from rcbill_my.customercontractactivity 
 where period=@period and REPORTED='Y'
 and package in ('Extravagance','Extravagance Corporate','French')
