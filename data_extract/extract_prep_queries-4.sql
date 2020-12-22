@@ -54,16 +54,230 @@ on
 
 
 
+set @clientid1=721961;
+
+
 
 select * from rcbill.clientreport where CL_CLIENTCODE=@clientcode1;
 select * from rcbill.clientextendedreport where CL_CLIENTCODE=@clientcode1;
-select * from clientcontractinvpmt where cl_clientcode=@clientcode1;
+select * from rcbill.clientcontractinvpmt where cl_clientcode=@clientcode1;
 select * from rcbill.clientcontractinvpmt_stg where CLIENT_ID=@clientid1;
 
 
 
+
+
+set @clientcode1='I14976';
+set @clientid1=668288;
+
+select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and CurrentDebt<>0;-- and CLIENTID=@clientid1;
+select * from rcbill.clientcontractinvpmt where cl_clientcode in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and CurrentDebt<>0);-- and clientid=@clientid1);
+
+select * from rcbill_extract.IV_BILLINGACCOUNT;-- where client_id=@clientid1;
+select * from rcbill_extract.BILLINGACCOUNT_KEY;-- where client_id=@clientid1;
+
+select a.*, b.*
+from
+(
+	select 
+	reportdate, CLIENTCODE, CLIENTID, IsAccountActive, AccountActivityStage, CurrentDebt, CLIENTNAME
+	-- , clientclass, clientaddress, clientlocation, clientarea, clientemail, activenetwork, clientnin, clientphone, address, moladdress, MOLRegistrationAddress, firstcontractdate, firstinvoicedate, firstpaymentdate, firstactivedate, dayssincelastactive, a1_parcel, a2_parcel, a3_parcel, PARCEL_PRESENT, EMAIL_PRESENT, NIN_PRESENT, ADDRESS_PRESENT
+	, ONE_YEAR
+
+	from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and CurrentDebt<>0 -- and clientid=@clientid1
+) a 
+left join 
+rcbill_extract.IV_BILLINGACCOUNT b
+on 
+a.clientid=b.client_id
+
+;
+
+select a.*, b.*
+from 
+(
+	select * from rcbill.clientcontractinvpmt where cl_clientcode in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and CurrentDebt<>0)-- and CLIENTID=@clientid1) 
+) a 
+left join 
+-- rcbill_extract.IV_BILLINGACCOUNT b
+rcbill_extract.BILLINGACCOUNT_KEY b
+on 
+a.CL_CLIENTID=b.client_id
+and
+a.CON_CONTRACTID=b.contract_id
+;
+
+
+select b.clientcode, b.client_id
+, b.BILLINGACCOUNTNUMBER
+, b.CUSTOMERACCOUNTNUMBER
+, b.BILLCYCLE
+, a.CL_CLIENTCODE
+, a.cl_clientid
+, ifnull(sum(a.TotalInvoiceAmount),0) as sum_totalinvoiceamount
+, ifnull(sum(a.TotalPaymentAmount),0) as sum_TotalPaymentAmount
+, (ifnull(sum(a.TotalInvoiceAmount),0) - ifnull(sum(a.TotalPaymentAmount),0)) as sum_CurrentDebt
+from 
+(
+	select * from rcbill.clientcontractinvpmt where cl_clientcode in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and CurrentDebt<>0) -- and CLIENTID=@clientid1) 
+) a 
+left join 
+-- rcbill_extract.IV_BILLINGACCOUNT b
+rcbill_extract.BILLINGACCOUNT_KEY b
+on 
+a.CL_CLIENTID=b.client_id
+and
+a.CON_CONTRACTID=b.contract_id
+
+group by 1,2,3,4,5,6,7
+;
+
+
+select a.*
+, ifnull(a.BILLINGACCOUNTNUMBER,
+-- (select ab.BILLINGACCOUNTNUMBER from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid and ab.accountstatus=1 order by ab.accountstatus desc, ab.billingaccountnumber desc limit 1)) as REV_BILLINGACCOUNTNUMBER
+(select max(ab.BILLINGACCOUNTNUMBER) from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid 
+-- and ab.accountstatus=1 
+limit 1)) as REV_BILLINGACCOUNTNUMBER
+
+, ifnull(a.CUSTOMERACCOUNTNUMBER,
+-- (select ab.BILLINGACCOUNTNUMBER from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid and ab.accountstatus=1 order by ab.accountstatus desc, ab.billingaccountnumber desc limit 1)) as REV_BILLINGACCOUNTNUMBER
+(select max(ab.CUSTOMERACCOUNTNUMBER) from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid 
+-- and ab.accountstatus=1 
+limit 1)) as REV_CUSTOMERACCOUNTNUMBER
+
+from 
+(
+	select b.clientcode, b.client_id
+	, b.BILLINGACCOUNTNUMBER
+	, b.CUSTOMERACCOUNTNUMBER
+	, b.BILLCYCLE
+	, a.CL_CLIENTCODE
+    , a.CL_CLIENTID
+	, ifnull(sum(a.TotalInvoiceAmount),0) as sum_totalinvoiceamount
+	, ifnull(sum(a.TotalPaymentAmount),0) as sum_TotalPaymentAmount
+	, (ifnull(sum(a.TotalInvoiceAmount),0) - ifnull(sum(a.TotalPaymentAmount),0)) as sum_CurrentDebt
+
+	from 
+	(
+		select * from rcbill.clientcontractinvpmt where cl_clientcode in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and CurrentDebt<>0) -- and CLIENTID=@clientid1) 
+	) a 
+	left join 
+	-- rcbill_extract.IV_BILLINGACCOUNT b
+	rcbill_extract.BILLINGACCOUNT_KEY b
+	on 
+	a.CL_CLIENTID=b.client_id
+	and
+	a.CON_CONTRACTID=b.contract_id
+
+	 group by 1,2,3,4,5,6,7
+) a 
+;
+
+
+select REV_BILLINGACCOUNTNUMBER, REV_CUSTOMERACCOUNTNUMBER, sum(sum_CurrentDebt) as CurrentDebt
+from 
+(
+
+	select a.*
+	, ifnull(a.BILLINGACCOUNTNUMBER,
+	-- (select ab.BILLINGACCOUNTNUMBER from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid and ab.accountstatus=1 order by ab.accountstatus desc, ab.billingaccountnumber desc limit 1)) as REV_BILLINGACCOUNTNUMBER
+	(select max(ab.BILLINGACCOUNTNUMBER) from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid 
+	-- and ab.accountstatus=1 
+	limit 1)) as REV_BILLINGACCOUNTNUMBER
+
+	, ifnull(a.CUSTOMERACCOUNTNUMBER,
+	-- (select ab.BILLINGACCOUNTNUMBER from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid and ab.accountstatus=1 order by ab.accountstatus desc, ab.billingaccountnumber desc limit 1)) as REV_BILLINGACCOUNTNUMBER
+	(select max(ab.CUSTOMERACCOUNTNUMBER) from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid 
+	-- and ab.accountstatus=1 
+	limit 1)) as REV_CUSTOMERACCOUNTNUMBER
+
+	from 
+	(
+		select b.clientcode, b.client_id
+		, b.BILLINGACCOUNTNUMBER
+		, b.CUSTOMERACCOUNTNUMBER
+		, b.BILLCYCLE
+		, a.CL_CLIENTCODE
+		, a.CL_CLIENTID
+		, ifnull(sum(a.TotalInvoiceAmount),0) as sum_totalinvoiceamount
+		, ifnull(sum(a.TotalPaymentAmount),0) as sum_TotalPaymentAmount
+		, (ifnull(sum(a.TotalInvoiceAmount),0) - ifnull(sum(a.TotalPaymentAmount),0)) as sum_CurrentDebt
+
+		from 
+		(
+			select * from rcbill.clientcontractinvpmt where cl_clientcode in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and CurrentDebt<>0) -- and CLIENTID=@clientid1) 
+		) a 
+		left join 
+		-- rcbill_extract.IV_BILLINGACCOUNT b
+		rcbill_extract.BILLINGACCOUNT_KEY b
+		on 
+		a.CL_CLIENTID=b.client_id
+		and
+		a.CON_CONTRACTID=b.contract_id
+
+		 group by 1,2,3,4,5,6,7
+	) a 
+
+
+) a 
+group by REV_BILLINGACCOUNTNUMBER, REV_CUSTOMERACCOUNTNUMBER
+;
+
+
+
+select REV_BILLINGACCOUNTNUMBER,REV_CUSTOMERACCOUNTNUMBER, sum(sum_CurrentDebt) as CurrentDebt
+from 
+(
+
+	select a.*
+	, ifnull(a.BILLINGACCOUNTNUMBER,
+	-- (select ab.BILLINGACCOUNTNUMBER from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid and ab.accountstatus=1 order by ab.accountstatus desc, ab.billingaccountnumber desc limit 1)) as REV_BILLINGACCOUNTNUMBER
+	(select max(ab.BILLINGACCOUNTNUMBER) from rcbill_extract.IV_BILLINGACCOUNT ab where ab.client_id=a.cl_clientid 
+	-- and ab.accountstatus=1 
+	limit 1)) as REV_BILLINGACCOUNTNUMBER
+	from 
+	(
+		select b.clientcode, b.client_id
+		, b.BILLINGACCOUNTNUMBER
+		, b.CUSTOMERACCOUNTNUMBER
+		, b.BILLCYCLE
+		, a.CL_CLIENTCODE
+		, a.CL_CLIENTID
+		, ifnull(sum(a.TotalInvoiceAmount),0) as sum_totalinvoiceamount
+		, ifnull(sum(a.TotalPaymentAmount),0) as sum_TotalPaymentAmount
+		, (ifnull(sum(a.TotalInvoiceAmount),0) - ifnull(sum(a.TotalPaymentAmount),0)) as sum_CurrentDebt
+
+		from 
+		(
+			select * from rcbill.clientcontractinvpmt where cl_clientcode in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and CurrentDebt<>0) -- and CLIENTID=@clientid1) 
+		) a 
+		left join 
+		-- rcbill_extract.IV_BILLINGACCOUNT b
+		rcbill_extract.BILLINGACCOUNT_KEY b
+		on 
+		a.CL_CLIENTID=b.client_id
+		and
+		a.CON_CONTRACTID=b.contract_id
+
+		 group by 1,2,3,4,5,6,7
+	) a 
+
+
+) a 
+group by REV_BILLINGACCOUNTNUMBER, REV_CUSTOMERACCOUNTNUMBER
+;
+
+
+
+
+###############################################################################
+
+
+
+
 select clid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
-		from rcb_invoicesheader
+		from rcbill.rcb_invoicesheader
 		where
 		(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
 		-- and year(data)>=2012
@@ -79,7 +293,7 @@ select clid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),
 			-- , sum(money) as LastPaidAmount
 			-- , (select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=clid and date(ac.enterdate)=date(max(EnterDate))) as LastPaidAmount  
 			, COALESCE(count(*),0) as TotalPayments, date(min(ENTERDATE)) as FirstPaymentDate, date(max(ENTERDATE)) as LastPaymentDate
-			from rcb_casa
+			from rcbill.rcb_casa
 			where
 			(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
 			-- and year(ENTERDATE)>=2012
@@ -92,7 +306,7 @@ select clid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),
 
 
 select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
-		from rcb_invoicesheader
+		from rcbill.rcb_invoicesheader
 		where
 		(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
 		and year(data)>=2016
@@ -109,7 +323,7 @@ select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(to
 			-- , sum(money) as LastPaidAmount
 			-- , (select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=clid and date(ac.enterdate)=date(max(EnterDate))) as LastPaidAmount  
 			, COALESCE(count(*),0) as TotalPayments, date(min(ENTERDATE)) as FirstPaymentDate, date(max(ENTERDATE)) as LastPaymentDate
-			from rcb_casa
+			from rcbill.rcb_casa
 			where
 			(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
 			and year(ENTERDATE)>=2016
@@ -236,7 +450,11 @@ select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(to
 select hard, type, sum(total) from rcb_invoicesheader where clid=@clientid1 group by hard, type;
 
 
-select * from rcb_casa where  clid=@clientid1;
+select * from rcbill.rcb_invoicesheader where CLID=@clientid1;
+select * from rcbill.rcb_casa where  clid=@clientid1;
+select * from rcbill.rcb_invoicescontents where CLID=@clientid1;
+
+select * from  rcbill_extract.CLIENTCONTRACTLASTINVDATE where CLID=@clientid1;
 
 select hard, sum(money) from rcb_casa where  clid=@clientid1 group by hard;
 

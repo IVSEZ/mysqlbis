@@ -38,9 +38,27 @@
 -- set @period='2020-06-30';
 -- set @period='2020-07-31';
 -- set @period='2020-08-31';
- set @period='2020-09-30';
+-- set @period='2020-09-30';
+-- set @period='2020-10-31';
+-- set @period='2020-11-30';
 
 /*
+
+select * from rcbill_my.customercontractactivity 
+where period in ('2020-07-31','2020-08-31','2020-09-30') and REPORTED='Y'
+-- and Network='GPON'
+order by clientcode
+;
+
+
+select period, network, count(distinct clientcode) as d_client, sum(activecount) as active from rcbill_my.customercontractactivity 
+where period in ('2020-07-31','2020-08-31','2020-09-30') and REPORTED='Y'
+-- and Network='GPON'
+group by period, network
+order by period, network
+;
+
+
 select * from rcbill_my.customercontractactivity 
 where period=@period and REPORTED='Y'
 and package in ('Extravagance','Extravagance Corporate','French')
@@ -84,6 +102,7 @@ select servicecategory, package
 , `20200131`, `20200229`, `20200331`
 , `20200430`, `20200531`, `20200630`
 , `20200731`, `20200831`, `20200930`
+, `20201031`, `20201130`
  from rcbill_my.rep_activenumberlastday_pv;
 
 select servicecategory

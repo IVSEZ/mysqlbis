@@ -30,3 +30,5 @@ INSERTEDON=now()
 select count(*) from rcb_traffictypes;
 
 select * from rcbill.rcb_traffictypes;
+
+-- create index idxtt1 on rcbill.rcb_traffictypes(trafficid);

@@ -77,7 +77,7 @@ CREATE TABLE `rcb_tclients` (
 use rcbill;
 -- SET SESSION sql_mode = '';
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTClients-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTClients-21122020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_tclients` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_tclients` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -431,7 +431,7 @@ CREATE TABLE `rcb_contracts` (
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContracts-13122020.csv'
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContracts-21122020.csv'
 -- REPLACE INTO TABLE `rcbill`.`rcb_contracts` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_contracts` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -625,7 +625,7 @@ CREATE TABLE `rcb_contractdiscounts` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractDiscounts-13122020.csv'
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractDiscounts-21122020.csv'
 -- REPLACE INTO TABLE `rcbill`.`rcb_contractdiscounts` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_contractdiscounts` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -783,7 +783,7 @@ CREATE TABLE `rcb_devices` (
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevices-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevices-21122020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_devices` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_devices` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -879,106 +879,106 @@ create table client contract devices
 drop table if exists rcbill.clientcontractdevices;
 create table rcbill.clientcontractdevices(INDEX idxccd1 (mac), INDEX idxccd2 (contractcode), INDEX idxccd3 (clientcode), INDEX idxccd4 (phoneno), INDEX idxccd5(CSID), INDEX idxccd6(ContractId)) as 
 (
-/*
-select a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, b.id as ContractId,b.kod as ContractCode, b.ContractType
-, d.Name as ServiceType
-, b.clid, c.id as ClientId, c.kod as ClientCode, c.firm as ClientName, c.address as ClientAddress
-from 
-rcbill.rcb_devices a 
-inner join 
-rcbill.rcb_contracts b 
-on a.contractid=b.id
+		/*
+		select a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, b.id as ContractId,b.kod as ContractCode, b.ContractType
+		, d.Name as ServiceType
+		, b.clid, c.id as ClientId, c.kod as ClientCode, c.firm as ClientName, c.address as ClientAddress
+		from 
+		rcbill.rcb_devices a 
+		inner join 
+		rcbill.rcb_contracts b 
+		on a.contractid=b.id
 
-inner join 
-rcbill.rcb_tclients c
+		inner join 
+		rcbill.rcb_tclients c
 
-on b.clid=c.id
+		on b.clid=c.id
 
-inner join 
-rcbill.rcb_services d
-on a.ServiceId=d.Id
-*/
+		inner join 
+		rcbill.rcb_services d
+		on a.ServiceId=d.Id
+		*/
 
-/*UPDATED 2/5/2018*/
+		/*UPDATED 2/5/2018*/
 
-/*
-select a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, b.id as ContractId,b.kod as ContractCode, b.ContractType
-,d.ID as ServiceId, d.Name as ServiceType
-, b.clid, c.id as ClientId, c.kod as ClientCode, c.firm as ClientName, c.address as ClientAddress
-from
-rcbill.rcb_tclients c
-inner join 
-rcbill.rcb_contracts b 
-on b.clid=c.id
+		/*
+		select a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, b.id as ContractId,b.kod as ContractCode, b.ContractType
+		,d.ID as ServiceId, d.Name as ServiceType
+		, b.clid, c.id as ClientId, c.kod as ClientCode, c.firm as ClientName, c.address as ClientAddress
+		from
+		rcbill.rcb_tclients c
+		inner join 
+		rcbill.rcb_contracts b 
+		on b.clid=c.id
 
-left join
-rcbill.rcb_devices a 
-on a.contractid=b.id
+		left join
+		rcbill.rcb_devices a 
+		on a.contractid=b.id
 
-left join 
-rcbill.rcb_services d
-on a.ServiceId=d.Id
-*/
+		left join 
+		rcbill.rcb_services d
+		on a.ServiceId=d.Id
+		*/
 
 
-/*UPDATED 3/5/2018*/
+		/*UPDATED 3/5/2018*/
 
-/*UPDATED 26/7/2018 change inner join to left join*/
-select 
+		/*UPDATED 26/7/2018 change inner join to left join*/
+		select 
 
-a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, a.NATIP
-, a.UserName
-, b.id as ContractId,b.kod as ContractCode, b.ContractType
-, cs.ID as CSID
- , d.ID as ServiceId, d.Name as ServiceType
-, b.clid
-, c.id as ClientId, c.kod as ClientCode, c.firm as ClientName, c.address as ClientAddress
-from
-rcbill.rcb_tclients c
--- inner join 
-left join 
-rcbill.rcb_contracts b 
-on c.id=b.clid
-left join 
-rcbill.rcb_contractservices cs
-on b.id=cs.cid
+		a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, a.NATIP
+		, a.UserName, a.DevTypeID, a.GKID
+		, b.id as ContractId,b.kod as ContractCode, b.ContractType
+		, cs.ID as CSID
+		 , d.ID as ServiceId, d.Name as ServiceType
+		, b.clid
+		, c.id as ClientId, c.kod as ClientCode, c.firm as ClientName, c.address as ClientAddress
+		from
+		rcbill.rcb_tclients c
+		-- inner join 
+		left join 
+		rcbill.rcb_contracts b 
+		on c.id=b.clid
+		left join 
+		rcbill.rcb_contractservices cs
+		on b.id=cs.cid
 
-left join
-rcbill.rcb_devices a 
--- on a.contractid=b.id
-on cs.id=a.CSID
+		left join
+		rcbill.rcb_devices a 
+		-- on a.contractid=b.id
+		on cs.id=a.CSID
 
-left join 
-rcbill.rcb_services d
-on cs.ServiceId=d.Id
+		left join 
+		rcbill.rcb_services d
+		on cs.ServiceId=d.Id
 
-/*
-a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, a.NATIP
-, a.UserName
-, b.id as ContractId,b.kod as ContractCode, b.ContractType
-, cs.ID as CSID
- , d.ID as ServiceId, d.Name as ServiceType
-, b.clid
-, c.id as ClientId, c.kod as ClientCode, c.firm as ClientName, c.address as ClientAddress
-from
-rcbill.rcb_tclients c
--- inner join 
-left join 
-rcbill.rcb_contracts b 
-on b.clid=c.id
-left join 
-rcbill.rcb_contractservices cs
-on b.id=cs.cid
+		/*
+		a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, a.NATIP
+		, a.UserName
+		, b.id as ContractId,b.kod as ContractCode, b.ContractType
+		, cs.ID as CSID
+		 , d.ID as ServiceId, d.Name as ServiceType
+		, b.clid
+		, c.id as ClientId, c.kod as ClientCode, c.firm as ClientName, c.address as ClientAddress
+		from
+		rcbill.rcb_tclients c
+		-- inner join 
+		left join 
+		rcbill.rcb_contracts b 
+		on b.clid=c.id
+		left join 
+		rcbill.rcb_contractservices cs
+		on b.id=cs.cid
 
-left join
-rcbill.rcb_devices a 
--- on a.contractid=b.id
-on cs.id=a.CSID
+		left join
+		rcbill.rcb_devices a 
+		-- on a.contractid=b.id
+		on cs.id=a.CSID
 
-left join 
-rcbill.rcb_services d
-on cs.ServiceId=d.Id
-*/
+		left join 
+		rcbill.rcb_services d
+		on cs.ServiceId=d.Id
+		*/
 )
 ;
 
@@ -996,7 +996,6 @@ drop table if exists rcbill_my.rep_clientcontractdevices;
 
 create table rcbill_my.rep_clientcontractdevices(INDEX idxrccd1 (MAC), INDEX idxrccd2 (UID), INDEX idxrccd3 (CLIENT_CODE), INDEX idxrccd4 (CONTRACT_CODE), INDEX idxrccd5 (FSAN), INDEX idxrccd6(SERVICE_TYPE)) as 
 (
-
 	select 
 	clientid as CLIENT_ID,
 	clientcode as CLIENT_CODE,
@@ -1006,11 +1005,18 @@ create table rcbill_my.rep_clientcontractdevices(INDEX idxrccd1 (MAC), INDEX idx
 	ContractCode as CONTRACT_CODE,
 	ContractType as CONTRACT_TYPE,
 	ServiceType as SERVICE_TYPE,
-	NATIP as FSAN,
+    ServiceId as SERVICE_ID,
+    DeviceId as DEVICE_ID,
+    DevTypeID as DEVICE_TYPE_ID,
+    (select `name` from rcbill.rcb_devicetypes rd where rd.id=ccd.DevTypeID) as DEVICE_NAME,
+    ccd.GKID as GATEKEEPER_ID,
+    (select `name` from rcbill.rcb_gatekeepers gk where gk.ID=ccd.GKID) as GATEKEEPER_NAME,
+    -- (select `name` from rcbill.rcb_gatekeepers gak where gak.﻿id=ccd.GKID) as GATEKEEPER_NAME,
+    NATIP as FSAN,
 	mac as MAC,
 	phoneno as UID,
     username as username
-	from rcbill.clientcontractdevices where deviceid is not null
+	from rcbill.clientcontractdevices ccd where ccd.deviceid is not null
 	order by ClientId
     
 );
@@ -1018,6 +1024,8 @@ create table rcbill_my.rep_clientcontractdevices(INDEX idxrccd1 (MAC), INDEX idx
 select count(*) as rep_clientcontractdevices from rcbill_my.rep_clientcontractdevices;
 
 -- select * from rcbill_my.rep_clientcontractdevices where client_code='I.000011750';
+-- select * from rcbill_my.rep_clientcontractdevices where client_code='I.000003064';
+-- select * from rcbill_my.rep_clientcontractdevices where client_code='I.000022100';
 -- select * from rcbill.rcb_contractservices;
 ##############################################################
 
@@ -1075,7 +1083,7 @@ CREATE TABLE `rcb_tickets` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTickets-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTickets-21122020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1223,7 +1231,7 @@ show index from rcbill.rcb_tickettechusers;
 create index IDXttu1 on rcbill.rcb_tickettechusers (RCBUSERID);
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketTechUsers-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketTechUsers-21122020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_tickettechusers` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 2 LINES 
@@ -1310,7 +1318,7 @@ CREATE INDEX IDXtxtass1
 ON rcb_ticketassignments (TICKETID);
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketAssignments-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketAssignments-21122020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_ticketassignments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1401,7 +1409,7 @@ CREATE TABLE `rcb_ticketcomments` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketComments-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketComments-21122020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_ticketcomments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_ticketcomments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1483,7 +1491,7 @@ CREATE TABLE `rcb_comments` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllComments-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllComments-21122020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1577,7 +1585,7 @@ CREATE TABLE `rcb_devicesold` (
 
 ) ENGINE=InnoDB CHARSET UTF8;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevicesOld-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevicesOld-21122020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_devicesold` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_devicesold` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1694,7 +1702,7 @@ CREATE TABLE `rcb_contractservices` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractServices-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractServices-21122020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_contractservices` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_contractservices` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1800,7 +1808,7 @@ CREATE TABLE `rcb_invoicescontents` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesContents-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesContents-21122020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_invoicescontents` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_invoicescontents` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1971,7 +1979,7 @@ CREATE TABLE `rcb_invoicesheader` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesHeader-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesHeader-21122020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_invoicesheader` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_invoicesheader` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2155,7 +2163,7 @@ CREATE TABLE `rcb_casa` (
 
 #NOTE: PAYTYPE in CASA is the same as negative of ID in rcb_services 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllCASA-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllCASA-21122020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_casa` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_casa` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2340,7 +2348,7 @@ CREATE TABLE `rcb_users` (
 use rcbill;
 -- SET SESSION sql_mode = '';
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUsers-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUsers-21122020.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_users` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 -- IGNORE 1 LINES 
@@ -2468,7 +2476,7 @@ CREATE TABLE `rcb_useractions` (
 
 
 -- SET SESSION sql_mode = '';
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUserActions2019-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUserActions2019-21122020.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_useractions` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_useractions` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2568,7 +2576,7 @@ CREATE TABLE `rcb_ipusage1` (
 
 use rcbill;
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-14052018.csv' 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-13122020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-21122020.csv' 
 
 -- REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_ipusage1` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
@@ -2767,7 +2775,7 @@ create index IDXccspp4 on rcbill.clientcontractsservicepackageprice (service);
 
 -- show index from rcbill.clientcontractsservicepackageprice;
 select count(*) as clientcontractsservicepackageprice from rcbill.clientcontractsservicepackageprice;
--- select * from rcbill.clientcontractsservicepackageprice where clientcode in ('I.000011750');
+-- select * from rcbill.clientcontractsservicepackageprice where clientcode in ('I.000010002');
 
 ########################################################################
 -- show index from rcbill_my.rep_clientcontractdevices;

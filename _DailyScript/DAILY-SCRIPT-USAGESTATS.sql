@@ -50,10 +50,13 @@ create table rcbill.rcb_ipusage as
     
     CREATE INDEX idxrcbipu8
 	ON rcbill.rcb_ipusage (clientid);
+    
+    -- CREATE INDEX idxrcbipu9 
+    -- on rcbill.rcb_ipusage (CLIENTCODE, CLIENTID, CID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE, USAGEDIRECTION);
 
 select count(*) as ipusage from rcbill.rcb_ipusage;
 
-
+-- select * from rcbill.rcb_ipusage order by usagedate desc limit 100;
 
 ########################################################
 drop table if exists rcbill.clientcontractip;
@@ -75,8 +78,58 @@ create index IDXccip5 on rcbill.clientcontractip (clientid);
 select count(*) as clientcontractip from rcbill.clientcontractip;
 ###########################################################
 -- set @kod3='I.000000852';
+
+
+drop table if exists rcbill.clientcontractipusage_stg;
+-- create table rcbill.clientcontractipusage_stg(index idxcciu1(clientcode),index idxcciu2(contractcode),index idxcciu3(CLIENT_ID),index idxcciu4(CONTRACT_ID), index idxcciu5(PROCESSEDCLIENTIP), index idxcciu6(USAGEDATE)) as 
+create table rcbill.clientcontractipusage_stg(index idxcciu6(USAGEDATE)) as 
+(
+	select * from rcbill.clientcontractipusage
+)
+;
+
+select count(*) as clientcontractipusage_stg from rcbill.clientcontractipusage_stg;
+
+
+select count(*) as clientcontractipusage_beforeinsert from rcbill.clientcontractipusage;
+
+insert into rcbill.clientcontractipusage
+(
+	select CLIENTCODE, CLIENTID as CLIENT_ID, CID as CONTRACT_ID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE
+	, ifnull(sum(MB_UL),0) as MB_UL, ifnull(sum(MB_DL),0) as MB_DL, (ifnull(sum(MB_UL),0) + ifnull(sum(MB_DL),0)) as MB_TOTAL
+	from 
+	(
+		select a.*
+		, case when a.USAGEDIRECTION='O' then MB_USED end as MB_UL
+		, case when a.USAGEDIRECTION='I' then MB_USED end as MB_DL
+
+		from 
+		(
+			select i1.CLIENTCODE, i1.CLIENTID, i1.CID, i1.CONTRACTCODE, i1.CLIENTIP, i1.PROCESSEDCLIENTIP, i1.USAGEDATE
+            -- , i1.TRAFFICTYPE
+            , (select name from rcbill.rcb_traffictypes tt where tt.TRAFFICID=i1.TRAFFICTYPE) as TRAFFICTYPE
+				, i1.USAGEDIRECTION, SUM(i1.MB_USED) as MB_USED 
+			from 
+            (
+				select * from rcbill.rcb_ipusage i1
+				where 0=0
+				-- and CLIENTCODE=@kod3
+				-- and date(USAGEDATE)<>date(now())
+				-- and i1.USAGEDATE<date(now())
+                and (USAGEDATE>(select max(usagedate) from rcbill.clientcontractipusage_stg) and USAGEDATE<date(now()) )
+             ) i1
+             group by 1,2,3,4,5,6,7,8,9
+		) a
+	) a 
+	group by CLIENTCODE, CLIENTID, CID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE
+	
+)    
+;
+
+
+/*
 drop table if exists rcbill.clientcontractipusage;
-create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcciu2(contractcode),index idxcciu3(CLIENT_ID),index idxcciu4(CONTRACT_ID), index idxcciu5(PROCESSEDCLIENTIP)) as 
+create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcciu2(contractcode),index idxcciu3(CLIENT_ID),index idxcciu4(CONTRACT_ID), index idxcciu5(PROCESSEDCLIENTIP) , index idxcciu6(USAGEDATE)) as 
 (
 	select CLIENTCODE, CLIENTID as CLIENT_ID, CID as CONTRACT_ID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE
 	, ifnull(sum(MB_UL),0) as MB_UL, ifnull(sum(MB_DL),0) as MB_DL, (ifnull(sum(MB_UL),0) + ifnull(sum(MB_DL),0)) as MB_TOTAL
@@ -92,7 +145,8 @@ create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcc
             from rcbill.rcb_ipusage i1
             where 0=0
 			-- and CLIENTCODE=@kod3
-            and date(USAGEDATE)<>date(now())
+            -- and date(USAGEDATE)<>date(now())
+            and USAGEDATE<>date(now())
 			group by CLIENTCODE, CLIENTID, CID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE, USAGEDIRECTION
 		) a
 	) a 
@@ -100,8 +154,11 @@ create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcc
 
 )
 ;
+*/
+-- create index idxcciu6 on rcbill.clientcontractipusage(USAGEDATE);
 
-select count(*) as clientcontractipusage from rcbill.clientcontractipusage;
+
+select count(*) as clientcontractipusage_afterinsert from rcbill.clientcontractipusage;
 ###########################################################
 
 
@@ -117,12 +174,12 @@ group by
 CLIENTCODE, CLIENTID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, 7, 8
 */
 
-select DISTINCT
-CLIENTCODE, CLIENTID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, MONTH(USAGEDATE) AS USAGE_MTH
-, YEAR(USAGEDATE) AS USAGE_YR, min(USAGEDATE) as FROM_DATE, max(USAGEDATE) as TO_DATE,  count(USAGEDATE) as IPINSTANCES
-from rcbill.clientcontractip
-group by 
-CLIENTCODE, CLIENTID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, 7, 8
+	select DISTINCT
+	CLIENTCODE, CLIENTID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, MONTH(USAGEDATE) AS USAGE_MTH
+	, YEAR(USAGEDATE) AS USAGE_YR, min(USAGEDATE) as FROM_DATE, max(USAGEDATE) as TO_DATE,  count(USAGEDATE) as IPINSTANCES
+	from rcbill.clientcontractip
+	group by 
+	CLIENTCODE, CLIENTID, CLIENTNAME, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, 7, 8
 )
 ;
 
