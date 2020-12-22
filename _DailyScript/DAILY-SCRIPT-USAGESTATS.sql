@@ -88,6 +88,10 @@ create table rcbill.clientcontractipusage_stg(index idxcciu6(USAGEDATE)) as
 )
 ;
 
+select count(*) as clientcontractipusage_stg from rcbill.clientcontractipusage_stg;
+
+
+select count(*) as clientcontractipusage_beforeinsert from rcbill.clientcontractipusage;
 
 insert into rcbill.clientcontractipusage
 (
@@ -154,7 +158,7 @@ create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcc
 -- create index idxcciu6 on rcbill.clientcontractipusage(USAGEDATE);
 
 
-select count(*) as clientcontractipusage from rcbill.clientcontractipusage;
+select count(*) as clientcontractipusage_afterinsert from rcbill.clientcontractipusage;
 ###########################################################
 
 
