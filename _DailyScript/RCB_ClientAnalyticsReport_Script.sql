@@ -19,110 +19,110 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
 
 		CREATE TABLE rcbill.clientcontracts AS (
-		SELECT
-		CL.ID as CL_CLIENTID
-		,CL.FIRM as CL_CLIENTNAME
-		,CL.KOD as CL_CLIENTCODE
-		,CL.CLTYPE as CL_CLTYPE
-		,CL.CLClass as CL_CLCLASS
-		,CLC.NAME as CL_CLCLASSNAME
+						SELECT
+						CL.ID as CL_CLIENTID
+						,CL.FIRM as CL_CLIENTNAME
+						,CL.KOD as CL_CLIENTCODE
+						,CL.CLTYPE as CL_CLTYPE
+						,CL.CLClass as CL_CLCLASS
+						,CLC.NAME as CL_CLCLASSNAME
 
-		,CON.ID AS CON_CONTRACTID
-		,CON.KOD AS CON_CONTRACTCODE
-		,CON.DATA AS CON_CONTRACTDATE
-		,CON.CLID AS CON_CLIENTID
-		,CON.STARTDATE AS CON_STARTDATE
-		,CON.ENDDATE AS CON_ENDDATE
-        
-        -- added creditpolicyid and ratingplanid on 28/05/2018
-        ,CON.CREDITPOLICYID as CON_CREDITPOLICYID
-        ,CON.RATINGPLANID as CON_RATINGPLANID
-		-- ,DATEDIFF(CON.ENDDATE,CON.STARTDATE) as CONPERIOD
-
-
-		,CON.ACTIVE AS CON_ACTIVE
-		,CON.CONTRACTTYPE AS CON_CONTRACTTYPE
-		,CON.LASTACTIONID as CON_LASTACTIONID
-		,CON.PPCard as CON_PPCARD
-		,CON.Template as CON_TEMPLATE
-		,CON.TempActivateStartDate as CON_TEMPACTIVATESTARTDATE
-		,CON.TempActivateEndDate as CON_TEMPACTIVATEENDDATE
-        ,RD.ContractId as RD_CONTRACTID
-        ,RDT.name as RDT_DEVICENAME
-		,NOW() as INSERTEDON
-		-- ,str_to_date('2017-01-19','%Y-%m-%d') as REPORTDATE
-		,@REPORTDATE as REPORTDATE
-
-		,CS.serviceid as CS_SERVICEID
-		,S.NAME as S_SERVICENAME
-		,CS.ServiceRateID as CS_SERVICERATEID
-        ,CS.Number as CS_SUBSCRIPTIONCOUNT
-		,VPNR.Name as VPNR_SERVICETYPE
-		,VPNR.Price as VPNR_SERVICEPRICE
-
-		,CASE  
-			WHEN CON.LASTACTIONID IN (1,10,11,15,19,2,3,9) THEN 'ACTIVE'
-			WHEN CON.LASTACTIONID IN (21,22) and ((@REPORTDATE BETWEEN CON.STARTDATE AND CON.ENDDATE)) THEN 'VALID BUT DEACTIVATED'
-			WHEN CON.LASTACTIONID IN (21,22) and ((@REPORTDATE  BETWEEN CON.TempActivateStartDate AND CON.TempActivateEndDate)) THEN 'TEMP ACTIVATED'    
-			WHEN CON.LASTACTIONID IN (0,12,13,14,20,30,31,33,34,35,39,5,6,7,8,9,22) and ((@REPORTDATE BETWEEN CON.STARTDATE AND CON.ENDDATE)) THEN 'VALID BUT DEACTIVATED'
-		-- 	WHEN CON.LASTACTIONID IN (0,12,13,14,20,30,31,33,34,35,39,5,6,7,8,9,22) THEN 'INACTIVE'
-			ELSE 'INACTIVE' END as CONTRACTCURRENTSTATUS
-
-		,CASE 
-			WHEN (S.NAME like '%subscription%' and VPNR.NAME not like '%only%') or (S.NAME is null)
-			THEN 
-				CASE
-					WHEN CON.EndDate is not null then DATEDIFF(CON.ENDDATE,CON.STARTDATE)
-					WHEN CON.EndDate is null and CS.UpdDate<@REPORTDATE then DATEDIFF(CS.UpdDate,CON.STARTDATE)
-					ELSE DATEDIFF(@REPORTDATE,CON.STARTDATE)
-				END
-			ELSE 0 
-			END as CONPERIOD2
-         ,0 as CONPERIOD   
-		 from 
-		 rcb_tclients CL
-		 LEFT JOIN
-		rcb_contracts CON 
-
-		ON
-		CL.ID=CON.CLID
+						,CON.ID AS CON_CONTRACTID
+						,CON.KOD AS CON_CONTRACTCODE
+						,CON.DATA AS CON_CONTRACTDATE
+						,CON.CLID AS CON_CLIENTID
+						,CON.STARTDATE AS CON_STARTDATE
+						,CON.ENDDATE AS CON_ENDDATE
+						
+						-- added creditpolicyid and ratingplanid on 28/05/2018
+						,CON.CREDITPOLICYID as CON_CREDITPOLICYID
+						,CON.RATINGPLANID as CON_RATINGPLANID
+						-- ,DATEDIFF(CON.ENDDATE,CON.STARTDATE) as CONPERIOD
 
 
-		LEFT JOIN 
-		rcb_contractservices CS
-		on
-		CON.ID=CS.CID
-		
-		LEFT JOIN
-        rcb_devices RD
-        on
-        CON.ID=RD.ContractID
+						,CON.ACTIVE AS CON_ACTIVE
+						,CON.CONTRACTTYPE AS CON_CONTRACTTYPE
+						,CON.LASTACTIONID as CON_LASTACTIONID
+						,CON.PPCard as CON_PPCARD
+						,CON.Template as CON_TEMPLATE
+						,CON.TempActivateStartDate as CON_TEMPACTIVATESTARTDATE
+						,CON.TempActivateEndDate as CON_TEMPACTIVATEENDDATE
+						,RD.ContractId as RD_CONTRACTID
+						,RDT.name as RDT_DEVICENAME
+						,NOW() as INSERTEDON
+						-- ,str_to_date('2017-01-19','%Y-%m-%d') as REPORTDATE
+						,@REPORTDATE as REPORTDATE
 
-		LEFT JOIN
-        rcb_devicetypes RDT
-        on
-		RD.DevTypeID=RDT.ID
-        
-		LEFT JOIN 
-		rcb_clientclasses CLC
-		on
-		CL.CLClass=CLC.ID
+						,CS.serviceid as CS_SERVICEID
+						,S.NAME as S_SERVICENAME
+						,CS.ServiceRateID as CS_SERVICERATEID
+						,CS.Number as CS_SUBSCRIPTIONCOUNT
+						,VPNR.Name as VPNR_SERVICETYPE
+						,VPNR.Price as VPNR_SERVICEPRICE
 
-        
-		LEFT JOIN
-		rcb_services S
-		on CS.ServiceID=S.ID
+						,CASE  
+							WHEN CON.LASTACTIONID IN (1,10,11,15,19,2,3,9) THEN 'ACTIVE'
+							WHEN CON.LASTACTIONID IN (21,22) and ((@REPORTDATE BETWEEN CON.STARTDATE AND CON.ENDDATE)) THEN 'VALID BUT DEACTIVATED'
+							WHEN CON.LASTACTIONID IN (21,22) and ((@REPORTDATE  BETWEEN CON.TempActivateStartDate AND CON.TempActivateEndDate)) THEN 'TEMP ACTIVATED'    
+							WHEN CON.LASTACTIONID IN (0,12,13,14,20,30,31,33,34,35,39,5,6,7,8,9,22) and ((@REPORTDATE BETWEEN CON.STARTDATE AND CON.ENDDATE)) THEN 'VALID BUT DEACTIVATED'
+						-- 	WHEN CON.LASTACTIONID IN (0,12,13,14,20,30,31,33,34,35,39,5,6,7,8,9,22) THEN 'INACTIVE'
+							ELSE 'INACTIVE' END as CONTRACTCURRENTSTATUS
 
-		LEFT JOIN
-		rcb_vpnrates VPNR
-		on CS.ServiceRateID=VPNR.ID
+						,CASE 
+							WHEN (S.NAME like '%subscription%' and VPNR.NAME not like '%only%') or (S.NAME is null)
+							THEN 
+								CASE
+									WHEN CON.EndDate is not null then DATEDIFF(CON.ENDDATE,CON.STARTDATE)
+									WHEN CON.EndDate is null and CS.UpdDate<@REPORTDATE then DATEDIFF(CS.UpdDate,CON.STARTDATE)
+									ELSE DATEDIFF(@REPORTDATE,CON.STARTDATE)
+								END
+							ELSE 0 
+							END as CONPERIOD2
+						 ,0 as CONPERIOD   
+						 from 
+						 rcb_tclients CL
+						 LEFT JOIN
+						rcb_contracts CON 
 
-		WHERE CON.PPCard=0 and CON.Template=0
+						ON
+						CL.ID=CON.CLID
 
-		order by
-		CL_CLIENTNAME,
-		CON_CONTRACTCODE,
-		CON_STARTDATE
+
+						LEFT JOIN 
+						rcb_contractservices CS
+						on
+						CON.ID=CS.CID
+						
+						LEFT JOIN
+						rcb_devices RD
+						on
+						CON.ID=RD.ContractID
+
+						LEFT JOIN
+						rcb_devicetypes RDT
+						on
+						RD.DevTypeID=RDT.ID
+						
+						LEFT JOIN 
+						rcb_clientclasses CLC
+						on
+						CL.CLClass=CLC.ID
+
+						
+						LEFT JOIN
+						rcb_services S
+						on CS.ServiceID=S.ID
+
+						LEFT JOIN
+						rcb_vpnrates VPNR
+						on CS.ServiceRateID=VPNR.ID
+
+						WHERE CON.PPCard=0 and CON.Template=0
+
+						order by
+						CL_CLIENTNAME,
+						CON_CONTRACTCODE,
+						CON_STARTDATE
 		);
 
 		-- drop index IDXClientContracts on clientcontracts;
