@@ -422,7 +422,31 @@ where year(commentdate)=year(now())
 group by commentuser
 order by 2 desc;
 
-select commentuser, date(commentdate) as cmt_date,  count(comment) as comments, count(distinct ticketid) as d_tickets
+/*****************************/
+##### ALL USERS
+
+select commentuser, date(commentdate) as cmt_date, count(distinct ticketid) as d_tickets,  count(comment) as comments
+from 
+rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=year(now())
+-- and commentuser in ('Rahul Walavalkar')
+group by commentuser,2
+order by 2 desc;
+
+select commentuser, date(commentdate) as cmt_date
+, ticketid, tickettype, clientcode , comment
+-- ,  count(comment) as comments, count(distinct ticketid) as d_tickets
+from 
+rcbill_my.clientticket_cmmtjourney
+where year(commentdate)=year(now())
+-- and commentuser in ('Rahul Walavalkar')
+-- group by commentuser,2
+order by 2 desc;
+
+/*****************************/
+
+
+select commentuser, date(commentdate) as cmt_date, count(distinct ticketid) as d_tickets,  count(comment) as comments
 from 
 rcbill_my.clientticket_cmmtjourney
 where year(commentdate)=year(now())
@@ -441,7 +465,10 @@ order by 2 desc;
 
 
 
-select commentuser, date(commentdate) as cmt_date,  count(comment) as comments, count(distinct ticketid) as d_tickets
+
+
+
+select commentuser, date(commentdate) as cmt_date, count(distinct ticketid) as d_tickets,  count(comment) as comments
 from 
 rcbill_my.clientticket_cmmtjourney
 where year(commentdate)=year(now())

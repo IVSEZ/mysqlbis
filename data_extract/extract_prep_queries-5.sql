@@ -123,6 +123,8 @@ where SUBFROM is not null and SUBTO is not null
 ;
 
 
+
+
 SELECT * FROM rcbill_my.customercontractsnapshot where clientcode in (@clientcode1);
 
 
