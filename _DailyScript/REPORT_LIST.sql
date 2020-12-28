@@ -156,7 +156,7 @@ select * from rcbill_my.rep_activenumberavg3 where lastday='2020-06-30';
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2020-11-12','2020-12-10');
+call sp_GetActiveNumberFromTo('2020-12-11','2020-12-23');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
@@ -439,7 +439,7 @@ select commentuser, date(commentdate) as cmt_date
 from 
 rcbill_my.clientticket_cmmtjourney
 where year(commentdate)=year(now())
--- and commentuser in ('Rahul Walavalkar')
+and commentuser in ('Rahul Walavalkar')
 -- group by commentuser,2
 order by 2 desc;
 
@@ -646,3 +646,40 @@ select period, count(1) as customercontractactivity from rcbill_my.customercontr
 group by period order by period desc
 -- limit 5
 ;
+
+select * from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR';
+
+#####################
+## CONAX, BESTCAS etc
+select SERVICE_TYPE, GATEKEEPER_NAME, count(*) as all_count, count(distinct CLIENT_CODE) as clients from rcbill_my.rep_clientcontractdevices
+group by SERVICE_TYPE, GATEKEEPER_NAME
+;
+
+select SERVICE_TYPE, GATEKEEPER_NAME
+-- , count(*) as all_count
+, count(distinct CLIENT_CODE) as clients 
+from 
+(
+	select * from rcbill_my.rep_clientcontractdevices where CLIENT_CODE in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' )
+) a 
+group by SERVICE_TYPE, GATEKEEPER_NAME
+-- with rollup
+;
+
+select SERVICE_TYPE, GATEKEEPER_NAME
+-- , count(*) as all_count
+, count(distinct CLIENT_CODE) as clients 
+from 
+(
+	select * from rcbill_my.rep_clientcontractdevices where CLIENT_CODE in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and IsAccountActive='Active')
+) a 
+group by SERVICE_TYPE, GATEKEEPER_NAME
+-- with rollup
+;
+
+select * from rcbill_my.rep_clientcontractdevices 
+where gatekeeper_name='Conax Mahe' 
+and UID=01802013714
+-- limit 10000
+;
+
