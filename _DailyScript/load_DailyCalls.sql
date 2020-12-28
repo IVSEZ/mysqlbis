@@ -5,7 +5,7 @@ use rcbill_my;
 -- SET @date1='2020-05-29';
 -- SET @date2='2020-05-30';
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-23122020.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-27122020.csv'
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-24082019-02092019.csv'  
  
@@ -106,24 +106,24 @@ insert into rcbill_my.callingclients
 	order by a.calldate
 */
 
-	SELECT 
-    DATE(a.calldate) AS CAll_DATE,
-    TIME(a.calldate) AS CAll_TIME,
-    a.calldate AS calldatetime,
-    a.callnumber,
-    a.callqueuename,
-    a.callagent,
-    a.calleventname,
-    a.waittime,
-    a.talktime,
-    b.firm,
-    b.kod,
-    b.mphone
-FROM
-    a
-        LEFT JOIN
-    b ON b.mphone LIKE CONCAT('%', a.callnumber, '%')
-ORDER BY a.calldate
+		SELECT 
+		DATE(a.calldate) AS CAll_DATE,
+		TIME(a.calldate) AS CAll_TIME,
+		a.calldate AS calldatetime,
+		a.callnumber,
+		a.callqueuename,
+		a.callagent,
+		a.calleventname,
+		a.waittime,
+		a.talktime,
+		b.firm,
+		b.kod,
+		b.mphone
+		FROM
+		a
+			LEFT JOIN
+		b ON b.mphone LIKE CONCAT('%', a.callnumber, '%')
+		ORDER BY a.calldate
 
 )
 ;
