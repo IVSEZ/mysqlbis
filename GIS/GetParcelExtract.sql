@@ -2,6 +2,8 @@ use rcbill_maps;
 
 ###############################
 ## make sure the parcel coords table has been populated
+select * from rcbill.rcb_clientparcels;
+
 
 select date(insertedon) as dateinserted, count(clientparcel) as parcels
 from rcbill.rcb_clientparcelcoords 
