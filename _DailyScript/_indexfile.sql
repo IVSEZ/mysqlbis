@@ -29,25 +29,25 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-RADIO-STATS.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY_SCRIPT_TELEMETRY_PIVOT_2020.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY_SCRIPT_TELEMETRY_PIVOT_2021.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_livetv_ranking2020.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_livetv_ranking2021.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_radio_ranking2020.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_radio_ranking2021.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_ts_ranking2020.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_ts_ranking2021.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2020.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2021.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2020_1.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2021_1.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2020_2.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2021_2.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-CREATE-LOAD.sql

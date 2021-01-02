@@ -106,7 +106,7 @@ insert into rcbill.clientlivetvstats
     (a.SessionStart)>(select max(sessionstart) from rcbill.clientlivetvstats)
 );
 
--- select * from rcbill.clientlivetvstats where date(sessionstart)='2018-08-28'
+-- select * from rcbill.clientlivetvstats where date(sessionstart)='2020-12-31'
 
 ## FIRST TIME
 /*
