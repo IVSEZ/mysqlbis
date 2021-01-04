@@ -1024,6 +1024,146 @@ create table rcbill_my.rep_customers_collection2019(index idxrcc20191(client_cod
 );
 
 select 'created rcbill_my.rep_customers_collection2019' as message;
+
+
+
+#####2020 payments
+/*
+drop table if exists rcbill_my.customers_contracts_collection_pivot2020 ;
+create table rcbill_my.customers_contracts_collection_pivot2020 (index idxccp1 (clientcode), index idxccp2(clid), index idxccp3(cid), index idxccp4(contractcode) ) as 
+(
+		select clid, clientcode, cid, contractcode
+		, ifnull(sum(`202001`),0) as `202001` 
+		, ifnull(sum(`202002`),0) as `202002` 
+		, ifnull(sum(`202003`),0) as `202003` 
+		, ifnull(sum(`202004`),0) as `202004` 
+		, ifnull(sum(`202005`),0) as `202005` 
+		, ifnull(sum(`202006`),0) as `202006` 
+		, ifnull(sum(`202007`),0) as `202007` 
+		, ifnull(sum(`202008`),0) as `202008` 
+		, ifnull(sum(`202009`),0) as `202009` 
+		, ifnull(sum(`202010`),0) as `202010` 
+		, ifnull(sum(`202011`),0) as `202011` 
+		, ifnull(sum(`202012`),0) as `202012` 
+		, sum(TotalPayments2020) as TotalPayments2020
+		, sum(TotalPaymentAmount2020) as TotalPaymentAmount2020
+		from 
+		(    
+			select clid, clientcode, cid, contractcode
+				,case when paymonth=1 then ifnull(sum(totalpaymentamount),0) end as `202001`
+				,case when paymonth=2 then ifnull(sum(totalpaymentamount),0) end as `202002`
+				,case when paymonth=3 then ifnull(sum(totalpaymentamount),0) end as `202003`
+				,case when paymonth=4 then ifnull(sum(totalpaymentamount),0) end as `202004`
+				,case when paymonth=5 then ifnull(sum(totalpaymentamount),0) end as `202005`
+				,case when paymonth=6 then ifnull(sum(totalpaymentamount),0) end as `202006`
+				,case when paymonth=7 then ifnull(sum(totalpaymentamount),0) end as `202007`
+				,case when paymonth=8 then ifnull(sum(totalpaymentamount),0) end as `202008`
+				,case when paymonth=9 then ifnull(sum(totalpaymentamount),0) end as `202009`
+				,case when paymonth=10 then ifnull(sum(totalpaymentamount),0) end as `202010`
+				,case when paymonth=11 then ifnull(sum(totalpaymentamount),0) end as `202011`
+				,case when paymonth=12 then ifnull(sum(totalpaymentamount),0) end as `202012`
+				, max(lastpaymentdate) as LastPaymentDate
+				, sum(totalpayments) as TotalPayments2020
+				, sum(totalpaymentamount) as TotalPaymentAmount2020
+
+			from 
+			rcbill_my.customers_collection
+			where year(LastPaymentDate)=2020
+			group by
+			clid, clientcode, cid, contractcode, PAYMONTH, PAYYEAR
+		-- ,3,4,5,6,7,8,9,10,11,12,13,14
+		) a 
+		group by clid, clientcode, cid, contractcode	
+
+);
+
+select 'created rcbill_my.customers_contracts_collection_pivot2020' as message;
+
+drop table if exists rcbill_my.customers_collection_pivot2020 ;
+create table rcbill_my.customers_collection_pivot2020 (index idxccp1 (clientcode), index idxccp2(clid)) as 
+(
+		select clid, clientcode
+		, ifnull(sum(`202001`),0) as `202001` 
+		, ifnull(sum(`202002`),0) as `202002` 
+		, ifnull(sum(`202003`),0) as `202003` 
+		, ifnull(sum(`202004`),0) as `202004` 
+		, ifnull(sum(`202005`),0) as `202005` 
+		, ifnull(sum(`202006`),0) as `202006` 
+		, ifnull(sum(`202007`),0) as `202007` 
+		, ifnull(sum(`202008`),0) as `202008` 
+		, ifnull(sum(`202009`),0) as `202009` 
+		, ifnull(sum(`202010`),0) as `202010` 
+		, ifnull(sum(`202011`),0) as `202011` 
+		, ifnull(sum(`202012`),0) as `202012` 
+		, sum(TotalPayments2020) as TotalPayments2020
+		, sum(TotalPaymentAmount2020) as TotalPaymentAmount2020
+		from 
+		(    
+			select clid, clientcode
+				,case when paymonth=1 then ifnull(sum(totalpaymentamount),0) end as `202001`
+				,case when paymonth=2 then ifnull(sum(totalpaymentamount),0) end as `202002`
+				,case when paymonth=3 then ifnull(sum(totalpaymentamount),0) end as `202003`
+				,case when paymonth=4 then ifnull(sum(totalpaymentamount),0) end as `202004`
+				,case when paymonth=5 then ifnull(sum(totalpaymentamount),0) end as `202005`
+				,case when paymonth=6 then ifnull(sum(totalpaymentamount),0) end as `202006`
+				,case when paymonth=7 then ifnull(sum(totalpaymentamount),0) end as `202007`
+				,case when paymonth=8 then ifnull(sum(totalpaymentamount),0) end as `202008`
+				,case when paymonth=9 then ifnull(sum(totalpaymentamount),0) end as `202009`
+				,case when paymonth=10 then ifnull(sum(totalpaymentamount),0) end as `202010`
+				,case when paymonth=11 then ifnull(sum(totalpaymentamount),0) end as `202011`
+				,case when paymonth=12 then ifnull(sum(totalpaymentamount),0) end as `202012`
+				, max(lastpaymentdate) as LastPaymentDate
+				, sum(totalpayments) as TotalPayments2020
+				, sum(totalpaymentamount) as TotalPaymentAmount2020
+
+			from 
+			rcbill_my.customers_collection
+			where year(LastPaymentDate)=2020
+			group by
+			clid, clientcode, PAYMONTH, PAYYEAR
+		-- ,3,4,5,6,7,8,9,10,11,12,13,14
+		) a 
+		group by clid, clientcode 	
+
+);
+
+select 'created rcbill_my.customers_collection_pivot2020' as message;
+-- select * from rcbill_my.customers_collection_pivot2020 where clientcode='I.000001076';
+
+drop table if exists rcbill_my.rep_customers_collection2020;
+create table rcbill_my.rep_customers_collection2020(index idxrcc20201(client_code), index idxrcc20202(clientname) ) as 
+(
+		select b.reportdate as ReportDate
+		,b.clientcode as ClientCode
+		,b.clientname as ClientName
+		,b.clientclass as ClientClass
+		,date(b.firstcontractdate) as FirstContractDate
+        ,b.lastpaymentdate as LastPaymentDate
+		,b.lastactivedate as LastActiveDate
+		,b.clientaddress as ClientAddress
+		,b.clientlocation as ClientLocation
+		,c.HOUSING_ESTATE as HousingEstate
+		,c.CLIENT_AREA as ClientArea
+		,c.CLIENT_SUBAREA as ClientSubArea
+
+		, a.clientcode as client_code, a.`202001`, a.`202002`, a.`202003`, a.`202004`, a.`202005`, a.`202006`, a.`202007`, a.`202008`, a.`202009`, a.`202010`, a.`202011`, a.`202012`, a.`TotalPayments2020`, a.`TotalPaymentAmount2020`
+		, b.totalpaymentamount as TotalPaymentOverall
+        from 
+		rcbill_my.rep_allcust b
+		left join
+		rcbill_my.customers_collection_pivot2020 a 
+		on b.clientcode=a.clientcode
+		left join
+		rcbill_my.rep_housingestates c 
+		on b.clientcode=c.CLIENT_CODE
+		order by a.TotalPaymentAmount2020 desc
+);
+
+select 'created rcbill_my.rep_customers_collection2020' as message;
+
+
+
+
 */
 #####################
 

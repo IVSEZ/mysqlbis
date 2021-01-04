@@ -2,6 +2,7 @@ use rcbill_maps;
 
 ###############################
 ## make sure the parcel coords table has been populated
+-- select * from rcbill_my.rep_custconsolidated where clientcode='I.000005755';
 select * from rcbill.rcb_clientparcels;
 
 

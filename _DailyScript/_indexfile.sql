@@ -12,7 +12,7 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@#mysql 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20210102_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20210103_1.out
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
@@ -71,7 +71,7 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\GetActiveNumbers Average -Pivot.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\budget_actual_analysis_2020.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\budget_actual_analysis_2021.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\reports-sales-addons-prepaid-camera.sql

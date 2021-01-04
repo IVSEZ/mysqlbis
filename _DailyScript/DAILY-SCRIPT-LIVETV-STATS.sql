@@ -373,7 +373,8 @@ create table rcbill_my.rep_livetvstats as
 	-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
 	-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
 	from rcbill.clientlivetvstats
-    where year(sessionstart)=year(now())
+    -- where year(sessionstart)=year(now())
+    where year(sessionstart)>2019
 	group by 1,2,3,4,5
 	-- order by 3 desc,2 desc,1 desc,5 desc
     order by 1 asc

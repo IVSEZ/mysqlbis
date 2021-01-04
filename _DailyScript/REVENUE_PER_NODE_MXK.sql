@@ -1034,6 +1034,21 @@ drop table if exists rcbill_my.customers_contracts_collection_pivot ;
 create table rcbill_my.customers_contracts_collection_pivot (index idxccp1 (clientcode), index idxccp2(clid), index idxccp3(cid), index idxccp4(contractcode) ) as 
 (
 		select clid, clientcode, cid, contractcode
+		, ifnull(sum(`202101`),0) as `202101` 
+		, ifnull(sum(`202102`),0) as `202102` 
+		, ifnull(sum(`202103`),0) as `202103` 
+		, ifnull(sum(`202104`),0) as `202104` 
+		, ifnull(sum(`202105`),0) as `202105` 
+		, ifnull(sum(`202106`),0) as `202106` 
+		, ifnull(sum(`202107`),0) as `202107` 
+		, ifnull(sum(`202108`),0) as `202108` 
+		, ifnull(sum(`202109`),0) as `202109` 
+		, ifnull(sum(`202110`),0) as `202110` 
+		, ifnull(sum(`202111`),0) as `202111` 
+		, ifnull(sum(`202112`),0) as `202112` 
+		, ifnull(sum(TotalPayments2021),0) as TotalPayments2021
+		, ifnull(sum(TotalPaymentAmount2021),0) as TotalPaymentAmount2021
+        
 		, ifnull(sum(`202001`),0) as `202001` 
 		, ifnull(sum(`202002`),0) as `202002` 
 		, ifnull(sum(`202003`),0) as `202003` 
@@ -1084,6 +1099,21 @@ create table rcbill_my.customers_contracts_collection_pivot (index idxccp1 (clie
 		from 
 		(    
 			select clid, clientcode, cid, contractcode
+				,case when paymonth=1 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202101`
+				,case when paymonth=2 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202102`
+				,case when paymonth=3 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202103`
+				,case when paymonth=4 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202104`
+				,case when paymonth=5 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202105`
+				,case when paymonth=6 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202106`
+				,case when paymonth=7 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202107`
+				,case when paymonth=8 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202108`
+				,case when paymonth=9 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202109`
+				,case when paymonth=10 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202110`
+				,case when paymonth=11 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202111`
+				,case when paymonth=12 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202112`
+				,case when payyear=2021 then ifnull(sum(totalpayments),0) end as TotalPayments2021
+				,case when payyear=2021 then ifnull(sum(totalpaymentamount),0) end as TotalPaymentAmount2021
+
 				,case when paymonth=1 and payyear=2020 then ifnull(sum(totalpaymentamount),0) end as `202001`
 				,case when paymonth=2 and payyear=2020 then ifnull(sum(totalpaymentamount),0) end as `202002`
 				,case when paymonth=3 and payyear=2020 then ifnull(sum(totalpaymentamount),0) end as `202003`
@@ -1151,6 +1181,21 @@ drop table if exists rcbill_my.customers_collection_pivot;
 create table rcbill_my.customers_collection_pivot (index idxccp1 (clientcode), index idxccp2(clid)) as 
 (
 		select clid, clientcode
+		, ifnull(sum(`202101`),0) as `202101` 
+		, ifnull(sum(`202102`),0) as `202102` 
+		, ifnull(sum(`202103`),0) as `202103` 
+		, ifnull(sum(`202104`),0) as `202104` 
+		, ifnull(sum(`202105`),0) as `202105` 
+		, ifnull(sum(`202106`),0) as `202106` 
+		, ifnull(sum(`202107`),0) as `202107` 
+		, ifnull(sum(`202108`),0) as `202108` 
+		, ifnull(sum(`202109`),0) as `202109` 
+		, ifnull(sum(`202110`),0) as `202110` 
+		, ifnull(sum(`202111`),0) as `202111` 
+		, ifnull(sum(`202112`),0) as `202112` 
+		, ifnull(sum(TotalPayments2021),0) as TotalPayments2021
+		, ifnull(sum(TotalPaymentAmount2021),0) as TotalPaymentAmount2021
+        
 		, ifnull(sum(`202001`),0) as `202001` 
 		, ifnull(sum(`202002`),0) as `202002` 
 		, ifnull(sum(`202003`),0) as `202003` 
@@ -1197,6 +1242,21 @@ create table rcbill_my.customers_collection_pivot (index idxccp1 (clientcode), i
 		from 
 		(    
 			select clid, clientcode
+				,case when paymonth=1 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202101`
+				,case when paymonth=2 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202102`
+				,case when paymonth=3 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202103`
+				,case when paymonth=4 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202104`
+				,case when paymonth=5 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202105`
+				,case when paymonth=6 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202106`
+				,case when paymonth=7 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202107`
+				,case when paymonth=8 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202108`
+				,case when paymonth=9 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202109`
+				,case when paymonth=10 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202110`
+				,case when paymonth=11 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202111`
+				,case when paymonth=12 and payyear=2021 then ifnull(sum(totalpaymentamount),0) end as `202112`
+				,case when payyear=2021 then ifnull(sum(totalpayments),0) end as TotalPayments2021
+				,case when payyear=2021 then ifnull(sum(totalpaymentamount),0) end as TotalPaymentAmount2021
+
 				,case when paymonth=1 and payyear=2020 then ifnull(sum(totalpaymentamount),0) end as `202001`
 				,case when paymonth=2 and payyear=2020 then ifnull(sum(totalpaymentamount),0) end as `202002`
 				,case when paymonth=3 and payyear=2020 then ifnull(sum(totalpaymentamount),0) end as `202003`
@@ -1276,6 +1336,8 @@ create table rcbill_my.rep_customers_collection(index idxrcc1(client_code), inde
 		,c.CLIENT_SUBAREA as ClientSubArea
 
 		, a.clientcode as client_code
+        , a.`202101`, a.`202102`, a.`202103`, a.`202104`, a.`202105`, a.`202106`, a.`202107`, a.`202108`, a.`202109`, a.`202110`, a.`202111`, a.`202112`, a.`TotalPayments2021`, a.`TotalPaymentAmount2021`
+        
         , a.`202001`, a.`202002`, a.`202003`, a.`202004`, a.`202005`, a.`202006`, a.`202007`, a.`202008`, a.`202009`, a.`202010`, a.`202011`, a.`202012`, a.`TotalPayments2020`, a.`TotalPaymentAmount2020`
         , a.`201901`, a.`201902`, a.`201903`, a.`201904`, a.`201905`, a.`201906`, a.`201907`, a.`201908`, a.`201909`, a.`201910`, a.`201911`, a.`201912`, a.`TotalPayments2019`, a.`TotalPaymentAmount2019`
         , a.`201801`, a.`201802`, a.`201803`, a.`201804`, a.`201805`, a.`201806`, a.`201807`, a.`201808`, a.`201809`, a.`201810`, a.`201811`, a.`201812`, a.`TotalPayments2018`, a.`TotalPaymentAmount2018`
@@ -1509,6 +1571,13 @@ as
 			, sum(`TotalPayments2020`) as `TotalPayments2020`
 			, sum(`TotalPaymentAmount2020`) as `TotalPaymentAmount2020`       
 
+            -- added 4 Jan 2021
+			, sum(`202101`) as `202101`, sum(`202102`) as `202102`, sum(`202103`) as `202103`, sum(`202104`) as `202104`
+			, sum(`202105`) as `202105`, sum(`202106`) as `202106`, sum(`202107`) as `202107`, sum(`202108`) as `202108`
+			, sum(`202109`) as `202109`, sum(`202110`) as `202110`, sum(`202111`) as `202111`, sum(`202112`) as `202112`
+			, sum(`TotalPayments2021`) as `TotalPayments2021`
+			, sum(`TotalPaymentAmount2021`) as `TotalPaymentAmount2021`       
+
 			from rcbill_my.cust_cont_payment_cmts_mxk 
 			-- where cl_clientcode='I.000011750'
             -- where CL_CLIENTCODE='I.000018640'
@@ -1574,6 +1643,23 @@ create table rcbill_my.rep_custconsolidated as
 	`lastpaymentdate`,
 	`totalpayments`,
 	`totalpaymentamount`,
+
+	`202101`,
+	`202102`,
+	`202103`,
+	`202104`,
+	`202105`,
+	`202106`,
+	`202107`,
+	`202108`,
+	`202109`,
+	`202110`,
+	`202111`,
+	`202112`,
+	`totalpayments2021`,
+	`totalpaymentamount2021`,
+    `AvgMonthlyPayment2021`,
+
 	`202001`,
 	`202002`,
 	`202003`,
@@ -1645,7 +1731,8 @@ create table rcbill_my.rep_custconsolidated as
 		b.* ,
         ((b.totalpaymentamount2018)/12) as AvgMonthlyPayment2018 ,
         ((b.totalpaymentamount2019)/12) as AvgMonthlyPayment2019,
-        ((b.totalpaymentamount2020)/MONTH(now())) as AvgMonthlyPayment2020,
+        ((b.totalpaymentamount2020)/12) as AvgMonthlyPayment2020,
+        ((b.totalpaymentamount2021)/MONTH(now())) as AvgMonthlyPayment2021,
         
         d.activeservices,
         d.activenetwork,
