@@ -1028,7 +1028,7 @@ select 'created rcbill_my.rep_customers_collection2019' as message;
 
 
 #####2020 payments
-/*
+
 drop table if exists rcbill_my.customers_contracts_collection_pivot2020 ;
 create table rcbill_my.customers_contracts_collection_pivot2020 (index idxccp1 (clientcode), index idxccp2(clid), index idxccp3(cid), index idxccp4(contractcode) ) as 
 (
@@ -1161,7 +1161,9 @@ create table rcbill_my.rep_customers_collection2020(index idxrcc20201(client_cod
 
 select 'created rcbill_my.rep_customers_collection2020' as message;
 
+select ReportDate as period from rcbill_my.rep_customers_collection2020 limit 1;
 
+select * from rcbill_my.rep_customers_collection2020;
 
 
 */
