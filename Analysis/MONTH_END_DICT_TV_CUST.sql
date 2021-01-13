@@ -41,6 +41,7 @@
 -- set @period='2020-09-30';
 -- set @period='2020-10-31';
 -- set @period='2020-11-30';
+ set @period='2020-12-31';
 
 /*
 
@@ -102,7 +103,7 @@ select servicecategory, package
 , `20200131`, `20200229`, `20200331`
 , `20200430`, `20200531`, `20200630`
 , `20200731`, `20200831`, `20200930`
-, `20201031`, `20201130`
+, `20201031`, `20201130`, `20201231`
  from rcbill_my.rep_activenumberlastday_pv;
 
 select servicecategory
@@ -110,6 +111,7 @@ select servicecategory
 , sum(`20171231`)
 , sum(`20181231`)
 , sum(`20191231`)
+, sum(`20201231`)
  from rcbill_my.rep_activenumberlastday_pv
  group by servicecategory
  ;

@@ -256,6 +256,45 @@ from rcbill.clientcontractipmonth where CLIENTCODE='I.000009236' order by USAGE_
 select FROM_DATE, TO_DATE, USAGE_MTH, USAGE_YR, CONTRACTCODE, PROCESSEDCLIENTIP as IP  
 from rcbill.clientcontractipmonth where CLIENTCODE='I.000009236' order by TO_DATE desc;
 
+#### USAGE
+
+
+select usagedate, count(*) from rcbill.clientcontractipusage
+group by usagedate
+order by usagedate desc
+limit 15
+;
+
+
+select usagedate, traffictype, clientcode
+, rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE) as package
+, sum(MB_UL) as MB_UL, sum(MB_DL) as MB_DL, sum(MB_TOTAL) as MB_TOTAL from rcbill.clientcontractipusage
+where usagedate>'2020-12-31'
+group by usagedate, traffictype, clientcode, 4
+order by usagedate desc
+-- limit 1000
+;
+
+
+select usagedate, package, traffictype, count(clientcode) as accounts
+, sum(MB_UL) as MB_UL, sum(MB_DL) as MB_DL, sum(MB_TOTAL) as MB_TOTAL
+from 
+(
+	select usagedate, traffictype, clientcode
+	, rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE) as package
+	, sum(MB_UL) as MB_UL, sum(MB_DL) as MB_DL, sum(MB_TOTAL) as MB_TOTAL from rcbill.clientcontractipusage
+	where usagedate>'2019-12-31'
+	group by usagedate, traffictype, clientcode, 4
+	order by usagedate desc
+) a 
+group by 1,2,3
+order by 1 desc
+;
+
+##########################################################
+
+
+
 -- show index from rcbill.clientcontractip 
 
 -- =======================================

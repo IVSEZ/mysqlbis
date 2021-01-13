@@ -159,6 +159,12 @@ create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcc
 
 
 select count(*) as clientcontractipusage_afterinsert from rcbill.clientcontractipusage;
+
+select usagedate, count(*) from rcbill.clientcontractipusage
+group by usagedate
+order by usagedate desc
+limit 15
+;
 ###########################################################
 
 
