@@ -92,6 +92,17 @@ order by 4 desc
 ;
 */
 
+select period, network, count(distinct clientcode) as d_client, sum(activecount) as active from rcbill_my.customercontractactivity 
+where 
+period in ('2020-07-31','2020-08-31','2020-09-30','2020-10-31','2020-11-30','2020-12-31') 
+and REPORTED='Y'
+-- and Network='GPON'
+group by period, network
+order by period, network
+;
+
+
+
 select servicecategory, package
 -- , `20181031`, `20181130`, `20181231`
 -- , `20161130`
