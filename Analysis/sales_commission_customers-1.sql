@@ -1,3 +1,8 @@
+select * from rcbill_my.rep_custconsolidated;
+select * from rcbill_my.rep_allcust;
+
+
+
 select -- * ,
 reportdate, a.clientcode, a.clientname, IsAccountActive, AccountActivityStage, currentdebt
 , activenetwork, activeservices, activecontracts, activesubscriptions
