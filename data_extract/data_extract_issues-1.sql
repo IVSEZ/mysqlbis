@@ -4,6 +4,8 @@ use rcbill_extract;
 select * from rcbill_extract.IV_SERVICEINSTANCE where SUBFROM is null;
 select * from rcbill_extract.IV_SERVICEINSTANCE where SUBTO is null;
 
+select * from rcbill_extract.IV_SERVICEINSTANCE where SUBTO is null and servicestatus='Not Active';
+
 
 select * from rcbill_extract.IV_BILLSUMMARY where BILLINGACCOUNTNUMBER in ('BA_I15882_I102544.1_2');
 
