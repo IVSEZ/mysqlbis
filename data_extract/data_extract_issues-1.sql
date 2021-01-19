@@ -29,3 +29,20 @@ and
 a.SUBTO is null
 ;
 
+
+select a.*
+, case when a.SUBFROM is null then ifnull(date() as NEWSUBFROM
+, date(b.SERVICEENDDATE) as NEWSUBTO
+
+from 
+rcbill_extract.IV_SERVICEINSTANCE a 
+left join
+rcbill_extract.IV_SERVICEINSTANCE b
+on
+a.SERVICEINSTANCENUMBER=b.SERVICEINSTANCENUMBER
+
+where 
+a.SUBFROM is null
+and
+a.SUBTO is null
+;
