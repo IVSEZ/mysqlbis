@@ -927,7 +927,7 @@ create table rcbill.clientcontractdevices(INDEX idxccd1 (mac), INDEX idxccd2 (co
 		select 
 
 		a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, a.NATIP
-		, a.UserName, a.DevTypeID, a.GKID
+		, a.UserName, a.DevTypeID, a.GKID, a.SerNo
 		, b.id as ContractId,b.kod as ContractCode, b.ContractType
 		, cs.ID as CSID
 		 , d.ID as ServiceId, d.Name as ServiceType
@@ -1012,6 +1012,7 @@ create table rcbill_my.rep_clientcontractdevices(INDEX idxrccd1 (MAC), INDEX idx
     ccd.GKID as GATEKEEPER_ID,
     (select `name` from rcbill.rcb_gatekeepers gk where gk.ID=ccd.GKID) as GATEKEEPER_NAME,
     -- (select `name` from rcbill.rcb_gatekeepers gak where gak.﻿id=ccd.GKID) as GATEKEEPER_NAME,
+    serno as SERNO,
     NATIP as FSAN,
 	mac as MAC,
 	phoneno as UID,
