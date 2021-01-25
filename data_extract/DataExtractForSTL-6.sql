@@ -238,7 +238,7 @@ create table rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice(ind
             , ifnull(a.contractenddate,(select reportdate from rcbill_my.rep_custextract where clientcode=a.clientcode)) as LastContractDate
             , (select technology from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER = concat('CA_',a.clientcode)) as network
             , b.CONTRACT_TYPE,b.SERVICE_TYPE,b.FSAN,b.MAC,b.UID,b.username
-			, b.DEVICE_ID, b.DEVICE_TYPE_ID, b.DEVICE_NAME, b.GATEKEEPER_ID, b.GATEKEEPER_NAME
+			, b.DEVICE_ID, b.DEVICE_TYPE_ID, b.DEVICE_NAME, b.GATEKEEPER_ID, b.GATEKEEPER_NAME, b.SERNO
 			, case when a.serviceenddate is null then 1 
 				else 0 end as servicestatus
 
