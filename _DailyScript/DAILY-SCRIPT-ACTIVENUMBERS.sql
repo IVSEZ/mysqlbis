@@ -9,7 +9,7 @@ use rcbill_my;
 -- SET @rundate='2020-03-01';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-25082019-02092019.csv'
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-29012021.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-30012021.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -171,8 +171,8 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2021-01-26'; SET @perioddate=str_to_date('2021-01-26','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-01-26;2021-01-26.csv'
 -- 	SET @rundate='2021-01-27'; SET @perioddate=str_to_date('2021-01-27','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-01-27;2021-01-27.csv'
 -- 	SET @rundate='2021-01-28'; SET @perioddate=str_to_date('2021-01-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-01-28;2021-01-28.csv'
- 	SET @rundate='2021-01-29'; SET @perioddate=str_to_date('2021-01-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-01-29;2021-01-29.csv'
--- 	SET @rundate='2021-01-30'; SET @perioddate=str_to_date('2021-01-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-01-30;2021-01-30.csv'
+-- 	SET @rundate='2021-01-29'; SET @perioddate=str_to_date('2021-01-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-01-29;2021-01-29.csv'
+ 	SET @rundate='2021-01-30'; SET @perioddate=str_to_date('2021-01-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-01-30;2021-01-30.csv'
 -- 	SET @rundate='2021-01-31'; SET @perioddate=str_to_date('2021-01-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-01-31;2021-01-31.csv'
 
 
