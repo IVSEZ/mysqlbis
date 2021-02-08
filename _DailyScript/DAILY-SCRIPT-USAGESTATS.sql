@@ -97,6 +97,7 @@ insert into rcbill.clientcontractipusage
 (
 	select CLIENTCODE, CLIENTID as CLIENT_ID, CID as CONTRACT_ID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE
 	, ifnull(sum(MB_UL),0) as MB_UL, ifnull(sum(MB_DL),0) as MB_DL, (ifnull(sum(MB_UL),0) + ifnull(sum(MB_DL),0)) as MB_TOTAL
+    , rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE) as PACKAGE 
 	from 
 	(
 		select a.*
@@ -154,6 +155,11 @@ create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcc
 
 )
 ;
+
+
+
+ALTER TABLE rcbill.clientcontractipusage ADD COLUMN PACKAGE varchar(255);
+
 */
 -- create index idxcciu6 on rcbill.clientcontractipusage(USAGEDATE);
 
