@@ -15,7 +15,18 @@
              select * from rcbill_my.customercontractactivity where service ='Subscription iGo';
                select * from rcbill_my.customercontractactivity where service is null;
                 
-        
+ 
+SET SQL_SAFE_UPDATES = 0;
+
+
+update rcbill.clientcontractipusage
+set PACKAGE = rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE)
+where PACKAGE is null
+-- and YEAR(USAGEDATE)=2020
+--  and month(USAGEDATE)=12
+; 
+ 
+ 
 /*
 fields to be updated
 
