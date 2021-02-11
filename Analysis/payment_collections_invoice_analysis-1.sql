@@ -14,6 +14,36 @@ select * from rcbill_my.customers_collection where ContractCode='I.000294517';
 
 set @clid=723711;
 set @clid=728457;
+set @clid=711857;
+
+
+select * from rcbill.rcb_invoicesheader where clid=@clid;
+select * from rcbill.rcb_invoicescontents where clid=@clid;
+select * from rcbill.rcb_casa where clid=@clid;
+select a.ID as CASA_ID,
+a.PAYOBJECTID as CASA_PAYOBJECTID,
+a.PAYTYPE as CASA_PAYTYPE,
+a.CashPointID as CASA_CashPointID,
+a.CLID as CASA_CLID,
+a.PAYDATE as CASA_PAYDATE,
+a.MONEY as CASA_MONEY,
+a.BankReference as CASA_BankReference,
+a.ZAB as CASA_ZAB,
+a.INVID as CASA_INVID,
+a.ENTERDATE as CASA_ENTERDATE,
+a.UPDDATE as CASA_UPDDATE,
+a.USERID as CASA_USERID,
+a.CID as CASA_CID,
+a.BegDate as CASA_BegDate,
+a.EndDate as CASA_EndDate,
+a.RSID as CASA_RSID,
+a.DiscountMoney as CASA_DiscountMoney,
+a.REPORTDATE as CASA_REPORTDATE
+
+from rcbill.rcb_casa where clid=@clid
+group by 
+;
+
 
 select 
 a.ID as CASA_ID,
@@ -162,7 +192,7 @@ select
 	b.DueDate as INVH_DueDate,
 	b.REPORTDATE as INVH_REPORTDATE
 
-/*
+
 , 
 
 	c.ID as INVC_ID,
@@ -195,7 +225,7 @@ select
 	c.CostTotal as INVC_CostTotal,
 	c.DiscountCost as INVC_DiscountCost,
 	c.REPORTDATE as INVC_REPORTDATE
-*/
+
 ,
 	a.ID as CASA_ID,
 	a.PAYOBJECTID as CASA_PAYOBJECTID,
@@ -220,25 +250,78 @@ select
 
 from 
 rcbill.rcb_invoicesheader b 
--- left join 
--- rcbill.rcb_invoicescontents c 
+ left join 
+ rcbill.rcb_invoicescontents c 
+ on 
+ b.ID=c.InvoiceID and b.clid=c.clid and b.cid=c.cid
+
+ left join 
+ rcbill.rcb_casa a 
+
+on a.clid=c.clid and a.cid=c.cid and a.rsid=c.rsid and a.begdate=c.fromdate and a.enddate=c.todate
 -- on 
--- b.ID=c.InvoiceID
+-- b.PaymentID=a.id
+--  b.ID=a.INVID
+
+/*
+rcbill.rcb_casa a 
+left join 
+rcbill.rcb_invoicescontents c 
+on 
+a.clid=c.clid and a.cid=c.cid and a.rsid=c.rsid
 
 left join 
-rcbill.rcb_casa a 
+rcbill.rcb_invoicesheader b
+on c.InvoiceId=b.Id
+*/
 
-on 
--- b.PaymentID=a.id
- b.ID=a.INVID
 
 
 -- where a.cid=2128300
 -- where a.clid=728457
 where b.clid=@clid
 
-
+order by b.id desc
 ;
 
 
 select * from rcbill_my.customers_collection where clientcode='I.000011750';
+
+
+
+
+set @clid=728457;
+set @cid=2128298; -- for bu package
+set @cid=2128300; -- for remote control
+
+select * from rcbill.rcb_invoicesheader where clid=@clid and cid=@cid order by id desc;
+select * from rcbill.rcb_invoicescontents where clid=@clid and cid=@cid order by id desc;
+select * from rcbill.rcb_casa where clid=@clid and cid=@cid order by id desc;
+
+select * from rcbill_my.payments_invoices_details where CASA_CLID=@clid and CASA_CID=@cid order by CASA_PAYDATE desc;
+select * from rcbill_my.dailyactivenumber where clientid=@clid and CONTRACTID=@cid order by period desc;
+
+
+select 
+
+a.*
+, b.* 
+
+from 
+rcbill_my.dailyactivenumber a 
+
+left join 
+
+rcbill_my.payments_invoices_details b
+
+on a.clientid=b.CASA_CLID and a.CONTRACTID=b.CASA_CID
+and a.period>=b.CASA_BEGDATE and a.period<=b.CASA_ENDDATE
+-- and b.INVC_TEXT not like ()
+
+where a.clientid=@clid and a.contractid=@cid
+
+order by a.period desc
+;
+ 
+ 
+ 
