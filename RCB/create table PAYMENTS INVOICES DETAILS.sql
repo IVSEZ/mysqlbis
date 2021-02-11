@@ -168,7 +168,7 @@ ON rcbill_my.payments_invoices_details (CASA_RSID);
 
 
 -- select * from rcbill.rcb_invoicesheader order by id desc;
-select * from rcbill.rcb_invoicesheader order by id desc;
+-- select * from rcbill.rcb_invoicesheader order by id desc;
 
 
 select 
