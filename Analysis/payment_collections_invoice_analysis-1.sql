@@ -1,7 +1,7 @@
 select * from rcbill_my.customers_contracts_collection_pivot;
 
 
-select * from rcbill_my.dailyactivenumber where period='2020-12-31' and REPORTED='Y';
+select *, substring_index(activenumberid,'&CSID=') from rcbill_my.dailyactivenumber where period='2021-02-10' and REPORTED='Y';
 
 select * from rcbill_my.cust_cont_payment_cmts_mxk;
 
