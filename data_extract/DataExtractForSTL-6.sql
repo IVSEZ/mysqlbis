@@ -1316,12 +1316,17 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
 							, case when ips1.servicestatus = 0 then 'Not Active'
 								else 'Active' end as SERVICEINSTANCESTATUS
 
-
+							/*
 							, case when ips1.username is null then ips1.UID
 								when length(ips1.username)=0 then ips1.UID
 								when service_type in ('VOICE','GVOICE') then ips1.UID
 								else ips1.username end as USERNAME
-
+							*/
+							, case when ips1.UID is null then ips1.USERNAME
+								when service_type in ('VOICE','GVOICE') then ips1.UID
+								when length(ips1.UID)=0 then ips1.USERNAME
+								else ips1.UID end as USERNAME
+                            
 							-- , ifnull(c.username,c.phoneno) as USERNAME
 							, ips1.contractstartdate AS CREATEDDATE
 							, ips1.servicestartdate as ACTIVATIONDATE
@@ -1716,6 +1721,7 @@ select
     -- , si.SERVICEINSTANCEIDENTIFIER
     
 	, si.USERNAME as INVENTORYNUMBER
+    -- , si.UID as INVENTORYNUMBER
     , case when si.CPE_TYPE in ('GVOICE','VOICE') then si.CPE_ID 
 		   when length(si.FSAN)>0 then si.FSAN
            else si.USERNAME end as SERIALNUMBER
