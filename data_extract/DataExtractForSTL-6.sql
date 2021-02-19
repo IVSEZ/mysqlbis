@@ -2129,9 +2129,40 @@ create table rcbill_extract.IV_BILLDETAIL(index idxivbd1(CUSTOMERACCOUNTNUMBER),
 )
 ;
 
+/*
 
+CREATE TABLE rcbill_extract.IV_BILLSUMMARY_OLD LIKE rcbill_extract.IV_BILLSUMMARY;
+INSERT INTO rcbill_extract.IV_BILLSUMMARY_OLD SELECT * FROM rcbill_extract.IV_BILLSUMMARY;
 
+CREATE TABLE rcbill_extract.IV_BILLDETAIL_OLD LIKE rcbill_extract.IV_BILLDETAIL;
+INSERT INTO rcbill_extract.IV_BILLDETAIL_OLD SELECT * FROM rcbill_extract.IV_BILLDETAIL;
 
+*/
+
+drop table if exists rcbill_extract.BILLINGACCOUNTANOMALIES;
+create table rcbill_extract.BILLINGACCOUNTANOMALIES
+(
+
+	select a.DEBITDOCUMENTNUMBER, a.BILLINGACCOUNTNUMBER as BS_BILLINGACCOUNTNUMBER, a.CUSTOMERACCOUNTNUMBER BS_CUSTOMERACCOUNTNUMBER
+    , a.BILLDATE
+	, a.INVOICETYPE, a.INVOICEHARD, a.REMARK
+	, a.client_id, a.contract_id
+	, rcbill.GetClientCode(a.client_id), rcbill.GetContractCode(a.contract_id)
+	, b.client_id, b.contract_id
+	, rcbill.GetClientCode(b.client_id), rcbill.GetContractCode(b.contract_id)
+	, b.BILLDATE, b.BILLINGACCOUNTNUMBER, b.NAME
+	from 
+	rcbill_extract.IV_BILLSUMMARY a 
+	inner join 
+	rcbill_extract.IV_BILLDETAIL b 
+	on 
+	a.DEBITDOCUMENTNUMBER=b.DEBITDOCUMENTNUMBER
+
+	where a.BILLINGACCOUNTNUMBER<>b.BILLINGACCOUNTNUMBER
+	and b.BILLINGACCOUNTNUMBER<>'NOT PRESENT'
+
+)
+;
 
 ##################################################################################################################
 -- NBD
