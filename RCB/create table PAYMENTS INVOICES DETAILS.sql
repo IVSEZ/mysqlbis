@@ -317,6 +317,7 @@ from
 	b.USERID as INVH_USERID,
 	b.DueDate as INVH_DueDate,
 	b.REPORTDATE as INVH_REPORTDATE
+    b.PAYMENTID as INVH_PAYMENTID
     
     , 
 	c.ID as INVC_ID,

@@ -177,7 +177,7 @@ LINES TERMINATED BY '\n'
 
 -- show index from rcbill_extract.IV_CUSTOMERACCOUNT ;
 -- select * from rcbill_extract.IV_CUSTOMERACCOUNT ;
-
+-- select * from rcbill_extract.IV_CUSTOMERACCOUNT where TAXNUMBERINDICATOR='BUSINESS';
 
 ###################################################################################
 
@@ -1999,6 +1999,7 @@ create table rcbill_extract.IV_BILLSUMMARY(index idxivbs1(CUSTOMERACCOUNTNUMBER)
 		, a.HARD as INVOICEHARD
         , a.CLID as CLIENT_ID
         , a.CID as CONTRACT_ID
+        , a.PaymentID as PAYMENTRECEIPTID   -- FROM IV_PAYMENTHISTORY
 		from 
 
 		rcbill.rcb_invoicesheader a 
@@ -2133,24 +2134,32 @@ create table rcbill_extract.IV_BILLDETAIL(index idxivbd1(CUSTOMERACCOUNTNUMBER),
 
 CREATE TABLE rcbill_extract.IV_BILLSUMMARY_OLD LIKE rcbill_extract.IV_BILLSUMMARY;
 INSERT INTO rcbill_extract.IV_BILLSUMMARY_OLD SELECT * FROM rcbill_extract.IV_BILLSUMMARY;
+select count(*) from rcbill_extract.IV_BILLSUMMARY_OLD;
 
 CREATE TABLE rcbill_extract.IV_BILLDETAIL_OLD LIKE rcbill_extract.IV_BILLDETAIL;
 INSERT INTO rcbill_extract.IV_BILLDETAIL_OLD SELECT * FROM rcbill_extract.IV_BILLDETAIL;
+select count(*) from rcbill_extract.IV_BILLDETAIL_OLD;
+
+
+CREATE TABLE rcbill_extract.IV_BILLSUMMARY LIKE rcbill_extract.IV_BILLSUMMARY_OLD;
+truncate table rcbill_extract.IV_BILLSUMMARY;
+INSERT INTO rcbill_extract.IV_BILLSUMMARY SELECT * FROM rcbill_extract.IV_BILLSUMMARY_OLD;
+
 
 */
 
-drop table if exists rcbill_extract.BILLINGACCOUNTANOMALIES;
-create table rcbill_extract.BILLINGACCOUNTANOMALIES
+drop table if exists rcbill_extract.BILLINGACCOUNTANOMALIES1;
+create table rcbill_extract.BILLINGACCOUNTANOMALIES1
 (
 
-	select a.DEBITDOCUMENTNUMBER, a.BILLINGACCOUNTNUMBER as BS_BILLINGACCOUNTNUMBER, a.CUSTOMERACCOUNTNUMBER BS_CUSTOMERACCOUNTNUMBER
-    , a.BILLDATE
-	, a.INVOICETYPE, a.INVOICEHARD, a.REMARK
-	, a.client_id, a.contract_id
-	, rcbill.GetClientCode(a.client_id), rcbill.GetContractCode(a.contract_id)
-	, b.client_id, b.contract_id
-	, rcbill.GetClientCode(b.client_id), rcbill.GetContractCode(b.contract_id)
-	, b.BILLDATE, b.BILLINGACCOUNTNUMBER, b.NAME
+	-- to update bill summary BILLINGACCOUNT with bill details BILLINGACCOUNT
+	select a.DEBITDOCUMENTNUMBER, a.BILLINGACCOUNTNUMBER as BS_BILLINGACCOUNTNUMBER, a.CUSTOMERACCOUNTNUMBER as BS_CUSTOMERACCOUNTNUMBER, a.BILLDATE as BS_BILLDATE
+	, a.INVOICETYPE as BS_INVOICETYPE, a.INVOICEHARD as BS_INVOICEHARD, a.REMARK as BS_REMARK
+	, a.client_id as BS_client_id, a.contract_id as BS_contract_id
+	, rcbill.GetClientCode(a.client_id) as BS_CLIENTCODE, rcbill.GetContractCode(a.contract_id) as BS_CONTRACTCODE
+	, b.client_id as BD_client_id, b.contract_id as BD_contract_id
+	, rcbill.GetClientCode(b.client_id) as BD_CLIENTCODE, rcbill.GetContractCode(b.contract_id) as BD_CONTRACTCODE
+	, b.BILLDATE as BD_BILLDATE, b.BILLINGACCOUNTNUMBER as BD_BILLINGACCOUNTNUMBER, b.NAME as BD_NAME
 	from 
 	rcbill_extract.IV_BILLSUMMARY a 
 	inner join 
@@ -2160,9 +2169,75 @@ create table rcbill_extract.BILLINGACCOUNTANOMALIES
 
 	where a.BILLINGACCOUNTNUMBER<>b.BILLINGACCOUNTNUMBER
 	and b.BILLINGACCOUNTNUMBER<>'NOT PRESENT'
+	-- and a.billdate<>b.billdate
 
 )
 ;
+
+
+drop table if exists rcbill_extract.BILLINGACCOUNTANOMALIES2;
+create table rcbill_extract.BILLINGACCOUNTANOMALIES2
+(
+	-- to update bill detail BILLINGACCOUNT with bill summary BILLINGACCOUNT
+	select a.DEBITDOCUMENTNUMBER, a.BILLINGACCOUNTNUMBER as BS_BILLINGACCOUNTNUMBER, a.CUSTOMERACCOUNTNUMBER as BS_CUSTOMERACCOUNTNUMBER, a.BILLDATE as BS_BILLDATE
+	, a.INVOICETYPE as BS_INVOICETYPE, a.INVOICEHARD as BS_INVOICEHARD, a.REMARK as BS_REMARK
+	, a.client_id as BS_client_id, a.contract_id as BS_contract_id
+	, rcbill.GetClientCode(a.client_id) as BS_CLIENTCODE, rcbill.GetContractCode(a.contract_id) as BS_CONTRACTCODE
+	, b.client_id as BD_client_id, b.contract_id as BD_contract_id
+	, rcbill.GetClientCode(b.client_id) as BD_CLIENTCODE, rcbill.GetContractCode(b.contract_id) as BD_CONTRACTCODE
+	, b.BILLDATE as BD_BILLDATE, b.BILLINGACCOUNTNUMBER as BD_BILLINGACCOUNTNUMBER, b.NAME as BD_NAME
+	from 
+	rcbill_extract.IV_BILLSUMMARY a 
+	inner join 
+	rcbill_extract.IV_BILLDETAIL b 
+	on 
+	a.DEBITDOCUMENTNUMBER=b.DEBITDOCUMENTNUMBER
+
+	where a.BILLINGACCOUNTNUMBER<>b.BILLINGACCOUNTNUMBER
+	and a.BILLINGACCOUNTNUMBER<>'NOT PRESENT' and b.BILLINGACCOUNTNUMBER='NOT PRESENT'
+	-- and a.billdate<>b.billdate
+)
+;
+
+/*
+
+select t1.*,t2.* from 
+rcbill_extract.IV_BILLSUMMARY t1
+inner join 
+rcbill_extract.BILLINGACCOUNTANOMALIES1 t2
+on 
+t1.DEBITDOCUMENTNUMBER=t2.DEBITDOCUMENTNUMBER
+and 
+t1.BILLINGACCOUNTNUMBER=t2.BS_BILLINGACCOUNTNUMBER
+
+where t1.BILLINGACCOUNTNUMBER<>t2.BD_BILLINGACCOUNTNUMBER
+;
+
+*/
+
+### update bill summary table first
+set sql_safe_updates=0;
+-- UPDATE rcbill_extract.IV_BILLSUMMARY
+update 
+rcbill_extract.IV_BILLSUMMARY t1
+inner join 
+rcbill_extract.BILLINGACCOUNTANOMALIES1 t2
+on 
+t1.DEBITDOCUMENTNUMBER=t2.DEBITDOCUMENTNUMBER
+and 
+t1.BILLINGACCOUNTNUMBER=t2.BS_BILLINGACCOUNTNUMBER
+
+set 
+t1.BILLINGACCOUNTNUMBER=t2.BD_BILLINGACCOUNTNUMBER
+-- ,t1.SUBTO=t2.SUBTO
+-- ,t1.SUBPERIOD=t2.SUBPERIOD
+
+
+-- where t1.SUBFROM is null and t1.SUBTO is null and t1.SUBPERIOD is null and (t1.CPE_TYPE like '%SUBSCRIPTION%')
+
+where t1.BILLINGACCOUNTNUMBER<>t2.BD_BILLINGACCOUNTNUMBER
+;
+
 
 ##################################################################################################################
 -- NBD

@@ -56,7 +56,7 @@ select * from rcbill_extract.IV_INVENTORY where INVENTORYNUMBER <> SERIALNUMBER;
 
 ###### 9 feb issues
 -- BA WITHOUT INVOICES
-set @clid=713415; set @custid1='CA_I.000001603';
+set @clid=734869; set @custid1='CA_I.000021801';
 
 
 select * from rcbill.rcb_invoicesheader where CLID=@clid;
@@ -103,13 +103,15 @@ select * from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER in (981301
 select * from rcbill_extract.IV_BILLDETAIL where DEBITDOCUMENTNUMBER in (981301);
 
 select DEBITDOCUMENTNUMBER, count(*) from rcbill_extract.IV_BILLSUMMARY group by DEBITDOCUMENTNUMBER order by 2 desc;
-select a.DEBITDOCUMENTNUMBER, a.BILLINGACCOUNTNUMBER, a.CUSTOMERACCOUNTNUMBER, a.BILLDATE
-, a.INVOICETYPE, a.INVOICEHARD, a.REMARK
-, a.client_id, a.contract_id
-, rcbill.GetClientCode(a.client_id), rcbill.GetContractCode(a.contract_id)
-, b.client_id, b.contract_id
-, rcbill.GetClientCode(b.client_id), rcbill.GetContractCode(b.contract_id)
-, b.BILLDATE, b.BILLINGACCOUNTNUMBER, b.NAME
+
+-- to update bill summary BILLINGACCOUNT with bill details BILLINGACCOUNT
+select a.DEBITDOCUMENTNUMBER, a.BILLINGACCOUNTNUMBER as BS_BILLINGACCOUNTNUMBER, a.CUSTOMERACCOUNTNUMBER as BS_CUSTOMERACCOUNTNUMBER, a.BILLDATE as BS_BILLDATE
+, a.INVOICETYPE as BS_INVOICETYPE, a.INVOICEHARD as BS_INVOICEHARD, a.REMARK as BS_REMARK
+, a.client_id as BS_client_id, a.contract_id as BS_contract_id
+, rcbill.GetClientCode(a.client_id) as BS_CLIENTCODE, rcbill.GetContractCode(a.contract_id) as BS_CONTRACTCODE
+, b.client_id as BD_client_id, b.contract_id as BD_contract_id
+, rcbill.GetClientCode(b.client_id) as BD_CLIENTCODE, rcbill.GetContractCode(b.contract_id) as BD_CONTRACTCODE
+, b.BILLDATE as BD_BILLDATE, b.BILLINGACCOUNTNUMBER as BD_BILLINGACCOUNTNUMBER, b.NAME as BD_NAME
 from 
 rcbill_extract.IV_BILLSUMMARY a 
 inner join 
@@ -119,8 +121,31 @@ a.DEBITDOCUMENTNUMBER=b.DEBITDOCUMENTNUMBER
 
 where a.BILLINGACCOUNTNUMBER<>b.BILLINGACCOUNTNUMBER
 and b.BILLINGACCOUNTNUMBER<>'NOT PRESENT'
-and a.billdate<>b.billdate
+-- and a.billdate<>b.billdate
 ;
+
+-- to update bill detail BILLINGACCOUNT with bill summary BILLINGACCOUNT
+select a.DEBITDOCUMENTNUMBER, a.BILLINGACCOUNTNUMBER as BS_BILLINGACCOUNTNUMBER, a.CUSTOMERACCOUNTNUMBER as BS_CUSTOMERACCOUNTNUMBER, a.BILLDATE as BS_BILLDATE
+, a.INVOICETYPE as BS_INVOICETYPE, a.INVOICEHARD as BS_INVOICEHARD, a.REMARK as BS_REMARK
+, a.client_id as BS_client_id, a.contract_id as BS_contract_id
+, rcbill.GetClientCode(a.client_id) as BS_CLIENTCODE, rcbill.GetContractCode(a.contract_id) as BS_CONTRACTCODE
+, b.client_id as BD_client_id, b.contract_id as BD_contract_id
+, rcbill.GetClientCode(b.client_id) as BD_CLIENTCODE, rcbill.GetContractCode(b.contract_id) as BD_CONTRACTCODE
+, b.BILLDATE as BD_BILLDATE, b.BILLINGACCOUNTNUMBER as BD_BILLINGACCOUNTNUMBER, b.NAME as BD_NAME
+from 
+rcbill_extract.IV_BILLSUMMARY a 
+inner join 
+rcbill_extract.IV_BILLDETAIL b 
+on 
+a.DEBITDOCUMENTNUMBER=b.DEBITDOCUMENTNUMBER
+
+where a.BILLINGACCOUNTNUMBER<>b.BILLINGACCOUNTNUMBER
+and a.BILLINGACCOUNTNUMBER<>'NOT PRESENT' and b.BILLINGACCOUNTNUMBER='NOT PRESENT'
+-- and a.billdate<>b.billdate
+;
+
+
+
 
 select a.DEBITDOCUMENTNUMBER, a.BILLINGACCOUNTNUMBER, a.CUSTOMERACCOUNTNUMBER, a.BILLDATE
 , a.INVOICETYPE, a.INVOICEHARD, a.REMARK
@@ -206,4 +231,24 @@ on
 a.DEBITDOCUMENTNUMBER=b.DEBITDOCUMENTNUMBER
 
 where a.BILLINGACCOUNTNUMBER<>'NOT PRESENT' and b.BILLINGACCOUNTNUMBER='NOT PRESENT'
+;
+
+select a.DEBITDOCUMENTNUMBER, a.BILLINGACCOUNTNUMBER, a.CUSTOMERACCOUNTNUMBER, a.BILLDATE
+, a.INVOICETYPE, a.INVOICEHARD, a.REMARK
+, a.client_id, a.contract_id
+, rcbill.GetClientCode(a.client_id), rcbill.GetContractCode(a.contract_id)
+, b.client_id, b.contract_id
+, rcbill.GetClientCode(b.client_id), rcbill.GetContractCode(b.contract_id)
+, b.BILLDATE, b.BILLINGACCOUNTNUMBER, b.NAME
+from 
+rcbill_extract.IV_BILLSUMMARY a 
+inner join 
+rcbill_extract.IV_BILLDETAIL b 
+on 
+a.DEBITDOCUMENTNUMBER=b.DEBITDOCUMENTNUMBER
+
+where 0=0 
+-- and a.BILLINGACCOUNTNUMBER<>b.BILLINGACCOUNTNUMBER
+-- and b.BILLINGACCOUNTNUMBER<>'NOT PRESENT'
+and a.billdate=b.billdate
 ;

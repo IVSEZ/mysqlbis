@@ -13,6 +13,14 @@ select b.*
 from rcbill_extract.IV_SERVICEINSTANCE b where b.SUBFROM is null;
 
 
+select * from rcbill_extract.BILLINGACCOUNT_KEY where CUSTOMERACCOUNTNUMBER='CA_I.000014483';
+select * from rcbill_extract.BILLINGACCOUNT_KEY where BILLINGACCOUNTNUMBER='BA_I.000014483_I.000410014_1';
+
+I.000405808
+I.000397618
+I.000410014
+
+
 -- select * from rcbill.rcb_invoicesheader where cid in 
 
 select *, rcbill.GetClientCode(clid), rcbill.GetContractCode(CID) from rcbill.rcb_invoicescontents where cid in 
@@ -698,5 +706,34 @@ select contract_id from rcbill_extract.IV_BILLINGACCOUNT where BILLINGACCOUNTNUM
 ;
 
 
+select * from rcbill.rcb_invoicesheader where CLID=@clid;
+select * from rcbill.rcb_invoicesheader where CLID=@clid;
+
+
 select rcbill.GetClientCode(730108);
 
+select * from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER in (3110718);
+select * from rcbill_extract.IV_BILLDETAIL where DEBITDOCUMENTNUMBER in (3110718);
+set @clid=734869; set @custid1='CA_I11898';
+
+select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
+select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
+select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1)  order by CUSTOMERACCOUNTNUMBER;
+
+select * from rcbill_extract.BILLINGACCOUNT_KEY where CUSTOMERACCOUNTNUMBER in (@custid1);
+
+
+select * from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER in (2364382);
+select * from rcbill_extract.IV_BILLDETAIL where DEBITDOCUMENTNUMBER in (2364382);
+
+set @clid=667468; set @custid1='CA_I7411';
+
+select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
+select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
+select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1)  order by CUSTOMERACCOUNTNUMBER;
+
+select * from rcbill_extract.BILLINGACCOUNT_KEY where CUSTOMERACCOUNTNUMBER in (@custid1);
+
+select * from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@custid1);
+select * from rcbill_extract.IV_BILLDETAIL where CUSTOMERACCOUNTNUMBER in (@custid1);
+select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1) order by PAYMENTRECEIPTID desc;
