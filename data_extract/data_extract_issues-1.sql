@@ -61,6 +61,8 @@ set @clid=734869; set @custid1='CA_I.000021801';
 
 select * from rcbill.rcb_invoicesheader where CLID=@clid;
 select * from rcbill.rcb_invoicescontents where CLID=@clid;
+select * from rcbill.rcb_casa where CLID=@clid;
+
 
 select * from rcbill.rcb_invoicesheader where INVOICENO=173798;
 select * from rcbill.rcb_invoicescontents where INVOICENO=173798;
@@ -103,6 +105,23 @@ select * from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER in (981301
 select * from rcbill_extract.IV_BILLDETAIL where DEBITDOCUMENTNUMBER in (981301);
 
 select DEBITDOCUMENTNUMBER, count(*) from rcbill_extract.IV_BILLSUMMARY group by DEBITDOCUMENTNUMBER order by 2 desc;
+
+select * from rcbill_extract.IV_INVENTORY;
+select * from rcbill_extract.IV_ADDON where SUBFROM<='2020-12-18' and SUBTO>='2020-12-18';
+
+select * from rcbill_extract.IV_INVENTORY where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_ADDON where SUBFROM<='2020-12-18' and SUBTO>='2020-12-18');
+
+
+select a.*, b.*
+from 
+rcbill_extract.IV_ADDON a 
+inner join 
+rcbill_extract.IV_INVENTORY b 
+on a.SERVICEINSTANCENUMBER=b.SERVICEINSTANCENUMBER
+
+-- where a.SUBFROM<='2020-12-18' and a.SUBTO>='2020-12-18'
+;
+
 
 -- to update bill summary BILLINGACCOUNT with bill details BILLINGACCOUNT
 select a.DEBITDOCUMENTNUMBER, a.BILLINGACCOUNTNUMBER as BS_BILLINGACCOUNTNUMBER, a.CUSTOMERACCOUNTNUMBER as BS_CUSTOMERACCOUNTNUMBER, a.BILLDATE as BS_BILLDATE
