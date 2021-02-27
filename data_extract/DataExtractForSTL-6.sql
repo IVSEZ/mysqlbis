@@ -275,7 +275,8 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT_A1(index idxipba1(clientcode)
 			, case when a.MinInvDate=0 then 'PREPAID'
 			 when a.MinInvDate is null then 'PREPAID'
 			else 'POSTPAID' end as `BILLCYCLE`
-			, cast(concat('BA_',a.clientcode,'_',a.contractcode) as char(255)) as `BillingAccountNumber_STG`
+			-- , cast(concat('BA_',a.clientcode,'_',a.contractcode) as char(255)) as `BillingAccountNumber_STG`
+            , cast(concat('BA',a.contract_id,a.client_id) as char(10)) as `BillingAccountNumber_STG`
 			, a.client_id, a.contract_id
 			from 
 			rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice a 
@@ -285,12 +286,12 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT_A1(index idxipba1(clientcode)
 )
 ;
 
-
+-- select *,  cast(concat('BA', a.contract_id,a.client_id) as char(255)) as `BillingAccountNumber_STG1`,  cast(concat('BA',a.contract_id,a.client_id) as char(10)) as `BillingAccountNumber_STG2`, length(cast(concat('BA',a.contract_id,a.client_id) as char(10))) as len1 from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice a limit 10000;
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode in ('I9991');
 
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I.000011750');
--- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I9991');
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I13647');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I.000018187');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000011750');
@@ -619,7 +620,7 @@ create table rcbill_extract.BILLINGACCOUNT_KEY(index idxivba1(BillingAccountNumb
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3;
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT4;
 
--- select * from rcbill_extract.IV_BILLINGACCOUNT;
+-- select *, length(BILLINGACCOUNTNUMBER), string(ENCRYPT(BILLINGACCOUNTNUMBER)), length(ENCRYPT(BILLINGACCOUNTNUMBER)) from rcbill_extract.IV_BILLINGACCOUNT;
 
 /*
 select *
@@ -840,6 +841,10 @@ create table rcbill_extract.IV_SERVICEACCOUNT(index idxivsa1(SERVICEACCOUNTNUMBE
 
 -- select * from rcbill_extract.IV_SERVICEACCOUNT ;
 -- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I748');
+
+-- select * from rcbill_my.rep_custconsolidated;
+-- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice;
+
 ###################################################################################
 
 
@@ -2728,6 +2733,11 @@ set @custid1 = 'CA_I23018'; -- amazon betting
 
 set @custid1 = 'CA_I9695';  -- Marlene Rassool
 
+set @custid1 = 'CA_I13647'; -- andy julie (voice)
+
+
+set @custid1 = 'CA_I.000019657'; -- andy julie (tv internet)
+
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
@@ -2741,8 +2751,9 @@ select * from rcbill_extract.IV_ADDONCHARGE where SERVICEINSTANCENUMBER in (sele
 
 select * from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID desc;
 select * from rcbill_extract.IV_BILLDETAIL where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID desc;
-
 select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1) order by PAYMENTRECEIPTID desc;
+
+
 select * from rcbill_extract.IV_NBD where CUSTOMERACCOUNTNUMBER in (@custid1) order by BILLINGACCOUNTNUMBER;
 select * from rcbill_extract.IV_DISCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by BILLINGACCOUNTNUMBER;
 select * from rcbill_extract.IV_BALANCE where CUSTOMERACCOUNTNUMBER in (@custid1) order by SERVICEINSTANCENUMBER desc;

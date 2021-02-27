@@ -6,6 +6,7 @@ select * from rcbill_extract.IV_SERVICEINSTANCE where SUBTO is null;
 
 select * from rcbill_extract.IV_SERVICEINSTANCE where SUBTO is null and servicestatus='Not Active';
 
+select * from rcbill_extract.IV_BILLINGACCOUNT where CREDITCLASSNAME like '%VOICE%';
 
 select * from rcbill_extract.IV_BILLSUMMARY where BILLINGACCOUNTNUMBER in ('BA_I15882_I102544.1_2');
 
@@ -58,6 +59,7 @@ select * from rcbill_extract.IV_INVENTORY where INVENTORYNUMBER <> SERIALNUMBER;
 -- BA WITHOUT INVOICES
 set @clid=734869; set @custid1='CA_I.000021801';
 
+set @clid=733961;
 
 select * from rcbill.rcb_invoicesheader where CLID=@clid;
 select * from rcbill.rcb_invoicescontents where CLID=@clid;
@@ -271,3 +273,13 @@ where 0=0
 -- and b.BILLINGACCOUNTNUMBER<>'NOT PRESENT'
 and a.billdate=b.billdate
 ;
+
+
+
+select * from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER in (3106714) order by INVOICESUMMARYID desc;
+
+select * from rcbill_extract.IV_BILLDETAIL where DEBITDOCUMENTNUMBER in (3106714) order by INVOICESUMMARYID desc;
+
+select * from rcbill_extract.IV_BILLDETAIL where NAME like ('%STATIC%') order by INVOICESUMMARYID desc;
+select * from rcbill_extract.IV_BILLDETAIL where NAME like ('%VPN%') order by INVOICESUMMARYID desc;
+

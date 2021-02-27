@@ -248,6 +248,21 @@ select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='41.220.110.3
 select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP='154.70.185.208';
 
 
+
+## oculus rift ip address
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP in ('154.70.188.233');
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP in ('41.220.111.243');
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP in ('197.234.8.201');
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP in ('154.70.179.248');
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP in ('197.234.11.30');
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP in ('154.70.178.37');
+
+select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP in ('154.70.188.233');
+select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP in ('41.220.111.243');
+select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP in ('197.234.8.201');
+select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP in ('154.70.179.248');
+select * from rcbill.clientcontractipmonth where PROCESSEDCLIENTIP in ('197.234.11.30');
+
 select CLIENTCODE, CLIENTNAME, CONTRACTCODE, USAGEDATE, PROCESSEDCLIENTIP as IP from rcbill.clientcontractip where CLIENTCODE='I.000009236' order by usagedate desc;
 select CLIENTCODE, CLIENTNAME, CONTRACTCODE, USAGE_MTH, USAGE_YR, PROCESSEDCLIENTIP as IP, FROM_DATE, TO_DATE 
 from rcbill.clientcontractipmonth where CLIENTCODE='I.000009236' order by USAGE_YR desc, USAGE_MTH desc, TO_DATE desc;

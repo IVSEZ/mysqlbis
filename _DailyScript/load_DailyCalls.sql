@@ -5,7 +5,7 @@ use rcbill_my;
 -- SET @date1='2020-05-29';
 -- SET @date2='2020-05-30';
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-23022021.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-26022021.csv'
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-24082019-02092019.csv'  
  
@@ -160,7 +160,7 @@ order by a.calldate
 
 -- select CALL_DATE, count(*) from rcbill_my.callingclients group by CALL_DATE order by 1 desc;
 
--- select * from rcbill_my.callingclients where call_date in ('2018-02-09');
+-- select * from rcbill_my.callingclients where call_date in ('2021-02-24');
 
 -- select * from rcbill.rcb_tclients;
 -- select *,date(calldate) as CALL_DATE, time(calldate) as CALL_TIME  from rcbill_my.dailycalls;
