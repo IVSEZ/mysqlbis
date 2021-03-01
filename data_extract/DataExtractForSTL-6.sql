@@ -2004,7 +2004,7 @@ create table rcbill_extract.IV_BILLSUMMARY(index idxivbs1(CUSTOMERACCOUNTNUMBER)
 		, a.HARD as INVOICEHARD
         , a.CLID as CLIENT_ID
         , a.CID as CONTRACT_ID
-        , a.PaymentID as PAYMENTRECEIPTID   -- FROM IV_PAYMENTHISTORY
+        , a.PaymentID as PAYMENTRECEIPTID   -- MATCHES with PAYMENTRECEIPTID in IV_PAYMENTHISTORY
 		from 
 
 		rcbill.rcb_invoicesheader a 
