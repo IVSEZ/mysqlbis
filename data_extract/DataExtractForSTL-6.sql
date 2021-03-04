@@ -1920,7 +1920,7 @@ create table rcbill_extract.IV_PAYMENTHISTORY(index idxivbs1(CUSTOMERACCOUNTNUMB
 			, (select name from rcbill.rcb_payobjects where id=a.PAYOBJECTID) as PAYMENTMODE
 			, a.MONEY as PAYMENTTRANSACTIONAMOUNT
 			, a.ID as SERIALNUMBER
-			, a.INVID as DEBITDOCUMENTNUMBER
+			, a.INVID as DEBITDOCUMENTNUMBER -- INVOICESUMMARYID in IV_BILLSUMMARY
 			, a.CLID as CLIENT_ID
 			, a.CID as CONTRACT_ID
 			, a.MONEY as PAYMENTAMOUNT
@@ -1965,7 +1965,7 @@ create table rcbill_extract.IV_BILLSUMMARY(index idxivbs1(CUSTOMERACCOUNTNUMBER)
 		select 
 		-- *, 
 		a.ID as INVOICESUMMARYID
-		, a.INVOICENO as DEBITDOCUMENTNUMBER
+        , concat(a.ID, a.INVOICENO) as DEBITDOCUMENTNUMBER
 		, a.DATA as CREATEDATE
 		, a.SUMA as SUBTOTAL
 		, a.DDS as TAX
@@ -2005,6 +2005,7 @@ create table rcbill_extract.IV_BILLSUMMARY(index idxivbs1(CUSTOMERACCOUNTNUMBER)
         , a.CLID as CLIENT_ID
         , a.CID as CONTRACT_ID
         , a.PaymentID as PAYMENTRECEIPTID   -- MATCHES with PAYMENTRECEIPTID in IV_PAYMENTHISTORY
+		, a.INVOICENO as DEBITDOCUMENTNUMBEROLD
 		from 
 
 		rcbill.rcb_invoicesheader a 
@@ -2035,7 +2036,7 @@ create table rcbill_extract.IV_BILLDETAIL(index idxivbd1(CUSTOMERACCOUNTNUMBER),
 			a.ID as INVOICEDETAILID
 			, a.InvoiceID as INVOICESUMMARYID
 			, a.ID as SERIALNUMBER
-			, a.INVOICENO as DEBITDOCUMENTNUMBER
+			, concat(a.InvoiceID, a.INVOICENO) as DEBITDOCUMENTNUMBER
 			, a.TEXT as NAME
 			, a.SCOST as RATE
 			, a.NUMBER as ITEMCOUNT
@@ -2120,6 +2121,7 @@ create table rcbill_extract.IV_BILLDETAIL(index idxivbd1(CUSTOMERACCOUNTNUMBER),
 			, a.CID as CONTRACT_ID
 			, a.RSID
 			, a.ServiceID
+			, a.INVOICENO as DEBITDOCUMENTNUMBEROLD
 
 	from 
 	rcbill.rcb_invoicescontents a 
@@ -2737,6 +2739,8 @@ set @custid1 = 'CA_I13647'; -- andy julie (voice)
 
 
 set @custid1 = 'CA_I.000019657'; -- andy julie (tv internet)
+
+set @custid1 = 'CA_I9695' ;
 
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;

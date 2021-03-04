@@ -2,8 +2,8 @@ set @custid1 = 'CA_I.000012204'; -- intelvision tech support
 set @custid1 = 'CA_I.000009758'; -- six senses
 
 
-set @custid1 = 'CA_I22208'; -- 
-set @custid2 = 'CA_I.000020462';
+set @custid1 = 'CA_I22308'; -- 
+set @custid2 = 'CA_I13400';
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1,@custid2)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2) order by CUSTOMERACCOUNTNUMBER;
@@ -37,3 +37,7 @@ select * from rcbill_extract.IV_INVENTORY where SERIALNUMBER='znts038e5867'
 ;
 
 
+select DEVICE_ID, count(*) from rcbill_extract.IV_SERVICEINSTANCE where USERNAME is null
+group by DEVICE_ID
+order by 2 desc
+;

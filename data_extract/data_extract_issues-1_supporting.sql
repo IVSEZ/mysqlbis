@@ -706,7 +706,7 @@ select contract_id from rcbill_extract.IV_BILLINGACCOUNT where BILLINGACCOUNTNUM
 ;
 
 
-select * from rcbill.rcb_invoicesheader where CLID=@clid;
+select * from rcbill.rcb_invoicesheader where PaymentID is null; where CLID=@clid;
 select * from rcbill.rcb_invoicesheader where CLID=@clid;
 
 
@@ -714,6 +714,7 @@ select rcbill.GetClientCode(730108);
 
 select * from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER in (3110718);
 select * from rcbill_extract.IV_BILLDETAIL where DEBITDOCUMENTNUMBER in (3110718);
+
 set @clid=734869; set @custid1='CA_I11898';
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
@@ -734,6 +735,77 @@ select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in (@
 
 select * from rcbill_extract.BILLINGACCOUNT_KEY where CUSTOMERACCOUNTNUMBER in (@custid1);
 
-select * from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@custid1);
+select *, (select paymentid from rcbill.rcb_invoicesheader where id=invoicesummaryid) as PAYMENTRECEIPTID from rcbill_extract.IV_BILLSUMMARY where CUSTOMERACCOUNTNUMBER in (@custid1);
 select * from rcbill_extract.IV_BILLDETAIL where CUSTOMERACCOUNTNUMBER in (@custid1);
 select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1) order by PAYMENTRECEIPTID desc;
+
+
+drop temporary table if exists dupdebit1;
+create temporary table dupdebit1 as 
+(
+	select DEBITDOCUMENTNUMBER, duplicatecount from 
+	(
+		select DEBITDOCUMENTNUMBER, count(DEBITDOCUMENTNUMBER) as duplicatecount from rcbill_extract.IV_BILLSUMMARY
+		group by DEBITDOCUMENTNUMBER
+		order by 2 desc
+	) a 
+	where duplicatecount>1
+)
+;
+
+
+
+drop temporary table if exists dupdebit2;
+create temporary table dupdebit2 as 
+(
+	select DEBITDOCUMENTNUMBERNEW, duplicatecount from 
+	(
+		select DEBITDOCUMENTNUMBERNEW, count(DEBITDOCUMENTNUMBERNEW) as duplicatecount 
+        from 
+			-- rcbill_extract.IV_BILLSUMMARY
+            (
+				select *,concat(INVOICESUMMARYID, DEBITDOCUMENTNUMBER) as DEBITDOCUMENTNUMBERNEW, (select paymentid from rcbill.rcb_invoicesheader where ID=a.invoicesummaryid) as PAYMENTRECEIPTID  from rcbill_extract.IV_BILLSUMMARY a
+            ) a 
+		group by DEBITDOCUMENTNUMBERNEW
+		order by 2 desc
+	) a 
+	where duplicatecount>1
+)
+;
+
+
+####################
+drop temporary table if exists dupdebit1;
+create temporary table dupdebit1 as 
+(
+	select DEBITDOCUMENTNUMBER, duplicatecount from 
+	(
+		select DEBITDOCUMENTNUMBER, count(DEBITDOCUMENTNUMBER) as duplicatecount from rcbill_extract.IV_BILLSUMMARY_SAMPLE
+		group by DEBITDOCUMENTNUMBER
+		order by 2 desc
+	) a 
+	where duplicatecount>1
+)
+;
+
+drop temporary table if exists dupdebit2;
+create temporary table dupdebit2 as 
+(
+	select DEBITDOCUMENTNUMBEROLD, duplicatecount from 
+	(
+		select DEBITDOCUMENTNUMBEROLD, count(DEBITDOCUMENTNUMBEROLD) as duplicatecount from rcbill_extract.IV_BILLSUMMARY_SAMPLE
+		group by DEBITDOCUMENTNUMBEROLD
+		order by 2 desc
+	) a 
+	where duplicatecount>1
+)
+;
+
+
+select * from dupdebit1;
+select * from dupdebit2;
+
+
+select *,concat(INVOICESUMMARYID, DEBITDOCUMENTNUMBER) as DEBITDOCUMENTNUMBERNEW, (select paymentid from rcbill.rcb_invoicesheader where ID=a.invoicesummaryid) as PAYMENTRECEIPTID  from rcbill_extract.IV_BILLSUMMARY a where DEBITDOCUMENTNUMBER in (select DEBITDOCUMENTNUMBER from dupdebit);
+select *,concat(INVOICESUMMARYID, DEBITDOCUMENTNUMBER) as DEBITDOCUMENTNUMBERNEW from rcbill_extract.IV_BILLDETAIL  where DEBITDOCUMENTNUMBER in (select DEBITDOCUMENTNUMBER from dupdebit);
+select * from rcbill_extract.IV_PAYMENTHISTORY where DEBITDOCUMENTNUMBER in (select DEBITDOCUMENTNUMBER from dupdebit);

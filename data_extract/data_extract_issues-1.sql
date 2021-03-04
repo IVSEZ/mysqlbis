@@ -283,3 +283,5 @@ select * from rcbill_extract.IV_BILLDETAIL where DEBITDOCUMENTNUMBER in (3106714
 select * from rcbill_extract.IV_BILLDETAIL where NAME like ('%STATIC%') order by INVOICESUMMARYID desc;
 select * from rcbill_extract.IV_BILLDETAIL where NAME like ('%VPN%') order by INVOICESUMMARYID desc;
 
+
+select * from rcbill_extract.IV_DISCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I51') order by BILLINGACCOUNTNUMBER;
