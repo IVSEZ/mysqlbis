@@ -2,13 +2,17 @@ set @custid1 = 'CA_I.000012204'; -- intelvision tech support
 set @custid1 = 'CA_I.000009758'; -- six senses
 
 
-set @custid1 = 'CA_I22208'; -- 
-set @custid2 = 'CA_I.000020462';
+set @custid1 = 'CA_I11081'; -- 
+set @custid2 = 'CA_I11081';
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1,@custid2)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2) order by CUSTOMERACCOUNTNUMBER;
 select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2)  order by CUSTOMERACCOUNTNUMBER;
 select * from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2);
+
+select * from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2) and (SERVICEENDDATE is null or date(SERVICEENDDATE)>=now());
+
+
 select * from rcbill_extract.IV_SERVICEINSTANCECHARGE where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2) );
 select * from rcbill_extract.IV_INVENTORY where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2) );
 select * from rcbill_extract.IV_ADDON where SERVICEINSTANCENUMBER in (select SERVICEINSTANCENUMBER from rcbill_extract.IV_SERVICEINSTANCE where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2) );
@@ -30,7 +34,7 @@ select * from rcbill_extract.IV_CREDITNOTE where BILLINGACCOUNTNUMBER in (select
 select * from rcbill_extract.IV_DEBITNOTE where BILLINGACCOUNTNUMBER in (select BILLINGACCOUNTNUMBER from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1));
 
 
-
+select * from rcbill_extract.IV_SERVICEINSTANCE where (SERVICEENDDATE is null or date(SERVICEENDDATE)>=now());
 
 select * from rcbill_extract.IV_INVENTORY where SERIALNUMBER='znts038e5867'
 -- and (SERVICESTATUS='Active' or serviceinstancestatus='Active')
