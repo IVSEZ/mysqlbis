@@ -2,21 +2,21 @@
 use rcbill;
 
 #SET DATE
-SET @REPORTDATE=str_to_date('2021-03-02','%Y-%m-%d');
+SET @REPORTDATE=str_to_date('2021-03-07','%Y-%m-%d');
 
-SET @rundate='2021-03-02';
+SET @rundate='2021-03-07';
 
 SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
-set @periodstart='2021-03-02';
-set @periodend='2021-03-02';
+set @periodstart='2021-03-07';
+set @periodend='2021-03-07';
 
 
-SET @rundate='2021-03-02';
+SET @rundate='2021-03-07';
 
 #FOR Daily calls script
-SET @date1='2021-03-02';
-SET @date2='2021-03-03';
+SET @date1='2021-03-07';
+SET @date2='2021-03-08';
 
 
 ## FOR BUDGET ACTUAL ANALYSIS SCRIPT
@@ -25,7 +25,7 @@ set @revenue=1;
 set @m1='2021-01-31';
 set @m2='2021-02-28';
 
-set @m3='2021-03-02';
+set @m3='2021-03-07';
 set @m4='2021-04-30';
 set @m5='2021-05-31';
 set @m6='2021-06-30';
