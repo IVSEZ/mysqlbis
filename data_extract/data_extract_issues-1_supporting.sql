@@ -715,6 +715,20 @@ select rcbill.GetClientCode(730108);
 select * from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER in (3110718);
 select * from rcbill_extract.IV_BILLDETAIL where DEBITDOCUMENTNUMBER in (3110718);
 
+
+select * from rcbill_extract.IV_BILLSUMMARY_SAMPLE where CONTRACT_ID in (2113814);
+select * from rcbill_extract.IV_BILLDETAIL_SAMPLE where CONTRACT_ID in (2113814);
+select * from rcbill_extract.IV_PAYMENTHISTORY_SAMPLE where PAYMENTRECEIPTID in (2574664);
+
+##################
+
+select * from rcbill_extract.IV_BILLSUMMARY_SAMPLE where CONTRACT_ID in (2113814);
+select * from rcbill_extract.IV_BILLDETAIL_SAMPLE where CONTRACT_ID in (2113814);
+select * from rcbill_extract.IV_PAYMENTHISTORY_SAMPLE where PAYMENTRECEIPTID in (2574664);
+
+
+
+
 set @clid=734869; set @custid1='CA_I11898';
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;

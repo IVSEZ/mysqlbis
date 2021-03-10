@@ -2742,6 +2742,13 @@ set @custid1 = 'CA_I.000019657'; -- andy julie (tv internet)
 
 set @custid1 = 'CA_I9695' ;
 
+set @custid1 = 'CA_I.000015911';
+set @custid1 = 'CA_I.000019584';
+
+
+set @custid1 = 'CA_I9520';
+
+set @custid1 = 'CA_0008';
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
@@ -2774,6 +2781,12 @@ select REV_CUSTOMERACCOUNTNUMBER, count(REV_BILLINGACCOUNTNUMBER) as BillingAcco
 from rcbill_extract.CUSTOMERDEBT
 group by REV_CUSTOMERACCOUNTNUMBER
 ;
+
+
+select * from rcbill_extract.IV_BILLSUMMARY_SAMPLE where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID desc;
+select * from rcbill_extract.IV_BILLDETAIL_SAMPLE where CUSTOMERACCOUNTNUMBER in (@custid1) order by INVOICESUMMARYID desc;
+select * from rcbill_extract.IV_PAYMENTHISTORY_SAMPLE where CUSTOMERACCOUNTNUMBER in (@custid1) order by PAYMENTRECEIPTID desc;
+
 
 /*
 
