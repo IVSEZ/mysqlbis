@@ -45,7 +45,7 @@ set @custid3 = 'CA_I13647'; -- andy julie (voice)
 
 
 drop table if exists rcbill_extract.IV_BILLSUMMARY_SAMPLE;
-create table rcbill_extract.IV_BILLSUMMARY_SAMPLE
+create table rcbill_extract.IV_BILLSUMMARY_SAMPLE(index idxivbs1(CUSTOMERACCOUNTNUMBER),index idxivbs2(BILLINGACCOUNTNUMBER),index idxivbs3(DEBITDOCUMENTNUMBER))
 (
 	select 
     INVOICESUMMARYID ,concat(INVOICESUMMARYID, DEBITDOCUMENTNUMBER) as DEBITDOCUMENTNUMBER
@@ -59,7 +59,7 @@ create table rcbill_extract.IV_BILLSUMMARY_SAMPLE
 ;
 
 drop table if exists rcbill_extract.IV_BILLDETAIL_SAMPLE;
-create table rcbill_extract.IV_BILLDETAIL_SAMPLE
+create table rcbill_extract.IV_BILLDETAIL_SAMPLE(index idxivbd1(CUSTOMERACCOUNTNUMBER),index idxivbd2(BILLINGACCOUNTNUMBER),index idxivbd3(DEBITDOCUMENTNUMBER),index idxivbd4(SERVICEINSTANCENUMBER))
 (
 	select 
     BILLINGACCOUNTNUMBER, CUSTOMERACCOUNTNUMBER, SERVICEINSTANCENUMBER, INVOICEDETAILID, INVOICESUMMARYID, SERIALNUMBER
@@ -73,7 +73,7 @@ create table rcbill_extract.IV_BILLDETAIL_SAMPLE
 ;
 
 drop table if exists rcbill_extract.IV_PAYMENTHISTORY_SAMPLE;
-create table rcbill_extract.IV_PAYMENTHISTORY_SAMPLE
+create table rcbill_extract.IV_PAYMENTHISTORY_SAMPLE(index idxivbs1(CUSTOMERACCOUNTNUMBER),index idxivbs2(BILLINGACCOUNTNUMBER),index idxivbs3(DEBITDOCUMENTNUMBER), index idxivbs4(PAYMENTRECEIPTID))
 (
 	-- select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3) order by PAYMENTRECEIPTID desc
     

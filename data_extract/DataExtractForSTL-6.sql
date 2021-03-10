@@ -56,8 +56,8 @@ create table rcbill_extract.IV_CUSTOMERACCOUNT (index idxIVCA1(ACCOUNTNUMBER), i
 	select 
 	-- 0
 	-- , ID
-	 substring_index(trim(replace(FIRM,',','')),' ',1) as FIRSTNAME
-	, trim(substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',',''))))) as LASTNAME
+	 replace(substring_index(trim(replace(FIRM,',','')),' ',1),'%','pct') as FIRSTNAME
+	, replace(trim(substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',',''))))),'%','pct') as LASTNAME
 	/*
 	-- REMOVED FROM CA AS IT IS MAPPED WITH SA
 	, case 
@@ -1889,10 +1889,10 @@ cpe_type like '%SUBSCRIPTION%' or cpe_type like '%PREPAID%'
 
 
 ##################################################################################################################
--- PAYMENT HISTORY
-select 'PAYMENT HISTORY' AS TABLENAME;
+-- PAYMENT HISTORY STAGING TABLE
+select 'PAYMENT HISTORY STAGING' AS TABLENAME;
 
-drop table if exists rcbill_extract.IV_PAYMENTHISTORY;
+drop table if exists rcbill_extract.IV_PAYMENTHISTORY_STAGING;
 
 -- HARD= 101, 9999 (ANNULED)
 -- HARD = 0 (CREDITED)
@@ -1900,7 +1900,7 @@ drop table if exists rcbill_extract.IV_PAYMENTHISTORY;
 -- TYPE = 11,21 (CREDIT OR DEBIT)
 -- HARD NOT IN (100, 101, 102, 201, 999, 9999)
 
-create table rcbill_extract.IV_PAYMENTHISTORY(index idxivbs1(CUSTOMERACCOUNTNUMBER),index idxivbs2(BILLINGACCOUNTNUMBER),index idxivbs3(DEBITDOCUMENTNUMBER), index idxivbs4(PAYMENTRECEIPTID))
+create table rcbill_extract.IV_PAYMENTHISTORY_STAGING(index idxivbs1(CUSTOMERACCOUNTNUMBER),index idxivbs2(BILLINGACCOUNTNUMBER),index idxivbs3(DEBITDOCUMENTNUMBER), index idxivbs4(PAYMENTRECEIPTID))
 (
 
 
@@ -2004,7 +2004,10 @@ create table rcbill_extract.IV_BILLSUMMARY(index idxivbs1(CUSTOMERACCOUNTNUMBER)
 		, a.HARD as INVOICEHARD
         , a.CLID as CLIENT_ID
         , a.CID as CONTRACT_ID
-        , a.PaymentID as PAYMENTRECEIPTID   -- MATCHES with PAYMENTRECEIPTID in IV_PAYMENTHISTORY
+        -- , a.PaymentID as PAYMENTRECEIPTID   -- MATCHES with PAYMENTRECEIPTID in IV_PAYMENTHISTORY
+        
+        , (select b.PAYMENTRECEIPTID from rcbill_extract.IV_PAYMENTHISTORY_STAGING b where b.PAYMENTRECEIPTID=a.PaymentID and b.FROMDATE=a.BEGDATE and b.TODATE=a.ENDDATE) as PAYMENTRECEIPTID
+        
 		, a.INVOICENO as DEBITDOCUMENTNUMBEROLD
 		from 
 
@@ -2016,6 +2019,60 @@ create table rcbill_extract.IV_BILLSUMMARY(index idxivbs1(CUSTOMERACCOUNTNUMBER)
 	) a 
 )
 ;
+
+##################################################################################################################
+## first update invoice header table to remove paymentreceipt id for where the payment is for older invoices
+
+
+
+##################################################################################################################
+## created adjusted payment amount for payment history
+
+#### 
+select 'FINAL PAYMENT HISTORY' AS TABLENAME;
+
+
+drop table if exists rcbill_extract.IV_PAYMENTHISTORY;
+create table rcbill_extract.IV_PAYMENTHISTORY(index idxivbs1(CUSTOMERACCOUNTNUMBER),index idxivbs2(BILLINGACCOUNTNUMBER),index idxivbs3(DEBITDOCUMENTNUMBER), index idxivbs4(PAYMENTRECEIPTID))
+(
+	-- select * from rcbill_extract.IV_PAYMENTHISTORY where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3) order by PAYMENTRECEIPTID desc
+    
+    select a.*,b.ADJUSTEDPAYMENTAMOUNT from
+    (
+		select * from rcbill_extract.IV_PAYMENTHISTORY_STAGING
+        -- where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3)
+        order by PAYMENTRECEIPTID desc
+	) a 
+    left join
+    (
+		
+		
+		select PAYMENTRECEIPTID, sum(ADJUSTEDAMOUNT) as ADJUSTEDPAYMENTAMOUNT
+			
+            /*
+            from 
+            ( select *, (select paymentid from rcbill.rcb_invoicesheader where ID=a.invoicesummaryid) as PAYMENTRECEIPTID 
+				from rcbill_extract.IV_BILLSUMMARY a 
+                -- where CUSTOMERACCOUNTNUMBER in (@custid1,@custid2,@custid3) 
+			) a
+            */
+            from rcbill_extract.IV_BILLSUMMARY
+		group by PAYMENTRECEIPTID
+    ) b
+    on a.PAYMENTRECEIPTID=b.PAYMENTRECEIPTID
+)
+;
+
+
+
+##################################################################################################################
+
+
+
+
+
+
+
 
 
 ##################################################################################################################
