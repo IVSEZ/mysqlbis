@@ -299,6 +299,10 @@ set @clid=728457;
 set @cid=2128298; -- for bu package
 set @cid=2128300; -- for remote control
 
+
+set @clid=700468; -- coreen belise
+
+
 select * from rcbill.rcb_invoicesheader where clid=@clid 
 -- and cid=@cid 
 order by id desc;
