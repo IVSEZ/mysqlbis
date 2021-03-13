@@ -11,6 +11,8 @@ use rcbill_my;
 select 'current VOD customers' as message;
 select 
 a.clientclass, a.clienttype, a.services, a.ActiveCount, a.contractcount, a.period, a.clientcode, a.clientname, a.region, a.network
+, b.clientphone, b.clientemail
+, c.clientparcel, c.latitude, c.longitude
 , b.TotalPaymentAmount2021, b.AvgMonthlyPayment2021
 , b.TotalPaymentAmount2020, b.AvgMonthlyPayment2020
 , b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019
@@ -44,11 +46,76 @@ inner join
 rcbill_my.rep_custconsolidated b
 on a.clientcode=b.clientcode
 
+
+left join 
+(
+	select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords)) order by clientparcel
+) c
+
+ON a.clientcode=c.clientcode
 where 
-`VOD`>0
+a.`VOD`>0
 -- and clientclass not in ('Intelvision Office','Employee')
 ;
 
+-- select * from rcbill_my.rep_custconsolidated;
+
+select 'current VOD customers on HFC network, but in GPON areas' as message;
+select 
+a.clientclass, a.clienttype, a.services, a.ActiveCount, a.contractcount, a.period, a.clientcode, a.clientname
+, b.clientphone, b.clientemail
+, c.clientparcel, c.latitude, c.longitude
+, a.region, a.network
+, b.clean_connection_type
+, b.clean_hfc_node, b.clean_hfc_nodename, b.hfc_district, b.hfc_subdistrict
+, b.TotalPaymentAmount2021, b.AvgMonthlyPayment2021
+, b.TotalPaymentAmount2020, b.AvgMonthlyPayment2020
+, b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019
+, b.TotalPaymentAmount2018, b.AvgMonthlyPayment2018
+, `Amber`, `Amber Corporate`
+, `Crimson`, `Crimson Corporate`
+, `Intel Data 10`
+, `Starter`, `Value`
+, `Elite`, `Extreme`, `Extreme Plus`
+, `Performance`, `Performance Plus`
+, `Basic`, `Executive`, `Extravagance`, `Extravagance Corporate`
+, `French`, `Indian`, `Indian Corporate`
+, `Intelenovela`
+, `DualView`, `MultiView`, `VOD`, `IGO`, `Mobile Indian`
+, `Turquoise High Tide`, `Turquoise Low Tide`, `TurquoiseTV`
+, `Intel Voice 10`, `Intel Voice 20`
+, `Voice Plus`
+
+, `PBX`
+, `Prepaid`
+, `Prepaid Data`
+, `Business Unlimited-1`, `Business Unlimited-2`, `Business Unlimited-6`, `Business Unlimited-8`, `Business Unlimited-8-daytime`
+, `Dedicated Custom`, `Dedicated Plus`
+, `Hotels/Channels`, `Hotels/Decoder`
+, `VPN`
+
+from rcbill_my.clientstats a
+
+inner join 
+
+rcbill_my.rep_custconsolidated b
+on a.clientcode=b.clientcode
+
+left join 
+(
+	select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords)) order by clientparcel
+) c
+
+ON a.clientcode=c.clientcode
+
+where 
+`VOD`>0
+
+and 
+network='HFC'
+
+-- and clientclass not in ('Intelvision Office','Employee')
+;
 
 
 ##################################
@@ -56,6 +123,8 @@ where
 select 'customers on Elite, Extreme, Extreme+, Crimson + Any TV package (excluding indian and french)' as message;
 select 
 a.clientclass, a.clienttype, a.services, a.ActiveCount, a.contractcount, a.period, a.clientcode, a.clientname, a.region, a.network
+, b.clientphone, b.clientemail
+, c.clientparcel, c.latitude, c.longitude
 , b.TotalPaymentAmount2021, b.AvgMonthlyPayment2021
 , b.TotalPaymentAmount2020, b.AvgMonthlyPayment2020
 , b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019
@@ -88,6 +157,13 @@ inner join
 
 rcbill_my.rep_custconsolidated b
 on a.clientcode=b.clientcode
+
+left join 
+(
+	select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords)) order by clientparcel
+) c
+
+ON a.clientcode=c.clientcode
 
 where 
 (`Elite`>0 or `Extreme`>0 or `Extreme Plus`>0 or `Crimson`>0 or `Crimson Corporate`>0) 
@@ -100,6 +176,8 @@ and
 select 'customers on Elite, Extreme, Extreme+, Crimson + (Basic or Executive)' as message;
 select 
 a.clientclass, a.clienttype, a.services, a.ActiveCount, a.contractcount, a.period, a.clientcode, a.clientname, a.region, a.network
+, b.clientphone, b.clientemail
+, c.clientparcel, c.latitude, c.longitude
 , b.TotalPaymentAmount2021, b.AvgMonthlyPayment2021
 , b.TotalPaymentAmount2020, b.AvgMonthlyPayment2020
 , b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019
@@ -130,6 +208,13 @@ from rcbill_my.clientstats a
 inner join 
 rcbill_my.rep_custconsolidated b
 on a.clientcode=b.clientcode
+
+left join 
+(
+	select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords)) order by clientparcel
+) c
+
+ON a.clientcode=c.clientcode
 
 where 
 (`Elite`>0 or `Extreme`>0 or `Extreme Plus`>0 or `Crimson`>0 or `Crimson Corporate`>0) 
@@ -141,6 +226,8 @@ and
 select 'customers on Elite, Extreme, Extreme+, Crimson + (Extravagance)' as message;
 select 
 a.clientclass, a.clienttype, a.services, a.ActiveCount, a.contractcount, a.period, a.clientcode, a.clientname, a.region, a.network
+, b.clientphone, b.clientemail
+, c.clientparcel, c.latitude, c.longitude
 , b.TotalPaymentAmount2021, b.AvgMonthlyPayment2021
 , b.TotalPaymentAmount2020, b.AvgMonthlyPayment2020
 , b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019
@@ -171,6 +258,13 @@ from rcbill_my.clientstats a
 inner join 
 rcbill_my.rep_custconsolidated b
 on a.clientcode=b.clientcode
+
+left join 
+(
+	select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords)) order by clientparcel
+) c
+
+ON a.clientcode=c.clientcode
 
 where 
 (`Elite`>0 or `Extreme`>0 or `Extreme Plus`>0 or `Crimson`>0 or `Crimson Corporate`>0) 
@@ -185,6 +279,8 @@ and
 select 'customers on Performance, Performance+ & Amber + Basic or Executive' as message;
 select 
 a.clientclass, a.clienttype, a.services, a.ActiveCount, a.contractcount, a.period, a.clientcode, a.clientname, a.region, a.network
+, b.clientphone, b.clientemail
+, c.clientparcel, c.latitude, c.longitude
 , b.TotalPaymentAmount2021, b.AvgMonthlyPayment2021
 , b.TotalPaymentAmount2020, b.AvgMonthlyPayment2020
 , b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019
@@ -213,6 +309,13 @@ from rcbill_my.clientstats a
 inner join 
 rcbill_my.rep_custconsolidated b
 on a.clientcode=b.clientcode
+
+left join 
+(
+	select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords)) order by clientparcel
+) c
+
+ON a.clientcode=c.clientcode
 
 where 
 (`Performance`>0 or `Performance Plus`>0 or `Amber`>0 or `Amber Corporate`>0) 
@@ -225,6 +328,8 @@ and
 select 'customers on Performance, Performance+ & Amber + Extravagance' as message;
 select 
 a.clientclass, a.clienttype, a.services, a.ActiveCount, a.contractcount, a.period, a.clientcode, a.clientname, a.region, a.network
+, b.clientphone, b.clientemail
+, c.clientparcel, c.latitude, c.longitude
 , b.TotalPaymentAmount2021, b.AvgMonthlyPayment2021
 , b.TotalPaymentAmount2020, b.AvgMonthlyPayment2020
 , b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019
@@ -253,6 +358,13 @@ from rcbill_my.clientstats a
 inner join 
 rcbill_my.rep_custconsolidated b
 on a.clientcode=b.clientcode
+
+left join 
+(
+	select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords)) order by clientparcel
+) c
+
+ON a.clientcode=c.clientcode
 
 where 
 (`Performance`>0 or `Performance Plus`>0 or `Amber`>0 or `Amber Corporate`>0) 
@@ -265,6 +377,8 @@ and
 select 'customers on Starter & Value + Any TV Package' as message;
 select 
 a.clientclass, a.clienttype, a.services, a.ActiveCount, a.contractcount, a.period, a.clientcode, a.clientname, a.region, a.network
+, b.clientphone, b.clientemail
+, c.clientparcel, c.latitude, c.longitude
 , b.TotalPaymentAmount2021, b.AvgMonthlyPayment2021
 , b.TotalPaymentAmount2020, b.AvgMonthlyPayment2020
 , b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019
@@ -293,6 +407,13 @@ from rcbill_my.clientstats a
 inner join 
 rcbill_my.rep_custconsolidated b
 on a.clientcode=b.clientcode
+
+left join 
+(
+	select * from rcbill.rcb_clientparcelcoords where date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords)) order by clientparcel
+) c
+
+ON a.clientcode=c.clientcode
 
 where 
 (`Starter`>0 or `Value`>0) 

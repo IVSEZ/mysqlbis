@@ -50,3 +50,103 @@ select DEVICE_ID, count(*) from rcbill_extract.IV_SERVICEINSTANCE where USERNAME
 group by DEVICE_ID
 order by 2 desc
 ;
+
+/*
+###
+for every prt 13 there should be a prt00 present
+*/
+
+select * from rcbill_extract.IV_BILLDETAIL where PRODUCTTYPEID='PRT13';
+select * from rcbill_extract.IV_BILLDETAIL where PRODUCTTYPEID='PRT00';
+
+
+drop temporary table if exists rcbill_extract.billdetailprt13;
+create temporary table rcbill_extract.billdetailprt13(index idxivbd1(INVOICESUMMARYID),index idxivbd2(PACKAGENAME))
+(
+	select BILLINGACCOUNTNUMBER, CUSTOMERACCOUNTNUMBER, INVOICESUMMARYID, INVOICEDETAILID, SERIALNUMBER, DEBITDOCUMENTNUMBER
+    , NAME, RATE, ITEMCOUNT, SUBTOTAL, TAX, DISCOUNT, TOTALAMOUNT, PRODUCTTYPEID 
+    , FROMDATE, TODATE, BILLDATE, PACKAGENAME
+    from 
+    rcbill_extract.IV_BILLDETAIL where PRODUCTTYPEID='PRT13'
+
+)
+;
+
+drop temporary table if exists rcbill_extract.billdetailprt00;
+create temporary table rcbill_extract.billdetailprt00(index idxivbd1(INVOICESUMMARYID_2),index idxivbd2(PACKAGENAME_2))
+(
+	select BILLINGACCOUNTNUMBER as BILLINGACCOUNTNUMBER_2, CUSTOMERACCOUNTNUMBER as CUSTOMERACCOUNTNUMBER_2, INVOICESUMMARYID as INVOICESUMMARYID_2, INVOICEDETAILID as INVOICEDETAILID_2, SERIALNUMBER as SERIALNUMBER_2, DEBITDOCUMENTNUMBER as DEBITDOCUMENTNUMBER_2, NAME as NAME_2
+	, RATE as RATE_2, ITEMCOUNT as ITEMCOUNT_2, SUBTOTAL as SUBTOTAL_2, TAX as TAX_2, DISCOUNT as DISCOUNT_2, TOTALAMOUNT as TOTALAMOUNT_2
+	, PRODUCTTYPEID as PRODUCTTYPEID_2 
+    , FROMDATE as FROMDATE_2, TODATE as TODATE_2, BILLDATE as BILLDATE_2, PACKAGENAME as PACKAGENAME_2
+
+    from rcbill_extract.IV_BILLDETAIL 
+    where PRODUCTTYPEID='PRT00'
+
+)
+;
+
+drop temporary table if exists rcbill_extract.billdetailprt00_13;
+create temporary table rcbill_extract.billdetailprt00_13(index idxivbd1(CUSTOMERACCOUNTNUMBER),index idxivbd2(BILLINGACCOUNTNUMBER))
+(
+	select a.*, b.*
+	from
+	rcbill_extract.billdetailprt13 a 
+	left join 
+	rcbill_extract.billdetailprt00 b 
+	on a.INVOICESUMMARYID=b.INVOICESUMMARYID_2
+	and a.PACKAGENAME=b.PACKAGENAME_2
+)
+;
+
+select * from  rcbill_extract.billdetailprt00_13
+where CUSTOMERACCOUNTNUMBER in (@custid1)
+order by BILLDATE desc
+;
+
+
+set @custid1 = 'CA_I.000011750';
+
+select a.*, b.*
+from
+rcbill_extract.billdetailprt13 a 
+left join 
+rcbill_extract.billdetailprt00 b 
+on a.INVOICESUMMARYID=b.INVOICESUMMARYID_2
+and a.PACKAGENAME=b.PACKAGENAME_2
+
+where a.CUSTOMERACCOUNTNUMBER in (@custid1)
+;
+
+
+
+
+
+
+select a.*, b.*
+from
+(
+	select BILLINGACCOUNTNUMBER, CUSTOMERACCOUNTNUMBER, INVOICESUMMARYID, INVOICEDETAILID, SERIALNUMBER, DEBITDOCUMENTNUMBER
+    , NAME, RATE, ITEMCOUNT, SUBTOTAL, TAX, DISCOUNT, TOTALAMOUNT, PRODUCTTYPEID 
+    , FROMDATE, TODATE, BILLDATE, PACKAGENAME
+    from 
+    rcbill_extract.IV_BILLDETAIL where PRODUCTTYPEID='PRT13'
+    and CUSTOMERACCOUNTNUMBER in (@custid1)
+    -- limit 1000
+) a 
+left join 
+(
+	select INVOICESUMMARYID as INVOICESUMMARYID_2, INVOICEDETAILID as INVOICEDETAILID_2, SERIALNUMBER as SERIALNUMBER_2, DEBITDOCUMENTNUMBER as DEBITDOCUMENTNUMBER_2, NAME as NAME_2
+	, RATE as RATE_2, ITEMCOUNT as ITEMCOUNT_2, SUBTOTAL as SUBTOTAL_2, TAX as TAX_2, DISCOUNT as DISCOUNT_2, TOTALAMOUNT as TOTALAMOUNT_2
+	, PRODUCTTYPEID as PRODUCTTYPEID_2 
+    , FROMDATE as FROMDATE_2, TODATE as TODATE_2, BILLDATE as BILLDATE_2, PACKAGENAME as PACKAGENAME_2
+
+    from rcbill_extract.IV_BILLDETAIL 
+    where PRODUCTTYPEID='PRT00'
+    and CUSTOMERACCOUNTNUMBER in (@custid1)
+
+) b 
+on a.INVOICESUMMARYID=b.INVOICESUMMARYID_2
+and a.PACKAGENAME=b.PACKAGENAME_2
+
+;

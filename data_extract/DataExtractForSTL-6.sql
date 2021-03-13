@@ -1684,6 +1684,8 @@ t1.SUBPERIOD=t2.SUBPERIOD
 where t1.SUBFROM is null and t1.SUBTO is null and t1.SUBPERIOD is null and (t1.CPE_TYPE like '%SUBSCRIPTION%')
 ;
 
+-- select * from rcbill_extract.IV_SERVICEINSTANCE;
+
 ##################################################################################################################
 -- SERVICE INSTANCE CHARGE
 select 'SERVICE INSTANCE CHARGE' AS TABLENAME;
@@ -2806,6 +2808,8 @@ set @custid1 = 'CA_I.000019584';
 set @custid1 = 'CA_I9520';
 
 set @custid1 = 'CA_0008';
+
+set @custid1 = 'CA_I15252';
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
