@@ -23,7 +23,7 @@ select 	ifnull(FIRSTNAME,""),	ifnull(LASTNAME,""),	ifnull(CITY,""),	ifnull(STATE
 -- select 	ifnull(FIRSTNAME,""),	ifnull(LASTNAME,""),	ifnull(CITY,""),	ifnull(STATE,""),	ifnull(COUNTRY,""),	ifnull(DISTRICT,""),	ifnull(SUBDISTRICT,""),	ifnull(ZIPCODE,""),	ifnull(EMAILID,""),	ifnull(BUSINESSEMAILID,""),	ifnull(MOBILENUMBER,""),	ifnull(PHONEHOME,""),	ifnull(PHONEOFFICE,""),	ifnull(FAXNUMBER,""),	ifnull(PARENTACCOUNTNUMBER,""),	ifnull(ACCOUNTNUMBER,""),	ifnull(ACCOUNTSTATUS,""),	ifnull(USERNAME,""),	ifnull(CREATEDDATE,""),	ifnull(ACTIVATIONDATE,""),	ifnull(STATUSCHANGEDATE,""),	ifnull(PRIMARY_ID_TYPE,""),	ifnull(PRIMARY_ID_VALUE,""),	ifnull(SECONDARY_ID_TYPE,""),	ifnull(SECONDARY_ID_VALUE,""),	ifnull(TAXNUMBERINDICATOR,""),	ifnull(BUILDINGNAME,""),	ifnull(BIRTHDATE,""),	ifnull(STREETNAME,""),	ifnull(PREFERREDLANGUAGE,""),	ifnull(PROPERTYTYPE,""),	ifnull(PARCELNUMBER,""),	ifnull(LANDMARK,""),	ifnull(LATITUDE,""),	ifnull(LONGITUDE,""),	ifnull(FLOOR,""),	ifnull(XCOORDINATE,""),	ifnull(YCOORDINATE,""),	ifnull(CLCLASS,""),	ifnull(FIZLICE,""),	ifnull(CLIENT_ID,"")
 
 
-INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_CUSTOMER_ACCOUNT_20201219-1.csv'
+INTO OUTFILE '/var/www/html/STL_EXTRACT/IV_CUSTOMER_ACCOUNT_20210312-1.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 ESCAPED BY '\\'

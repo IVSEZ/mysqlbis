@@ -1313,7 +1313,7 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
 				MONTH
 			  ) ) ,0) as SUBPERIOD  
 			
-         
+         , (select BILLINGACCOUNTNUMBER from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (select parentaccountnumber from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (a.CUSTOMERACCOUNTNUMBER))) as PARENTBILLINGACCOUNTNUMBER
 
 
 
@@ -1466,7 +1466,7 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
 							CROSS JOIN (SELECT @cnt := 0, @curType := '') AS dummy
 
 
-							-- where ips1.clientcode in  
+							-- where ips1.clientcode in  ('I.000015739')
 							-- (select id from rcbill.rcb_tclients where kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR'))
 							-- ('I.000011750') -- ,'I.000011750')) -- ('I.000009787','I.000011750','I.000018187'))
 							-- ('I.000021409')

@@ -3,7 +3,7 @@ select SERIALNUMBER , count(*) from rcbill_extract.IV_INVENTORY group by 1 order
 
 select * from rcbill_extract.IV_INVENTORY where INVENTORYNUMBER in 
 (
-'00.02.71.9a.99.ac'
+'rahul'
 )
 ;
 
