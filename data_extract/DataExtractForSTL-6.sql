@@ -875,6 +875,11 @@ create table rcbill_extract.IV_SERVICEACCOUNT(index idxivsa1(SERVICEACCOUNTNUMBE
 			, b.clean_hfc_nodename as HFCNODENAME
 
 			, a.ID as CLIENT_ID
+            , (select 
+					case when GATEKEEPER_NAME='IPTV NAS' then 'RCBOSS'
+						 when GATEKEEPER_NAME='BestCas NAS' then 'BESTCAS'
+                         when GATEKEEPER_NAME='Conax Mahe' then 'CONAX' end as VENDOR
+					from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice where SERVICE_TYPE in ('DTV','IPTV') and clientcode=a.kod order by serviceinstancenumber desc limit 1) as VENDOR
 			-- , b.StartDate as CONTRACTSTARTDATE
 			-- , b.EndDate as CONTRACTENDDATE
 
