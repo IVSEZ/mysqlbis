@@ -45,6 +45,19 @@ set @custid11 = 'CA_I.000020888';
 set @custid11 = 'CA_I16192';
 
 
+
+
+
+select 'PARENT ACCOUNT' as TABLENAME;
+
+drop table if exists rcbill_extract.parentaccount;
+create table rcbill_extract.parentaccount(index idxIVCA12(CLIENTID)) as 
+(
+	select *, cast(concat('CA_',CLIENTCODE) as char(255)) AS ACCOUNTNUMBER from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR' and clientname like 'PARENT%'
+)
+;
+####################################################
+
 select 'CUSTOMER ACCOUNT' AS TABLENAME;
 
 drop table if exists rcbill_extract.IV_CUSTOMERACCOUNT;
@@ -92,6 +105,7 @@ create table rcbill_extract.IV_CUSTOMERACCOUNT (index idxIVCA1(ACCOUNTNUMBER), i
 	, BPHONE AS PHONEOFFICE
 	, FAX AS FAXNUMBER
 	, '' AS PARENTACCOUNTNUMBER
+    -- , (select ACCOUNTNUMBER from rcbill_extract.parentaccount where clientid=a.id) as PARENTACCOUNTNUMBER
 	, cast(concat('CA_',KOD) as char(255)) AS ACCOUNTNUMBER
 	, ACTIVE AS ACCOUNTSTATUS
 	, ifnull((SELECT USERNAME FROM rcbill.rcb_users where CLID=a.ID LIMIT 1),concat('CA_',KOD)) as USERNAME
@@ -2154,7 +2168,7 @@ create table rcbill_extract.IV_BILLDETAIL(index idxivbd1(CUSTOMERACCOUNTNUMBER),
 			, 0 as ADJUSTEDAMOUNT
 			, ifnull((select PACKAGENAME from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=a.ServiceID limit 1),'NOT PRESENT') as PACKAGENAME
 			, a.UPDDATE as BILLDATE
-			, ifnull((select CURRENCYALIAS from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER=a.INVOICENO limit 1),'NOT PRESENT') as CURRENCYALIAS
+			, ifnull((select CURRENCYALIAS from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER=concat(a.InvoiceID,a.INVOICENO) limit 1),'NOT PRESENT') as CURRENCYALIAS
 			
 			
 			, case when a.Discount>0 then 'Y'
@@ -2164,7 +2178,7 @@ create table rcbill_extract.IV_BILLDETAIL(index idxivbd1(CUSTOMERACCOUNTNUMBER),
 			, '' as D_DISCOUNTNAME
 			, a.DiscountCost as D_ABSDISCOUNT
 			
-			, ifnull((select SYSCURRENCYEXCHANGERATE from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER=a.INVOICENO limit 1),'NOT PRESENT') as D_SYSCURRENCYEXCHANGERATE
+			, ifnull((select SYSCURRENCYEXCHANGERATE from rcbill_extract.IV_BILLSUMMARY where DEBITDOCUMENTNUMBER=concat(a.InvoiceID,a.INVOICENO) limit 1),'NOT PRESENT') as D_SYSCURRENCYEXCHANGERATE
 			, a.VAT as T_RATE
 			, case when a.VAT>0 then 'VAT' else '' end as T_TAXNAME
 			, 0 as T_EXEMPTIONRATE
@@ -2185,7 +2199,8 @@ create table rcbill_extract.IV_BILLDETAIL(index idxivbd1(CUSTOMERACCOUNTNUMBER),
 	from 
 	rcbill.rcb_invoicescontents a 
 
-	where a.InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY) -- where CLIENT_ID in (@clid2, @clid3)) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
+	 where a.InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY) 
+    -- where a.InvoiceID in (select INVOICESUMMARYID from rcbill_extract.IV_BILLSUMMARY where CLIENT_ID in (@clid2, @clid3)) -- ,@clid2,@clid3,@clid4,@clid5,@clid6,@clid7,@clid8,@clid9,@clid10,@clid11))
 	-- limit 1000
 	-- where a.clid in (701369)
 	-- where clid in (select rcbill.GetClientID(CLIENTCODE) from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')

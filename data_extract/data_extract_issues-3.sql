@@ -99,13 +99,42 @@ create temporary table rcbill_extract.billdetailprt00_13(index idxivbd1(CUSTOMER
 )
 ;
 
+
+
+select * from  rcbill_extract.billdetailprt00_13 where BILLINGACCOUNTNUMBER_2 is null;
+
+select DEBITDOCUMENTNUMBER, count(*) 
+from  rcbill_extract.billdetailprt00_13 where BILLINGACCOUNTNUMBER_2 is null
+group by DEBITDOCUMENTNUMBER
+;
+
+
+set @custid1 = 'CA_I.000012189';
+
 select * from  rcbill_extract.billdetailprt00_13
 where CUSTOMERACCOUNTNUMBER in (@custid1)
 order by BILLDATE desc
 ;
 
+select * from  rcbill_extract.IV_BILLDETAIL
+where CUSTOMERACCOUNTNUMBER in (@custid1)
+order by BILLDATE desc
+;
 
-set @custid1 = 'CA_I.000011750';
+select * from  rcbill_extract.IV_BILLSUMMARY
+where CUSTOMERACCOUNTNUMBER in (@custid1)
+order by BILLDATE desc
+;
+
+/*
+INSERT INTO action_2_members (campaign_id, mobile, vote, vote_date)  
+SELECT campaign_id, from_number, received_msg, date_received
+  FROM `received_txts`
+ WHERE `campaign_id` = '8'
+*/
+insert into 
+rcbill_extract.IV_BILLDETAIL
+
 
 select a.*, b.*
 from
