@@ -2973,6 +2973,9 @@ set @custid1 = 'CA_I.000009344';  -- christianne savvy avani
 
 set @custid1 = 'CA_I.000022212';
 
+set @custid1 = 'CA_I.000011000';
+
+
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
 select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1)  order by CUSTOMERACCOUNTNUMBER;
