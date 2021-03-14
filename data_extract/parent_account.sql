@@ -107,7 +107,10 @@ right join
  ;
 
 
+select a.CLIENTNAME, a.ACCOUNTNUMBER from rcbill_extract.parentaccount a ;
+select * from rcbill_extract.IV_CUSTOMERACCOUNT where PARENTACCOUNTNUMBER is not null;
 
+select * from rcbill_extract.IV_CUSTOMERACCOUNT where PARENTACCOUNTNUMBER is not null;
 
 
 

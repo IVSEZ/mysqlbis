@@ -264,6 +264,7 @@ LINES TERMINATED BY '\n'
 -- show index from rcbill_extract.IV_CUSTOMERACCOUNT ;
 -- select * from rcbill_extract.IV_CUSTOMERACCOUNT ;
 -- select * from rcbill_extract.IV_CUSTOMERACCOUNT where TAXNUMBERINDICATOR='BUSINESS';
+-- select * from rcbill_extract.IV_CUSTOMERACCOUNT where PARENTACCOUNTNUMBER is not null;
 
 ###################################################################################
 
@@ -2964,6 +2965,8 @@ set @custid1 = 'CA_0008';
 set @custid1 = 'CA_I15252';
 
 set @custid1 = 'CA_I.000009344';  -- christianne savvy avani
+
+set @custid1 = 'CA_I.000022212';
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
