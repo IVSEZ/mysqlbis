@@ -1006,6 +1006,7 @@ create table rcbill_my.rep_clientcontractdevices(INDEX idxrccd1 (MAC), INDEX idx
 	ContractType as CONTRACT_TYPE,
 	ServiceType as SERVICE_TYPE,
     ServiceId as SERVICE_ID,
+    CSID as CSID,
     DeviceId as DEVICE_ID,
     DevTypeID as DEVICE_TYPE_ID,
     (select `name` from rcbill.rcb_devicetypes rd where rd.id=ccd.DevTypeID) as DEVICE_NAME,

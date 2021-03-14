@@ -259,7 +259,8 @@ create table rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice(ind
 			 from rcbill.clientcontractsservicepackageprice a 
 			 left join 
 			 rcbill_my.rep_clientcontractdevices b 
-			 on a.clientcode=b.CLIENT_CODE and a.contractcode=b.CONTRACT_CODE and a.service=b.SERVICE_TYPE
+			 -- on a.clientcode=b.CLIENT_CODE and a.contractcode=b.CONTRACT_CODE and a.service=b.SERVICE_TYPE
+             on a.clientcode=b.CLIENT_CODE and a.contractcode=b.CONTRACT_CODE and a.serviceinstancenumber=b.csid
              
              where a.clientcode in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
              -- where a.clientcode in (@kod1,@kod2,@kod3,@kod4,@kod5,@kod6,@kod7,@kod8,@kod9,@kod10,@kod11)
@@ -2105,10 +2106,9 @@ create table rcbill_extract.IV_BILLDETAIL(index idxivbd1(CUSTOMERACCOUNTNUMBER),
 		-- , ifnull((select CUSTOMERACCOUNTNUMBER from rcbill_extract.BILLINGACCOUNT_KEY where client_id=a.CLID and contract_id=a.CID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
 			, ifnull((select ACCOUNTNUMBER from rcbill_extract.IV_CUSTOMERACCOUNT where client_id=a.CLID),'NOT PRESENT') as CUSTOMERACCOUNTNUMBER
 			, ifnull((select serviceinstancenumber from rcbill_extract.IV_SERVICEINSTANCE where client_id=a.CLID and contract_id=a.CID and servicerateid=a.RSID and serviceid=a.ServiceID limit 1),'NOT PRESENT') as SERVICEINSTANCENUMBER
-			,
-			a.ID as INVOICEDETAILID
+			, cast(a.ID  as char(255)) as INVOICEDETAILID
 			, a.InvoiceID as INVOICESUMMARYID
-			, a.ID as SERIALNUMBER
+			, cast(a.ID as char(255)) as SERIALNUMBER
 			, concat(a.InvoiceID, a.INVOICENO) as DEBITDOCUMENTNUMBER
 			, a.TEXT as NAME
 			, a.SCOST as RATE
@@ -2210,6 +2210,70 @@ create table rcbill_extract.IV_BILLDETAIL(index idxivbd1(CUSTOMERACCOUNTNUMBER),
 
 )
 ;
+
+
+/*
+###
+for every prt 13 there should be a prt00 present
+*/
+
+	drop temporary table if exists rcbill_extract.billdetailprt13;
+	create temporary table rcbill_extract.billdetailprt13(index idxivbd1(INVOICESUMMARYID),index idxivbd2(PACKAGENAME))
+	(
+		select BILLINGACCOUNTNUMBER, CUSTOMERACCOUNTNUMBER, SERVICEINSTANCENUMBER,  INVOICESUMMARYID, INVOICEDETAILID, SERIALNUMBER, DEBITDOCUMENTNUMBER
+		, NAME, RATE, ITEMCOUNT, SUBTOTAL, TAX, DISCOUNT, TOTALAMOUNT, PRODUCTTYPEID 
+		, FROMDATE, TODATE, BILLCYCLE, BILLDATE, PACKAGENAME
+		, CURRENCYALIAS,D_SYSCURRENCYEXCHANGERATE,CLIENT_ID, CONTRACT_ID, RSID, ServiceID, DEBITDOCUMENTNUMBEROLD
+		from 
+		rcbill_extract.IV_BILLDETAIL where PRODUCTTYPEID='PRT13'
+
+	)
+	;
+
+	drop temporary table if exists rcbill_extract.billdetailprt00;
+	create temporary table rcbill_extract.billdetailprt00(index idxivbd1(INVOICESUMMARYID_2),index idxivbd2(PACKAGENAME_2))
+	(
+		select BILLINGACCOUNTNUMBER as BILLINGACCOUNTNUMBER_2, CUSTOMERACCOUNTNUMBER as CUSTOMERACCOUNTNUMBER_2, SERVICEINSTANCENUMBER as SERVICEINSTANCENUMBER_2, INVOICESUMMARYID as INVOICESUMMARYID_2
+		, INVOICEDETAILID as INVOICEDETAILID_2, SERIALNUMBER as SERIALNUMBER_2, DEBITDOCUMENTNUMBER as DEBITDOCUMENTNUMBER_2, NAME as NAME_2
+		, RATE as RATE_2, ITEMCOUNT as ITEMCOUNT_2, SUBTOTAL as SUBTOTAL_2, TAX as TAX_2, DISCOUNT as DISCOUNT_2, TOTALAMOUNT as TOTALAMOUNT_2
+		, PRODUCTTYPEID as PRODUCTTYPEID_2 
+		, FROMDATE as FROMDATE_2, TODATE as TODATE_2, BILLCYCLE as BILLCYCLE_2, BILLDATE as BILLDATE_2, PACKAGENAME as PACKAGENAME_2
+		, CURRENCYALIAS as CURRENCYALIAS_2 ,D_SYSCURRENCYEXCHANGERATE as D_SYSCURRENCYEXCHANGERATE_2, CLIENT_ID as CLIENT_ID_2 , CONTRACT_ID as CONTRACT_ID_2, RSID as RSID_2, ServiceID as ServiceID_2, DEBITDOCUMENTNUMBEROLD as DEBITDOCUMENTNUMBEROLD_2
+		from rcbill_extract.IV_BILLDETAIL 
+		where PRODUCTTYPEID='PRT00'
+
+	)
+	;
+
+	drop temporary table if exists rcbill_extract.billdetailprt00_13;
+	create temporary table rcbill_extract.billdetailprt00_13(index idxivbd1(CUSTOMERACCOUNTNUMBER),index idxivbd2(BILLINGACCOUNTNUMBER))
+	(
+		select a.*, b.*
+		from
+		rcbill_extract.billdetailprt13 a 
+		left join 
+		rcbill_extract.billdetailprt00 b 
+		on a.INVOICESUMMARYID=b.INVOICESUMMARYID_2
+		and a.PACKAGENAME=b.PACKAGENAME_2
+	)
+	;
+
+
+set sql_safe_updates=0;
+-- delete from rcbill_extract.IV_BILLDETAIL where name like 'CHARGE: %';
+
+	insert into 
+	rcbill_extract.IV_BILLDETAIL(BILLINGACCOUNTNUMBER, CUSTOMERACCOUNTNUMBER, SERVICEINSTANCENUMBER, INVOICESUMMARYID, INVOICEDETAILID, SERIALNUMBER, DEBITDOCUMENTNUMBER, NAME, PRODUCTTYPEID, FROMDATE, TODATE, BILLCYCLE, BILLDATE, PACKAGENAME, CURRENCYALIAS, D_SYSCURRENCYEXCHANGERATE, CLIENT_ID, CONTRACT_ID, RSID, ServiceID, DEBITDOCUMENTNUMBEROLD)
+	select BILLINGACCOUNTNUMBER, CUSTOMERACCOUNTNUMBER,SERVICEINSTANCENUMBER, INVOICESUMMARYID
+	, cast(concat(INVOICEDETAILID,'_1') as char(255)) as INVOICEDETAILID
+	, cast(concat(SERIALNUMBER,'_1') as char(255))  as SERIALNUMBER, DEBITDOCUMENTNUMBER
+	, cast(concat('CHARGE: ',NAME) as char(255)) as NAME
+	, 'PRT00' as PRODUCTTYPEID, FROMDATE, TODATE, BILLCYCLE, BILLDATE, PACKAGENAME 
+
+	, CURRENCYALIAS, D_SYSCURRENCYEXCHANGERATE, CLIENT_ID, CONTRACT_ID, RSID, ServiceID, DEBITDOCUMENTNUMBEROLD
+
+	from  rcbill_extract.billdetailprt00_13 where BILLINGACCOUNTNUMBER_2 is null
+	;
 
 /*
 
@@ -2782,6 +2846,7 @@ set @custid1 = 'CA_I.000009787';
 set @custid1 = 'CA_I.000011750';
 set @custid4 = 'CA_I.000018187';
 set @custid5 = 'CA_I.000011998';
+
 set @custid6 = 'CA_I7';
 set @custid7 = 'CA_I.000021409';
 set @custid8 = 'CA_I.000021390';
@@ -2825,6 +2890,8 @@ set @custid1 = 'CA_I9520';
 set @custid1 = 'CA_0008';
 
 set @custid1 = 'CA_I15252';
+
+set @custid1 = 'CA_I.000009344';  -- christianne savvy avani
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
