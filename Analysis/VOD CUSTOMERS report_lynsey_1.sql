@@ -55,7 +55,7 @@ left join
 ON a.clientcode=c.clientcode
 where 
 a.`VOD`>0
--- and clientclass not in ('Intelvision Office','Employee')
+and a.clientclass not in ('Intelvision Office','Employee', 'Corporate Large')
 ;
 
 -- select * from rcbill_my.rep_custconsolidated;
@@ -113,12 +113,16 @@ where
 
 and 
 network='HFC'
-
+and a.clientclass not in ('Intelvision Office','Employee', 'Corporate Large')
 -- and clientclass not in ('Intelvision Office','Employee')
 ;
 
 
 ##################################
+
+-- NON VOD CUSTOMERS
+
+
 -- Number of customers on Elite, Extreme, Extreme+, Crimson + Any TV package (excluding indian and french)
 select 'customers on Elite, Extreme, Extreme+, Crimson + Any TV package (excluding indian and french)' as message;
 select 
@@ -169,6 +173,11 @@ where
 (`Elite`>0 or `Extreme`>0 or `Extreme Plus`>0 or `Crimson`>0 or `Crimson Corporate`>0) 
 and 
 (`Basic`>0 or `Executive`>0 or `Extravagance`>0 or `Extravagance Corporate`>0)
+
+and a.`VOD`=0
+
+and a.clientclass not in ('Intelvision Office','Employee', 'Corporate Large')
+
 ;
 
 
@@ -220,6 +229,10 @@ where
 (`Elite`>0 or `Extreme`>0 or `Extreme Plus`>0 or `Crimson`>0 or `Crimson Corporate`>0) 
 and 
 (`Basic`>0 or `Executive`>0) -- or `Extravagance`>0 or `Extravagance Corporate`>0)
+
+and a.`VOD`=0
+
+and a.clientclass not in ('Intelvision Office','Employee', 'Corporate Large')
 ;
 
 -- Number of customers on Elite, Extreme, Extreme+, Crimson + (Extravagance)
@@ -271,6 +284,10 @@ where
 and 
 -- (`Basic`>0 or `Executive`>0 or
  (`Extravagance`>0 or `Extravagance Corporate`>0)
+
+and a.`VOD`=0
+
+and a.clientclass not in ('Intelvision Office','Employee', 'Corporate Large')
 ;
 
 
@@ -321,6 +338,11 @@ where
 (`Performance`>0 or `Performance Plus`>0 or `Amber`>0 or `Amber Corporate`>0) 
 and 
 (`Basic`>0 or `Executive`>0)
+
+and a.`VOD`=0
+
+and a.clientclass not in ('Intelvision Office','Employee', 'Corporate Large')
+
 ;
 
 ##################################
@@ -370,6 +392,10 @@ where
 (`Performance`>0 or `Performance Plus`>0 or `Amber`>0 or `Amber Corporate`>0) 
 and 
 (`Extravagance`>0 or `Extravagance Corporate`>0)
+
+and a.`VOD`=0
+
+and a.clientclass not in ('Intelvision Office','Employee', 'Corporate Large')
 ;
 
 ##################################
@@ -419,5 +445,9 @@ where
 (`Starter`>0 or `Value`>0) 
 and 
 (`Basic`>0 or `Executive`>0 or `Extravagance`>0 or `Extravagance Corporate`>0 or `Indian`>0 or `Indian Corporate`>0 or `French`>0)
+
+and a.`VOD`=0
+
+and a.clientclass not in ('Intelvision Office','Employee', 'Corporate Large')
 ;
 
