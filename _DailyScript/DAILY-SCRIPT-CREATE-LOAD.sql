@@ -926,8 +926,14 @@ create table rcbill.clientcontractdevices(INDEX idxccd1 (mac), INDEX idxccd2 (co
 		/*UPDATED 26/7/2018 change inner join to left join*/
 		select 
 
-		a.id as DeviceId, a.contractid as CONID, a.phoneno, a.mac, a.address, a.NATIP
-		, a.UserName, a.DevTypeID, a.GKID, a.SerNo
+		a.id as DeviceId, a.contractid as CONID
+
+		, case when length(a.phoneno)=17 then replace(a.phoneno,'.',':') else a.phoneno end as phoneno
+		, case when length(a.mac)=17 then replace(a.mac,'.',':') else a.mac end as mac
+		, case when length(a.SerNo)=17 then replace(a.SerNo,'.',':') else a.SerNo end as SerNo
+        
+        , a.address, a.NATIP
+		, a.UserName, a.DevTypeID, a.GKID
 		, b.id as ContractId,b.kod as ContractCode, b.ContractType
 		, cs.ID as CSID
 		 , d.ID as ServiceId, d.Name as ServiceType
