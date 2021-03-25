@@ -2975,6 +2975,12 @@ set @custid1 = 'CA_I.000022212';
 
 set @custid1 = 'CA_I.000011000';
 
+set @custid1 = 'CA_I22052';
+set @custid1 = 'CA_I.000001267';
+set @custid1 = 'CA_I.000004860';
+
+set @custid1 = 'CA_I9895';
+
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;
