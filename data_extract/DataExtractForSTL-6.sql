@@ -2969,6 +2969,7 @@ set @custid1 = 'CA_0008';
 
 set @custid1 = 'CA_I15252';
 
+set @custid1 = 'CA_I.000022307'; -- parent account AVANI
 set @custid1 = 'CA_I.000009344';  -- christianne savvy avani
 
 set @custid1 = 'CA_I.000022212';
