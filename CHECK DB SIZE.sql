@@ -38,3 +38,5 @@ drop table if exists rcbill_my.tempcustbehr2;
 drop table if exists rcbill_my.tempcustbehr1;
 drop table if exists rcbill_my.tempcpp;
 
+-- rcbill	rcb_devicesold	405.7
+optimize table rcbill.rcb_devicesold;
