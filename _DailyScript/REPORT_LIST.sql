@@ -1,4 +1,7 @@
 
+
+show variables like "%_buffer_pool_size%";  
+
 select *, rcbill.GetClientID(clientcode) as clientid from rcbill_my.rep_custconsolidated;
 
 

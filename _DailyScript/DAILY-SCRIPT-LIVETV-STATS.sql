@@ -39,6 +39,7 @@ CREATE TABLE rcbill.templivetv
 show index from rcbill.templivetv;
 
 -- select * from rcbill.templivetv limit 100;
+-- select * from rcbill.rcb_livetvtelemetry order by sessionstart desc limit 100;
 
 
 
@@ -61,7 +62,7 @@ select a.device,a.duration,a.resource,a.sessionstart,a.subscriber
 */
 
 
--- select * from templivetv limit 1000;
+-- select * from templivetv order by sessionstart desc limit 1000;
 -- select * from templivetv where device='0c.56.5c.65.c6.c1';
 
 -- FIRST TIME
@@ -106,6 +107,7 @@ insert into rcbill.clientlivetvstats
     (a.SessionStart)>(select max(sessionstart) from rcbill.clientlivetvstats)
 );
 
+-- select * from rcbill.clientcontractdevices where mac=phoneno;
 -- select * from rcbill.clientlivetvstats where date(sessionstart)='2020-12-31'
 
 ## FIRST TIME
@@ -211,6 +213,7 @@ insert into rcbill_my.rep_livetvhourlystats
 set sql_safe_updates=0;
 delete from rcbill_my.rep_livetvhourlystats where SESSIONDATE is null;
 -- select * from rcbill.templivetv where sessiondate='2018-11-11'
+-- select * from rcbill_my.rep_livetvhourlystats order by sessiondate desc limit 1000;
 -- select * from rcbill_my.rep_livetvhourlystats where sessiondate='2018-11-11'
 -- delete from rcbill_my.rep_livetvhourlystats where sessiondate='2018-08-28'
 
@@ -383,7 +386,7 @@ create table rcbill_my.rep_livetvstats as
 
 select count(*) as rep_livetvstats from rcbill_my.rep_livetvstats;
 -- select * from rcbill_my.rep_livetvstats where view_month=7 and view_year=2018;
--- select * from rcbill_my.rep_livetvstats;
+-- select * from rcbill_my.rep_livetvstats order by view_date desc limit 100;
 
 /*
 select 

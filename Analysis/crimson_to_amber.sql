@@ -2,7 +2,7 @@ use rcbill_my;
 
 use rcbill_my;
 
-set @amberdate='2018-01-15 00:00:00';
+set @amberdate='2021-04-07 00:00:00';
 
 -- CRIMSON TO AMBER
 -- SUBNET 197.234.0.0 to 197.234.0.254
