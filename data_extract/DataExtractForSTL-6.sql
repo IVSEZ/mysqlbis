@@ -268,6 +268,207 @@ LINES TERMINATED BY '\n'
 
 ###################################################################################
 
+
+
+####	SERVICE ACCOUNT
+
+select 'SERVICE ACCOUNT' AS TABLENAME;
+-- sele
+
+-- select * from rcbill.rcb_contracts
+			-- where clid in (select CLID from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR') 
+-- ORDER BY ID DESC;
+drop table if exists rcbill_extract.IV_SERVICEACCOUNT;
+
+create table rcbill_extract.IV_SERVICEACCOUNT(index idxivsa1(SERVICEACCOUNTNUMBER), index idxivsa2(CUSTOMERACCOUNTNUMBER), index idxivsa3(CLIENT_ID)) AS
+(
+			select
+			 substring_index(trim(replace(FIRM,',','')),' ',1) as FIRSTNAME
+			, trim(substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',',''))))) as LASTNAME
+			, TRIM(REPLACE(a.MOLADDRESS,'CITY','')) AS ADDRESSONE
+			, TRIM(REPLACE(a.ADDRESS,'CITY','')) AS ADDRESSTWO
+			, TRIM(REPLACE(a.MOLRegistrationAddress,'CITY','')) AS ADDRESSTHREE
+			, ifnull(if(CITY='',NULL,CITY),'TBU') AS CITY
+			, ifnull((SELECT ClientLocation from rcbill.rcb_clientaddress where ClientCode=a.KOD),'TBU') as DISTRICT
+			, ifnull((SELECT ClientSubDistrict from rcbill.rcb_clientaddress where ClientCode=a.KOD),'TBU') as SUBDISTRICT
+			, ifnull((SELECT `NAME` FROM rcbill.rcb_regions WHERE ID=a.RegionID),'TBU') as STATE
+			, 'SEYCHELLES' AS COUNTRY
+			, '00000' AS ZIPCODE
+			, trim(MEMAIL) AS EMAILID
+			, trim(BEMAIL) AS BUSINESSEMAILID
+			, a.MPHONE AS MOBILENUMBER
+			, a.MPHONE AS PHONEHOME
+			, a.BPHONE AS PHONEOFFICE
+			, a.FAX AS FAXNUMBER
+			, cast(concat('CA_',a.KOD) as char(255)) AS CUSTOMERACCOUNTNUMBER
+			, cast(concat('SA_',a.KOD) as char(255)) AS SERVICEACCOUNTNUMBER
+			, a.ACTIVE AS ACCOUNTSTATUS
+
+			-- , (select cs.LABEL from rcbill.rcb_ContractStates cs where cs.ID=b.Active) as CONTRACTSTATUS
+			-- , b.DATA AS CREATEDDATE
+			-- , b.StartDate as ACTIVATIONDATE
+			-- , b.UpdDate as STATUSCHANGEDDATE
+
+			-- , BEGDATE AS CREATEDDATE
+			-- , BEGDATE AS ACTIVATIONDATE
+			-- , UPDDATE AS STATUSCHANGEDATE
+
+			, ifnull(BEGDATE,UPDDATE) AS CREATEDDATE
+			, ifnull(BEGDATE,UPDDATE) AS ACTIVATIONDATE
+			, case when UPDDATE <= BEGDATE then BEGDATE 
+				else UPDDATE end AS STATUSCHANGEDATE
+
+
+			-- , (select `Value` from rcbill.rcb_contractslastaction where id=b.LastActionID) as LASTACTION
+			-- , (select network from rcbill_my.customercontractsnapshot where contractcode=b.KOD LIMIT 1) as TECHNOLOGY
+			, (select ccs.network from rcbill_my.customercontractsnapshot ccs where ccs.clientcode=a.KOD order by ccs.currentstatus asc, ccs.contractcode desc LIMIT 1) as TECHNOLOGY
+			-- , b.activenetwork
+			, '' AS BUILDINGNAME
+			, '' AS BUILDINGTYPE
+			, '' AS STREETNAME
+			, 0 AS CHANNELPARTNERID
+			, '' AS PROPERTYTYPE
+			, (select CLIENTPARCEL from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER
+			, a.MOLADDRESS AS LANDMARK  
+			, (select latitude from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS LATITUDE
+			, (select longitude from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS LONGITUDE
+			, '' AS FLOOR
+			, a.USERID AS EMPLOYEEID
+			-- , (SELECT USERNAME FROM rcbill.rcb_users where CLID=a.USERID LIMIT 1) as EMPLOYEENAME
+			, (SELECT `NAME` FROM rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) as EMPLOYEENAME
+			, (SELECT `NAME` FROM rcbill.rcb_tickettechregions where ID = (select TechRegionID from rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) LIMIT 1) AS EMPLOYEEDEPARTMENT
+
+
+
+			-- , (select mxk_interface FROM rcbill_my.customers_contracts_cmts_mxk WHERE CON_CONTRACTCODE=b.KOD limit 1) as MXKCODE
+			-- , (select mxk_name FROM rcbill_my.customers_contracts_cmts_mxk WHERE CON_CONTRACTCODE=b.KOD limit 1) as MXKNAME
+
+			-- , (select clean_mxk_interface FROM rcbill_my.rep_custconsolidated WHERE clientcode=a.KOD limit 1) as MXKCODE
+			-- , (select clean_mxk_name FROM rcbill_my.rep_custconsolidated WHERE clientcode=a.KOD limit 1) as MXKNAME
+			, b.clean_mxk_interface as MXKCODE
+			, b.clean_mxk_name as MXKNAME
+
+
+			, '' as CARDNO
+			, '' as PORTNO
+			, '' as SPLITTER
+			, '' as NETWORKACCESSPOINT
+			, '' AS NETWORKSVLAN
+			, '' AS VLANID
+
+			, case
+				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='PREPAID' THEN 'RESIDENTIAL'
+				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='STANDING ORDER' THEN 'RESIDENTIAL'
+				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='VIP' THEN 'RESIDENTIAL'
+				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='EMPLOYEE' THEN 'RESIDENTIAL'
+				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='INTELVISION OFFICE' THEN 'CORPORATE LARGE'
+				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='CORPORATE' THEN 'CORPORATE BULK'
+				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='CORPORATE BUNDLE' THEN 'CORPORATE BULK'
+				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='CORPORATE SMALL' THEN 'CORPORATE LITE'
+				ELSE (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS) 
+			   end AS SERVICECATEGORY
+
+			-- , b.ContractType as SERVICE
+
+			-- , (select activeservices FROM rcbill_my.rep_custconsolidated WHERE clientcode=a.KOD limit 1) as ACTIVESERVICE
+			, b.activeservices as ACTIVESERVICE
+
+			, case 
+				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='VIP' THEN 'VIP'
+				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='EMPLOYEE' THEN 'EMPLOYEE'
+				when (trim(upper(firm)) like ('%RETENTION') or trim(upper(firm)) like ('%RETENTION%') or trim(upper(firm)) like ('RETENTION%'))THEN 'RETENTION'
+				when (trim(upper(firm)) like ('%TEST') or trim(upper(firm)) like ('%TEST%') or trim(upper(firm)) like ('TEST%')) THEN 'TEST'
+				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='INTELVISION OFFICE' THEN 'INTELVISION OFFICE'
+				-- ELSE (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS) 
+				ELSE ''
+			   end as CUSTOMERSUBCATEGORY
+
+			, (select coord_x from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS XCOORDINATE
+			, (select coord_y from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS YCOORDINATE
+
+
+			-- , (select clean_hfc_node FROM rcbill_my.rep_custconsolidated WHERE clientcode=a.KOD limit 1) as HFCNODE
+			-- , (select clean_hfc_nodename FROM rcbill_my.rep_custconsolidated WHERE clientcode=a.KOD limit 1) as HFCNODENAME
+			, b.clean_hfc_node as HFCNODE
+			, b.clean_hfc_nodename as HFCNODENAME
+
+			, a.ID as CLIENT_ID
+            , (select 
+					case when GATEKEEPER_NAME='IPTV NAS' then 'RCBOSS'
+						 when GATEKEEPER_NAME='BestCas NAS' then 'BESTCAS'
+                         when GATEKEEPER_NAME='Conax Mahe' then 'CONAX' end as VENDOR
+					from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice where SERVICE_TYPE in ('DTV','IPTV') and clientcode=a.kod order by serviceinstancenumber desc limit 1) as VENDOR
+			-- , b.StartDate as CONTRACTSTARTDATE
+			-- , b.EndDate as CONTRACTENDDATE
+
+			/*
+			, b.CreditPolicyId as CreditPolicyId
+			, (select NAME from RCBill.dbo.CreditPolicy where id=b.CreditPolicyId) as CreditPolicyName
+			, (select BillingPeriod from RCBill.dbo.CreditPolicy where id=b.CreditPolicyId) as BILLCYCLE
+			, b.CommChanelID as CommChanelID
+			, (select LABEL from RCBill.dbo.ContractCommChannels_LNG where LNG='en' and id=b.CommChanelID) as BILLDELIVERYMODE
+			, b.Currency as CURRENCY
+			, b.Active as Active
+			, b.ActivatedDate as ACTIVATIONDATE
+			, b.LastActionID as LastActionID
+			, (select LABEL from RCBill.dbo.ContractActions_view_LNG where LNG='en' and id=b.LastActionID) as LASTACTION
+
+			, b.DATA as CONTRACTDATE
+			, b.StartDate as CONTRACTSTARTDATE
+			, b.EndDate as CONTRACTENDDATE
+			, b.ValidityPeriod AS CONTRACTVALIDITYPERIOD
+			, b.RatingPlanID AS RatingPlanID
+			, (select name from [RCBill].[dbo].[RatingPlans] where ID=b.RatingPlanID) as RatingPlanName
+			, b.UPDDATE AS CREATEDDATE
+			, b.USERID AS CREATEDBYID
+			, (SELECT NAME FROM RCBill.dbo.USERS where id=b.USERID) as CREATEDBYNAME
+
+			*/
+
+			FROM 
+			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (13) order by ID desc)as a
+			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (10,14) order by ID desc)as a
+			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (16) order by ID desc)as a
+			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (6) order by ID desc)as a
+			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (7) order by ID desc)as a
+			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (3) order by ID desc)as a
+			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (2) order by ID desc)as a
+			rcbill.rcb_tclients a 
+			left join 
+			rcbill_my.rep_custconsolidated b
+			on a.kod=b.clientcode
+			-- inner join 
+			-- rcbill.rcb_contracts b
+			-- on a.ID=b.CLID
+			
+			where a.kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
+			-- where a.kod in (@kod1,@kod2,@kod3,@kod4,@kod5,@kod6,@kod7,@kod8,@kod9,@kod10,@kod11)
+			
+			-- where a.kod in ('I.000011750')
+
+			ORDER BY a.ID DESC
+)
+;
+
+-- select * from rcbill_extract.IV_SERVICEACCOUNT ;
+-- select * from rcbill_extract.IV_SERVICEACCOUNT where firstname like 'PARENT%';
+-- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I748');
+
+-- select * from rcbill_my.rep_custconsolidated;
+-- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice;
+
+-- select SERVICECATEGORY, count(client_id) from rcbill_extract.IV_SERVICEACCOUNT group by servicecategory; 
+
+###################################################################################
+
+
+
+
+
+
+
+
+
 ####	BILLING ACCOUNT
 
 -- select 'BILLING ACCOUNT' AS TABLENAME;
@@ -307,14 +508,14 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT1(index idxipba1(clientcode), 
 */
 -- select * from rcbill_my.rep_custextract where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT1;
--- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice;
+-- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice limit 100;
 -- select * from rcbill_my.rep_clientcontractdevices where CLIENT_CODE in ('I14');
 
 select 'IV_PREP_clientcontractsservicepackagepricedevice' AS TABLENAME;
 
 drop table if exists rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice;
 
-create table rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice(index idxipccsppd1(clientcode), index idxipccsppd2(contractcode)) as 
+create table rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice(index idxipccsppd1(clientcode), index idxipccsppd2(contractcode),index idxipccsppd3(client_id), index idxipccsppd4(contract_id)) as 
 (
 			select a.*
             -- , rcbill.GetClientID(a.clientcode) as CLIENT_ID
@@ -349,6 +550,8 @@ create table rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice(ind
 
 -- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I.000011750') order by contractenddate desc;
 -- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice where clientcode in ('I9991') order by contractenddate desc;
+-- select * from rcbill_extract. where client_id=
+
 
 select 'IV_PREP_BILLINGACCOUNT_A1' AS TABLENAME;
 
@@ -360,8 +563,11 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT_A1(index idxipba1(clientcode)
 			, a.package, a.service, a.lastcontractdate, a.lastaction
 		--    , case when MaxInvDate=0 and MinInvDate=0 then 'PREPAID'
 		-- 	else 'POSTPAID' end as `BILLCYCLE`
-			, case when a.MinInvDate=0 then 'PREPAID'
-			 when a.MinInvDate is null then 'PREPAID'
+			, case 
+				when (select sa.SERVICECATEGORY from rcbill_extract.IV_SERVICEACCOUNT sa where sa.CLIENT_ID=a.CLIENT_ID)='CORPORATE BULK' then 'POSTPAID'
+                when a.MinInvDate=0 then 'PREPAID'
+				when a.MinInvDate is null then 'PREPAID'
+             
 			else 'POSTPAID' end as `BILLCYCLE`
 			-- , cast(concat('BA_',a.clientcode,'_',a.contractcode) as char(255)) as `BillingAccountNumber_STG`
             , cast(concat('BA',a.contract_id,a.client_id) as char(10)) as `BillingAccountNumber_STG`
@@ -384,6 +590,8 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT_A1(index idxipba1(clientcode)
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT2 where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000011750');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientcode in ('I.000009787');
+-- select billcycle, count(client_id) from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 group by billcycle;
+-- SELECT * from rcbill_extract.IV_PREP_BILLINGACCOUNT_A1 where clientname like 'PARENT%';
 
 
 select 'IV_PREP_BILLINGACCOUNT2' AS TABLENAME;
@@ -453,8 +661,16 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT2(index idxipba21(clientcode),
 select 'IV_PREP_BILLINGACCOUNT3' AS TABLENAME;
 
 drop table if exists rcbill_extract.IV_PREP_BILLINGACCOUNT3;
-create table rcbill_extract.IV_PREP_BILLINGACCOUNT3(index idxipba31(clientcode), index idxipba33(BillingKey)) as 
+create table rcbill_extract.IV_PREP_BILLINGACCOUNT3(index idxipba31(clientcode), index idxipba33(BillingKey),index idxipba34(contract_id),index idxipba35(client_id)) as 
 (
+
+	select a.*
+    , case when billcycle='POSTPAID' and a.INVOICINGDATE<15 then 1
+       when billcycle='POSTPAID' and a.INVOICINGDATE>=15 then 15
+      else a.INVOICINGDATE
+      end as NEWINVOICINGDATE
+    from 
+    (
 			select clientcode, BillingKey
 			-- , cast(concat('BA_',clientcode,'_',contractcode) as char(255)) as `BillingAccountNumber`
 			, BillingAccountNumber_STG
@@ -462,13 +678,14 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT3(index idxipba31(clientcode),
 				, client_id
 				, contract_id
 			, currency, ratingplanname, billcycle , CreditPolicyName
+            , (select InvoicingDate from rcbill.rcb_contracts where KOD=a.contractcode order by kod desc limit 1) as INVOICINGDATE
 			from 
 			rcbill_extract.IV_PREP_BILLINGACCOUNT2 a 
 			-- where a.currentstatus='Active'
 			group by 1,2
 			-- order by a.currentstatus asc, a.contractcode desc
 			order by a.clientcode asc, a.contract_id desc
-    
+    ) a 
 )
 ;
 
@@ -495,6 +712,13 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT3(index idxipba31(clientcode),
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I9991');
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in (@kod1);
 -- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where clientcode in ('I.000018187');
+
+-- select billcycle, invoicingdate, count(client_id) from rcbill_extract.IV_PREP_BILLINGACCOUNT3 group by 1,2;
+-- select billcycle, newinvoicingdate, count(client_id) from rcbill_extract.IV_PREP_BILLINGACCOUNT3 group by 1,2;
+-- select billcycle, newinvoicingdate, invoicingdate, count(client_id) from rcbill_extract.IV_PREP_BILLINGACCOUNT3 group by 1,2, 3;
+
+
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3 where billcycle='POSTPAID' and invoicingdate=0;
 
 /*
 select a.*, b.contractcode
@@ -545,8 +769,10 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT4 (index idxivba1(BillingAccou
 			-- 	end as BILLCYCLE
 			
 			, case when a.billcycle='PREPAID' then 'DEFAULT' 
-				else concat('MONTHLY_1_', (select InvoicingDate from rcbill.rcb_contracts where KOD=a.contractcode order by kod desc limit 1))
-				-- , (select MaxInvDate from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode=a.clientcode and contractcode=a.contractcode order by lastcontractdate desc limit 1))
+				-- else concat('MONTHLY_1_', (select InvoicingDate from rcbill.rcb_contracts where KOD=a.contractcode order by kod desc limit 1))
+				else concat((select sa.SERVICECATEGORY from rcbill_extract.IV_SERVICEACCOUNT sa where sa.CLIENT_ID=a.client_id ),'_', a.NEWINVOICINGDATE)
+                
+                -- , (select MaxInvDate from rcbill_extract.IV_PREP_BILLINGACCOUNT1 where clientcode=a.clientcode and contractcode=a.contractcode order by lastcontractdate desc limit 1))
 				end as BILLCYCLE
 			
 			
@@ -611,6 +837,8 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT4 (index idxivba1(BillingAccou
 )
 ;
 
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT4;
+-- select BILLCYCLE, chargingpattern, count(client_id) from rcbill_extract.IV_PREP_BILLINGACCOUNT4 group by billcycle, chargingpattern;
 
 
 select 'BILLING ACCOUNT' AS TABLENAME;
@@ -657,6 +885,7 @@ create table rcbill_extract.IV_BILLINGACCOUNT (index idxivba1(BillingAccountNumb
 )
 ;
 
+-- select * from rcbill_extract.IV_BILLINGACCOUNT;
 
 select 'BILLINGACCOUNT_KEY' AS TABLENAME;
 drop table if exists rcbill_extract.BILLINGACCOUNT_KEY;
@@ -752,193 +981,6 @@ order by client_id asc, accountstatus desc;
 
 ###################################################################################
 
-
-####	SERVICE ACCOUNT
-
-select 'SERVICE ACCOUNT' AS TABLENAME;
--- sele
-
--- select * from rcbill.rcb_contracts
-			-- where clid in (select CLID from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR') 
--- ORDER BY ID DESC;
-drop table if exists rcbill_extract.IV_SERVICEACCOUNT;
-
-create table rcbill_extract.IV_SERVICEACCOUNT(index idxivsa1(SERVICEACCOUNTNUMBER), index idxivsa2(CUSTOMERACCOUNTNUMBER)) AS
-(
-			select
-			 substring_index(trim(replace(FIRM,',','')),' ',1) as FIRSTNAME
-			, trim(substring(trim(replace(FIRM,',','')),position(' ' in trim(replace(FIRM,',',''))),length(trim(replace(FIRM,',',''))))) as LASTNAME
-			, TRIM(REPLACE(a.MOLADDRESS,'CITY','')) AS ADDRESSONE
-			, TRIM(REPLACE(a.ADDRESS,'CITY','')) AS ADDRESSTWO
-			, TRIM(REPLACE(a.MOLRegistrationAddress,'CITY','')) AS ADDRESSTHREE
-			, ifnull(if(CITY='',NULL,CITY),'TBU') AS CITY
-			, ifnull((SELECT ClientLocation from rcbill.rcb_clientaddress where ClientCode=a.KOD),'TBU') as DISTRICT
-			, ifnull((SELECT ClientSubDistrict from rcbill.rcb_clientaddress where ClientCode=a.KOD),'TBU') as SUBDISTRICT
-			, ifnull((SELECT `NAME` FROM rcbill.rcb_regions WHERE ID=a.RegionID),'TBU') as STATE
-			, 'SEYCHELLES' AS COUNTRY
-			, '00000' AS ZIPCODE
-			, trim(MEMAIL) AS EMAILID
-			, trim(BEMAIL) AS BUSINESSEMAILID
-			, a.MPHONE AS MOBILENUMBER
-			, a.MPHONE AS PHONEHOME
-			, a.BPHONE AS PHONEOFFICE
-			, a.FAX AS FAXNUMBER
-			, cast(concat('CA_',a.KOD) as char(255)) AS CUSTOMERACCOUNTNUMBER
-			, cast(concat('SA_',a.KOD) as char(255)) AS SERVICEACCOUNTNUMBER
-			, a.ACTIVE AS ACCOUNTSTATUS
-
-			-- , (select cs.LABEL from rcbill.rcb_ContractStates cs where cs.ID=b.Active) as CONTRACTSTATUS
-			-- , b.DATA AS CREATEDDATE
-			-- , b.StartDate as ACTIVATIONDATE
-			-- , b.UpdDate as STATUSCHANGEDDATE
-
-			-- , BEGDATE AS CREATEDDATE
-			-- , BEGDATE AS ACTIVATIONDATE
-			-- , UPDDATE AS STATUSCHANGEDATE
-
-			, ifnull(BEGDATE,UPDDATE) AS CREATEDDATE
-			, ifnull(BEGDATE,UPDDATE) AS ACTIVATIONDATE
-			, case when UPDDATE <= BEGDATE then BEGDATE 
-				else UPDDATE end AS STATUSCHANGEDATE
-
-
-			-- , (select `Value` from rcbill.rcb_contractslastaction where id=b.LastActionID) as LASTACTION
-			-- , (select network from rcbill_my.customercontractsnapshot where contractcode=b.KOD LIMIT 1) as TECHNOLOGY
-			, (select ccs.network from rcbill_my.customercontractsnapshot ccs where ccs.clientcode=a.KOD order by ccs.currentstatus asc, ccs.contractcode desc LIMIT 1) as TECHNOLOGY
-			-- , b.activenetwork
-			, '' AS BUILDINGNAME
-			, '' AS BUILDINGTYPE
-			, '' AS STREETNAME
-			, 0 AS CHANNELPARTNERID
-			, '' AS PROPERTYTYPE
-			, (select CLIENTPARCEL from rcbill.rcb_clientparcels where clientcode=a.KOD) as PARCELNUMBER
-			, a.MOLADDRESS AS LANDMARK  
-			, (select latitude from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS LATITUDE
-			, (select longitude from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS LONGITUDE
-			, '' AS FLOOR
-			, a.USERID AS EMPLOYEEID
-			-- , (SELECT USERNAME FROM rcbill.rcb_users where CLID=a.USERID LIMIT 1) as EMPLOYEENAME
-			, (SELECT `NAME` FROM rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) as EMPLOYEENAME
-			, (SELECT `NAME` FROM rcbill.rcb_tickettechregions where ID = (select TechRegionID from rcbill.rcb_tickettechusers where RCBUSERID=a.USERID LIMIT 1) LIMIT 1) AS EMPLOYEEDEPARTMENT
-
-
-
-			-- , (select mxk_interface FROM rcbill_my.customers_contracts_cmts_mxk WHERE CON_CONTRACTCODE=b.KOD limit 1) as MXKCODE
-			-- , (select mxk_name FROM rcbill_my.customers_contracts_cmts_mxk WHERE CON_CONTRACTCODE=b.KOD limit 1) as MXKNAME
-
-			-- , (select clean_mxk_interface FROM rcbill_my.rep_custconsolidated WHERE clientcode=a.KOD limit 1) as MXKCODE
-			-- , (select clean_mxk_name FROM rcbill_my.rep_custconsolidated WHERE clientcode=a.KOD limit 1) as MXKNAME
-			, b.clean_mxk_interface as MXKCODE
-			, b.clean_mxk_name as MXKNAME
-
-
-			, '' as CARDNO
-			, '' as PORTNO
-			, '' as SPLITTER
-			, '' as NETWORKACCESSPOINT
-			, '' AS NETWORKSVLAN
-			, '' AS VLANID
-
-			, case
-				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='PREPAID' THEN 'RESIDENTIAL'
-				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='STANDING ORDER' THEN 'RESIDENTIAL'
-				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='VIP' THEN 'RESIDENTIAL'
-				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='EMPLOYEE' THEN 'RESIDENTIAL'
-				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='INTELVISION OFFICE' THEN 'CORPORATE LARGE'
-				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='CORPORATE' THEN 'CORPORATE BULK'
-				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='CORPORATE BUNDLE' THEN 'CORPORATE BULK'
-				ELSE (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS) 
-			   end AS SERVICECATEGORY
-
-			-- , b.ContractType as SERVICE
-
-			-- , (select activeservices FROM rcbill_my.rep_custconsolidated WHERE clientcode=a.KOD limit 1) as ACTIVESERVICE
-			, b.activeservices as ACTIVESERVICE
-
-			, case 
-				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='VIP' THEN 'VIP'
-				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='EMPLOYEE' THEN 'EMPLOYEE'
-				when (trim(upper(firm)) like ('%RETENTION') or trim(upper(firm)) like ('%RETENTION%') or trim(upper(firm)) like ('RETENTION%'))THEN 'RETENTION'
-				when (trim(upper(firm)) like ('%TEST') or trim(upper(firm)) like ('%TEST%') or trim(upper(firm)) like ('TEST%')) THEN 'TEST'
-				when (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS)='INTELVISION OFFICE' THEN 'INTELVISION OFFICE'
-				-- ELSE (SELECT NAME FROM rcbill.rcb_clientclasses WHERE ID=a.CLCLASS) 
-				ELSE ''
-			   end as CUSTOMERSUBCATEGORY
-
-			, (select coord_x from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS XCOORDINATE
-			, (select coord_y from rcbill.rcb_clientparcelcoords where clientcode=a.KOD and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))) AS YCOORDINATE
-
-
-			-- , (select clean_hfc_node FROM rcbill_my.rep_custconsolidated WHERE clientcode=a.KOD limit 1) as HFCNODE
-			-- , (select clean_hfc_nodename FROM rcbill_my.rep_custconsolidated WHERE clientcode=a.KOD limit 1) as HFCNODENAME
-			, b.clean_hfc_node as HFCNODE
-			, b.clean_hfc_nodename as HFCNODENAME
-
-			, a.ID as CLIENT_ID
-            , (select 
-					case when GATEKEEPER_NAME='IPTV NAS' then 'RCBOSS'
-						 when GATEKEEPER_NAME='BestCas NAS' then 'BESTCAS'
-                         when GATEKEEPER_NAME='Conax Mahe' then 'CONAX' end as VENDOR
-					from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice where SERVICE_TYPE in ('DTV','IPTV') and clientcode=a.kod order by serviceinstancenumber desc limit 1) as VENDOR
-			-- , b.StartDate as CONTRACTSTARTDATE
-			-- , b.EndDate as CONTRACTENDDATE
-
-			/*
-			, b.CreditPolicyId as CreditPolicyId
-			, (select NAME from RCBill.dbo.CreditPolicy where id=b.CreditPolicyId) as CreditPolicyName
-			, (select BillingPeriod from RCBill.dbo.CreditPolicy where id=b.CreditPolicyId) as BILLCYCLE
-			, b.CommChanelID as CommChanelID
-			, (select LABEL from RCBill.dbo.ContractCommChannels_LNG where LNG='en' and id=b.CommChanelID) as BILLDELIVERYMODE
-			, b.Currency as CURRENCY
-			, b.Active as Active
-			, b.ActivatedDate as ACTIVATIONDATE
-			, b.LastActionID as LastActionID
-			, (select LABEL from RCBill.dbo.ContractActions_view_LNG where LNG='en' and id=b.LastActionID) as LASTACTION
-
-			, b.DATA as CONTRACTDATE
-			, b.StartDate as CONTRACTSTARTDATE
-			, b.EndDate as CONTRACTENDDATE
-			, b.ValidityPeriod AS CONTRACTVALIDITYPERIOD
-			, b.RatingPlanID AS RatingPlanID
-			, (select name from [RCBill].[dbo].[RatingPlans] where ID=b.RatingPlanID) as RatingPlanName
-			, b.UPDDATE AS CREATEDDATE
-			, b.USERID AS CREATEDBYID
-			, (SELECT NAME FROM RCBill.dbo.USERS where id=b.USERID) as CREATEDBYNAME
-
-			*/
-
-			FROM 
-			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (13) order by ID desc)as a
-			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (10,14) order by ID desc)as a
-			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (16) order by ID desc)as a
-			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (6) order by ID desc)as a
-			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (7) order by ID desc)as a
-			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (3) order by ID desc)as a
-			-- ( select top 1000 * from RCBill.dbo.tCLIENTS where CLClass in (2) order by ID desc)as a
-			rcbill.rcb_tclients a 
-			left join 
-			rcbill_my.rep_custconsolidated b
-			on a.kod=b.clientcode
-			-- inner join 
-			-- rcbill.rcb_contracts b
-			-- on a.ID=b.CLID
-			
-			where a.kod in (select CLIENTCODE from rcbill_my.rep_custextract where ONE_YEAR='ONE YEAR')
-			-- where a.kod in (@kod1,@kod2,@kod3,@kod4,@kod5,@kod6,@kod7,@kod8,@kod9,@kod10,@kod11)
-			
-			-- where a.kod in ('I.000011750')
-
-			ORDER BY a.ID DESC
-)
-;
-
--- select * from rcbill_extract.IV_SERVICEACCOUNT ;
--- select * from rcbill_extract.IV_SERVICEACCOUNT where CUSTOMERACCOUNTNUMBER in ('CA_I748');
-
--- select * from rcbill_my.rep_custconsolidated;
--- select * from rcbill_extract.IV_PREP_clientcontractsservicepackagepricedevice;
-
-###################################################################################
 
 
 /*
@@ -1663,6 +1705,17 @@ create table rcbill_extract.IV_SERVICEINSTANCE(index idxipsi1(client_id), index 
     
 )
 ;
+
+
+##### update SUBFROM where it is less than SUBTO
+set sql_safe_updates=0;
+
+update rcbill_extract.IV_SERVICEINSTANCE 
+set SUBFROM=SUBTO 
+where SUBFROM>SUBTO
+;
+
+
 
 
 -- select * from rcbill_extract.IV_SERVICEINSTANCE where clientcode in ('I.000021409');
@@ -2466,7 +2519,6 @@ where t1.BILLINGACCOUNTNUMBER<>t2.BD_BILLINGACCOUNTNUMBER
 -- NBD
 select 'NBD' AS TABLENAME;
 
-drop table if exists rcbill_extract.IV_NBD;
 
 drop temporary table if exists tempt1;
 
@@ -2475,6 +2527,8 @@ create temporary table tempt1 (index idx1(id))
 	select id, invoicingdate from rcbill.rcb_contracts 
 )
 ;
+
+-- select * from rcbill_extract.IV_PREP_BILLINGACCOUNT3
 
 drop temporary table if exists tempt2;
 
@@ -2485,15 +2539,18 @@ create temporary table tempt2 (index idx1(cid))
 ;
 
 
+drop table if exists rcbill_extract.IV_NBD;
 create table rcbill_extract.IV_NBD (index idxnbd1(BILLINGACCOUNTNUMBER),index idxnbd2(CUSTOMERACCOUNTNUMBER))
 (
 	select 
     a.CUSTOMERACCOUNTNUMBER
 	, a.BILLINGACCOUNTNUMBER
 	, a.LASTBILLINGDATE
-	, case when a.ACCOUNTSTATUS=1 and a.BILLCYCLE<>'DEFAULT' then date_add(LASTBILLINGDATE, interval 1 month) end as NEXTBILLINGDATE
+	, case when a.ACCOUNTSTATUS=1 and a.BILLCYCLE<>'DEFAULT' then date_add(LASTBILLINGDATE, interval 1 month) end as NEXTBILLINGDATEOLD
+	, case when a.ACCOUNTSTATUS=1 and a.BILLCYCLE<>'DEFAULT' then DATE_FORMAT(CONCAT(DATE_FORMAT(date_add(LASTBILLINGDATE, interval 1 month), '%Y-%m-'), a.BILLINGDAY),'%Y-%m-%d') end as NEXTBILLINGDATE
 	, a.BILLCYCLE
 	, a.ACCOUNTSTATUS
+	, a.BILLINGDAYOLD
 	, a.BILLINGDAY
 	from 
 	(
@@ -2502,7 +2559,10 @@ create table rcbill_extract.IV_NBD (index idxnbd1(BILLINGACCOUNTNUMBER),index id
         , a.CUSTOMERACCOUNTNUMBER
 		, a.BILLCYCLE, a.ACCOUNTSTATUS
 		-- , (select InvoicingDate from rcbill.rcb_contracts where id=a.contract_id order by id desc limit 1) as BILLINGDAY
-		, (select InvoicingDate from tempt1 where id=a.contract_id order by id desc limit 1) as BILLINGDAY
+		-- , (select InvoicingDate from tempt1 where id=a.contract_id order by id desc limit 1) as BILLINGDAY
+        , (select ipb.InvoicingDate from rcbill_extract.IV_PREP_BILLINGACCOUNT3 ipb where ipb.contract_id=a.contract_id order by ipb.contract_id desc limit 1) as BILLINGDAYOLD
+        , (select ipb.NewInvoicingDate from rcbill_extract.IV_PREP_BILLINGACCOUNT3 ipb where ipb.contract_id=a.contract_id order by ipb.contract_id desc limit 1) as BILLINGDAY
+        
 		-- , (select data from rcbill.rcb_invoicesheader where cid=a.contract_id order by id desc limit 1) as LASTBILLINGDATE
 		, (select INVOICEDATE from tempt2 where cid=a.contract_id order by id desc limit 1) as LASTBILLINGDATE
 		  
@@ -2513,7 +2573,8 @@ create table rcbill_extract.IV_NBD (index idxnbd1(BILLINGACCOUNTNUMBER),index id
 )
 ;
 
-
+-- select * from rcbill_extract.IV_NBD;
+-- select accountstatus, billcycle, nextbillingdate, count(*) from rcbill_extract.IV_NBD where billcycle<>'DEFAULT' group by 1,2,3;
 
 ##################################################################################################################
 
@@ -2555,7 +2616,7 @@ create table rcbill_extract.IV_DISCOUNT
 )
 ;
     
-
+-- select * from  rcbill_extract.IV_DISCOUNT;
 
 
 

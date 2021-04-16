@@ -39,8 +39,13 @@ select * from rcbill_my.rep_customers_collection2019 where TotalPaymentAmount201
 select * from rcbill_my.rep_customers_collection2020 where TotalPaymentAmount2020>0;
 select * from rcbill_my.rep_customers_collection where TotalPaymentAmount2021>0;
 
+select * from rcbill_my.rep_customers_collection where ClientClass in ('CORPORATE BULK','CORPORATE','CORPORATE BUNDLE', 'RESIDENTIAL') 
+and ClientCode not in ('I.000015720')
+and TotalPaymentAmount2021>0;
+
 select * from rcbill_my.rep_customers_collection where ClientClass='CORPORATE LITE' and TotalPaymentAmount2021>0;
 select * from rcbill_my.rep_customers_collection where HousingEstate='EDEN ISLAND' and TotalPaymentAmount2020>0;
+
 
 
 select * from rcbill_my.rep_cust_cont_payment_cmts_mxk;
@@ -165,7 +170,7 @@ select * from rcbill_my.rep_activenumberavg3 where lastday='2020-06-30';
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2021-03-01','2021-03-31');
+call sp_GetActiveNumberFromTo('2021-03-19','2021-04-15');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
