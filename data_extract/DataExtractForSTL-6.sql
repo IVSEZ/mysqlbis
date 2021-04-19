@@ -666,6 +666,7 @@ create table rcbill_extract.IV_PREP_BILLINGACCOUNT3(index idxipba31(clientcode),
 
 	select a.*
     , case when billcycle='POSTPAID' and a.INVOICINGDATE<15 then 1
+       when billcycle='POSTPAID' and a.INVOICINGDATE>=15 and (select sa.SERVICECATEGORY from rcbill_extract.IV_SERVICEACCOUNT sa where sa.CLIENT_ID=a.CLIENT_ID)='CORPORATE BULK' then 1
        when billcycle='POSTPAID' and a.INVOICINGDATE>=15 then 15
       else a.INVOICINGDATE
       end as NEWINVOICINGDATE
@@ -3042,6 +3043,8 @@ set @custid1 = 'CA_I.000001267';
 set @custid1 = 'CA_I.000004860';
 
 set @custid1 = 'CA_I9895';
+
+set @custid1 = 'CA_I1816';
 
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
