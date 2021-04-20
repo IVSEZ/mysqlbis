@@ -9,6 +9,50 @@ select * from rcbill_extract.IV_ADDON where SUBFROM > SUBTO;
 
 select * from rcbill_extract.IV_SERVICEINSTANCE where SUBFROM > SUBTO;
 
+select DEBITDOCUMENTNUMBER, (sum(TOTALAMOUNT),2) as total from rcbill_extract.IV_BILLSUMMARY group by DEBITDOCUMENTNUMBER;
+
+select DEBITDOCUMENTNUMBER, (sum(TOTALAMOUNT),2) as total from rcbill_extract.IV_BILLDETAIL group by DEBITDOCUMENTNUMBER;
+
+
+#### 21469 records before rounding
+select a.*, b.* 
+from 
+(
+	select DEBITDOCUMENTNUMBER, sum(TOTALAMOUNT) as total from rcbill_extract.IV_BILLSUMMARY group by DEBITDOCUMENTNUMBER
+) a
+inner join 
+(
+	select DEBITDOCUMENTNUMBER, sum(TOTALAMOUNT) as total from rcbill_extract.IV_BILLDETAIL group by DEBITDOCUMENTNUMBER
+) b
+on a.DEBITDOCUMENTNUMBER=b.DEBITDOCUMENTNUMBER
+where a.total<>b.total
+;
+
+
+#### on 1413 records after rounding to 2 decimals
+
+select a.*, b.* 
+from 
+(
+	select DEBITDOCUMENTNUMBER, round(sum(TOTALAMOUNT),2)  as total from rcbill_extract.IV_BILLSUMMARY group by DEBITDOCUMENTNUMBER
+) a
+inner join 
+(
+	select DEBITDOCUMENTNUMBER, round(sum(TOTALAMOUNT),2)  as total from rcbill_extract.IV_BILLDETAIL group by DEBITDOCUMENTNUMBER
+) b
+on a.DEBITDOCUMENTNUMBER=b.DEBITDOCUMENTNUMBER
+where a.total<>b.total
+;
+
+
+
+select BILLCYCLE, count(*) from rcbill_extract.IV_BILLINGACCOUNT group by 1;
+
+
+
+
+
+
 select * from rcbill.rcb_casa where BegDate>enddate;
 
 select *, datediff(SUBTO,SUBFROM) from rcbill_extract.IV_SERVICEINSTANCE where SUBFROM > SUBTO;
