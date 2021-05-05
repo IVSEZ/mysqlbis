@@ -529,8 +529,9 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		b.MPHONE as CL_MPhone,
 		b.MEMAIL as CL_MEMAIL,
 		b.MOLADDRESS as CL_MOLADDRESS
-        , c.clientaddress, c.cl_location, c.cl_area
-		, d.areaname as cl_areaname, d.latitude as cl_latitude, d.longitude as cl_longitude
+        , c.clientaddress, c.cl_location, c.cl_area, c.cl_subdistrict
+		-- , d.areaname as cl_areaname, d.latitude as cl_latitude, d.longitude as cl_longitude
+        , d.clientparcel, d.coord_x, d.coord_y, d.latitude, d.longitude
         from
         clientreport a 
         inner join
@@ -541,7 +542,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         
         left join 
 		(
-					SELECT clientcode, clientaddress, min(clientlocation) as cl_location, min(ClientArea) as cl_area
+					SELECT clientcode, clientaddress, min(clientlocation) as cl_location, min(ClientArea) as cl_area, min(clientsubdistrict) as cl_subdistrict
 					FROM    rcbill.rcb_clientaddress
 					GROUP BY clientcode
 					order by clientcode
@@ -550,6 +551,9 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		a.CL_CLIENTCODE=c.clientcode
         
         left join
+		
+        /*
+
 		(
 				select distinct x.settlementname, x.areaname, y.latitude, y.longitude,
 				y.geoname, y.featureclass,y.featurecode
@@ -567,6 +571,12 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 				order by x.SETTLEMENTNAME
 		) d
 		on (c.cl_location=d.settlementname and c.cl_area=d.areaname)
+        */
+        
+        (
+			select * from rcbill.rcb_clientparcelcoords where latitude<>0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))
+        ) d
+        on a.CL_CLIENTCODE=d.clientcode
         
         )
         ;
@@ -612,7 +622,9 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 							, ActiveContracts as activecontracts, ActiveSubscriptions as activesubscriptions, firstcontractdate, FirstInvoiceDate as firstinvoicedate, LastInvoiceDate as lastinvoicedate
 							, FirstPaymentDate as firstpaymentdate, LastPaymentDate as lastpaymentdate, LastPaidAmount as lastpaidamount, TotalPayments as totalpayments, TotalPaymentAmount as totalpaymentamount
 							, ClassName as clientclass, CL_NIN as clientnin, CL_PassNo as clientpassport, CL_MPhone as clientphone, CL_MEMAIL as clientemail
-							, clientaddress as clientaddress, cl_location as clientlocation, cl_area as clientarea 
+							, clientaddress as clientaddress, cl_location as clientlocation, cl_area as clientarea
+                            , cl_subdistrict as subdistrict 
+                            , clientparcel, coord_x, coord_y, latitude, longitude
 							
 						from rcbill.clientextendedreport
 					) a

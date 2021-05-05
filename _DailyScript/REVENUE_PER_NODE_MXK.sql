@@ -1331,6 +1331,10 @@ create table rcbill_my.rep_customers_collection(index idxrcc1(client_code), inde
 		,b.lastactivedate as LastActiveDate
 		,b.clientaddress as ClientAddress
 		,b.clientlocation as ClientLocation
+		,b.subdistrict 
+		,b.clientparcel, b.coord_x, b.coord_y, b.latitude, b.longitude
+        
+        
 		,c.HOUSING_ESTATE as HousingEstate
 		,c.CLIENT_AREA as ClientArea
 		,c.CLIENT_SUBAREA as ClientSubArea
@@ -1710,6 +1714,13 @@ create table rcbill_my.rep_custconsolidated as
     `AvgMonthlyPayment2018`,
     
 	`clientarea`,
+	`subdistrict`,
+	`clientparcel`,
+	`coord_x`,
+	`coord_y`,
+	`latitude`,
+	`longitude`,
+
 	`clientemail`,
 	`clientnin`,
 	`clientpassport`,
@@ -1742,7 +1753,9 @@ create table rcbill_my.rep_custconsolidated as
 		a.activesubscriptions,
 		a.clientaddress,
 		a.clientarea,
-
+		a.subdistrict 
+		,a.clientparcel, a.coord_x, a.coord_y, a.latitude, a.longitude
+        ,
 		a.clientemail,
 		a.clientnin,
 		a.clientpassport,
@@ -1831,7 +1844,7 @@ as
 (
 	select a.reportdate, a.CLIENTCODE, a.CLIENTID, a.IsAccountActive, a.AccountActivityStage , a.CurrentDebt, a.CLIENTNAME, a.clientclass
 	, a.clientaddress
-	, a.clientlocation, a.clientarea
+	, a.clientlocation, a.clientarea, a.subdistrict
     , a.clientemail
     , a.activenetwork
     

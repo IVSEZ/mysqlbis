@@ -3047,6 +3047,8 @@ set @custid1 = 'CA_I9895';
 set @custid1 = 'CA_I1816';
 set @custid1 = 'CA_I5610';
 
+set @custid1 = 'CA_I.000022448'; -- hareen
+
 
 select * from rcbill_extract.IV_CUSTOMERACCOUNT where ACCOUNTNUMBER in (@custid1)  order by ACCOUNTNUMBER;
 select * from rcbill_extract.IV_BILLINGACCOUNT where CUSTOMERACCOUNTNUMBER in (@custid1) order by CUSTOMERACCOUNTNUMBER;

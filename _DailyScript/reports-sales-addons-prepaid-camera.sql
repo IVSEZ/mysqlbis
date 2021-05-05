@@ -65,3 +65,5 @@ create table rcbill_my.rep_addon (INDEX IDXrepadd1(CLIENT_CODE)) as
 select count(*) as rep_prepaid_camera from rcbill_my.rep_prepaid_camera;
 select count(*) as rep_addon from rcbill_my.rep_addon;
 
+-- select * from rcbill_my.rep_addon;
+

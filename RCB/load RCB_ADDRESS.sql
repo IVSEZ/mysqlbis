@@ -1,7 +1,8 @@
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\RCBill\\AllAreaSettlementDistrictStreet-31082018.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\RCBill\\AllAreaSettlementDistrictStreet-06012020.csv' 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\RCBill\\AllAreaSettlementDistrictStreet-22052020.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\RCBill\\AllAreaSettlementDistrictStreet-22052020.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\RCBill\\AllAreaSettlementDistrictStreet-04052021-2.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_address` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 1 LINES 
@@ -22,6 +23,8 @@ INSERTEDON=now()
 
 
 -- insert into rcbill.rcb_address(AREANAME,SETTLEMENTNAME,INSERTEDON) values('MAHE','PROVIDENCE',now());
+-- insert into rcbill.rcb_address(AREANAME,SETTLEMENTNAME,DISTRICTNAME, INSERTEDON) values('MAHE','EDEN ISLAND', 'EDEN ISLAND',now());
+
 -- insert into rcbill.rcb_address(AREANAME,SETTLEMENTNAME,INSERTEDON) values('MAHE','BARBARON ESTATE',now());
 -- insert into rcbill.rcb_address(AREANAME,SETTLEMENTNAME,INSERTEDON) values('MAHE','BARBARONS',now());
 -- insert into rcbill.rcb_address(AREANAME,SETTLEMENTNAME,INSERTEDON) values('SILHOUETTE ISLAND','SILHOUETTE ISLAND',now());
@@ -39,5 +42,11 @@ group by areaname, settlementname, districtname
 SET SQL_SAFE_UPDATES = 0;
 update rcbill.rcb_address
 set SETTLEMENTNAME='ANSE AUX PINS' where SETTLEMENTNAME='ANSE AUX PIN';
+
+
+delete from rcbill.rcb_address where AREANAME='M';
+delete from rcbill.rcb_address where AREANAME='SEYCHELLES';
+delete from rcbill.rcb_address where AREANAME='SANS SOUCI ROAD';
+
 */
 
