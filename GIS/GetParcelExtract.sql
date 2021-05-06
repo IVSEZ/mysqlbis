@@ -17,6 +17,8 @@ group by 1
 order by 1 desc
 ;
 
+select * from rcbill.rcb_clientparcelcoords where latitude<>0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
+
 
 select a.*, b.valid_parcels, c.invalid_parcels
 from 

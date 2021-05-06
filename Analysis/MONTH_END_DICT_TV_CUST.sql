@@ -46,6 +46,10 @@
 -- set @period='2021-02-28';
 -- set @period='2021-03-31';
 
+
+call rcbill_my.sp_filllastdates('2016-05-31',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
+call rcbill_my.sp_fillalldates('2016-05-01',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
+
 /*
 
 select * from rcbill_my.customercontractactivity 
