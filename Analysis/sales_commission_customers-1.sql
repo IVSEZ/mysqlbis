@@ -1,7 +1,18 @@
-select * from rcbill_my.rep_custconsolidated;
+select * from rcbill_my.rep_custconsolidated where firstactivedate>='2020-11-01';
 select * from rcbill_my.rep_allcust;
 
-
+### FIRST ACTIVE CUSTOMERS SINCE THE DATE
+select 
+reportdate, clientcode, clientname, IsAccountActive, AccountActivityStage, currentdebt
+, activenetwork, activeservices, activecontracts, activesubscriptions
+, firstactivedate, lastactivedate, dayssincelastactive
+, TotalPaymentAmount2021, AvgMonthlyPayment2021
+, TotalPaymentAmount2020, AvgMonthlyPayment2020
+, clientparcel, latitude, longitude
+from 
+rcbill_my.rep_custconsolidated
+where firstactivedate>='2020-11-01'
+;
 
 select -- * ,
 reportdate, a.clientcode, a.clientname, IsAccountActive, AccountActivityStage, currentdebt
@@ -662,14 +673,14 @@ a.clientcode in
 'I.000022180'
 
 
-)
-;
+-- )
+-- ;
 
 
 
 
-/*
-(
+
+-- (
 ## as on 16/11/2020
 
 'I.000021374',
@@ -1185,7 +1196,7 @@ a.clientcode in
 'I.000015627'
 )
 ;
-*/
+-- */
 
 /*
 (
