@@ -389,8 +389,16 @@ order by SETTLEMENTNAME, areaname, districtname
 -- (a.moladdress like concat('%', b.SETTLEMENTNAME , '%') and a.moladdress like concat('%', b.areaname , '%') and a.moladdress like concat('%', b.districtname , '%'))
 -- group by clientid, clientname, clientcode, clientaddress
 on
+/*
 (a.moladdress like concat('%', b.district , '%') -- or a.moladdress like concat('%', b.areaname , '%') 
 and a.moladdress like concat('%', b.subdistrict , '%'))
+*/
+(a.moladdress like concat('%', b.district , '%') -- or a.moladdress like concat('%', b.areaname , '%') 
+and a.moladdress like concat('%', b.subdistrict , '%'))
+or 
+(a.moladdress like concat('%', b.district , '%')) 
+
+
 group by clientid, clientname, clientcode, clientaddress
 )
 ;
