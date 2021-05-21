@@ -6,7 +6,7 @@
 
 
 select distinct a.id as ClientId, a.firm as ClientName, a.kod as ClientCode, a.MOLADDRESS as ClientAddress
-
+, a.clientisland
 , b.district, b.island, b.subdistrict
 
 -- , min(ifnull(b.SettlementName,'SILHOUETTE ISLAND')) as ClientLocation
@@ -86,6 +86,45 @@ on
 group by clientid, clientname, clientcode, clientaddress
 ;
 
+select * from rcbill.rcb_clientaddress a  where a.ClientLocation='SILHOUETTE ISLAND';
+
+
+select a.*, b.*
+from rcbill.rcb_clientaddress a 
+left join
+(
+
+	select distinct settlementname as district, areaname as island, districtname as subdistrict from rcbill.rcb_address
+	where AreaName not in ('M','SEYCHELLES','SANS SOUCI ROAD') 
+	-- and settlementname not in ('VICTORIA')
+	group by settlementname, areaname, districtname
+	order by SETTLEMENTNAME, areaname, districtname
+
+
+) b
+on 
+(
+
+	(
+		(
+
+			a.ClientAddress regexp b.district 
+			and a.ClientAddress regexp b.subdistrict
+		)
+        
+		/*
+		or
+		(
+			a.MOLADDRESS regexp b.district 
+			or a.MOLADDRESS regexp b.subdistrict
+
+		)
+        */
+        
+	 )
+	 
+ )
+where a.ClientLocation='SILHOUETTE ISLAND';
 
 
 

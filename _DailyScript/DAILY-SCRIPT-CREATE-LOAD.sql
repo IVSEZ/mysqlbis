@@ -417,7 +417,7 @@ group by clientid, clientname, clientcode, clientaddress
 
 
 	select distinct a.id as ClientId, a.firm as ClientName, a.kod as ClientCode, a.MOLADDRESS as ClientAddress
-
+	, a.clientisland
 	, b.district, b.island, b.subdistrict
 	, (ifnull(b.district,'SILHOUETTE ISLAND')) as ClientLocation
 	, (ifnull(b.island,'TBU')) as ClientArea
