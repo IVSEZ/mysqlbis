@@ -17,3 +17,7 @@ ON rcb_address (AREANAME);
 CREATE INDEX IDXAddress2
 ON rcb_address (SETTLEMENTNAME);
 
+/*
+ALTER TABLE rcb_address  
+ADD FULLTEXT(settlementname, areaname, districtname);
+*/
