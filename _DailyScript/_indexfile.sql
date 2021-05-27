@@ -94,6 +94,11 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-USAGESTATS.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
+mysql \. C:\workspace\cloud\code\sql\GIS\GetParcelExtract.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+
+
 exit
 
 

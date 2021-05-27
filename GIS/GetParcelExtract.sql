@@ -108,7 +108,7 @@ create table rcbill_maps.IV_PARCELEXTRACTStaging as
 )
 ;
 
-SELECT * FROM rcbill_maps.IV_PARCELEXTRACTStaging;
+SELECT count(*) as 'IV_PARCELEXTRACTStaging' FROM rcbill_maps.IV_PARCELEXTRACTStaging;
 
 
 
@@ -123,7 +123,7 @@ create table rcbill_maps.IV_PARCELFORMAP as
         
 );
 
-select * from rcbill_maps.IV_PARCELFORMAP;
+select count(*) as 'IV_PARCELFORMAP' from rcbill_maps.IV_PARCELFORMAP;
 
 drop table if exists rcbill_maps.IV_PARCELFORMAP_Inactive_2;
 create table rcbill_maps.IV_PARCELFORMAP_Inactive_2 as 
@@ -135,7 +135,7 @@ create table rcbill_maps.IV_PARCELFORMAP_Inactive_2 as
         group by lat, lon, title
         
 );
-select * from rcbill_maps.IV_PARCELFORMAP_Inactive_2;
+select count(*) as 'IV_PARCELFORMAP_Inactive_2'  from rcbill_maps.IV_PARCELFORMAP_Inactive_2;
 
 drop table if exists rcbill_maps.IV_PARCELFORMAP_Inactive_3;
 create table rcbill_maps.IV_PARCELFORMAP_Inactive_3 as 
@@ -147,7 +147,7 @@ create table rcbill_maps.IV_PARCELFORMAP_Inactive_3 as
         group by lat, lon, title
         
 );
-select * from rcbill_maps.IV_PARCELFORMAP_Inactive_3;
+select count(*) as 'IV_PARCELFORMAP_Inactive_3' from rcbill_maps.IV_PARCELFORMAP_Inactive_3;
 
 drop table if exists rcbill_maps.IV_PARCELFORMAP_Inactive_4;
 create table rcbill_maps.IV_PARCELFORMAP_Inactive_4 as 
@@ -159,7 +159,7 @@ create table rcbill_maps.IV_PARCELFORMAP_Inactive_4 as
         group by lat, lon, title
         
 );
-select * from rcbill_maps.IV_PARCELFORMAP_Inactive_4;
+select count(*) as 'IV_PARCELFORMAP_Inactive_4' from rcbill_maps.IV_PARCELFORMAP_Inactive_4;
 
 drop table if exists rcbill_maps.IV_PARCELFORMAP_Inactive_5;
 create table rcbill_maps.IV_PARCELFORMAP_Inactive_5 as 
@@ -171,7 +171,7 @@ create table rcbill_maps.IV_PARCELFORMAP_Inactive_5 as
         group by lat, lon, title
         
 );
-select * from rcbill_maps.IV_PARCELFORMAP_Inactive_5;
+select count(*) as 'IV_PARCELFORMAP_Inactive_5' from rcbill_maps.IV_PARCELFORMAP_Inactive_5;
 
 
 
@@ -187,7 +187,7 @@ create table rcbill_maps.IV_PARCELFORMAP_HFC as
         
 );
 
-select * from rcbill_maps.IV_PARCELFORMAP_HFC;
+select count(*) as 'IV_PARCELFORMAP_HFC' from rcbill_maps.IV_PARCELFORMAP_HFC;
 
 drop table if exists rcbill_maps.IV_PARCELFORMAP_GPON;
 create table rcbill_maps.IV_PARCELFORMAP_GPON as 
@@ -200,7 +200,7 @@ create table rcbill_maps.IV_PARCELFORMAP_GPON as
         
 );
 
-select * from rcbill_maps.IV_PARCELFORMAP_GPON;
+select count(*) as 'IV_PARCELFORMAP_GPON' from rcbill_maps.IV_PARCELFORMAP_GPON;
 
 
 drop table if exists rcbill_maps.IV_PARCELFORMAP_MIX;
@@ -214,7 +214,7 @@ create table rcbill_maps.IV_PARCELFORMAP_MIX as
         
 );
 
-select * from rcbill_maps.IV_PARCELFORMAP_MIX;
+select count(*) as 'IV_PARCELFORMAP_MIX' from rcbill_maps.IV_PARCELFORMAP_MIX;
 ##
 /*
 this table is to be extracted as a TAB separated file
@@ -226,6 +226,11 @@ then convert the .csv to .txt and upload to maptest folder on the dashboard.inte
 
 
 ###############################
+
+#### commenting for now
+
+/*
+
 
 drop table if exists rcbill_maps.IV_HFCNODEStaging;
 
@@ -259,5 +264,5 @@ create table rcbill_maps.IV_HFC_NODES as
 );
 
 select * from rcbill_maps.IV_HFC_NODES;
-
+*/
 -- SELECT * FROM rcbill.rcb_techregions;
