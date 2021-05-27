@@ -13,9 +13,14 @@ select distinct a.id as ClientId, a.firm as ClientName, a.kod as ClientCode, a.M
 -- , min(ifnull(b.areaname,'UNKNOWN')) as ClientArea
 -- , min(ifnull(b.districtname,'UNKNOWN')) as ClientSubDistrict
 
-, (ifnull(b.district,'SILHOUETTE ISLAND')) as ClientLocation
-, (ifnull(b.island,'TBU')) as ClientArea
+, (ifnull(b.district,'TBU')) as ClientLocation
+, (ifnull(b.island, if(a.clientisland='OTHER','TBU',a.clientisland))) as ClientArea
 , (ifnull(b.subdistrict,'TBU')) as ClientSubDistrict
+
+
+-- , (ifnull(b.district,'SILHOUETTE ISLAND')) as ClientLocation
+-- , (ifnull(b.island,'TBU')) as ClientArea
+-- , (ifnull(b.subdistrict,'TBU')) as ClientSubDistrict
 
 from 
 -- rcbill.rcb_tclients a
