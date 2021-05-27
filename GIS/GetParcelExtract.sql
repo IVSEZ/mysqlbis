@@ -3,6 +3,10 @@ use rcbill_maps;
 ###############################
 ## make sure the parcel coords table has been populated
 -- select * from rcbill_my.rep_custconsolidated where clientcode='I.000005755';
+
+/*
+##### TESTING CODE
+
 select * from rcbill.rcb_clientparcels;
 
 
@@ -52,6 +56,7 @@ inner join
 on a.dateinserted=c.dateinserted
 ;
 
+*/
 
 -- select * from rcbill_my.rep_custconsolidated;
 

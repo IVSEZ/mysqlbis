@@ -7,6 +7,9 @@ set session group_concat_max_len = 1000000;
 
 #####################################################################
 ## PARCELFORMAP
+
+-- mysql> \! rm -f /home/sites/example.com/www/files/backup.csv
+
 select 'IV_PARCELFORMAP' AS TABLENAME;
 select column_name
     from information_schema.columns
