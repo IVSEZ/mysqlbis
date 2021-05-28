@@ -68,8 +68,7 @@ on
 
 	(
 		(
-			a.MOLADDRESS regexp b.district 
-			and a.MOLADDRESS regexp b.subdistrict
+			a.MOLADDRESS regexp b.district and a.MOLADDRESS regexp b.subdistrict
 		)
         
 		/*
@@ -87,8 +86,10 @@ on
 
 
 -- where a.kod in ('I.000016164','I.000016166','I.000016162')
+where a.kod in ('I.000004649')
 
 group by clientid, clientname, clientcode, clientaddress
+
 ;
 
 select * from rcbill.rcb_clientaddress a  where a.ClientLocation='SILHOUETTE ISLAND';

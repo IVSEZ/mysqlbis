@@ -56,6 +56,11 @@ inner join
 on a.dateinserted=c.dateinserted
 ;
 
+
+set sql_safe_updates=0;
+
+delete from rcbill.rcb_clientparcelcoords where date(insertedon)>'2021-05-26';
+
 */
 
 -- select * from rcbill_my.rep_custconsolidated;
