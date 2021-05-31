@@ -1837,7 +1837,7 @@ select count(*) as rep_custconsolidated from rcbill_my.rep_custconsolidated;
 
 
 
-drop table if exists rcbill_my.rep_activecutomerdistribution_level1;
+drop table if exists rcbill_my.rep_activecustomerdistribution_level1;
 
 create table rcbill_my.rep_activecustomerdistribution_level1 
 as
@@ -1877,7 +1877,7 @@ as
 
 select count(*) as 'rep_activecustomerdistribution_level1' from rcbill_my.rep_activecustomerdistribution_level1;
 
-drop table if exists rcbill_my.rep_activecutomerdistribution_level2;
+drop table if exists rcbill_my.rep_activecustomerdistribution_level2;
 
 create table rcbill_my.rep_activecustomerdistribution_level2 
 as
@@ -1913,7 +1913,7 @@ as
 ;
 
 
-select count(*) as 'rep_activecutomerdistribution_level2' from rcbill_my.rep_activecutomerdistribution_level2;
+select count(*) as 'rep_activecustomerdistribution_level2' from rcbill_my.rep_activecustomerdistribution_level2;
 
 
 

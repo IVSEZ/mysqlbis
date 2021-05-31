@@ -759,3 +759,9 @@ and UID=01802013714
 -- limit 10000
 ;
 
+#################################
+########## customer distribution by region / area / location / district / subdistrict
+
+select * from rcbill_my.rep_activecustomerdistribution_level1;
+select * from rcbill_my.rep_activecustomerdistribution_level2;
+
