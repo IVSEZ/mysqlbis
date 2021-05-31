@@ -15,64 +15,78 @@ group by 1,2,3
 ;
 
 
-select coalesce(ISLAND,'GRAND TOTAL') as ISLAND
-, coalesce(DISTRICT,'--------------') as DISTRICT
-, ActiveAccounts_GPON, ActiveAccounts_HFC, ActiveAccounts_MIX
-from 
-(
-	select 
-	clientarea as ISLAND
-	, clientlocation as DISTRICT
-	, ifnull(sum(`ActiveAccounts_GPON`),0) as `ActiveAccounts_GPON` 
-	, ifnull(sum(`ActiveAccounts_HFC`),0) as `ActiveAccounts_HFC` 
-	, ifnull(sum(`ActiveAccounts_MIX`),0) as `ActiveAccounts_MIX` 
+drop table if exists rcbill_my.rep_activecutomerdistribution_level1;
 
+create table rcbill_my.rep_activecustomerdistribution_level1 
+as
+(
+
+	select coalesce(ISLAND,'GRAND TOTAL') as ISLAND
+	, coalesce(DISTRICT,'--------------') as DISTRICT
+	, ActiveAccounts_GPON, ActiveAccounts_HFC, ActiveAccounts_MIX
 	from 
 	(
-		select clientarea, clientlocation, activenetwork
-		, case when activenetwork='GPON' then count(clientcode) end as ActiveAccounts_GPON 
-		, case when activenetwork='HFC' then count(clientcode) end as ActiveAccounts_HFC 
-		, case when activenetwork in ('GPON|GPON','GPON|HFC') then count(clientcode) end as ActiveAccounts_MIX 
-		-- , case when activenetwork is null then count(clientcode) end as ActiveAccounts_INACTIVE 
+		select 
+		clientarea as ISLAND
+		, clientlocation as DISTRICT
+		, ifnull(sum(`ActiveAccounts_GPON`),0) as `ActiveAccounts_GPON` 
+		, ifnull(sum(`ActiveAccounts_HFC`),0) as `ActiveAccounts_HFC` 
+		, ifnull(sum(`ActiveAccounts_MIX`),0) as `ActiveAccounts_MIX` 
 
-		from rcbill_my.rep_custconsolidated 
-		where IsAccountActive='Active'
-		group by 1,2,3
-		-- with rollup
+		from 
+		(
+			select clientarea, clientlocation, activenetwork
+			, case when activenetwork='GPON' then count(clientcode) end as ActiveAccounts_GPON 
+			, case when activenetwork='HFC' then count(clientcode) end as ActiveAccounts_HFC 
+			, case when activenetwork in ('GPON|GPON','GPON|HFC') then count(clientcode) end as ActiveAccounts_MIX 
+			-- , case when activenetwork is null then count(clientcode) end as ActiveAccounts_INACTIVE 
+
+			from rcbill_my.rep_custconsolidated 
+			where IsAccountActive='Active'
+			group by 1,2,3
+			-- with rollup
+		) a 
+		group by 1,2
+		with rollup
 	) a 
-	group by 1,2
-	with rollup
-) a 
+
+)
 ;
 
 
-select  coalesce(ISLAND,'GRAND TOTAL') as ISLAND
-, coalesce(DISTRICT,'--------------') as DISTRICT
-, coalesce(SUBDISTRICT,'--------------') as SUBDISTRICT
-, ActiveAccounts_GPON, ActiveAccounts_HFC, ActiveAccounts_MIX
-from
+drop table if exists rcbill_my.rep_activecutomerdistribution_level2;
+
+create table rcbill_my.rep_activecustomerdistribution_level2 
+as
 (
-	select clientarea as ISLAND, clientlocation as DISTRICT, subdistrict as SUBDISTRICT
-	, ifnull(sum(`ActiveAccounts_GPON`),0) as `ActiveAccounts_GPON` 
-	, ifnull(sum(`ActiveAccounts_HFC`),0) as `ActiveAccounts_HFC` 
-	, ifnull(sum(`ActiveAccounts_MIX`),0) as `ActiveAccounts_MIX` 
-
-	from 
+	select  coalesce(ISLAND,'GRAND TOTAL') as ISLAND
+	, coalesce(DISTRICT,'--------------') as DISTRICT
+	, coalesce(SUBDISTRICT,'--------------') as SUBDISTRICT
+	, ActiveAccounts_GPON, ActiveAccounts_HFC, ActiveAccounts_MIX
+	from
 	(
-		select clientarea, clientlocation, subdistrict, activenetwork
-		, case when activenetwork='GPON' then count(clientcode) end as ActiveAccounts_GPON 
-		, case when activenetwork='HFC' then count(clientcode) end as ActiveAccounts_HFC 
-		, case when activenetwork in ('GPON|GPON','GPON|HFC') then count(clientcode) end as ActiveAccounts_MIX 
-		-- , case when activenetwork is null then count(clientcode) end as ActiveAccounts_INACTIVE 
+		select clientarea as ISLAND, clientlocation as DISTRICT, subdistrict as SUBDISTRICT
+		, ifnull(sum(`ActiveAccounts_GPON`),0) as `ActiveAccounts_GPON` 
+		, ifnull(sum(`ActiveAccounts_HFC`),0) as `ActiveAccounts_HFC` 
+		, ifnull(sum(`ActiveAccounts_MIX`),0) as `ActiveAccounts_MIX` 
 
-		from rcbill_my.rep_custconsolidated 
-		where IsAccountActive='Active'
-		group by 1,2,3,4
-		-- with rollup
+		from 
+		(
+			select clientarea, clientlocation, subdistrict, activenetwork
+			, case when activenetwork='GPON' then count(clientcode) end as ActiveAccounts_GPON 
+			, case when activenetwork='HFC' then count(clientcode) end as ActiveAccounts_HFC 
+			, case when activenetwork in ('GPON|GPON','GPON|HFC') then count(clientcode) end as ActiveAccounts_MIX 
+			-- , case when activenetwork is null then count(clientcode) end as ActiveAccounts_INACTIVE 
+
+			from rcbill_my.rep_custconsolidated 
+			where IsAccountActive='Active'
+			group by 1,2,3,4
+			-- with rollup
+		) a 
+		group by 1,2,3
+		 with rollup
 	) a 
-	group by 1,2,3
-	 with rollup
-) a 
+)
 ;
 
 
