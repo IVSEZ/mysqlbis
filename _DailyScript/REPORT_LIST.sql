@@ -706,7 +706,7 @@ on a.cid=c.id
 left join
 rcbill.rcb_users d
 on a.userid=d.id
-limit 1000
+-- limit 1000
 ;
 
 
