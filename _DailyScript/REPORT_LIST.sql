@@ -170,7 +170,7 @@ select * from rcbill_my.rep_activenumberavg3 where lastday='2020-06-30';
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2021-05-01','2021-05-31');
+call sp_GetActiveNumberFromTo('2021-05-25','2021-06-07');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
@@ -190,9 +190,18 @@ select * from  rcbill_my.clientticketjourney
 where 0=0
 -- and commentuser in ('Rahul Walavalkar') 
 -- and (trim(upper(comment)) REGEXP 'FRENCH')
-and (trim(upper(comment)) REGEXP 'kindly assist')
+and (trim(upper(comment)) REGEXP 'installation done')
 order by commentdate desc
 ;
+
+select * from  rcbill_my.clientticketjourney 
+where 0=0
+-- and commentuser in ('Rahul Walavalkar') 
+-- and (trim(upper(comment)) REGEXP 'FRENCH')
+and (trim(upper(comment)) REGEXP 'installation')
+order by commentdate desc
+;
+
 
 ##TV
 select * from rcbill_my.rep_activenumberavg3 where servicecategory='TV';
