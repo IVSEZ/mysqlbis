@@ -1915,6 +1915,36 @@ as
 
 select count(*) as 'rep_activecustomerdistribution_level2' from rcbill_my.rep_activecustomerdistribution_level2;
 
+#####################################
+### CLIENT ADDRESS, LOCATION, PARCELS, COODINATES
+drop table if exists rcbill_my.rep_custaddressparcelsprefix;
+
+create table rcbill_my.rep_custaddressparcelsprefix(index idxrcap1(clientcode))
+as 
+(
+
+	select a.*
+    , b.clientparcel, b.coord_x, b.coord_y, b.latitude, b.longitude, b.parcel_prefix
+	from 
+	(
+		select clientcode, clientname, clientaddress, clientclass, clientarea, clientlocation, subdistrict, activenetwork, isaccountactive, accountactivitystage
+
+		from rcbill_my.rep_custconsolidated 
+		-- where IsAccountActive='Active'
+	) a 
+	left join
+	(
+		select *, substr(clientparcel,1,1) as parcel_prefix 
+		from rcbill.rcb_clientparcelcoords 
+		where latitude<>0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))            
+	) b 
+	on a.clientcode=b.clientcode
+	
+
+)
+;
+
+select count(*) as rep_custaddressparcelsprefix from rcbill_my.rep_custaddressparcelsprefix;
 
 
 #####################################

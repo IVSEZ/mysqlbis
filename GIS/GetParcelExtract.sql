@@ -7,6 +7,28 @@ use rcbill_maps;
 /*
 ##### TESTING CODE
 
+
+			select a.*, b.*
+            from 
+            (
+				select clientcode, clientname, clientaddress, clientclass, clientarea, clientlocation, subdistrict, activenetwork, isaccountactive, accountactivitystage
+
+				from rcbill_my.rep_custconsolidated 
+				-- where IsAccountActive='Active'
+			) a 
+            left join
+            (
+				select *, substr(clientparcel,1,1) as parcel_prefix 
+				from rcbill.rcb_clientparcelcoords 
+				where latitude<>0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords))            
+            ) b 
+            on a.clientcode=b.clientcode
+            ;
+
+
+
+
+
 select * from rcbill.rcb_clientparcels;
 
 
@@ -21,7 +43,11 @@ group by 1
 order by 1 desc
 ;
 
-select * from rcbill.rcb_clientparcelcoords where latitude<>0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
+show index from rcbill.rcb_clientparcelcoords ;
+
+select *, substr(clientparcel,1,1) as parcel_prefix 
+from rcbill.rcb_clientparcelcoords 
+where latitude<>0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
 
 
 select a.*, b.valid_parcels, c.invalid_parcels
@@ -64,6 +90,8 @@ delete from rcbill.rcb_clientparcelcoords where date(insertedon)='2021-05-31';
 */
 
 -- select * from rcbill_my.rep_custconsolidated;
+
+-- select * from rcbill_maps.IV_PARCELEXTRACTStaging;
 
 drop table if exists rcbill_maps.IV_PARCELEXTRACTStaging;
 

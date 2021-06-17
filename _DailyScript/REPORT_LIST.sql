@@ -685,7 +685,7 @@ select * from rcbill_my.customercontractsnapshot where clientcode='I.000012204';
 select * from rcbill_my.customercontractsnapshot where package='Intel Data 10' and CurrentStatus='Active';
 select * from rcbill_my.customercontractsnapshot where package='Intel Data 10' and CurrentStatus='Active' and network='HFC';
 select * from rcbill_my.customercontractsnapshot where package='Intel Data 10' and CurrentStatus='Active' and network='GPON';
-##### 
+###### 
 select * from rcbill_my.rep_custconsolidated;
 
 
@@ -774,3 +774,13 @@ and UID=01802013714
 select * from rcbill_my.rep_activecustomerdistribution_level1;
 select * from rcbill_my.rep_activecustomerdistribution_level2;
 
+select * from rcbill_my.rep_custaddressparcelsprefix;
+select isaccountactive, activenetwork, parcel_prefix, count(clientcode) as accounts
+from rcbill_my.rep_custaddressparcelsprefix
+group by 1,2,3;
+
+select clientarea, clientlocation
+-- , subdistrict
+, parcel_prefix, count(clientcode) as accounts
+from rcbill_my.rep_custaddressparcelsprefix
+group by 1,2,3;
