@@ -260,6 +260,159 @@ set session group_concat_max_len = 1024;
 
 
 
+set session group_concat_max_len = 10000;
+###########INTERNET
+SET @sql_dynamic = (
+	SELECT
+		GROUP_CONCAT( DISTINCT
+			CONCAT(
+				'  sum(IF(package = '''
+				, package
+				, ''', activecount,0))  AS `'
+				, package , '`'
+			)
+		)
+	FROM rcbill_my.rep_activenumberlastday
+    where trim(upper(servicecategory))='INTERNET'
+    order by package asc, sum(activecount) desc
+);
+
+-- select @sql_dynamic;
+drop table if exists rcbill_my.rep_activenumberlastday_int_pv; 
+
+SET @sql = CONCAT('create table rcbill_my.rep_activenumberlastday_int_pv as (SELECT period, servicecategory, ', 
+			  @sql_dynamic, ' 
+		   FROM 
+				rcbill_my.rep_activenumberlastday
+			where trim(upper(servicecategory))="Internet"
+			GROUP BY period, servicecategory)'
+	   );
+
+-- select @sql;
+	 
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+
+############TV
+SET @sql_dynamic = (
+	SELECT
+		GROUP_CONCAT( DISTINCT
+			CONCAT(
+				'  sum(IF(package = '''
+				, package
+				, ''', activecount,0))  AS `'
+				, package , '`'
+			)
+		)
+	FROM rcbill_my.rep_activenumberlastday
+    where trim(upper(servicecategory))='TV'
+    order by package asc, sum(activecount) desc
+);
+
+-- select @sql_dynamic;
+drop table if exists rcbill_my.rep_activenumberlastday_tv_pv; 
+
+SET @sql = CONCAT('create table rcbill_my.rep_activenumberlastday_tv_pv as (SELECT period, servicecategory, ', 
+			  @sql_dynamic, ' 
+		   FROM 
+				rcbill_my.rep_activenumberlastday
+			where trim(upper(servicecategory))="TV"
+			GROUP BY period, servicecategory)'
+	   );
+
+-- select @sql;
+	 
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+
+############VOICE
+SET @sql_dynamic = (
+	SELECT
+		GROUP_CONCAT( DISTINCT
+			CONCAT(
+				'  sum(IF(package = '''
+				, package
+				, ''', activecount,0))  AS `'
+				, package , '`'
+			)
+		)
+	FROM rcbill_my.rep_activenumberlastday
+    where trim(upper(servicecategory))='VOICE'
+    order by package asc, sum(activecount) desc
+);
+
+-- select @sql_dynamic;
+drop table if exists rcbill_my.rep_activenumberlastday_voice_pv; 
+
+SET @sql = CONCAT('create table rcbill_my.rep_activenumberlastday_voice_pv as (SELECT period, servicecategory, ', 
+			  @sql_dynamic, ' 
+		   FROM 
+				rcbill_my.rep_activenumberlastday
+			where trim(upper(servicecategory))="VOICE"
+			GROUP BY period, servicecategory)'
+	   );
+
+-- select @sql;
+	 
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+
+
+############OTT
+SET @sql_dynamic = (
+	SELECT
+		GROUP_CONCAT( DISTINCT
+			CONCAT(
+				'  sum(IF(package = '''
+				, package
+				, ''', activecount,0))  AS `'
+				, package , '`'
+			)
+		)
+	FROM rcbill_my.rep_activenumberlastday
+    where trim(upper(servicecategory))='OTT'
+    order by package asc, sum(activecount) desc
+);
+
+-- select @sql_dynamic;
+drop table if exists rcbill_my.rep_activenumberlastday_ott_pv; 
+
+SET @sql = CONCAT('create table rcbill_my.rep_activenumberlastday_ott_pv as (SELECT period, servicecategory, ', 
+			  @sql_dynamic, ' 
+		   FROM 
+				rcbill_my.rep_activenumberlastday
+			where trim(upper(servicecategory))="OTT"
+			GROUP BY period, servicecategory)'
+	   );
+
+-- select @sql;
+	 
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+################################################################
+
+
+
+set session group_concat_max_len = 1024;
+
+-- select * from rcbill_my.rep_activenumberlastday_int_pv order by period desc;
+-- select * from rcbill_my.rep_activenumberlastday_tv_pv order by period desc;
+-- select * from rcbill_my.rep_activenumberlastday_voice_pv order by period desc;
+-- select * from rcbill_my.rep_activenumberlastday_ott_pv order by period desc;
+
+
+
+
+
+
 drop table if exists rcbill_my.rep_ott;
 
 create table rcbill_my.rep_ott as 

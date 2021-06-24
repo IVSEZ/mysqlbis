@@ -116,7 +116,7 @@ create table rcbill_maps.IV_PARCELEXTRACTStaging as
 	when a.activenetwork='HFC' then 'icon/red-square-lv.png' 
 	when a.activenetwork='GPON' then 'icon/grn-diamond-lv.png' 
     else 'icon/blu-blank-lv.png' end as `icon`
-	, '13,13' as `iconSize`
+	, '10,10' as `iconSize`
 	, '-8,-8' as `iconOffset`
     , date(a.insertedon) as insertedon
     , a.accountactivitystage
