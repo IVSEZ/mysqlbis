@@ -1,6 +1,6 @@
 use rcbill_maps;
 
--- select * from rcbill_maps.IV_CUSTOMERACCOUNT;
+-- select * from rcbill_maps.IV_MOBILESITES;
 
 -- override GROUP_CONCAT limit of 1024 characters to avoid a truncated result
 set session group_concat_max_len = 1000000;
