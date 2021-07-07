@@ -42,16 +42,19 @@
 -- set @period='2020-10-31';
 -- set @period='2020-11-30';
 -- set @period='2020-12-31';
- set @period='2021-01-31';
+-- set @period='2021-01-31';
 -- set @period='2021-02-28';
 -- set @period='2021-03-31';
+ set @period='2021-04-30';
+-- set @period='2021-05-31';
+-- set @period='2021-06-30';
 
 
 call rcbill_my.sp_filllastdates('2016-05-31',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
 call rcbill_my.sp_fillalldates('2016-05-01',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
 
 /*
-
+select * from rcbill_my.month_last_date;
 select * from rcbill_my.customercontractactivity 
 where period in ('2020-07-31','2020-08-31','2020-09-30') and REPORTED='Y'
 -- and Network='GPON'
@@ -101,7 +104,8 @@ order by 4 desc
 
 select period, network, count(distinct clientcode) as d_client, sum(activecount) as active from rcbill_my.customercontractactivity 
 where 
-period in ('2020-07-31','2020-08-31','2020-09-30','2020-10-31','2020-11-30','2020-12-31','2021-01-31','2021-02-28','2021-03-31') 
+-- period in ('2020-07-31','2020-08-31','2020-09-30','2020-10-31','2020-11-30','2020-12-31','2021-01-31','2021-02-28','2021-03-31') 
+period in (select month_last_date from rcbill_my.month_last_date where year(month_last_date)>2020) 
 and REPORTED='Y'
 -- and Network='GPON'
 group by period, network
@@ -110,7 +114,8 @@ order by period, network
 
 select period, network, servicecategory, count(distinct clientcode) as d_client, sum(activecount) as active from rcbill_my.customercontractactivity 
 where 
-period in ('2020-07-31','2020-08-31','2020-09-30','2020-10-31','2020-11-30','2020-12-31','2021-01-31','2021-02-28','2021-03-31') 
+-- period in ('2020-07-31','2020-08-31','2020-09-30','2020-10-31','2020-11-30','2020-12-31','2021-01-31','2021-02-28','2021-03-31') 
+period in (select month_last_date from rcbill_my.month_last_date where year(month_last_date)>2020) 
 and REPORTED='Y'
 -- and Network='GPON'
 group by period, network, servicecategory
@@ -129,8 +134,9 @@ select servicecategory, package
 -- , `20200131`, `20200229`, `20200331`
 -- , `20200430`, `20200531`, `20200630`
 -- , `20200731`, `20200831`, `20200930`
-, `20201031`, `20201130`, `20201231`
+-- , `20201031`, `20201130`, `20201231`
 , `20210131`, `20210228`, `20210331`
+, `20210430`, `20210531`, `20210630`
 
 
  from rcbill_my.rep_activenumberlastday_pv;
@@ -141,6 +147,12 @@ select servicecategory
 , sum(`20181231`)
 , sum(`20191231`)
 , sum(`20201231`)
+, sum(`20210131`)
+, sum(`20210228`)
+, sum(`20210331`)
+, sum(`20210430`)
+, sum(`20210531`)
+, sum(`20210630`)
  from rcbill_my.rep_activenumberlastday_pv
  group by servicecategory
  ;

@@ -33,7 +33,32 @@ select * from rcbill_my.rep_paycol_pos;
 
 
 select * from rcbill_my.rep_allcust;
+select * from rcbill_my.customers_cmts_mxk where client_code ='I.000011750';
+
 select * from rcbill_my.rep_clientcontractdevices;
+
+### ALL CONAX CARD ACTIVE ACCOUNTS
+select CLIENT_CODE, count(CONTRACT_CODE) from
+(
+	select * from rcbill_my.rep_clientcontractdevices where UID like '0180%'
+	and CLIENT_CODE in (select clientcode from rcbill_my.rep_custconsolidated where IsAccountActive='Active')
+) a 
+group by CLIENT_CODE
+;
+
+SELECT DEVICE_NAME, COUNT(*) FROM rcbill_my.rep_clientcontractdevices GROUP BY 1;
+SELECT GATEKEEPER_NAME, COUNT(*) FROM rcbill_my.rep_clientcontractdevices GROUP BY 1;
+
+### ALL BESTCAS ACTIVE ACCOUNTS
+select CLIENT_CODE, count(CONTRACT_CODE) from
+(
+	select * from rcbill_my.rep_clientcontractdevices where UID like ('0xf%')
+	and CLIENT_CODE in (select clientcode from rcbill_my.rep_custconsolidated where IsAccountActive='Active')
+) a 
+group by CLIENT_CODE
+;
+
+
 select * from rcbill_my.rep_customers_collection2018  where TotalPaymentAmount2018>0;
 select * from rcbill_my.rep_customers_collection2019 where TotalPaymentAmount2019>0;
 select * from rcbill_my.rep_customers_collection2020 where TotalPaymentAmount2020>0;
@@ -170,7 +195,7 @@ select * from rcbill_my.rep_activenumberavg3 where lastday='2020-06-30';
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2021-05-25','2021-06-07');
+call sp_GetActiveNumberFromTo('2021-06-01','2021-06-30');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
@@ -784,3 +809,13 @@ select clientarea, clientlocation
 , parcel_prefix, count(clientcode) as accounts
 from rcbill_my.rep_custaddressparcelsprefix
 group by 1,2,3;
+
+
+
+###################################
+### customer discounts
+
+select * from rcbill.clientcontractdiscounts where clientcode='I.000013011' order by clientcode, contractcode, upddate;
+select * from rcbill.clientcontractlastdiscount where b_clientcode='I.000013011';
+
+

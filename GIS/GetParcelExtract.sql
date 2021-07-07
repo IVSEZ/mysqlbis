@@ -250,6 +250,16 @@ create table rcbill_maps.IV_PARCELFORMAP_MIX as
 select count(*) as 'IV_PARCELFORMAP_MIX' from rcbill_maps.IV_PARCELFORMAP_MIX;
 ##
 /*
+
+use rcbill_maps;
+
+call sp_ExportGISData();
+
+*/
+
+
+
+/*
 this table is to be extracted as a TAB separated file
 enclose strings in should be blank
 exported to C:\ProgramData\MySQL\MySQL Server 5.7\Export\PARCEL_EXTRACT\textfile.csv
