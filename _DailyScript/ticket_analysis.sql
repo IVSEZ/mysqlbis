@@ -116,11 +116,18 @@ ON rcbill_my.clientticketjourney (ticketid);
 DROP TABLE IF exists rcbill_my.clientticketsnapshot_irs;
 
 create table rcbill_my.clientticketsnapshot_irs 
-(INDEX idxctsirs1(clientcode), INDEX idxctsirs2(contractcode)) 
+(INDEX idxctsirs1(clientcode), INDEX idxctsirs2(contractcode), INDEX idxctsirs3(open_d), INDEX idxctsirs4(close_d)) 
 as
 (
 
-	select @rundate as ReportDate, a.*, b.comment as firstcomment, c.comment as lastcomment
+	select @rundate as ReportDate, a.*
+			, date(a.opendate) as open_d
+            , date(a.closedate) as close_d
+			, month(a.opendate) as open_m
+            , month(a.closedate) as close_m
+			, year(a.opendate) as open_y
+            , year(a.closedate) as close_y
+			, b.comment as firstcomment, c.comment as lastcomment
 			, datediff(a.closedate,a.opendate) as tkt_alldays
 			, (5 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123444401233334012222340111123400001234000123440', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays
 			-- , (5 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345000123450', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2
@@ -273,10 +280,18 @@ create temporary table c
 drop table if exists  rcbill_my.clientticketsnapshot_f ;
 
 create table  rcbill_my.clientticketsnapshot_f 
-(INDEX idxctsf1(clientcode), INDEX idxctsf2(contractcode)) 
+(INDEX idxctsf1(clientcode), INDEX idxctsf2(contractcode), INDEX idxctsf3(open_d), INDEX idxctsf4(close_d)) 
 as
 (
-select @rundate as ReportDate, a.*, b.comment as firstcomment, c.comment as lastcomment
+select @rundate as ReportDate, a.*
+		, date(a.opendate) as open_d
+		, date(a.closedate) as close_d
+		, month(a.opendate) as open_m
+		, month(a.closedate) as close_m
+		, year(a.opendate) as open_y
+		, year(a.closedate) as close_y
+		
+		, b.comment as firstcomment, c.comment as lastcomment
 		, datediff(a.closedate,a.opendate) as tkt_alldays
 		, (5 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123444401233334012222340111123400001234000123440', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays
 		-- , (5 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345000123450', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2

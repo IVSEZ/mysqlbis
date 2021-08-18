@@ -4,12 +4,12 @@
 -- set @package='INTELENOVELA';
 SET @row_number = 0;
 
-SET @startdate='2019-01-01';
+SET @startdate='2021-01-01';
 -- select @startdate := subdate(current_date(),1);
 
 
 -- select @enddate := subdate(current_date(),1);
-SET @enddate='2019-08-31';
+SET @enddate='2021-06-30';
 
 -- select *, datediff(lastactivedate, firstactivedate) as ActiveDays, if(datediff(lastactivedate, firstactivedate)=0 and IsAccountActive='InActive','Pending','Done') as InstallationStatus from rcbill_my.rep_custconsolidated where firstactivedate>=@startdate and firstactivedate<=@enddate;
 

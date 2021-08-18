@@ -28,3 +28,12 @@ select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(inserte
 set sql_safe_updates=0;
 delete from rcbill.rcb_clientparcelcoords where date(insertedon)='2020-03-22';
 */
+
+
+/*
+
+ALTER TABLE rcbill.rcb_clientparcelcoords
+ADD COLUMN geo_district VARCHAR(255) NOT NULL AFTER longitude,
+ADD COLUMN geo_address VARCHAR(255) NOT NULL AFTER geo_district;
+
+*/

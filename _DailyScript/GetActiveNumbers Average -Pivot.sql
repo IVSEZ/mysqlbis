@@ -303,8 +303,23 @@ create table rcbill_my.rep_activenumberavg3 as
 
 );
 
+drop table if exists rcbill_my.rep_activenumberavg4;
+create table rcbill_my.rep_activenumberavg4 as
+(
+					select 
+                    -- max(period) as maxperiod, 
+                    if(month(@today)=month(period) and year(@today)=year(period) and @today<>@lastdayofmonth,@today,last_day(period)) as lastday
+                    , periodyear, periodmth, servicecategory
+                    , sum(open_a) as activecount
+					from 
+					rcbill_my.activenumberavg
+                    where reported='Y' and decommissioned='N'
+					group by periodyear, periodmth, servicecategory            
 
+);
 -- select * from rcbill_my.rep_activenumberavg2;
+-- select * from rcbill_my.rep_activenumberavg3 where year(lastday)>=2020;
+-- select * from rcbill_my.rep_activenumberavg4 where year(lastday)>=2020;
 
 set session group_concat_max_len = 50000;
 SET @sql_dynamic = (

@@ -97,7 +97,8 @@ insert into rcbill.clientcontractipusage
 (
 	select CLIENTCODE, CLIENTID as CLIENT_ID, CID as CONTRACT_ID, CONTRACTCODE, CLIENTIP, PROCESSEDCLIENTIP, USAGEDATE, TRAFFICTYPE
 	, ifnull(sum(MB_UL),0) as MB_UL, ifnull(sum(MB_DL),0) as MB_DL, (ifnull(sum(MB_UL),0) + ifnull(sum(MB_DL),0)) as MB_TOTAL
-    , rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE) as PACKAGE 
+    -- , (rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE)) as PACKAGE 
+    , ifnull(rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE),rcbill_my.GetPackageFromSnapshot(CLIENTCODE, CONTRACTCODE)) as PACKAGE 
 	from 
 	(
 		select a.*
@@ -128,6 +129,9 @@ insert into rcbill.clientcontractipusage
 ;
 
 
+
+
+
 /*
 drop table if exists rcbill.clientcontractipusage;
 create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcciu2(contractcode),index idxcciu3(CLIENT_ID),index idxcciu4(CONTRACT_ID), index idxcciu5(PROCESSEDCLIENTIP) , index idxcciu6(USAGEDATE)) as 
@@ -156,15 +160,34 @@ create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcc
 )
 ;
 
-
+show index from rcbill.clientcontractipusage;
+create index idxcciu7 on rcbill.clientcontractipusage (PACKAGE);
 
 ALTER TABLE rcbill.clientcontractipusage ADD COLUMN PACKAGE varchar(255);
+
+
+####update all null packages
+-- select * from rcbill.clientcontractipusage where package is null;
+set sql_safe_updates=0;
+
+update rcbill.clientcontractipusage
+set Package=ifnull(rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE),rcbill_my.GetPackageFromSnapshot(CLIENTCODE, CONTRACTCODE))
+where package is null;
 
 */
 -- create index idxcciu6 on rcbill.clientcontractipusage(USAGEDATE);
 
 
 select count(*) as clientcontractipusage_afterinsert from rcbill.clientcontractipusage;
+
+set sql_safe_updates=0;
+
+select 'updating null packages' as info;
+
+update rcbill.clientcontractipusage
+set Package=ifnull(rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE),rcbill_my.GetPackageFromSnapshot(CLIENTCODE, CONTRACTCODE))
+where package is null;
+
 
 select usagedate, count(*) from rcbill.clientcontractipusage
 group by usagedate
@@ -207,3 +230,94 @@ create index IDXccipm7 on rcbill.clientcontractipmonth (TO_DATE);
 select count(*) as clientcontractipmonth from rcbill.clientcontractipmonth;
 
 ######################################################################
+
+-- select * from rcbill.clientcontractipusage where processedclientip='154.70.178.123' limit 1000;
+
+
+drop table if exists rcbill_my.rep_dailypackageusage;
+
+create table rcbill_my.rep_dailypackageusage(index idxrdpu1(usagedate), index idxrdpu2(package)) as
+(
+	select USAGEDATE, upper(PACKAGE) as PACKAGE, upper(TRAFFICTYPE) as TRAFFICTYPE
+	, count(distinct clientcode) as CLIENTS
+	, count(distinct contractcode) as CONTRACTS
+	, count(*) as RECORDS
+	, round(sum(MB_UL),2) as MB_UL, round(sum(MB_DL),2) as MB_DL, round(sum(MB_TOTAL),2) as MB_TOTAL 
+	, round((sum(MB_UL)/1024),2) as GB_UL, round((sum(MB_DL)/1024),2) as GB_DL, round((sum(MB_TOTAL)/1024),2) as GB_TOTAL 
+
+	from rcbill.clientcontractipusage where year(USAGEDATE)=2021
+	group by 1,2,3
+	order by 1 desc
+
+)
+;
+
+select count(*) as rep_dailypackageusage from rcbill_my.rep_dailypackageusage;
+
+######################################################################
+
+/*
+
+drop table if exists rcbill_my.rep_dailypackageusage2018;
+
+create table rcbill_my.rep_dailypackageusage2018(index idxrdpu1(usagedate), index idxrdpu2(package)) as
+(
+	select USAGEDATE, upper(PACKAGE) as PACKAGE, upper(TRAFFICTYPE) as TRAFFICTYPE
+	, count(distinct clientcode) as CLIENTS
+	, count(distinct contractcode) as CONTRACTS
+	, count(*) as RECORDS
+	, round(sum(MB_UL),2) as MB_UL, round(sum(MB_DL),2) as MB_DL, round(sum(MB_TOTAL),2) as MB_TOTAL 
+	, round((sum(MB_UL)/1024),2) as GB_UL, round((sum(MB_DL)/1024),2) as GB_DL, round((sum(MB_TOTAL)/1024),2) as GB_TOTAL 
+
+	from rcbill.clientcontractipusage where year(USAGEDATE)=2018
+	group by 1,2,3
+	order by 1 desc
+
+)
+;
+
+select count(*) as rep_dailypackageusage2018 from rcbill_my.rep_dailypackageusage2018;
+
+drop table if exists rcbill_my.rep_dailypackageusage2019;
+
+create table rcbill_my.rep_dailypackageusage2019(index idxrdpu1(usagedate), index idxrdpu2(package)) as
+(
+	select USAGEDATE, upper(PACKAGE) as PACKAGE, upper(TRAFFICTYPE) as TRAFFICTYPE
+	, count(distinct clientcode) as CLIENTS
+	, count(distinct contractcode) as CONTRACTS
+	, count(*) as RECORDS
+	, round(sum(MB_UL),2) as MB_UL, round(sum(MB_DL),2) as MB_DL, round(sum(MB_TOTAL),2) as MB_TOTAL 
+	, round((sum(MB_UL)/1024),2) as GB_UL, round((sum(MB_DL)/1024),2) as GB_DL, round((sum(MB_TOTAL)/1024),2) as GB_TOTAL 
+
+	from rcbill.clientcontractipusage where year(USAGEDATE)=2019
+	group by 1,2,3
+	order by 1 desc
+
+)
+;
+
+select count(*) as rep_dailypackageusage2019 from rcbill_my.rep_dailypackageusage2019;
+
+drop table if exists rcbill_my.rep_dailypackageusage2020;
+
+create table rcbill_my.rep_dailypackageusage2020(index idxrdpu1(usagedate), index idxrdpu2(package)) as
+(
+	select USAGEDATE, upper(PACKAGE) as PACKAGE, upper(TRAFFICTYPE) as TRAFFICTYPE
+	, count(distinct clientcode) as CLIENTS
+	, count(distinct contractcode) as CONTRACTS
+	, count(*) as RECORDS
+	, round(sum(MB_UL),2) as MB_UL, round(sum(MB_DL),2) as MB_DL, round(sum(MB_TOTAL),2) as MB_TOTAL 
+	, round((sum(MB_UL)/1024),2) as GB_UL, round((sum(MB_DL)/1024),2) as GB_DL, round((sum(MB_TOTAL)/1024),2) as GB_TOTAL 
+
+	from rcbill.clientcontractipusage where year(USAGEDATE)=2020
+	group by 1,2,3
+	order by 1 desc
+
+)
+;
+
+select count(*) as rep_dailypackageusage2020 from rcbill_my.rep_dailypackageusage2020;
+
+
+*/
+

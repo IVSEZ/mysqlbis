@@ -1,0 +1,1250 @@
+    -> 
+    -> mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (1.53 sec)
+
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 07:51:30 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\load_RCB_VODTITLES.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 15540 rows affected (0.13 sec)
+
+Query OK, 15542 rows affected, 15542 warnings (0.35 sec)
+Records: 15542  Deleted: 0  Skipped: 0  Warnings: 15542
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 2 rows affected (0.01 sec)
+
++-----------+
+| VODTITLES |
++-----------+
+|     16000 |
++-----------+
+1 row in set (0.01 sec)
+
++-----------+-----------+
+| titletype | typecount |
++-----------+-----------+
+| E         |     13134 |
+| N         |       246 |
+| T         |      2160 |
+| NULL      |     15540 |
++-----------+-----------+
+4 rows in set (0.05 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 07:51:31 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-LIVETV-STATS.sql
+Database changed
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 112759 rows affected (1.29 sec)
+Records: 112759  Duplicates: 0  Warnings: 0
+
++------------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table      | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++------------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| templivetv |          1 | idxtv1   |            1 | device       | A         |      112876 |     NULL | NULL   | YES  | BTREE      |         |               |
+| templivetv |          1 | idxtv2   |            1 | sessionstart | A         |      112876 |     NULL | NULL   | YES  | BTREE      |         |               |
++------------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 112707 rows affected (10.23 sec)
+Records: 112707  Duplicates: 0  Warnings: 0
+
+Query OK, 2588 rows affected (0.75 sec)
+Records: 2588  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 127 rows affected (0.03 sec)
+Records: 127  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 73142 rows affected (9 min 33.39 sec)
+Records: 73142  Duplicates: 0  Warnings: 0
+
++-----------------+
+| rep_livetvstats |
++-----------------+
+|           73142 |
++-----------------+
+1 row in set (0.03 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:01:17 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-VODTS-STATS.sql
+Database changed
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 10706 rows affected (26.87 sec)
+Records: 10706  Duplicates: 0  Warnings: 0
+
++---------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table   | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++---------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| tempvod |          1 | idxtvod1 |            1 | device       | A         |       10788 |     NULL | NULL   | YES  | BTREE      |         |               |
+| tempvod |          1 | idxtvod2 |            1 | sessionstart | A         |       10788 |     NULL | NULL   | YES  | BTREE      |         |               |
++---------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 10667 rows affected (4.05 sec)
+Records: 10667  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 1303777 rows affected (1 min 52.97 sec)
+Records: 1303777  Duplicates: 0  Warnings: 0
+
++--------------+
+| rep_vodstats |
++--------------+
+|      1303777 |
++--------------+
+1 row in set (0.39 sec)
+
+Database changed
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 22888 rows affected (43.14 sec)
+Records: 22888  Duplicates: 0  Warnings: 0
+
++--------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table  | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++--------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| tempts |          1 | idxtts1  |            1 | device       | A         |       23025 |     NULL | NULL   | YES  | BTREE      |         |               |
+| tempts |          1 | idxtts2  |            1 | sessionstart | A         |       23025 |     NULL | NULL   | YES  | BTREE      |         |               |
++--------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 22848 rows affected (14.86 sec)
+Records: 22848  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 49983 rows affected (45.71 sec)
+Records: 49983  Duplicates: 0  Warnings: 0
+
++-------------+
+| rep_tsstats |
++-------------+
+|       49983 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:05:25 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-RADIO-STATS.sql
+Database changed
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 410347 rows affected (4.80 sec)
+Records: 410347  Duplicates: 0  Warnings: 0
+
++-----------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table     | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-----------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| tempradio |          1 | idxtrad1 |            1 | device       | A         |      411022 |     NULL | NULL   | YES  | BTREE      |         |               |
+| tempradio |          1 | idxtrad2 |            1 | sessionstart | A         |      411022 |     NULL | NULL   | YES  | BTREE      |         |               |
++-----------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 1223 rows affected (0.92 sec)
+Records: 1223  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 6587 rows affected (0.54 sec)
+Records: 6587  Duplicates: 0  Warnings: 0
+
++----------------+
+| rep_radiostats |
++----------------+
+|           6587 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:05:31 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY_SCRIPT_TELEMETRY_PIVOT_2021.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 140 rows affected (0.14 sec)
+Records: 140  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 13333 rows affected (2.14 sec)
+Records: 13333  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 44 rows affected (0.06 sec)
+Records: 44  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:05:34 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_livetv_ranking2021.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 140 rows affected (0.02 sec)
+Records: 140  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:05:34 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_radio_ranking2021.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:05:34 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_ts_ranking2021.sql
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 44 rows affected (0.01 sec)
+Records: 44  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:05:34 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2021.sql
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 13333 rows affected (0.61 sec)
+Records: 13333  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:05:34 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2021_1.sql
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 13333 rows affected (0.32 sec)
+Records: 13333  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:05:35 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2021_2.sql
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 13333 rows affected (0.27 sec)
+Records: 13333  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:05:35 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\ticket_analysis.sql
+Database changed
+Query OK, 0 rows affected (0.07 sec)
+
+Query OK, 840863 rows affected (27.33 sec)
+Records: 840863  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.29 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.71 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.51 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 26470 rows affected (13.48 sec)
+Records: 26470  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 121996 rows affected (8.34 sec)
+Records: 121996  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 618822 rows affected (16.49 sec)
+Records: 618822  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 618822 rows affected (17.43 sec)
+Records: 618822  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 122117 rows affected (5.26 sec)
+Records: 122117  Duplicates: 0  Warnings: 0
+
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 840863 rows affected (27.14 sec)
+Records: 840863  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 433001 rows affected (17.96 sec)
+Records: 433001  Duplicates: 0  Warnings: 0
+
++--------------------------+
+| clientticket_cmmtjourney |
++--------------------------+
+|                   840863 |
++--------------------------+
+1 row in set (1.27 sec)
+
++---------------------------+
+| clientticket_assgnjourney |
++---------------------------+
+|                    433001 |
++---------------------------+
+1 row in set (1.47 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 87 rows affected (0.13 sec)
+Records: 87  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:07:58 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\load_DailyCalls.sql
+Database changed
+Query OK, 441 rows affected (0.12 sec)
+Records: 441  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 439 rows affected (0.02 sec)
+Records: 439  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 69941 rows affected (0.34 sec)
+Records: 69941  Duplicates: 0  Warnings: 0
+
++----------------------+
+| callingclientsbefore |
++----------------------+
+|              1228840 |
++----------------------+
+1 row in set (0.47 sec)
+
+Query OK, 626 rows affected (10.00 sec)
+Records: 626  Duplicates: 0  Warnings: 0
+
++---------------------+
+| callingclientsafter |
++---------------------+
+|             1229466 |
++---------------------+
+1 row in set (0.33 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 309 rows affected (3.70 sec)
+Records: 309  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 23877 rows affected (3.96 sec)
+Records: 23877  Duplicates: 0  Warnings: 0
+
++-----------+
+| callstats |
++-----------+
+|     23877 |
++-----------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 626 rows affected (2.52 sec)
+Records: 626  Duplicates: 0  Warnings: 0
+
++------------------------+
+| rep_cccallreportbefore |
++------------------------+
+|                1230455 |
++------------------------+
+1 row in set (0.33 sec)
+
+Query OK, 626 rows affected (0.14 sec)
+Records: 626  Duplicates: 0  Warnings: 0
+
++-----------------------+
+| rep_cccallreportafter |
++-----------------------+
+|               1231081 |
++-----------------------+
+1 row in set (0.33 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:08:20 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-USAGE.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 4726 rows affected, 13728 warnings (0.69 sec)
+Records: 4726  Deleted: 0  Skipped: 0  Warnings: 13728
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 7545 rows affected, 21828 warnings (0.87 sec)
+Records: 7545  Deleted: 0  Skipped: 0  Warnings: 21828
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 268 rows affected, 974 warnings (0.03 sec)
+Records: 268  Deleted: 0  Skipped: 0  Warnings: 974
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 154 rows affected, 528 warnings (0.04 sec)
+Records: 154  Deleted: 0  Skipped: 0  Warnings: 528
+
++------------+
+| dailyusage |
++------------+
+|   18154306 |
++------------+
+1 row in set (6.54 sec)
+
++------------+------------+------------+---------+
+| datestart  | dateend    | insertedon | records |
++------------+------------+------------+---------+
+| 2021-07-10 | 2021-07-10 | 2021-07-12 |   12693 |
+| 2021-07-09 | 2021-07-09 | 2021-07-12 |   11777 |
+| 2021-07-08 | 2021-07-08 | 2021-07-09 |   12413 |
+| 2021-07-07 | 2021-07-07 | 2021-07-08 |   12243 |
+| 2021-07-06 | 2021-07-06 | 2021-07-07 |   12617 |
++------------+------------+------------+---------+
+5 rows in set (20.49 sec)
+
++----------+------------+------------+------------+---------+
+| category | datestart  | dateend    | insertedon | records |
++----------+------------+------------+------------+---------+
+| UNCAPPED | 2021-07-10 | 2021-07-10 | 2021-07-12 |    7545 |
+| PREPAID  | 2021-07-10 | 2021-07-10 | 2021-07-12 |     268 |
+| HOTSPOT  | 2021-07-10 | 2021-07-10 | 2021-07-12 |     154 |
+| CAPPED   | 2021-07-10 | 2021-07-10 | 2021-07-12 |    4726 |
+| UNCAPPED | 2021-07-09 | 2021-07-09 | 2021-07-12 |    6916 |
+| PREPAID  | 2021-07-09 | 2021-07-09 | 2021-07-12 |     271 |
+| HOTSPOT  | 2021-07-09 | 2021-07-09 | 2021-07-12 |     171 |
+| CAPPED   | 2021-07-09 | 2021-07-09 | 2021-07-12 |    4419 |
+| UNCAPPED | 2021-07-08 | 2021-07-08 | 2021-07-09 |    7317 |
+| PREPAID  | 2021-07-08 | 2021-07-08 | 2021-07-09 |     268 |
+| HOTSPOT  | 2021-07-08 | 2021-07-08 | 2021-07-09 |     160 |
+| CAPPED   | 2021-07-08 | 2021-07-08 | 2021-07-09 |    4668 |
+| UNCAPPED | 2021-07-07 | 2021-07-07 | 2021-07-08 |    7251 |
+| PREPAID  | 2021-07-07 | 2021-07-07 | 2021-07-08 |     252 |
+| HOTSPOT  | 2021-07-07 | 2021-07-07 | 2021-07-08 |     158 |
+| CAPPED   | 2021-07-07 | 2021-07-07 | 2021-07-08 |    4582 |
+| UNCAPPED | 2021-07-06 | 2021-07-06 | 2021-07-07 |    7503 |
+| PREPAID  | 2021-07-06 | 2021-07-06 | 2021-07-07 |     263 |
+| HOTSPOT  | 2021-07-06 | 2021-07-06 | 2021-07-07 |     154 |
+| CAPPED   | 2021-07-06 | 2021-07-06 | 2021-07-07 |    4697 |
++----------+------------+------------+------------+---------+
+20 rows in set (25.72 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:09:15 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-SALES-TELEMETRY.sql
+Database changed
+Query OK, 54 rows affected, 28 warnings (0.04 sec)
+Records: 54  Deleted: 0  Skipped: 0  Warnings: 28
+
++------------+
+| dailysales |
++------------+
+|     239704 |
++------------+
+1 row in set (0.19 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 239704 rows affected (16.19 sec)
+Records: 239704  Duplicates: 0  Warnings: 0
+
++--------+
+| sales  |
++--------+
+| 239704 |
++--------+
+1 row in set (0.10 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 3966 rows affected (0.40 sec)
+Records: 3966  Duplicates: 0  Warnings: 0
+
++----------------+
+| rep_dailysales |
++----------------+
+|           3966 |
++----------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 3966 rows affected (0.63 sec)
+Records: 3966  Duplicates: 0  Warnings: 0
+
++-------------------+
+| rep_dailysalesreg |
++-------------------+
+|              3966 |
++-------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 2950 rows affected (0.75 sec)
+Records: 2950  Duplicates: 0  Warnings: 0
+
++-----------+
+| saleslist |
++-----------+
+|      2950 |
++-----------+
+1 row in set (0.00 sec)
+
+Database changed
+ERROR 2 (HY000): File 'C:\ProgramData\MySQL\MySQL Server 5.7\Uploads\_csv\PrepaidCardSales-10072021-P1.csv' not found (Errcode: 2 - No such file or directory)
++------------------+
+| dailysinglesales |
++------------------+
+|             6546 |
++------------------+
+1 row in set (0.01 sec)
+
+Database changed
+Query OK, 11 rows affected (0.02 sec)
+Records: 11  Deleted: 0  Skipped: 0  Warnings: 0
+
++-----------------+
+| dailyaddonsales |
++-----------------+
+|           24224 |
++-----------------+
+1 row in set (0.04 sec)
+
+Query OK, 232 rows affected (0.05 sec)
+Records: 232  Deleted: 0  Skipped: 0  Warnings: 0
+
++----------------+
+| onlinepayments |
++----------------+
+|         203839 |
++----------------+
+1 row in set (0.09 sec)
+
++-------------+----------------+---------------------+
+| paymentdate | onlinepayments | onlinepaymentamount |
++-------------+----------------+---------------------+
+| 2021-07-10  |            232 |        151521.66000 |
+| 2021-07-09  |            210 |        124852.58000 |
+| 2021-07-08  |            232 |        139259.44000 |
+| 2021-07-07  |            285 |        184963.14000 |
+| 2021-07-06  |            290 |        176449.69000 |
++-------------+----------------+---------------------+
+5 rows in set (0.55 sec)
+
++-------------+--------------+----------------+---------------------+
+| paymentyear | paymentmonth | onlinepayments | onlinepaymentamount |
++-------------+--------------+----------------+---------------------+
+|        2021 |            7 |           2968 |       1927983.31000 |
+|        2021 |            6 |           8773 |       5686976.03000 |
+|        2021 |            5 |           9358 |       5959322.66000 |
+|        2021 |            4 |           8607 |       5573873.25000 |
+|        2021 |            3 |           9164 |       5894594.15000 |
++-------------+--------------+----------------+---------------------+
+5 rows in set (0.21 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:09:34 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-ACTIVENUMBERS.sql
+Database changed
+Query OK, 1129 rows affected (0.48 sec)
+Records: 1129  Deleted: 0  Skipped: 0  Warnings: 0
+
++------------+----------+
+| period     | count(1) |
++------------+----------+
+| 2021-07-10 |     1129 |
+| 2021-07-09 |     1129 |
+| 2021-07-08 |     1131 |
+| 2021-07-07 |     1129 |
+| 2021-07-06 |     1128 |
++------------+----------+
+5 rows in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 74 rows affected (1.42 sec)
+Records: 74  Duplicates: 0  Warnings: 0
+
++-------------+
+| packagelist |
++-------------+
+|          74 |
++-------------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 29136 rows affected, 228 warnings (12.79 sec)
+Records: 29136  Deleted: 0  Skipped: 0  Warnings: 228
+
++------------+----------+
+| period     | count(1) |
++------------+----------+
+| 2021-07-10 |    29136 |
+| 2021-07-09 |    29213 |
+| 2021-07-08 |    29172 |
+| 2021-07-07 |    29167 |
+| 2021-07-06 |    29186 |
++------------+----------+
+5 rows in set (0.12 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 28569 rows affected (47.65 sec)
+Records: 28569  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++-------------+
+| countbefore |
++-------------+
+|    47426975 |
++-------------+
+1 row in set (14.42 sec)
+
+Query OK, 28569 rows affected (2.21 sec)
+Records: 28569  Duplicates: 0  Warnings: 0
+
++------------+
+| countafter |
++------------+
+|   47455544 |
++------------+
+1 row in set (14.50 sec)
+
++------------+--------------------------+
+| period     | customercontractactivity |
++------------+--------------------------+
+| 2021-07-10 |                    28569 |
+| 2021-07-09 |                    28637 |
+| 2021-07-08 |                    28604 |
+| 2021-07-07 |                    28601 |
+| 2021-07-06 |                    28620 |
++------------+--------------------------+
+5 rows in set (0.06 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 310109 rows affected (8 min 20.50 sec)
+Records: 310109  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 235 rows affected (0.47 sec)
+Records: 235  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 2550 rows affected (0.64 sec)
+Records: 2550  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 28545 rows affected (0.61 sec)
+Records: 28545  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 17308 rows affected (0.38 sec)
+Records: 17308  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 17308 rows affected (0.13 sec)
+Records: 17308  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 17308 rows affected (1.26 sec)
+Records: 17308  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 17308 rows affected (45.36 sec)
+Records: 17308  Duplicates: 0  Warnings: 0
+
++-------------+
+| clientstats |
++-------------+
+|       17308 |
++-------------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 12 rows affected, 1 warning (0.11 sec)
+Records: 12  Duplicates: 0  Warnings: 1
+
++-----------------------+-------------+-------------+----------------+-----------------+
+| services              | activecount | allaccounts | uniqueaccounts | uniquecontracts |
++-----------------------+-------------+-------------+----------------+-----------------+
+| All                   |         401 |          67 |             67 |             216 |
+| Internet & Voice      |         319 |         140 |            140 |             275 |
+| Internet Only         |        4380 |        4258 |           4253 |            4302 |
+| OTT Only              |           3 |           2 |              2 |               2 |
+| TV & Internet         |       10078 |        4521 |           4513 |            9220 |
+| TV & Internet & OTT   |        4182 |        1076 |           1074 |            2232 |
+| TV & Internet & Voice |         540 |         153 |            153 |             470 |
+| TV & OTT              |         462 |          70 |             68 |              82 |
+| TV & Voice            |          71 |          32 |             32 |              65 |
+| TV Only               |        8729 |        6862 |           6854 |            7073 |
+| Voice Only            |         129 |         127 |            127 |             129 |
+| GRAND TOTAL           |       29294 |       17308 |          17237 |           24066 |
++-----------------------+-------------+-------------+----------------+-----------------+
+12 rows in set (0.00 sec)
+
++-------------+-------------+-------------+----------------+-----------------+
+| network     | activecount | allaccounts | uniqueaccounts | uniquecontracts |
++-------------+-------------+-------------+----------------+-----------------+
+| GPON        |       12580 |        6214 |           6211 |            9881 |
+| HFC         |       16714 |       11094 |          11094 |           14185 |
+| GRAND TOTAL |       29294 |       17308 |          17237 |           24066 |
++-------------+-------------+-------------+----------------+-----------------+
+3 rows in set, 1 warning (0.13 sec)
+
++-------------+-----------------------+-------------+-------------+----------------+-----------------+
+| network     | services              | activecount | allaccounts | uniqueaccounts | uniquecontracts |
++-------------+-----------------------+-------------+-------------+----------------+-----------------+
+| GPON        | All                   |         272 |          49 |             49 |             155 |
+| GPON        | Internet & Voice      |          76 |          31 |             31 |              66 |
+| GPON        | Internet Only         |        1502 |        1400 |           1400 |            1425 |
+| GPON        | TV & Internet         |        5194 |        2291 |           2291 |            4706 |
+| GPON        | TV & Internet & OTT   |        2931 |         755 |            755 |            1573 |
+| GPON        | TV & Internet & Voice |         269 |          71 |             71 |             221 |
+| GPON        | TV & OTT              |         267 |          39 |             39 |              43 |
+| GPON        | TV & Voice            |          47 |          21 |             21 |              43 |
+| GPON        | TV Only               |        2009 |        1545 |           1545 |            1636 |
+| GPON        | Voice Only            |          13 |          12 |             12 |              13 |
+| GPON        | Services Total        |       12580 |        6214 |           6211 |            9881 |
+| HFC         | All                   |         129 |          18 |             18 |              61 |
+| HFC         | Internet & Voice      |         243 |         109 |            109 |             209 |
+| HFC         | Internet Only         |        2878 |        2858 |           2858 |            2877 |
+| HFC         | OTT Only              |           3 |           2 |              2 |               2 |
+| HFC         | TV & Internet         |        4884 |        2230 |           2230 |            4514 |
+| HFC         | TV & Internet & OTT   |        1251 |         321 |            321 |             659 |
+| HFC         | TV & Internet & Voice |         271 |          82 |             82 |             249 |
+| HFC         | TV & OTT              |         195 |          31 |             31 |              39 |
+| HFC         | TV & Voice            |          24 |          11 |             11 |              22 |
+| HFC         | TV Only               |        6720 |        5317 |           5317 |            5437 |
+| HFC         | Voice Only            |         116 |         115 |            115 |             116 |
+| HFC         | Services Total        |       16714 |       11094 |          11094 |           14185 |
+| GRAND TOTAL | Services Total        |       29294 |       17308 |          17237 |           24066 |
++-------------+-----------------------+-------------+-------------+----------------+-----------------+
+24 rows in set, 2 warnings (0.14 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 43 rows affected, 3 warnings (0.20 sec)
+Records: 43  Duplicates: 0  Warnings: 3
+
++-------------+---------------+-----------------------+-------------+-------------+----------------+-----------------+
+| region      | network       | services              | activecount | allaccounts | uniqueaccounts | uniquecontracts |
++-------------+---------------+-----------------------+-------------+-------------+----------------+-----------------+
+| Eden Island | GPON          | TV & Internet         |           2 |           1 |              1 |               2 |
+| Eden Island | GPON          | Services Total        |           2 |           1 |              1 |               2 |
+| Eden Island | Network Total | Services Total        |           2 |           1 |              1 |               2 |
+| Mahe        | GPON          | All                   |         235 |          43 |             43 |             136 |
+| Mahe        | GPON          | Internet & Voice      |          68 |          27 |             27 |              58 |
+| Mahe        | GPON          | Internet Only         |        1254 |        1152 |           1152 |            1177 |
+| Mahe        | GPON          | TV & Internet         |        4426 |        1950 |           1950 |            4002 |
+| Mahe        | GPON          | TV & Internet & OTT   |        2373 |         598 |            598 |            1252 |
+| Mahe        | GPON          | TV & Internet & Voice |         263 |          69 |             69 |             215 |
+| Mahe        | GPON          | TV & OTT              |         256 |          34 |             34 |              38 |
+| Mahe        | GPON          | TV & Voice            |          44 |          20 |             20 |              40 |
+| Mahe        | GPON          | TV Only               |        1659 |        1273 |           1273 |            1344 |
+| Mahe        | GPON          | Voice Only            |          12 |          11 |             11 |              12 |
+| Mahe        | GPON          | Services Total        |       10590 |        5177 |           5177 |            8274 |
+| Mahe        | HFC           | All                   |         129 |          18 |             18 |              61 |
+| Mahe        | HFC           | Internet & Voice      |         243 |         109 |            109 |             209 |
+| Mahe        | HFC           | Internet Only         |        2878 |        2858 |           2858 |            2877 |
+| Mahe        | HFC           | OTT Only              |           3 |           2 |              2 |               2 |
+| Mahe        | HFC           | TV & Internet         |        4882 |        2229 |           2229 |            4512 |
+| Mahe        | HFC           | TV & Internet & OTT   |        1251 |         321 |            321 |             659 |
+| Mahe        | HFC           | TV & Internet & Voice |         271 |          82 |             82 |             249 |
+| Mahe        | HFC           | TV & OTT              |         195 |          31 |             31 |              39 |
+| Mahe        | HFC           | TV & Voice            |          24 |          11 |             11 |              22 |
+| Mahe        | HFC           | TV Only               |        6717 |        5315 |           5315 |            5435 |
+| Mahe        | HFC           | Voice Only            |         116 |         115 |            115 |             116 |
+| Mahe        | HFC           | Services Total        |       16709 |       11091 |          11091 |           14181 |
+| Mahe        | Network Total | Services Total        |       27299 |       16268 |          16200 |           22455 |
+| Praslin     | GPON          | All                   |          37 |           6 |              6 |              19 |
+| Praslin     | GPON          | Internet & Voice      |           8 |           4 |              4 |               8 |
+| Praslin     | GPON          | Internet Only         |         248 |         248 |            248 |             248 |
+| Praslin     | GPON          | TV & Internet         |         766 |         340 |            340 |             702 |
+| Praslin     | GPON          | TV & Internet & OTT   |         558 |         157 |            157 |             321 |
+| Praslin     | GPON          | TV & Internet & Voice |           6 |           2 |              2 |               6 |
+| Praslin     | GPON          | TV & OTT              |          11 |           5 |              5 |               5 |
+| Praslin     | GPON          | TV & Voice            |           3 |           1 |              1 |               3 |
+| Praslin     | GPON          | TV Only               |         350 |         272 |            272 |             292 |
+| Praslin     | GPON          | Voice Only            |           1 |           1 |              1 |               1 |
+| Praslin     | GPON          | Services Total        |        1988 |        1036 |           1036 |            1605 |
+| Praslin     | HFC           | TV & Internet         |           2 |           1 |              1 |               2 |
+| Praslin     | HFC           | TV Only               |           3 |           2 |              2 |               2 |
+| Praslin     | HFC           | Services Total        |           5 |           3 |              3 |               4 |
+| Praslin     | Network Total | Services Total        |        1993 |        1039 |           1039 |            1609 |
+| GRAND TOTAL | Network Total | Services Total        |       29294 |       17308 |          17237 |           24066 |
++-------------+---------------+-----------------------+-------------+-------------+----------------+-----------------+
+43 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 28546 rows affected (0.46 sec)
+Records: 28546  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 2318 rows affected (1.02 sec)
+Records: 2318  Duplicates: 0  Warnings: 0
+
++--------------------------------------+
+| message                              |
++--------------------------------------+
+| running rcbill_my.sp_ActiveNumber2() |
++--------------------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 365 rows affected (1 min 55.55 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:22:19 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\GetActiveNumbers Average -Pivot.sql
+Database changed
++-------------------------------------+
+| @today := subdate(current_date(),1) |
++-------------------------------------+
+| 2021-07-11                          |
++-------------------------------------+
+1 row in set (0.00 sec)
+
++-------------------------------------+
+| @lastdayofmonth := last_day(@today) |
++-------------------------------------+
+| 2021-07-31                          |
++-------------------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 49079 rows affected, 65535 warnings (1 min 1.46 sec)
+Records: 49079  Duplicates: 0  Warnings: 100602
+
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.14 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++-----------------+
+| activenumberavg |
++-----------------+
+|           49079 |
++-----------------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 1970 rows affected (0.56 sec)
+Records: 1970  Duplicates: 0  Warnings: 0
+
++---------------------+
+| rep_activenumberavg |
++---------------------+
+|                1970 |
++---------------------+
+1 row in set (0.00 sec)
+
++----------------------+
+| rep_activenumberavg1 |
++----------------------+
+|                  919 |
++----------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 2585 rows affected (0.46 sec)
+Records: 2585  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 13339 rows affected (0.84 sec)
+Records: 13339  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+Statement prepared
+
+Query OK, 53 rows affected (0.05 sec)
+Records: 53  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
++----------------------+
+| rep_activenumberavg2 |
++----------------------+
+|                 2585 |
++----------------------+
+1 row in set (0.00 sec)
+
++------------------------+
+| rep_activenumberavg_pv |
++------------------------+
+|                     53 |
++------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 2584 rows affected (0.38 sec)
+Records: 2584  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+Statement prepared
+
+Query OK, 53 rows affected (0.05 sec)
+Records: 53  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
++-------------------------+
+| rep_activenumberavgMahe |
++-------------------------+
+|                    2584 |
++-------------------------+
+1 row in set (0.00 sec)
+
++----------------------------+
+| rep_activenumberavgMahe_pv |
++----------------------------+
+|                         53 |
++----------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 1636 rows affected (0.17 sec)
+Records: 1636  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+Statement prepared
+
+Query OK, 40 rows affected (0.04 sec)
+Records: 40  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
++----------------------------+
+| rep_activenumberavgPraslin |
++----------------------------+
+|                       1636 |
++----------------------------+
+1 row in set (0.00 sec)
+
++-------------------------------+
+| rep_activenumberavgPraslin_pv |
++-------------------------------+
+|                            40 |
++-------------------------------+
+1 row in set (0.00 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-07-12 08:23:23 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> exit

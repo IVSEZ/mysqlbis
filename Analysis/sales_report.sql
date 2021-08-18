@@ -50,6 +50,8 @@ set @orderyear=2017;
 set @orderyear=2018;
 set @orderyear=2019;
 
+set @orderyear=2021;
+
 select a.*
 -- , b.*
 , b.clientname, b.currentdebt, b.IsAccountActive, b.AccountActivityStage, b.clientclass, b.activenetwork, b.activeservices

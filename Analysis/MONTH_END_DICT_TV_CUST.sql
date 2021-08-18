@@ -45,9 +45,9 @@
 -- set @period='2021-01-31';
 -- set @period='2021-02-28';
 -- set @period='2021-03-31';
- set @period='2021-04-30';
+-- set @period='2021-04-30';
 -- set @period='2021-05-31';
--- set @period='2021-06-30';
+ set @period='2021-06-30';
 
 
 call rcbill_my.sp_filllastdates('2016-05-31',DATE_SUB(date(NOW()), INTERVAL 1 DAY));

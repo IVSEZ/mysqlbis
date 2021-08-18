@@ -1610,7 +1610,7 @@ drop table if exists rcbill_my.tempb;
 
 
 drop table if exists rcbill_my.rep_custconsolidated;
-create table rcbill_my.rep_custconsolidated as
+create table rcbill_my.rep_custconsolidated(index idxrcc1(clientcode),index idxrcc2(clientid)) as
 (
 
 

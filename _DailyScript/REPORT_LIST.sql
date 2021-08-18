@@ -173,6 +173,9 @@ select * from rcbill_my.activenumberavg;
 
 select * from rcbill_my.rep_activenumberavg;
 select * from rcbill_my.rep_activenumberavg2;
+select * from rcbill_my.rep_activenumberavg3;
+select * from rcbill_my.rep_activenumberavg4;   ## by service
+
 
 ## LAST DAY ACTIVE NUMBER
 select * from rcbill_my.rep_activenumberlastday_pv limit 100;
@@ -195,7 +198,7 @@ select * from rcbill_my.rep_activenumberavg3 where lastday='2020-06-30';
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2021-06-01','2021-06-30');
+call sp_GetActiveNumberFromTo('2021-07-01','2021-07-31');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
@@ -328,6 +331,26 @@ select FROM_DATE, TO_DATE, USAGE_MTH, USAGE_YR, CONTRACTCODE, PROCESSEDCLIENTIP 
 from rcbill.clientcontractipmonth where CLIENTCODE='I.000009236' order by TO_DATE desc;
 
 #### USAGE
+select * from rcbill.clientcontractipusage where CLIENTCODE='I.000011750' order by USAGEDATE desc;
+
+select USAGEDATE, PACKAGE, rcbill.GetClientNameFromID(CLIENT_ID) as CLIENTNAME 
+, CLIENTCODE, CONTRACTCODE, PROCESSEDCLIENTIP, TRAFFICTYPE, (MB_TOTAL/1024) AS GB_TOTAL, (MB_UL/1024) AS GB_UL, (MB_DL/1024) AS GB_DL
+, MB_TOTAL, MB_UL, MB_DL
+from rcbill.clientcontractipusage where PACKAGE='AMBER' and USAGEDATE='2021-07-28' ORDER BY USAGEDATE desc;
+
+
+select USAGEDATE, PACKAGE, rcbill.GetClientNameFromID(CLIENT_ID) as CLIENTNAME 
+, CLIENTCODE, CONTRACTCODE, PROCESSEDCLIENTIP, TRAFFICTYPE, (MB_TOTAL/1024) AS GB_TOTAL, (MB_UL/1024) AS GB_UL, (MB_DL/1024) AS GB_DL
+, MB_TOTAL, MB_UL, MB_DL
+from rcbill.clientcontractipusage where PACKAGE is NULL and USAGEDATE='2021-07-28' ORDER BY USAGEDATE desc;
+
+select USAGEDATE, PACKAGE, rcbill.GetClientNameFromID(CLIENT_ID) as CLIENTNAME 
+, CLIENTCODE, CONTRACTCODE, PROCESSEDCLIENTIP, TRAFFICTYPE, (MB_TOTAL/1024) AS GB_TOTAL, (MB_UL/1024) AS GB_UL, (MB_DL/1024) AS GB_DL
+, MB_TOTAL, MB_UL, MB_DL
+from rcbill.clientcontractipusage where PACKAGE='AMBER' ORDER BY USAGEDATE desc;
+
+
+select * from rcbill.clientcontractipusage where processedclientip='154.70.178.123';
 
 
 select usagedate, count(*) from rcbill.clientcontractipusage
@@ -354,13 +377,25 @@ from
 	select usagedate, traffictype, clientcode
 	, rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE) as package
 	, sum(MB_UL) as MB_UL, sum(MB_DL) as MB_DL, sum(MB_TOTAL) as MB_TOTAL from rcbill.clientcontractipusage
-	where usagedate>'2019-12-31'
+	where usagedate>'2020-12-31'
 	group by usagedate, traffictype, clientcode, 4
 	order by usagedate desc
 ) a 
 group by 1,2,3
 order by 1 desc
 ;
+
+### daily usage per package
+select * from rcbill_my.rep_dailypackageusage order by usagedate desc;
+select * from rcbill_my.rep_dailypackageusage2020 order by usagedate desc;
+select * from rcbill_my.rep_dailypackageusage2019 order by usagedate desc;
+select * from rcbill_my.rep_dailypackageusage2018 order by usagedate desc;
+
+##### per package
+select * from rcbill_my.rep_dailypackageusage where package='AMBER' order by usagedate desc;
+
+select usagedate from rcbill_my.rep_dailypackageusage where package='AMBER' group by usagedate order by usagedate asc;
+select sum(GB_TOTAL) as GB_TOTAL from rcbill_my.rep_dailypackageusage where package='AMBER' group by usagedate  order by usagedate asc;
 
 ##########################################################
 
