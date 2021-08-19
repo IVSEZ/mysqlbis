@@ -12,7 +12,7 @@ order by 1, 4
 
 
 #### first contract date for each network
-select clientcode, network, min(firstcontractdate), max(lastcontractdate)
+select clientcode, network, min(firstcontractdate) as firstcontractdate, max(lastcontractdate) as lastcontractdate
 from rcbill_my.customercontractsnapshot
 group by 1,2
 order by 1, 3
@@ -20,7 +20,7 @@ order by 1, 3
 
 
 #### first contract date for each servicecategory
-select clientcode, servicecategory, min(firstcontractdate), max(lastcontractdate)
+select clientcode, servicecategory, min(firstcontractdate) as firstcontractdate, max(lastcontractdate) as lastcontractdate
 from rcbill_my.customercontractsnapshot
 group by 1,2
 order by 1, 3
