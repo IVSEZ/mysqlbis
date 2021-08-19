@@ -299,20 +299,17 @@ select count(*) as rep_tkt_irs_level3 from rcbill_my.rep_tkt_irs_level3;
 #########################################################
 
 
-SELECT * FROM rcbill_my.rep_tkt_irs_level1;
+SELECT * FROM rcbill_my.rep_tkt_irs_level1 where month(open_d)=7 and year(open_d)=2021;
+SELECT * FROM rcbill_my.rep_tkt_f_level1 where month(open_d)=7 and year(open_d)=2021;
 
 SELECT * FROM rcbill_my.rep_tkt_irs_level2;
-
-SELECT * FROM rcbill_my.rep_tkt_irs_level3;
-
-SELECT * FROM rcbill_my.rep_tkt_f_level1;
-
 SELECT * FROM rcbill_my.rep_tkt_f_level2;
 
-SELECT * FROM rcbill_my.rep_tkt_f_level3;
+SELECT * FROM rcbill_my.rep_tkt_irs_level3 where FIRSTCOMMENT like '%conversion%';
+SELECT * FROM rcbill_my.rep_tkt_f_level3 where FIRSTCOMMENT like '%conversion%';
 
 
-
+select * from rcbill_my.clientticket_cmmtjourney where comment like '%conversion%';
 
 /*
 select a.opendate, a.open_d, openreason, OpenRegion as OpenedFrom
