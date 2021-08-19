@@ -12,16 +12,61 @@ order by 1, 4
 
 
 #### first contract date for each network
-select clientcode, network, min(firstcontractdate) as firstcontractdate, max(lastcontractdate) as lastcontractdate
-from rcbill_my.customercontractsnapshot
-group by 1,2
-order by 1, 3
+select a.*
+, b.clientname, b.IsAccountActive, b.AccountActivityStage
+, b.dayssincelastactive, b.lastactivedate, b.firstactivedate
+, b.currentdebt
+, b.clientemail, b.clientphone
+, b.clientclass, b.clientaddress, b.clientarea as island, b.clientlocation as district, b.subdistrict
+, b.clientparcel, b.latitude, longitude
+, case when clientparcel is null then 'Not Present'
+		else 'Present' end as `ParcelStatus`
+, b.clean_connection_type
+, b.TotalPaymentAmount
+, b.TotalPaymentAmount2021, b.AvgMonthlyPayment2021
+, b.TotalPaymentAmount2020, b.AvgMonthlyPayment2020
+, b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019
+, b.TotalPaymentAmount2018, b.AvgMonthlyPayment2018
+
+from 
+(
+	select clientcode, network, min(firstcontractdate) as firstcontractdate, max(lastcontractdate) as lastcontractdate
+	from rcbill_my.customercontractsnapshot
+	group by 1,2
+	order by 1, 3
+) a
+left join 
+rcbill_my.rep_custconsolidated b
+on a.CLIENTCODE=b.clientcode
 ;
 
 
 #### first contract date for each servicecategory
-select clientcode, servicecategory, min(firstcontractdate) as firstcontractdate, max(lastcontractdate) as lastcontractdate
-from rcbill_my.customercontractsnapshot
-group by 1,2
-order by 1, 3
+
+select a.*
+, b.clientname, b.IsAccountActive, b.AccountActivityStage
+, b.dayssincelastactive, b.lastactivedate, b.firstactivedate
+, b.currentdebt
+, b.clientemail, b.clientphone
+, b.clientclass, b.clientaddress, b.clientarea as island, b.clientlocation as district, b.subdistrict
+, b.clientparcel, b.latitude, longitude
+, case when clientparcel is null then 'Not Present'
+		else 'Present' end as `ParcelStatus`
+, b.clean_connection_type
+, b.TotalPaymentAmount
+, b.TotalPaymentAmount2021, b.AvgMonthlyPayment2021
+, b.TotalPaymentAmount2020, b.AvgMonthlyPayment2020
+, b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019
+, b.TotalPaymentAmount2018, b.AvgMonthlyPayment2018
+from 
+(
+	select clientcode, servicecategory, min(firstcontractdate) as firstcontractdate, max(lastcontractdate) as lastcontractdate
+	from rcbill_my.customercontractsnapshot
+	group by 1,2
+	order by 1, 3
+) a 
+left join 
+rcbill_my.rep_custconsolidated b
+on a.CLIENTCODE=b.clientcode
+
 ;
