@@ -1,3 +1,4 @@
+/*
 select * from rcbill_my.customercontractsnapshot where clientcode='I14834';
 select * from rcbill_my.customercontractsnapshot where clientcode='I21945';
 select * from rcbill_my.customercontractsnapshot where clientcode='I.000000071';
@@ -10,7 +11,7 @@ from rcbill_my.customercontractsnapshot
 group by 1,2,3
 order by 1, 4
 ;
-
+*/
 
 
 #### first contract date for each network
@@ -53,7 +54,11 @@ from
 	on 0=0
 	and a.clientcode=b.clientcode
 	and a.network=b.network
-	and a.lastcontractdate=b.lastcontractdate       
+	and a.lastcontractdate=b.lastcontractdate    
+    
+    group by 1,2,3,4,5
+    
+    
 ) a
 left join 
 rcbill_my.rep_custconsolidated b
@@ -103,6 +108,8 @@ from
 	and a.clientcode=b.clientcode
 	and a.servicecategory=b.servicecategory
 	and a.lastcontractdate=b.lastcontractdate 
+    
+    group by 1,2,3,4,5
     
 ) a 
 left join 
