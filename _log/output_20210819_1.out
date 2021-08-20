@@ -1,0 +1,732 @@
+    -> 
+    -> mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (1.55 sec)
+
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-08-20 08:44:08 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\load_RCB_VODTITLES.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 15821 rows affected (0.35 sec)
+
+Query OK, 15823 rows affected, 15823 warnings (0.45 sec)
+Records: 15823  Deleted: 0  Skipped: 0  Warnings: 15823
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 2 rows affected (0.03 sec)
+
++-----------+
+| VODTITLES |
++-----------+
+|     16281 |
++-----------+
+1 row in set (0.01 sec)
+
++-----------+-----------+
+| titletype | typecount |
++-----------+-----------+
+| E         |     13379 |
+| N         |       246 |
+| T         |      2196 |
+| NULL      |     15821 |
++-----------+-----------+
+4 rows in set (0.08 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-08-20 08:44:08 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-LIVETV-STATS.sql
+Database changed
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 100243 rows affected (1.32 sec)
+Records: 100243  Duplicates: 0  Warnings: 0
+
++------------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table      | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++------------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| templivetv |          1 | idxtv1   |            1 | device       | A         |      100511 |     NULL | NULL   | YES  | BTREE      |         |               |
+| templivetv |          1 | idxtv2   |            1 | sessionstart | A         |      100511 |     NULL | NULL   | YES  | BTREE      |         |               |
++------------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 100560 rows affected (22.89 sec)
+Records: 100560  Duplicates: 0  Warnings: 0
+
+Query OK, 2509 rows affected (0.88 sec)
+Records: 2509  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 126 rows affected (0.07 sec)
+Records: 126  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 78049 rows affected (11 min 54.04 sec)
+Records: 78049  Duplicates: 0  Warnings: 0
+
++-----------------+
+| rep_livetvstats |
++-----------------+
+|           78049 |
++-----------------+
+1 row in set (0.04 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-08-20 08:56:28 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-VODTS-STATS.sql
+Database changed
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 9164 rows affected (35.98 sec)
+Records: 9164  Duplicates: 0  Warnings: 0
+
++---------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table   | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++---------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| tempvod |          1 | idxtvod1 |            1 | device       | A         |        9339 |     NULL | NULL   | YES  | BTREE      |         |               |
+| tempvod |          1 | idxtvod2 |            1 | sessionstart | A         |        9339 |     NULL | NULL   | YES  | BTREE      |         |               |
++---------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 9281 rows affected (7.02 sec)
+Records: 9281  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.07 sec)
+
+Query OK, 1390032 rows affected (1 min 54.14 sec)
+Records: 1390032  Duplicates: 0  Warnings: 0
+
++--------------+
+| rep_vodstats |
++--------------+
+|      1390032 |
++--------------+
+1 row in set (0.50 sec)
+
+Database changed
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 20264 rows affected (1 min 9.60 sec)
+Records: 20264  Duplicates: 0  Warnings: 0
+
++--------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table  | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++--------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| tempts |          1 | idxtts1  |            1 | device       | A         |       20449 |     NULL | NULL   | YES  | BTREE      |         |               |
+| tempts |          1 | idxtts2  |            1 | sessionstart | A         |       20449 |     NULL | NULL   | YES  | BTREE      |         |               |
++--------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 20272 rows affected (19.15 sec)
+Records: 20272  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 51461 rows affected (1 min 12.20 sec)
+Records: 51461  Duplicates: 0  Warnings: 0
+
++-------------+
+| rep_tsstats |
++-------------+
+|       51461 |
++-------------+
+1 row in set (0.04 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-08-20 09:01:47 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-RADIO-STATS.sql
+Database changed
+Query OK, 0 rows affected (0.07 sec)
+
+Query OK, 426115 rows affected (5.16 sec)
+Records: 426115  Duplicates: 0  Warnings: 0
+
++-----------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table     | Non_unique | Key_name | Seq_in_index | Column_name  | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-----------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| tempradio |          1 | idxtrad1 |            1 | device       | A         |      428176 |     NULL | NULL   | YES  | BTREE      |         |               |
+| tempradio |          1 | idxtrad2 |            1 | sessionstart | A         |      428176 |     NULL | NULL   | YES  | BTREE      |         |               |
++-----------+------------+----------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+Query OK, 326 rows affected (1.58 sec)
+Records: 326  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 6743 rows affected (0.71 sec)
+Records: 6743  Duplicates: 0  Warnings: 0
+
++----------------+
+| rep_radiostats |
++----------------+
+|           6743 |
++----------------+
+1 row in set (0.01 sec)
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-08-20 09:01:54 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY_SCRIPT_TELEMETRY_PIVOT_2021.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 140 rows affected (0.29 sec)
+Records: 140  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 13944 rows affected (2.58 sec)
+Records: 13944  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 5 rows affected (0.04 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 44 rows affected (0.12 sec)
+Records: 44  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-08-20 09:01:57 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_livetv_ranking2021.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 140 rows affected (0.04 sec)
+Records: 140  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-08-20 09:01:58 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_radio_ranking2021.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-08-20 09:01:58 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_ts_ranking2021.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 44 rows affected (0.04 sec)
+Records: 44  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-08-20 09:01:58 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2021.sql
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 13944 rows affected (0.67 sec)
+Records: 13944  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-08-20 09:01:58 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2021_1.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 13944 rows affected (0.31 sec)
+Records: 13944  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-08-20 09:01:59 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2021_2.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 13944 rows affected (0.45 sec)
+Records: 13944  Duplicates: 0  Warnings: 0
+
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
++---------------------+
+| currenttime         |
++---------------------+
+| 2021-08-20 09:01:59 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-CREATE-LOAD.sql
+Database changed
+Database changed
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+Database changed
+Query OK, 68460 rows affected (2.92 sec)
+Records: 68460  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.23 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.39 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.39 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.38 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++---------+
+| clients |
++---------+
+|   68460 |
++---------+
+1 row in set (0.03 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 16199 rows affected (6.95 sec)
+Records: 16199  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++-------------------+
+| rcb_clientparcels |
++-------------------+
+|             16199 |
++-------------------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 84881 rows affected (3.13 sec)
+Records: 84881  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.40 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 68460 rows affected (1 min 9.74 sec)
+Records: 68460  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.35 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.36 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.24 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++---------------+
+| clientaddress |
++---------------+
+|         68460 |
++---------------+
+1 row in set (0.03 sec)
+
+Database changed
+Query OK, 0 rows affected (0.05 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Database changed
+Query OK, 556713 rows affected, 65535 warnings (19.21 sec)
+Records: 556713  Deleted: 0  Skipped: 0  Warnings: 235071
+
+Query OK, 0 rows affected (1.65 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.23 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 556713 rows affected (36.14 sec)
+Records: 556713  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.79 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.68 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++-----------+
+| contracts |
++-----------+
+|    556713 |
++-----------+
+1 row in set (0.21 sec)
+
++-----------------+
+| contractaddress |
++-----------------+
+|          556713 |
++-----------------+
+1 row in set (0.19 sec)
+
+Database changed
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 8072 rows affected (0.20 sec)
+Records: 8072  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 8039 rows affected (0.25 sec)
+Records: 8039  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 6052 rows affected (0.12 sec)
+Records: 6052  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++-------------------+
+| contractdiscounts |
++-------------------+
+|              8072 |
++-------------------+
+1 row in set (0.01 sec)
+
++-------------------------+
+| clientcontractdiscounts |
++-------------------------+
+|                    8039 |
++-------------------------+
+1 row in set (0.01 sec)
+
++----------------------------+
+| clientcontractlastdiscount |
++----------------------------+
+|                       6052 |
++----------------------------+
+1 row in set (0.01 sec)
+
+Database changed
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Database changed
+Query OK, 149180 rows affected, 20 warnings (2.73 sec)
+Records: 149180  Deleted: 0  Skipped: 0  Warnings: 20
+
+Query OK, 0 rows affected (0.42 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.47 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.47 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.43 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.53 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.72 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.08 sec)
+
+Query OK, 1891865 rows affected (2 min 24.59 sec)
+Records: 1891865  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (13.68 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++---------+
+| devices |
++---------+
+|  149180 |
++---------+
+1 row in set (0.08 sec)
+
++-----------------------+
+| clientcontractdevices |
++-----------------------+
+|               1891865 |
++-----------------------+
+1 row in set (0.82 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 149114 rows affected (7.34 sec)
+Records: 149114  Duplicates: 0  Warnings: 0
+
++---------------------------+
+| rep_clientcontractdevices |
++---------------------------+
+|                    149114 |
++---------------------------+
+1 row in set (0.10 sec)
+
+Database changed
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 335260 rows affected (9.92 sec)
+Records: 335260  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.19 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.98 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.94 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.83 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++---------+
+| tickets |
++---------+
+|  335260 |
++---------+
+1 row in set (0.08 sec)
+
+Database changed
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.01 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 380 rows affected, 2 warnings (0.03 sec)
+Records: 380  Deleted: 0  Skipped: 0  Warnings: 2
+
++-----------------+
+| tickettechusers |
++-----------------+
+|             380 |
++-----------------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 751454 rows affected, 51690 warnings (11.94 sec)
+Records: 751454  Deleted: 0  Skipped: 0  Warnings: 51690
+
++-------------------+
+| ticketassignments |
++-------------------+
+|            751454 |
++-------------------+
+1 row in set (0.18 sec)
+
+Database changed
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 1498850 rows affected (18.70 sec)
+Records: 1498850  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.38 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.74 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.90 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----------------+
+| ticketcomments |
++----------------+
+|        1498850 |
++----------------+
+1 row in set (0.43 sec)
+
+Database changed
+Query OK, 0 rows affected (0.07 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 490502 rows affected (38.59 sec)
+Records: 490502  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.39 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----------+
+| comments |
++----------+
+|   490502 |
++----------+
+1 row in set (0.24 sec)
+
+Database changed
+Query OK, 0 rows affected (0.05 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 1843017 rows affected, 65535 warnings (1 min 25.46 sec)
+Records: 1843017  Deleted: 0  Skipped: 0  Warnings: 1843104
+
+Query OK, 0 rows affected (7.88 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (4.49 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (4.72 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affect

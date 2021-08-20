@@ -1,4 +1,6 @@
 select * from rcbill_my.customercontractsnapshot where clientcode='I14834';
+select * from rcbill_my.customercontractsnapshot where clientcode='I21945';
+select * from rcbill_my.customercontractsnapshot where clientcode='I.000000071';
 
 
 select * from rcbill_my.customercontractsnapshot where servicecategory='OTT' and firstcontractdate>='2021-08-01';
@@ -13,7 +15,7 @@ order by 1, 4
 
 #### first contract date for each network
 select a.*
-, b.clientname, b.IsAccountActive, b.AccountActivityStage
+, b.clientname, b.IsAccountActive as AccountStatus, b.AccountActivityStage
 , b.dayssincelastactive, b.lastactivedate, b.firstactivedate
 , b.currentdebt
 , b.clientemail, b.clientphone
@@ -30,10 +32,28 @@ select a.*
 
 from 
 (
+	/*
 	select clientcode, network, min(firstcontractdate) as firstcontractdate, max(lastcontractdate) as lastcontractdate
 	from rcbill_my.customercontractsnapshot
 	group by 1,2
 	order by 1, 3
+    */
+    
+	select a.*,
+	b.currentstatus as ServiceStatus
+	from 
+	(
+		select clientcode, network, min(firstcontractdate) as firstcontractdate, max(lastcontractdate) as lastcontractdate
+		from rcbill_my.customercontractsnapshot
+		group by 1,2
+		-- order by 1, 3
+	) a 
+	left join
+	rcbill_my.customercontractsnapshot b 
+	on 0=0
+	and a.clientcode=b.clientcode
+	and a.network=b.network
+	and a.lastcontractdate=b.lastcontractdate       
 ) a
 left join 
 rcbill_my.rep_custconsolidated b
@@ -44,7 +64,7 @@ on a.CLIENTCODE=b.clientcode
 #### first contract date for each servicecategory
 
 select a.*
-, b.clientname, b.IsAccountActive, b.AccountActivityStage
+, b.clientname, b.IsAccountActive as AccountStatus, b.AccountActivityStage
 , b.dayssincelastactive, b.lastactivedate, b.firstactivedate
 , b.currentdebt
 , b.clientemail, b.clientphone
@@ -60,10 +80,30 @@ select a.*
 , b.TotalPaymentAmount2018, b.AvgMonthlyPayment2018
 from 
 (
+	/*
+
 	select clientcode, servicecategory, min(firstcontractdate) as firstcontractdate, max(lastcontractdate) as lastcontractdate
 	from rcbill_my.customercontractsnapshot
 	group by 1,2
 	order by 1, 3
+    */
+    
+	select a.*,
+	b.currentstatus as ServiceStatus
+	from 
+	(
+		select clientcode, servicecategory, min(firstcontractdate) as firstcontractdate, max(lastcontractdate) as lastcontractdate
+		from rcbill_my.customercontractsnapshot
+		group by 1,2
+		-- order by 1, 3
+	) a 
+	left join
+	rcbill_my.customercontractsnapshot b 
+	on 0=0
+	and a.clientcode=b.clientcode
+	and a.servicecategory=b.servicecategory
+	and a.lastcontractdate=b.lastcontractdate 
+    
 ) a 
 left join 
 rcbill_my.rep_custconsolidated b
