@@ -10,21 +10,21 @@ use rcbill;
 set @lastdate = (select max(month_all_date) from rcbill_my.month_all_date);
 
 #SET DATE
-SET @REPORTDATE=str_to_date('2021-08-19','%Y-%m-%d');
+SET @REPORTDATE=str_to_date('2021-08-20','%Y-%m-%d');
 
-SET @rundate='2021-08-19';
+SET @rundate='2021-08-20';
 
 SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
-set @periodstart='2021-08-19';
-set @periodend='2021-08-19';	
+set @periodstart='2021-08-20';
+set @periodend='2021-08-20';	
 
 
-SET @rundate='2021-08-19';
+SET @rundate='2021-08-20';
 
 #FOR Daily calls script
-SET @date1='2021-08-19';
-SET @date2='2021-08-20';
+SET @date1='2021-08-20';
+SET @date2='2021-08-21';
 
 
 ## FOR BUDGET ACTUAL ANALYSIS SCRIPT
@@ -38,7 +38,7 @@ set @m5='2021-05-31';
 set @m6='2021-06-30';
 set @m7='2021-07-31';
 
-set @m8='2021-08-19';
+set @m8='2021-08-20';
 
 set @m9='2021-09-30';
 set @m10='2021-10-31';
