@@ -16,7 +16,7 @@ SELECT table_schema `Database`, table_name `Table`,
     Round(Sum(data_length) / 1024 / 1024, 1) `Data - Size in MB`,
     Round(Sum(index_length) / 1024 / 1024, 1) `Index  - Size in MB`
 FROM information_schema.TABLES
-where TABLE_SCHEMA in ('rcbill','rcbill_my','rcbill_extract')
+where TABLE_SCHEMA in ('rcbill','rcbill_my','rcbill_extract','rcbill_maps','rcbill_usage')
 GROUP BY table_schema, table_name
 -- with rollup
 order by 1, 3 desc
