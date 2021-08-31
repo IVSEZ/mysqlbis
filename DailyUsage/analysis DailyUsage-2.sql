@@ -3,6 +3,7 @@ use rcbill_usage;
 select count(*) from sandvine_usage;
 
 show columns from sandvine_usage;
+show index from sandvine_usage;
 
 select date(timestamp) as u_date, count( distinct subscriber) as u_client, count(*) 
 from sandvine_usage
