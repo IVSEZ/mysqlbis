@@ -10,6 +10,10 @@ from sandvine_usage
 group by 1
 ;
 
+
+select * from sandvine_usage limit 100;
+
+
 select date(timestamp) as u_date, signature_service_category, count( distinct subscriber) as u_client, count(*) 
 from sandvine_usage
 group by 1,2
