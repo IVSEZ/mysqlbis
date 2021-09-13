@@ -1,0 +1,37 @@
+use rcbill;
+
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\RCBill\\AllIPTVPackage-09092021.csv' 
+REPLACE INTO TABLE `rcbill`.`rcb_iptv_package` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
+IGNORE 1 LINES 
+(
+@ID ,
+@CODE ,
+@NAME ,
+@TEST_ONLY ,
+@ENABLED ,
+@TENANT_ID ,
+@ID_OLD ,
+@UpdDate ,
+@USERID ,
+@EXPLUDE_FROM_ALL_PACKAGE_LIST ,
+@RcBillPublished 
+) 
+set 
+ID=@ID ,
+CODE=trim(upper(@CODE)) ,
+NAME=trim(upper(@NAME)) ,
+TEST_ONLY=@TEST_ONLY ,
+ENABLED=@ENABLED ,
+TENANT_ID=@TENANT_ID ,
+ID_OLD=@ID_OLD ,
+UPDDATE=@UpdDate ,
+USERID=@USERID ,
+EXPLUDE_FROM_ALL_PACKAGE_LIST=@EXPLUDE_FROM_ALL_PACKAGE_LIST ,
+RCBILLPUBLISHED=@RcBillPublished ,
+INSERTEDON=now()
+;
+
+
+-- select * from rcbill.rcb_iptv_package;
+

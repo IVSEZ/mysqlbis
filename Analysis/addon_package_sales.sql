@@ -4,12 +4,12 @@
 -- set @package='INTELENOVELA';
 SET @row_number = 0;
 
-SET @startdate='2021-01-01';
+SET @startdate='2021-07-01';
 -- select @startdate := subdate(current_date(),1);
 
 
 -- select @enddate := subdate(current_date(),1);
-SET @enddate='2021-06-30';
+SET @enddate='2021-08-31';
 
 
 -- set @package='INTELENOVELA';
@@ -146,7 +146,7 @@ where a.firstactive>=@startdate
 ;
 
 
-
+/*
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
 
 select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region, a.firstactive from 
@@ -166,7 +166,7 @@ select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as 
 ) a
 where a.firstactive>=@startdate
 ;
-
+*/
 
 /*
 select *,rcbill.GetClientName(clientcode) as ClientName from rcbill_my.sales where orderday>=@startdate and orderday<=@enddate

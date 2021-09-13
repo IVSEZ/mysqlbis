@@ -91,11 +91,39 @@ ON rcbill.clientlivetvstats (ticketid);
 
 create index IDXclts4 on rcbill.clientlivetvstats(sessionstart);
 
+drop index IDXclts4 on rcbill.clientlivetvstats;
+
+
+ALTER TABLE rcbill.clientlivetvstats
+ADD COLUMN sessiondate DATE NULL;
+
+ALTER TABLE rcbill.clientlivetvstats
+MODIFY COLUMN sessiondate DATETIME NULL;
+
+
+
+set sql_safe_updates=0;
+UPDATE  rcbill.clientlivetvstats
+SET sessiondate = date(sessionstart);
+
+
+ALTER TABLE rcbill.clientlivetvstats
+ADD COLUMN sessionyear DATE NULL;
+
+ALTER TABLE rcbill.clientlivetvstats
+MODIFY COLUMN sessionyear int NULL;
+
+set sql_safe_updates=0;
+UPDATE  rcbill.clientlivetvstats
+SET sessionyear = year(sessiondate);
+
+
+
 */
 
 insert into rcbill.clientlivetvstats
 (
-	select a.*, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
+	select a.*, date(a.sessionstart) as sessiondate, year(a.sessionstart) as sessionyear, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
 	from 
 	rcbill.templivetv a 
 	inner join 
@@ -109,6 +137,9 @@ insert into rcbill.clientlivetvstats
 
 -- select * from rcbill.clientcontractdevices where mac=phoneno;
 -- select * from rcbill.clientlivetvstats where date(sessionstart)='2020-12-31'
+
+-- select *, year(sessionstart) from rcbill.clientlivetvstats order by sessionstart desc limit 100;
+-- select * from rcbill.clientlivetvstats order by sessionstart desc limit 100;
 
 ## FIRST TIME
 /*

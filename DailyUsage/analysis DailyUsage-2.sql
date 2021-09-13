@@ -18,7 +18,7 @@ order by 1, 3 desc
 
 
 
-select date(timestamp) as u_date, count( distinct subscriber) as u_client, count(*) 
+select date(timestamp) as u_date, count( distinct subscriber) as u_device, count(*) 
 from sandvine_usage
 group by 1
 order by 1 desc
@@ -46,6 +46,8 @@ select * from rcbill_my.rep_clientcontractdevices where length(mac)>0; -- limit 
 
 select * from sandvine_usage where subscriber='00:02:71:cd:0c:89';
 select * from sandvine_usage where upper(subscriber)='00:02:71:cd:10:71';
+select * from sandvine_usage where (subscriber)='00:02:71:cd:10:71';
+
 
 select distinct signature_service_category from sandvine_usage;
 select distinct signature_service_name from sandvine_usage;
@@ -58,14 +60,14 @@ select * from rcbill_usage.sandvine_usage where signature_service_category='Remo
 select * from rcbill_usage.sandvine_usage where signature_service_category='File Transfer' and signature_service_name='MEGA';
 
 select timestamp as u_date, signature_service_category,signature_service_name
-, service_plan, device, location
-, count( distinct subscriber) as u_client, count(*) 
-, round(((sum(bytes_in)/1024)/1024)) as in_mb
-, round(((sum(bytes_out)/1024)/1024)) as out_mb
+, device, location, service_plan
+, count( distinct subscriber) as u_device, count(*) as u_instance
+, round(((sum(bytes_in)/1024)/1024)) as mb_dl
+, round(((sum(bytes_out)/1024)/1024)) as mb_ul
 from sandvine_usage
 where 0=0 
-and signature_service_category='Streaming Media'
-and signature_service_name='Netflix'
+-- and signature_service_category='Streaming Media'
+-- and signature_service_name='Netflix'
 group by 1,2,3,4,5,6
 ;
 
@@ -73,11 +75,11 @@ group by 1,2,3,4,5,6
 
 
 select signature_service_category,signature_service_name
-, service_plan, device, location
-, count(timestamp) as days
-, count( distinct subscriber) as u_client, count(*) 
-, round(((sum(bytes_in)/1024)/1024)) as in_mb
-, round(((sum(bytes_out)/1024)/1024)) as out_mb
+, device, location, service_plan
+, count(distinct timestamp) as days
+, count( distinct subscriber) as u_device, count(*) as u_instance
+, round(((sum(bytes_in)/1024)/1024)) as mb_dl
+, round(((sum(bytes_out)/1024)/1024)) as mb_ul
 from sandvine_usage
 where 0=0 
 -- and signature_service_category='Streaming Media'
@@ -86,10 +88,33 @@ group by 1,2,3,4,5
 ;
 
 
+select device, location, service_plan
+, count(distinct timestamp) as days
+, count( distinct subscriber) as u_device, count(*) as u_instance
+, round(((sum(bytes_in)/1024)/1024)) as mb_dl
+, round(((sum(bytes_out)/1024)/1024)) as mb_ul
+from sandvine_usage
+where 0=0 
+-- and signature_service_category='Streaming Media'
+-- and signature_service_name='Netflix'
+group by 1,2,3
+order by 1,2,3
+;
 
 
 
-
+select month(timestamp) as u_month, signature_service_category,signature_service_name
+, device, location, service_plan
+, count(distinct timestamp) as days
+, count( distinct subscriber) as u_device, count(*) as u_instance
+, round(((sum(bytes_in)/1024)/1024)) as mb_dl
+, round(((sum(bytes_out)/1024)/1024)) as mb_ul
+from sandvine_usage
+where 0=0 
+and signature_service_category='Streaming Media'
+-- and signature_service_name='Netflix'
+group by 1,2,3,4,5,6
+;
 
 
 
