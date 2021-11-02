@@ -1832,6 +1832,7 @@ create table rcbill_my.rep_custconsolidated(index idxrcc1(clientcode),index idxr
 
 select count(*) as rep_custconsolidated from rcbill_my.rep_custconsolidated;
 
+
 #####################################
 ### customer distribution across areas
 
@@ -1944,7 +1945,50 @@ as
 )
 ;
 
+-- select * from rcbill_my.rep_custaddressparcelsprefix;
 select count(*) as rep_custaddressparcelsprefix from rcbill_my.rep_custaddressparcelsprefix;
+
+
+
+#####################################
+## residential customers for sales
+
+drop table if exists rcbill_my.rep_residentialcustomers_tillasleep;
+
+create table rcbill_my.rep_residentialcustomers_tillasleep(index idxrrcta1(clientcode))
+(
+
+select reportdate, clientcode, currentdebt, IsAccountActive, AccountActivityStage, clientname, clientclass
+, activenetwork, activeservices
+, clientarea, clientlocation, subdistrict
+, clientaddress
+, (select clientparcel from rcbill_my.rep_custaddressparcelsprefix where clientcode=a.clientcode) as clientparcel
+, (select latitude from rcbill_my.rep_custaddressparcelsprefix where clientcode=a.clientcode) as latitude
+, (select longitude from rcbill_my.rep_custaddressparcelsprefix where clientcode=a.clientcode) as longitude
+, clientemail, clientnin, clientpassport, clientphone
+, activecontracts, activesubscriptions
+, lastactivedate, dayssincelastactive
+, lastinvoicedate, lastpaidamount, lastpaymentdate
+, TotalPaymentAmount2021, AvgMonthlyPayment2021
+, TotalPaymentAmount2020, AvgMonthlyPayment2020
+, TotalPaymentAmount2019, AvgMonthlyPayment2019
+, TotalPaymentAmount2018, AvgMonthlyPayment2018
+
+
+
+from rcbill_my.rep_custconsolidated a 
+where ClientClass in ('RESIDENTIAL') 
+and ClientCode not in ('I.000015720')
+and TotalPaymentAmount2021>0
+and AccountActivityStage in ('3. Asleep (8 to 30 days)','2. Snoozing (1 to 7 days)','1. Alive')
+order by AvgMonthlyPayment2021 desc
+-- limit 5000
+)
+;
+#####################################
+
+-- select * from rcbill_my.rep_residentialcustomers_tillasleep;
+select count(*) as rep_residentialcustomers_tillasleep from rcbill_my.rep_residentialcustomers_tillasleep;
 
 
 #####################################

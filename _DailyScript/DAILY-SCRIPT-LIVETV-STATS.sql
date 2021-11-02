@@ -37,7 +37,7 @@ CREATE TABLE rcbill.templivetv
 
 -- show index from rcbill.rcb_livetvtelemetry;
 show index from rcbill.templivetv;
-
+-- show columns from rcbill.templivetv;
 -- select * from rcbill.templivetv limit 100;
 -- select * from rcbill.rcb_livetvtelemetry order by sessionstart desc limit 100;
 
@@ -72,7 +72,8 @@ drop table if exists rcbill.clientlivetvstats;
 create table rcbill.clientlivetvstats
 (INDEX idxcvs1 (clientcode), INDEX idxcvs2(contractcode)) as
 (
-select a.*, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
+-- select a.*, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
+select a.*, date(a.sessionstart) as sessiondate, year(a.sessionstart) as sessionyear, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
 from 
 rcbill.templivetv a 
 inner join 
@@ -140,6 +141,9 @@ insert into rcbill.clientlivetvstats
 
 -- select *, year(sessionstart) from rcbill.clientlivetvstats order by sessionstart desc limit 100;
 -- select * from rcbill.clientlivetvstats order by sessionstart desc limit 100;
+
+
+-- order by insertedon desc limit 10000
 
 ## FIRST TIME
 /*

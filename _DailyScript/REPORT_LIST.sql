@@ -198,7 +198,7 @@ select * from rcbill_my.rep_activenumberavg3 where lastday='2020-06-30';
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2021-08-18','2021-09-13');
+call sp_GetActiveNumberFromTo('2021-10-22','2021-11-01');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
@@ -852,5 +852,20 @@ group by 1,2,3;
 
 select * from rcbill.clientcontractdiscounts where clientcode='I.000013011' order by clientcode, contractcode, upddate;
 select * from rcbill.clientcontractlastdiscount where b_clientcode='I.000013011';
+
+###################################
+### usage
+
+select distinct datestart, dateend, date(INSERTEDON) as insertedon, count(1) as records from rcbill_my.dailyusage group by 1,2,3 
+order by datestart desc
+limit 30
+;
+
+
+select distinct category, datestart, dateend, date(INSERTEDON) as insertedon, count(1) as records from rcbill_my.dailyusage group by 1,2,3,4 
+order by datestart desc, category desc
+limit 100
+;
+###################################
 
 

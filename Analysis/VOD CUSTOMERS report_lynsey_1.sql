@@ -55,6 +55,56 @@ on a.CLIENTCODE=b.clientcode
 ;
 
 
+##################################
+-- current NON-VOD customers snapshot
+
+select a.*, b.activeservices
+, b.totalpaymentamount, b.TotalPaymentAmount2021, b.AvgMonthlyPayment2021
+, b.firstpaymentdate
+, b.clientarea as island, b.clientlocation as district, b.subdistrict
+, b.clientparcel, b.latitude, b.longitude
+, case when b.clientparcel is null then 'Not Present'
+		else 'Present' end as `ParcelStatus`
+
+from 
+(
+	select reportdate, clientcode, clientname, clientclass, clienttype, region, network, sum(price) as price
+	-- , coalesce(TV_PACAKGE,'') as `TV_PACAKGE`
+	-- , coalesce(INT_PACAKGE,'')   as `INT_PACAKGE`
+	, max(TV_PACKAGE) as  `TV_PACKAGE`
+	, max(INT_PACKAGE) as `INT_PACKAGE`
+	from 
+	(
+
+		select reportdate, clientcode, clientname, clientclass, clienttype, region, network
+        , price
+		, case when servicecategory='TV' and PackageType='STANDALONE' then package end as `TV_PACKAGE`
+		, case when servicecategory='INTERNET' then package  end as `INT_PACKAGE`
+
+		from 
+		(
+			select * from rcbill_my.customercontractsnapshot 
+				where clientcode in 
+				(
+					select clientcode from rcbill_my.clientstats a 
+					where
+					a.`VOD`=0
+					and a.clientclass not in ('Intelvision Office','Employee', 'Corporate Large')
+				)
+				and CurrentStatus='Active'
+		) a 
+		-- where a.packagetype='STANDALONE'
+		-- group by 1,2,3,4,5,6,7
+	) a 
+	group by 1,2,3,4,5,6,7
+	-- ,8,9
+) a 
+left join 
+rcbill_my.rep_custconsolidated b 
+on a.CLIENTCODE=b.clientcode
+;
+
+
 -- current VOD customers
 
 select 'current VOD customers' as message;

@@ -47,8 +47,10 @@
 -- set @period='2021-03-31';
 -- set @period='2021-04-30';
 -- set @period='2021-05-31';
- set @period='2021-06-30';
-
+-- set @period='2021-06-30';
+-- set @period='2021-07-31';
+-- set @period='2021-08-31';
+ set @period='2021-09-30';
 
 call rcbill_my.sp_filllastdates('2016-05-31',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
 call rcbill_my.sp_fillalldates('2016-05-01',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
@@ -102,26 +104,6 @@ order by 4 desc
 ;
 */
 
-select period, network, count(distinct clientcode) as d_client, sum(activecount) as active from rcbill_my.customercontractactivity 
-where 
--- period in ('2020-07-31','2020-08-31','2020-09-30','2020-10-31','2020-11-30','2020-12-31','2021-01-31','2021-02-28','2021-03-31') 
-period in (select month_last_date from rcbill_my.month_last_date where year(month_last_date)>2020) 
-and REPORTED='Y'
--- and Network='GPON'
-group by period, network
-order by period, network
-;
-
-select period, network, servicecategory, count(distinct clientcode) as d_client, sum(activecount) as active from rcbill_my.customercontractactivity 
-where 
--- period in ('2020-07-31','2020-08-31','2020-09-30','2020-10-31','2020-11-30','2020-12-31','2021-01-31','2021-02-28','2021-03-31') 
-period in (select month_last_date from rcbill_my.month_last_date where year(month_last_date)>2020) 
-and REPORTED='Y'
--- and Network='GPON'
-group by period, network, servicecategory
-order by period, network, servicecategory
-;
-
 
 select servicecategory, package
 -- , `20181031`, `20181130`, `20181231`
@@ -137,7 +119,7 @@ select servicecategory, package
 -- , `20201031`, `20201130`, `20201231`
 , `20210131`, `20210228`, `20210331`
 , `20210430`, `20210531`, `20210630`
-
+, `20210731`, `20210831`, `20210930`
 
  from rcbill_my.rep_activenumberlastday_pv;
 
@@ -153,6 +135,9 @@ select servicecategory
 , sum(`20210430`)
 , sum(`20210531`)
 , sum(`20210630`)
+, sum(`20210731`)
+, sum(`20210831`)
+, sum(`20210930`)
  from rcbill_my.rep_activenumberlastday_pv
  group by servicecategory
  ;
@@ -454,5 +439,31 @@ from
 where 0=0 
 -- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
 ;
+
+
+##################################################
+
+/*
+select period, network, count(distinct clientcode) as d_client, sum(activecount) as active from rcbill_my.customercontractactivity 
+where 
+-- period in ('2020-07-31','2020-08-31','2020-09-30','2020-10-31','2020-11-30','2020-12-31','2021-01-31','2021-02-28','2021-03-31') 
+period in (select month_last_date from rcbill_my.month_last_date where year(month_last_date)>2020) 
+and REPORTED='Y'
+-- and Network='GPON'
+group by period, network
+order by period, network
+;
+
+select period, network, servicecategory, count(distinct clientcode) as d_client, sum(activecount) as active from rcbill_my.customercontractactivity 
+where 
+-- period in ('2020-07-31','2020-08-31','2020-09-30','2020-10-31','2020-11-30','2020-12-31','2021-01-31','2021-02-28','2021-03-31') 
+period in (select month_last_date from rcbill_my.month_last_date where year(month_last_date)>2020) 
+and REPORTED='Y'
+-- and Network='GPON'
+group by period, network, servicecategory
+order by period, network, servicecategory
+;
+*/
+
 
 -- select clientclass, count(clientcode) from rcbill_my.customercontractactivity where period=@period and REPORTED='Y' group by clientclass;

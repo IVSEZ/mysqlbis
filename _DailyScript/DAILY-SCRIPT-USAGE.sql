@@ -15,10 +15,13 @@ set @category='CAPPED';
 -- set @periodstart='2020-08-07';
 -- set @periodend='2020-08-07';
 
+-- set @periodstart='2021-10-04';
+-- set @periodend='2021-10-04';	
+
 ## change dates on csv 4 files
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-Capped-25082019-02092019.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-Capped-15092021.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-Capped-01112021.csv'
 
 REPLACE INTO TABLE `rcbill_my`.`dailyusage` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -68,7 +71,7 @@ INSERTEDON=now()
 set @category='UNCAPPED';
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-UnCapped-25082019-02092019.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-UnCapped-15092021.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-UnCapped-01112021.csv'
 
 REPLACE INTO TABLE `rcbill_my`.`dailyusage` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -119,7 +122,7 @@ INSERTEDON=now()
 set @category='PREPAID';
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-PREPAID-25082019-02092019.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-PREPAID-15092021.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-PREPAID-01112021.csv'
 
 
 
@@ -171,7 +174,7 @@ INSERTEDON=now()
 set @category='HOTSPOT';
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-Hotspot-25082019-02092019.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-Hotspot-15092021.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\cdrUsageClient-Hotspot-01112021.csv'
 
 REPLACE INTO TABLE `rcbill_my`.`dailyusage` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -268,7 +271,8 @@ delete from rcbill_my.dailyusage where date(INSERTEDON)='2019-09-03';
 
 delete from rcbill_my.dailyusage where date(INSERTEDON)='2020-08-09';
 
-delete from rcbill_my.dailyusage where datestart>'2020-08-04';
+delete from rcbill_my.dailyusage where datestart>'2021-10-03';
+
 select * from rcbill_my.dailyusage where datestart>'2020-08-04';
 
 

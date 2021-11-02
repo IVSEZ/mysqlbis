@@ -133,4 +133,4 @@ with rollup;
 
 -- select * from rcbill.rcb_vodtitles where id>1000;
 
-select *, rcbill.GetVODTitleFromResource(RESOURCEORIG) from rcbill.rcb_vodtitles where id>1000;
+select *, rcbill.GetVODTitleFromResource(RESOURCEORIG) from rcbill.rcb_vodtitles where id>1000 and IMDBTITLEREF is not null;

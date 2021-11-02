@@ -55,4 +55,45 @@ order by 5 desc
 ;
 
 
+### 	customers with device starting with
+select * from rcbill_my.customercontractsnapshot where CLIENTCODE='I.000004898';
+select a.*, (select currentstatus from rcbill_my.customercontractsnapshot where contractcode=a.contract_code and packagetype='STANDALONE' limit 1) as contract_status from rcbill_my.rep_clientcontractdevices a where mac like '00:18:95%';
 
+select a.client_code from 
+(
+  select a.*, (select currentstatus from rcbill_my.customercontractsnapshot where contractcode=a.contract_code and packagetype='STANDALONE' limit 1) as contract_status from rcbill_my.rep_clientcontractdevices a where mac like '00:18:95%'
+) a
+where a.contract_status='Active'
+;
+
+select 
+reportdate, clientcode, currentdebt, IsAccountActive, AccountActivityStage, clientname, clientclass
+, activenetwork, activeservices
+, clientarea, clientlocation
+, clientaddress
+, clientemail, clientnin, clientpassport, clientphone
+, activecontracts, activesubscriptions
+, lastactivedate, dayssincelastactive
+, lastinvoicedate, lastpaidamount, lastpaymentdate
+, TotalPaymentAmount2021, AvgMonthlyPayment2021
+, TotalPaymentAmount2020, AvgMonthlyPayment2020
+, TotalPaymentAmount2019, AvgMonthlyPayment2019
+, TotalPaymentAmount2018, AvgMonthlyPayment2018
+
+from rcbill_my.rep_custconsolidated where clientcode in 
+(
+ -- select CLIENT_CODE from rcbill_my.rep_clientcontractdevices where mac like '00:18:95%'
+
+	select a.client_code from 
+	(
+	  select a.*, (select currentstatus from rcbill_my.customercontractsnapshot where contractcode=a.contract_code and packagetype='STANDALONE' limit 1) as contract_status from rcbill_my.rep_clientcontractdevices a where mac like '00:18:95%'
+	) a
+	where a.contract_status='Active'
+)
+
+-- and 
+-- (
+-- AccountActivityStage in ('1. Alive','2. Snoozing (1 to 7 days)','3. Asleep (8 to 30 days)')
+-- )
+-- and activeservices not in ('Internet Only')
+;
