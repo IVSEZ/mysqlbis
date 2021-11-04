@@ -22,3 +22,27 @@ select a.*, datediff(a.lastdate, a.firstdate)+1 from
 
 
 
+#####################################################
+
+set @clcode = 'I.000011750';
+set @clcode = 'I.000015517';
+-- show index from rcbill_my.customercontractactivity ;
+select * from rcbill_my.customercontractactivity where clientcode=@clcode order by period desc limit 100;
+
+select * from rcbill_my.customercontractsnapshot where clientcode=@clcode;
+
+select period, clientcode, count(distinct contractcode) as contracts, sum(activecount) as activenumber
+from rcbill_my.customercontractactivity 
+where 0=0
+-- and clientcode=@clcode
+and period>='2021-11-01'
+group by 1,2
+;
+
+select period, count(clientcode) as accounts, count(distinct contractcode) as contracts, sum(activecount) as activenumber
+from rcbill_my.customercontractactivity 
+where 0=0
+-- and clientcode=@clcode
+and period>='2021-11-01'
+group by period, clientcode
+;
