@@ -172,7 +172,7 @@ drop table if exists rcbill_my.rep_tkt_f_level1;
 
 create table rcbill_my.rep_tkt_f_level1(index idxrtfl1(open_d),index idxrtfl11(ISLAND),index idxrtfl2(openreason))
 (
-	select OPEN_D, ISLAND, OPENREASON, count(TICKETID) as TICKETS, count(distinct CLIENTCODE) as CLIENTS
+	select OPEN_D, ISLAND, OPENREASON, count(TICKETID) as TICKETS, count(distinct CLIENTCODE) as CLIENTS, count(distinct contractcode) as CONTRACTS
 	from 
 	(
 		select a.*
@@ -184,7 +184,7 @@ create table rcbill_my.rep_tkt_f_level1(index idxrtfl1(open_d),index idxrtfl11(I
 		(
 			select a.ticketid AS TICKETID, a.opendate AS OPENDATE, a.open_d AS OPEN_D, a.openreason AS OPENREASON
 			, a.OpenRegion as OPENEDFROM
-			, a.StageRegion as OPENEDTO, a.CLIENTCODE
+			, a.StageRegion as OPENEDTO, a.CLIENTCODE, a.contractcode
 			, a.closedate AS CLOSEDATE, a.close_d AS CLOSE_D, a.CloseRegion as CLOSEDBY, a.CloseReason AS CLOSEREASON
 			, a.firstcomment AS FIRSTCOMMENT, a.lastcomment AS LASTCOMMENT
 			, a.tkt_alldays AS TKT_ALLDAYS, a.tkt_workdays AS TKT_WORKDAYS, a.tkt_workdays2 AS TKT_WORKDAYS2
@@ -213,7 +213,7 @@ drop table if exists rcbill_my.rep_tkt_f_level2;
 create table rcbill_my.rep_tkt_f_level2(index idxrtfl1(open_d),index idxrtfl11(ISLAND),index idxrtfl2(openreason),index idxrtfl3(district),index idxrtfl4(subdistrict))
 (
 
-	select OPEN_D, ISLAND, DISTRICT, SUBDISTRICT, OPENREASON, count(TICKETID) as TICKETS, count(distinct CLIENTCODE) as CLIENTS
+	select OPEN_D, ISLAND, DISTRICT, SUBDISTRICT, OPENREASON, count(TICKETID) as TICKETS, count(distinct CLIENTCODE) as CLIENTS, count(distinct contractcode) as CONTRACTS
 	from 
 	(
 		select a.*
@@ -225,7 +225,7 @@ create table rcbill_my.rep_tkt_f_level2(index idxrtfl1(open_d),index idxrtfl11(I
 		(
 			select a.ticketid AS TICKETID, a.opendate AS OPENDATE, a.open_d AS OPEN_D, a.openreason AS OPENREASON
 			, a.OpenRegion as OPENEDFROM
-			, a.StageRegion as OPENEDTO, a.CLIENTCODE
+			, a.StageRegion as OPENEDTO, a.CLIENTCODE, a.contractcode
 			, a.closedate AS CLOSEDATE, a.close_d AS CLOSE_D, a.CloseRegion as CLOSEDBY, a.CloseReason AS CLOSEREASON
 			, a.firstcomment AS FIRSTCOMMENT, a.lastcomment AS LASTCOMMENT
 			, a.tkt_alldays AS TKT_ALLDAYS, a.tkt_workdays AS TKT_WORKDAYS, a.tkt_workdays2 AS TKT_WORKDAYS2
@@ -260,7 +260,7 @@ create table rcbill_my.rep_tkt_f_level3(index idxrtfl1(open_d),index idxrtfl11(I
 	(
 		select a.ticketid AS TICKETID, a.opendate AS OPENDATE, a.open_d AS OPEN_D, a.openreason AS OPENREASON
         , a.OpenRegion as OPENEDFROM
-		, a.StageRegion as OPENEDTO, a.CLIENTCODE
+		, a.StageRegion as OPENEDTO, a.CLIENTCODE, a.contractcode
 		, a.closedate AS CLOSEDATE, a.close_d AS CLOSE_D, a.CloseRegion as CLOSEDBY, a.CloseReason AS CLOSEREASON
 		, a.firstcomment AS FIRSTCOMMENT, a.lastcomment AS LASTCOMMENT
 		, a.tkt_alldays AS TKT_ALLDAYS, a.tkt_workdays AS TKT_WORKDAYS, a.tkt_workdays2 AS TKT_WORKDAYS2
@@ -290,7 +290,7 @@ drop table if exists rcbill_my.rep_tkt_irs_level1;
 
 create table rcbill_my.rep_tkt_irs_level1(index idxrtfl1(open_d),index idxrtfl11(ISLAND),index idxrtfl2(openreason))
 (
-	select OPEN_D, ISLAND, OPENREASON, count(TICKETID) as TICKETS, count(distinct CLIENTCODE) as CLIENTS
+	select OPEN_D, ISLAND, OPENREASON, count(TICKETID) as TICKETS, count(distinct CLIENTCODE) as CLIENTS, count(distinct contractcode) as CONTRACTS
 	from 
 	(
 		select a.*
@@ -302,7 +302,7 @@ create table rcbill_my.rep_tkt_irs_level1(index idxrtfl1(open_d),index idxrtfl11
 		(
 			select a.ticketid AS TICKETID, a.opendate AS OPENDATE, a.open_d AS OPEN_D, a.openreason AS OPENREASON
 			, a.OpenRegion as OPENEDFROM
-			, a.StageRegion as OPENEDTO, a.CLIENTCODE
+			, a.StageRegion as OPENEDTO, a.CLIENTCODE, a.contractcode
 			, a.closedate AS CLOSEDATE, a.close_d AS CLOSE_D, a.CloseRegion as CLOSEDBY, a.CloseReason AS CLOSEREASON
 			, a.firstcomment AS FIRSTCOMMENT, a.lastcomment AS LASTCOMMENT
 			, a.tkt_alldays AS TKT_ALLDAYS, a.tkt_workdays AS TKT_WORKDAYS, a.tkt_workdays2 AS TKT_WORKDAYS2
@@ -330,7 +330,7 @@ drop table if exists rcbill_my.rep_tkt_irs_level2;
 create table rcbill_my.rep_tkt_irs_level2(index idxrtfl1(open_d),index idxrtfl11(ISLAND),index idxrtfl2(openreason),index idxrtfl3(district),index idxrtfl4(subdistrict))
 (
 
-	select OPEN_D, ISLAND, DISTRICT, SUBDISTRICT, OPENREASON, count(TICKETID) as TICKETS, count(distinct CLIENTCODE) as CLIENTS
+	select OPEN_D, ISLAND, DISTRICT, SUBDISTRICT, OPENREASON, count(TICKETID) as TICKETS, count(distinct CLIENTCODE) as CLIENTS, count(distinct contractcode) as CONTRACTS
 	from 
 	(
 		select a.*
@@ -342,7 +342,7 @@ create table rcbill_my.rep_tkt_irs_level2(index idxrtfl1(open_d),index idxrtfl11
 		(
 			select a.ticketid AS TICKETID, a.opendate AS OPENDATE, a.open_d AS OPEN_D, a.openreason AS OPENREASON
 			, a.OpenRegion as OPENEDFROM
-			, a.StageRegion as OPENEDTO, a.CLIENTCODE
+			, a.StageRegion as OPENEDTO, a.CLIENTCODE, a.contractcode
 			, a.closedate AS CLOSEDATE, a.close_d AS CLOSE_D, a.CloseRegion as CLOSEDBY, a.CloseReason AS CLOSEREASON
 			, a.firstcomment AS FIRSTCOMMENT, a.lastcomment AS LASTCOMMENT
 			, a.tkt_alldays AS TKT_ALLDAYS, a.tkt_workdays AS TKT_WORKDAYS, a.tkt_workdays2 AS TKT_WORKDAYS2
@@ -379,7 +379,7 @@ create table rcbill_my.rep_tkt_irs_level3(index idxrtfl1(open_d),index idxrtfl11
 	(
 		select a.ticketid AS TICKETID, a.opendate AS OPENDATE, a.open_d AS OPEN_D, a.openreason AS OPENREASON
         , a.OpenRegion as OPENEDFROM
-		, a.StageRegion as OPENEDTO, a.CLIENTCODE
+		, a.StageRegion as OPENEDTO, a.CLIENTCODE, a.contractcode
 		, a.closedate AS CLOSEDATE, a.close_d AS CLOSE_D, a.CloseRegion as CLOSEDBY, a.CloseReason AS CLOSEREASON
 		, a.firstcomment AS FIRSTCOMMENT, a.lastcomment AS LASTCOMMENT
 		, a.tkt_alldays AS TKT_ALLDAYS, a.tkt_workdays AS TKT_WORKDAYS, a.tkt_workdays2 AS TKT_WORKDAYS2
