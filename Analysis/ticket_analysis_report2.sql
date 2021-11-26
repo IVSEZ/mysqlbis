@@ -1,4 +1,7 @@
 
+
+set @lastdate = (select max(month_all_date) from rcbill_my.month_all_date);
+
 show index from rcbill_my.rep_tkt_irs_level1;
 show index from rcbill_my.rep_tkt_irs_level2;
 show index from rcbill_my.rep_tkt_irs_level3;
@@ -11,8 +14,8 @@ SELECT * FROM rcbill_my.rep_tkt_f_level2 order by OPEN_D desc;
 
 -- select open_d, openreason, count(TICKETID) as tickets, count(distinct CLIENTCODE) as clients from rcbill_my.rep_tkt_irs_level3 group by 1,2 order by 1 desc;
 
-SELECT * FROM rcbill_my.rep_tkt_irs_level3 where open_d='2021-11-10' order by OPENDATE desc;
-SELECT * FROM rcbill_my.rep_tkt_f_level3 where open_d='2021-11-10'  order by OPENDATE desc;
+SELECT * FROM rcbill_my.rep_tkt_irs_level3 where open_d=@lastdate order by OPENDATE desc;
+SELECT * FROM rcbill_my.rep_tkt_f_level3 where open_d=@lastdate  order by OPENDATE desc;
 
 select * from rcbill_my.clientticketsnapshot_irs where ticketid=1023258;
 select * from rcbill_my.clientticketsnapshot_f where ticketid=1023258;
