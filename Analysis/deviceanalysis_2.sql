@@ -46,7 +46,7 @@ order by 2 desc
   on a.mac_prefix=b.macprefix
   ;
   
-select a.* from rcbill_my.rep_clientcontractdevices a;
+select a.* from rcbill_my.rep_clientcontractdevices a where mac_prefix='0C:56:5C';
 
 select MAC_VENDOR, MAC_PREFIX, DEVICE_NAME, GATEKEEPER_NAME, count(distinct client_code) as d_clients, count(distinct contract_code) as d_contracts
 from rcbill_my.rep_clientcontractdevices
