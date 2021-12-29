@@ -47,3 +47,4 @@ CREATE INDEX IDXDS2
 ON dailysales (Contract);
 
 SHOW INDEX FROM dailysales;
+

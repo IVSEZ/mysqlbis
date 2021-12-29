@@ -10,4 +10,5 @@ select * from rcbill_my.customers_contracts_collection_pivot where clientcode=@c
 select * from rcbill_my.customers_collection where ClientCode=@clientcode;
 
 show index from rcbill.rcb_casa ;
-select * from rcbill.rcb_casa a where a.CLID in (select rcbill.GetClientID(@clientcode)) and a.CID in (select rcbill.GetContractID(@contractcode));
+select * from rcbill.rcb_casa a 
+where a.CLID in (select rcbill.GetClientID(@clientcode)) and a.CID in (select rcbill.GetContractID(@contractcode));

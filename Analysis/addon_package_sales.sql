@@ -4,20 +4,47 @@
 -- set @package='INTELENOVELA';
 SET @row_number = 0;
 
-SET @startdate='2019-01-01';
+SET @startdate='2018-01-01';
 -- select @startdate := subdate(current_date(),1);
 
 
 -- select @enddate := subdate(current_date(),1);
-SET @enddate='2021-10-31';
+SET @enddate='2018-12-31';
 
 SET @lastdate = (select max(month_all_date) from rcbill_my.month_all_date);
+
 
 
 -- set @package='INTELENOVELA';
 -- set @package='DUALVIEW';
 -- set @package='MULTIVIEW';
 SET @package='VOD';
+
+-- show index from rcbill_my.customercontractactivity ;
+-- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
+
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region
+, a.firstactive, a.lastactive 
+, case when a.lastactive=@lastdate then 'ACTIVE' else 'INACTIVE' end as `active_status`
+from 
+(
+	select clientcode, clientclass, clienttype, min(period) as firstactive, max(period) as lastactive, region
+	from rcbill_my.customercontractactivity 
+	where 
+	clientcode in 
+    (
+		select distinct clientcode from rcbill_my.customercontractactivity where reported='Y' and period>=@startdate and period<=@enddate
+		and package=@package
+    )
+	and package=@package
+
+	group by clientcode
+	order by 4 desc
+) a
+where a.firstactive>=@startdate
+;
+
+SET @package='INTELENOVELA';
 
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
 
@@ -42,35 +69,16 @@ from
 where a.firstactive>=@startdate
 ;
 
-SET @package='INTELENOVELA';
-
--- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
-
-select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region, a.firstactive from 
-(
-	select clientcode, clientclass, clienttype, min(period) as firstactive, region
-	from rcbill_my.customercontractactivity 
-	where 
-	clientcode in 
-    (
-		select distinct clientcode from rcbill_my.customercontractactivity where reported='Y' and period>=@startdate and period<=@enddate
-		and upper(package)=@package
-    )
-	and upper(package)=@package
-
-	group by clientcode
-	order by 4 desc
-) a
-where a.firstactive>=@startdate
-;
-
 SET @package='DUALVIEW';
 
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
 
-select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region, a.firstactive from 
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region
+, a.firstactive, a.lastactive 
+, case when a.lastactive=@lastdate then 'ACTIVE' else 'INACTIVE' end as `active_status`
+from 
 (
-	select clientcode, clientclass, clienttype, min(period) as firstactive, region
+	select clientcode, clientclass, clienttype, min(period) as firstactive, max(period) as lastactive, region
 	from rcbill_my.customercontractactivity 
 	where 
 	clientcode in 
@@ -89,9 +97,12 @@ where a.firstactive>=@startdate
 SET @package='MULTIVIEW';
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
 
-select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region, a.firstactive from 
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region
+, a.firstactive, a.lastactive 
+, case when a.lastactive=@lastdate then 'ACTIVE' else 'INACTIVE' end as `active_status`
+from 
 (
-	select clientcode, clientclass, clienttype, min(period) as firstactive, region
+	select clientcode, clientclass, clienttype, min(period) as firstactive, max(period) as lastactive, region
 	from rcbill_my.customercontractactivity 
 	where 
 	clientcode in 
@@ -111,9 +122,12 @@ SET @package='IGO';
 
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;
 
-select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region, a.firstactive from 
+select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as clientname, a.clientclass, a.clienttype, a.region
+, a.firstactive, a.lastactive 
+, case when a.lastactive=@lastdate then 'ACTIVE' else 'INACTIVE' end as `active_status`
+from 
 (
-	select clientcode, clientclass, clienttype, min(period) as firstactive, region
+	select clientcode, clientclass, clienttype, min(period) as firstactive, max(period) as lastactive, region
 	from rcbill_my.customercontractactivity 
 	where 
 	clientcode in 
@@ -128,6 +142,7 @@ select @package as Package, a.clientcode, rcbill.GetClientName(a.clientcode) as 
 ) a
 where a.firstactive>=@startdate
 ;
+
 
 SET @package='INDIAN';
 -- select distinct clientcode from rcbill_my.customercontractsnapshot where package=@package and firstcontractdate>=@startdate and lastcontractdate<=@enddate;

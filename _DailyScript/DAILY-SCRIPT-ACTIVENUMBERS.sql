@@ -11,7 +11,7 @@ use rcbill_my;
 -- SET @rundate='2020-03-01';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-25082019-02092019.csv'
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-09122021.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-28122021.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -153,7 +153,7 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2021-12-06'; SET @perioddate=str_to_date('2021-12-06','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-06;2021-12-06.csv'
 -- 	SET @rundate='2021-12-07'; SET @perioddate=str_to_date('2021-12-07','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-07;2021-12-07.csv'
 -- 	SET @rundate='2021-12-08'; SET @perioddate=str_to_date('2021-12-08','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-08;2021-12-08.csv'
- 	SET @rundate='2021-12-09'; SET @perioddate=str_to_date('2021-12-09','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-09;2021-12-09.csv'
+-- 	SET @rundate='2021-12-09'; SET @perioddate=str_to_date('2021-12-09','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-09;2021-12-09.csv'
 -- 	SET @rundate='2021-12-10'; SET @perioddate=str_to_date('2021-12-10','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-10;2021-12-10.csv'
 -- 	SET @rundate='2021-12-11'; SET @perioddate=str_to_date('2021-12-11','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-11;2021-12-11.csv'
 -- 	SET @rundate='2021-12-12'; SET @perioddate=str_to_date('2021-12-12','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-12;2021-12-12.csv'
@@ -172,7 +172,7 @@ SET SQL_SAFE_UPDATES = 0;
 -- 	SET @rundate='2021-12-25'; SET @perioddate=str_to_date('2021-12-25','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-25;2021-12-25.csv'
 -- 	SET @rundate='2021-12-26'; SET @perioddate=str_to_date('2021-12-26','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-26;2021-12-26.csv'
 -- 	SET @rundate='2021-12-27'; SET @perioddate=str_to_date('2021-12-27','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-27;2021-12-27.csv'
--- 	SET @rundate='2021-12-28'; SET @perioddate=str_to_date('2021-12-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-28;2021-12-28.csv'
+ 	SET @rundate='2021-12-28'; SET @perioddate=str_to_date('2021-12-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-28;2021-12-28.csv'
 -- 	SET @rundate='2021-12-29'; SET @perioddate=str_to_date('2021-12-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-29;2021-12-29.csv'
 -- 	SET @rundate='2021-12-30'; SET @perioddate=str_to_date('2021-12-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-30;2021-12-30.csv'
 -- 	SET @rundate='2021-12-31'; SET @perioddate=str_to_date('2021-12-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2021-12-31;2021-12-31.csv'
@@ -431,6 +431,11 @@ select * from rcbill_my.customercontractactivity where
 period='2020-09-28' and 
 servicecategory2 is null;
 
+
+show index from rcbill_my.customercontractactivity;
+
+
+update rcbill_my.customercontractactivity set package=UPPER(PACKAGE) where clientcode='I.000011750';
 
 */
 

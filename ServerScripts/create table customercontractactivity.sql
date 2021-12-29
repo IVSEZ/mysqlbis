@@ -178,7 +178,15 @@ DROP INDEX `IDXcca3` ON rcbill_my.customercontractactivity;
 CREATE INDEX IDXcca3
 ON rcbill_my.customercontractactivity (period, package);
 
+DROP INDEX `IDXcca1` ON rcbill_my.customercontractactivity;
+CREATE INDEX IDXcca1
+ON rcbill_my.customercontractactivity (reported);
+
+
 show indexes from rcbill_my.customercontractactivity;
+
+### added on 21/10/2021
+CREATE INDEX IDXcca1 ON rcbill_my.customercontractactivity (clientcode, period, servicecategory);
 
 
 SET SQL_SAFE_UPDATES = 0;

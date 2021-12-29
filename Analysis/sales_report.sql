@@ -1,6 +1,7 @@
 -- select * from rcbill_my.customercontractsnapshot where clientcode='I21461';
 
 ## SALES REPORTS
+select * from rcbill_my.dailysales order by ORDERDATE desc;
 select * from rcbill_my.sales order by orderday desc;
 
 select distinct salestype, count(*) from rcbill_my.sales group by salestype;
@@ -19,6 +20,19 @@ order by orderdate desc;
 
 select * from rcbill_my.rep_dailysales where salescenter='Sales' order by orderday desc;
 
+select * from rcbill_my.sales where
+0=0
+and 
+salestype='New Sales'
+and 
+orderstatus='Processed'
+and
+clientcode='I.000000748';
+
+
+select * from rcbill_my.rep_custconsolidated where clientcode='I.000022183';
+
+
 /*
 select * from rcbill_my.rep_dailysalesreg where salescenter='Sales' order by orderday desc;
 select year(orderday) as ordersyear, month(orderday) as ordersmonth, day(orderday) as ordersday,weekday,monthname(orderday) as monthname, ordercount from rcbill_my.rep_dailysales where salescenter='Sales' and salestype='New Sales' order by orderday desc;
@@ -31,15 +45,18 @@ select year(orderday) as ordersyear, month(orderday) as ordersmonth, day(orderda
 */
 #######################################
 
+
+
 select clientcode, month(orderdate) as order_month, year(orderdate) as order_year, orderday
 , salestype , region , orderstatus, weekday, ordermonth
-, count(contractcode) as contracts
+, count(distinct contractcode) as contracts
+, count(distinct servicetype) as services
 
 from rcbill_my.sales
 where 
 length(clientcode)>0 
 and 
-salestype='New Sales'
+salestype in ('New Sales','Secondary Sales')
 and 
 orderstatus='Processed'
 group by 1, 2, 3, 4, 5, 6, 7, 8, 9
@@ -52,26 +69,45 @@ set @orderyear=2019;
 
 set @orderyear=2021;
 
+
+select *
+from rcbill_my.sales
+where 
+length(clientcode)>0 
+and 
+salestype in ('New Sales','Secondary Sales')
+and 
+orderstatus='Processed'
+and 
+year(orderdate)=@orderyear
+;
+
+
+
 select a.*
 -- , b.*
-, b.clientname, b.currentdebt, b.IsAccountActive, b.AccountActivityStage, b.clientclass, b.activenetwork, b.activeservices
+, b.clientname, b.currentdebt, b.IsAccountActive, b.AccountActivityStage, b.clientclass
+, b.activenetwork, b.activeservices
+
 , b.clientaddress, b.clientlocation, b.clean_mxk_name, b.clean_mxk_interface, b.clean_hfc_nodename, b.clean_hfc_node
 , b.firstactivedate, b.lastactivedate, b.dayssincelastactive, b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019, b.TotalPaymentAmount2018, b.AvgMonthlyPayment2018 
 , b.clientarea, b.clientemail
 from 
 (
 	select clientcode, month(orderdate) as order_month, year(orderdate) as order_year, orderday
-	, salestype , region , orderstatus, weekday, ordermonth
-	, count(contractcode) as contracts
+	, salestype , ordertype, region , orderstatus, weekday, ordermonth
+	, count(distinct contractcode) as contracts
+	, count(distinct servicetype) as services
 
 	from rcbill_my.sales
 	where 
 	length(clientcode)>0 
 	and 
-	salestype='New Sales'
+	salestype in ('New Sales','Secondary Sales')
 	and 
 	orderstatus='Processed'
-	group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+    and year(orderdate)=@orderyear
+	group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 ) a 
 left join 
 rcbill_my.rep_custconsolidated b

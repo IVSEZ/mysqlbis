@@ -249,13 +249,13 @@ create table rcbill_maps.IV_PARCELFORMAP_MIX as
 
 select count(*) as 'IV_PARCELFORMAP_MIX' from rcbill_maps.IV_PARCELFORMAP_MIX;
 ##
-/*
 
+/*
 use rcbill_maps;
 
 call sp_ExportGISData();
-
 */
+
 
 
 

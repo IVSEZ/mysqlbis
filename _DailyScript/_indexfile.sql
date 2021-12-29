@@ -12,7 +12,7 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@#mysql 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20211209_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_2021128_1.out
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
@@ -78,6 +78,9 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\budget_actual_analysis_2021.sq
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\reports-sales-addons-prepaid-camera.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\Analysis\addon_package_sales2.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\RCB_ClientAnalyticsReport_Script.sql

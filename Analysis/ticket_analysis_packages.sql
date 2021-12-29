@@ -26,11 +26,37 @@ select
 -- distinct clientcode, month(opendate) as TKT_MONTH, year(OPENDATE) as TKT_YEAR -- , comment
 from rcbill_my.clientticket_cmmtjourney 
 where 
+(comment like '%conversion%')
+-- and 
+-- (comment like '%Approved as per%')
+-- and year(OPENDATE)=2019
+order by 2 desc
+;
+
+select 
+*
+-- distinct clientcode, month(opendate) as TKT_MONTH, year(OPENDATE) as TKT_YEAR -- , comment
+from rcbill_my.clientticket_cmmtjourney 
+where 
 (comment like '%GPON conversion%')
 -- and 
 -- (comment like '%Approved as per%')
 -- and year(OPENDATE)=2019
 ;
+
+	select distinct clientcode, month(opendate) as TKT_MONTH, year(OPENDATE) as TKT_YEAR 
+    from rcbill_my.clientticket_cmmtjourney 
+	where 
+	(comment like '%GPON conversion%')
+	order by 3 desc, 2 desc
+    ;
+    
+	select distinct clientcode, month(opendate) as TKT_MONTH, year(OPENDATE) as TKT_YEAR 
+    from rcbill_my.clientticket_cmmtjourney 
+	where 
+    (comment like '%conversion%')
+	order by 3 desc, 2 desc
+    ;
 
 /*
 ## GPON CONVERSION APPROVAL TICKETS
@@ -61,13 +87,17 @@ inner join
     from rcbill_my.clientticket_cmmtjourney 
 	where 
 	(comment like '%GPON conversion%')
-
+    or
+	(comment like '%conversion%')
+	order by 3 desc, 2 desc
 ) c 
 on a.clientcode=c.clientcode
 left join
 rcbill.rcb_clientparcels b
 on 
 a.CLIENTCODE=b.clientcode
+
+order by 6 desc, 5 desc
 
 /*
 where a.clientcode 
