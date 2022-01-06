@@ -2055,6 +2055,7 @@ select reportdate, clientcode, currentdebt, IsAccountActive, AccountActivityStag
 , activecontracts, activesubscriptions
 , lastactivedate, dayssincelastactive
 , lastinvoicedate, lastpaidamount, lastpaymentdate
+, TotalPaymentAmount2022, AvgMonthlyPayment2022
 , TotalPaymentAmount2021, AvgMonthlyPayment2021
 , TotalPaymentAmount2020, AvgMonthlyPayment2020
 , TotalPaymentAmount2019, AvgMonthlyPayment2019
@@ -2065,9 +2066,11 @@ select reportdate, clientcode, currentdebt, IsAccountActive, AccountActivityStag
 from rcbill_my.rep_custconsolidated a 
 where ClientClass in ('RESIDENTIAL') 
 and ClientCode not in ('I.000015720')
-and TotalPaymentAmount2021>0
+-- and TotalPaymentAmount2021>0
+and TotalPaymentAmount2022>0
 and AccountActivityStage in ('3. Asleep (8 to 30 days)','2. Snoozing (1 to 7 days)','1. Alive')
-order by AvgMonthlyPayment2021 desc
+-- order by AvgMonthlyPayment2021 desc
+order by AvgMonthlyPayment2022 desc
 -- limit 5000
 )
 ;

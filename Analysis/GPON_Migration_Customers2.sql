@@ -26,6 +26,7 @@ select a.*
 		else 'Present' end as `ParcelStatus`
 , b.clean_connection_type
 , b.TotalPaymentAmount
+, b.TotalPaymentAmount2022, b.AvgMonthlyPayment2022
 , b.TotalPaymentAmount2021, b.AvgMonthlyPayment2021
 , b.TotalPaymentAmount2020, b.AvgMonthlyPayment2020
 , b.TotalPaymentAmount2019, b.AvgMonthlyPayment2019

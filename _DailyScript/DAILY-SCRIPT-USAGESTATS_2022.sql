@@ -254,6 +254,8 @@ create table rcbill_my.rep_dailypackageusage2022(index idxrdpu1(usagedate), inde
 
 select count(*) as rep_dailypackageusage2022 from rcbill_my.rep_dailypackageusage2022;
 
+-- select count(*) as rep_dailypackageusage2021 from rcbill_my.rep_dailypackageusage2021;
+
 ######################################################################
 
 /*

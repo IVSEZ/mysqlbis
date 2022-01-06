@@ -32,6 +32,54 @@ where
 ;
 
 
+### GLACIS CUSTOMERS
+
+## only hfc customers
+
+select 
+-- a.*,
+a.reportdate, a.clientcode, a.clientname, a.IsAccountActive as AccountStatus, a.AccountActivityStage
+, a.dayssincelastactive
+, a.activeservices
+, a.lastactivedate, a.firstactivedate
+, a.activenetwork
+, a.clean_connection_type
+, a.currentdebt
+, a.clientemail, a.clientphone
+, a.clientclass, a.clientaddress, a.clientarea as island, a.clientlocation as district, a.subdistrict
+, a.clientparcel, a.latitude, a.longitude
+, case when a.clientparcel is null then 'Not Present'
+		else 'Present' end as `ParcelStatus`
+, a.TotalPaymentAmount
+, a.TotalPaymentAmount2022, a.AvgMonthlyPayment2022
+, a.TotalPaymentAmount2021, a.AvgMonthlyPayment2021
+, a.TotalPaymentAmount2020, a.AvgMonthlyPayment2020
+, a.TotalPaymentAmount2019, a.AvgMonthlyPayment2019
+, a.TotalPaymentAmount2018, a.AvgMonthlyPayment2018 
+
+from rcbill_my.rep_custconsolidated a 
+where
+	( 
+		
+		a.clientaddress like '%glacis%' or a.clientaddress like '%glasic%'  or a.clientaddress like '%glaci%'
+		or
+		a.clientaddress like '%glacis%' or a.clientaddress like '%glasic%' or a.clientaddress like '%la gogue%'  
+		
+		or clientlocation in ('GLACIS')
+
+		or hfc_district in ('GLACIS')
+	)
+    
+    -- AND (activenetwork='HFC' or (clean_connection_type='HFC' and activenetwork<>'GPON'))
+    AND clean_connection_type='HFC' and (activenetwork<>'GPON' or activenetwork is null)
+    
+    AND dayssincelastactive<30
+    -- AND IsAccountActive='Active'
+;
+
+-- select * from rcbill_my.rep_custconsolidated where hfc_district in ('GLACIS');
+
+
 select distinct clientlocation from rcbill_my.rep_custconsolidated;
 select distinct hfc_district from rcbill_my.rep_custconsolidated;
 select distinct clean_mxk_name from rcbill_my.rep_custconsolidated;
@@ -174,7 +222,7 @@ from rcbill_my.cust_cont_payment_cmts_mxk where client_code='I23516' order by CO
 	select a.reportdate, a.currentdebt, a.clientcode, a.clientname, a.clientclass
     -- , c.services,c.network
     , a.activecontracts, a.clientlocation, a.firstactivedate, a.lastactivedate, a.totalpaymentamount
-	,b.*
+	,a.*
     , substring_index(b.mxk_name,'|',-1) as clean_mxk_name
     , substring_index(b.mxk_interface,'|',-1) as clean_mxk_interface
     , substring_index(b.hfc_node,'|',-1) as clean_hfc_node

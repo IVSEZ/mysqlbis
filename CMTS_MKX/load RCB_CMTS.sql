@@ -20,6 +20,7 @@
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20201123-1644.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20210310-1714.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20211217-0941.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\CMTS_List_20210106-1131.csv' 
 
 REPLACE INTO TABLE `rcbill`.`rcb_cmts` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -41,7 +42,8 @@ MAC_ADDRESS=@mac_address ,
 MAC_ADDRESS_CLEAN1=trim(REPLACE (@mac_address, '.', '')),
 
 -- MAC_ADDRESS_CLEAN2=concat(substring(trim(REPLACE (@mac_address, '.', '')),2,2), '.',substring(trim(REPLACE (@mac_address, '.', '')),4,2),'.',substring(REPLACE (@mac_address, '.', ''),6,2),'.',substring(REPLACE (@mac_address, '.', ''),8,2),'.',substring(REPLACE (@mac_address, '.', ''),10,2),'.',substring(REPLACE (@mac_address, '.', ''),12,2)),
-MAC_ADDRESS_CLEAN2=concat(substring(MAC_ADDRESS_CLEAN1,1,2), '.',substring(MAC_ADDRESS_CLEAN1,3,2),'.',substring(MAC_ADDRESS_CLEAN1,5,2),'.',substring(MAC_ADDRESS_CLEAN1,7,2),'.',substring(MAC_ADDRESS_CLEAN1,9,2),'.',substring(MAC_ADDRESS_CLEAN1,11,2)),
+-- MAC_ADDRESS_CLEAN2=concat(substring(MAC_ADDRESS_CLEAN1,1,2), '.',substring(MAC_ADDRESS_CLEAN1,3,2),'.',substring(MAC_ADDRESS_CLEAN1,5,2),'.',substring(MAC_ADDRESS_CLEAN1,7,2),'.',substring(MAC_ADDRESS_CLEAN1,9,2),'.',substring(MAC_ADDRESS_CLEAN1,11,2)),
+MAC_ADDRESS_CLEAN2=concat(substring(MAC_ADDRESS_CLEAN1,1,2), ':',substring(MAC_ADDRESS_CLEAN1,3,2),':',substring(MAC_ADDRESS_CLEAN1,5,2),':',substring(MAC_ADDRESS_CLEAN1,7,2),':',substring(MAC_ADDRESS_CLEAN1,9,2),':',substring(MAC_ADDRESS_CLEAN1,11,2)),
 IP_ADDRESS=@ip_address ,
 HFC_NODE=@hfc_node ,
 MAC_STATE=@mac_state ,
@@ -76,6 +78,9 @@ order by 1, 2 desc
 /*
 
 SET SQL_SAFE_UPDATES = 0;
+
+delete from rcbill.rcb_cmts where date(insertedon)='2022-01-06';
+
 delete from rcbill.rcb_cmts where date(insertedon)='2020-11-23' and mac_address='';
 delete from rcbill.rcb_cmts where date(insertedon)='2020-11-23' and mac_address='MAC';
 

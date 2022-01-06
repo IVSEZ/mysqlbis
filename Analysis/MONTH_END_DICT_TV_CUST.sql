@@ -50,7 +50,11 @@
 -- set @period='2021-06-30';
 -- set @period='2021-07-31';
 -- set @period='2021-08-31';
- set @period='2021-09-30';
+-- set @period='2021-09-30';
+-- set @period='2021-10-31';
+-- set @period='2021-11-30';
+ set @period='2021-12-31';
+
 
 call rcbill_my.sp_filllastdates('2016-05-31',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
 call rcbill_my.sp_fillalldates('2016-05-01',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
@@ -117,13 +121,15 @@ select servicecategory, package
 -- , `20200430`, `20200531`, `20200630`
 -- , `20200731`, `20200831`, `20200930`
 -- , `20201031`, `20201130`, `20201231`
-, `20210131`, `20210228`, `20210331`
-, `20210430`, `20210531`, `20210630`
+-- , `20210131`, `20210228`, `20210331`
+-- , `20210430`, `20210531`, `20210630`
 , `20210731`, `20210831`, `20210930`
+, `20211031`, `20211130`, `20211231`
 
  from rcbill_my.rep_activenumberlastday_pv;
 
 select servicecategory
+/*
 , sum(`20161231`)
 , sum(`20171231`)
 , sum(`20181231`)
@@ -135,9 +141,13 @@ select servicecategory
 , sum(`20210430`)
 , sum(`20210531`)
 , sum(`20210630`)
+*/
 , sum(`20210731`)
 , sum(`20210831`)
 , sum(`20210930`)
+, sum(`20211031`)
+, sum(`20211130`)
+, sum(`20211231`)
  from rcbill_my.rep_activenumberlastday_pv
  group by servicecategory
  ;
@@ -406,6 +416,23 @@ where 0=0
 -- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
 ;
 
+set @message = 'VOICE - RESIDENTIAL';
+select @period AS period, clientcode, clientclass, package, subscriptions
+from 
+(
+	select clientcode, clientclass, group_concat(package order by package separator '|') as package, count(*) as subscriptions
+    from rcbill_my.customercontractactivity 
+    where period=@period and REPORTED='Y'
+	and clientclass in ('Residential','VIP','Standing Order','Employee','Prepaid','Corporate Bundle','Corporate Bulk','Corporate')
+	and servicecategory='VOICE'
+    group by clientcode, clientclass
+	order by 4 desc
+
+) a 
+where 0=0 
+-- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
+;
+
 set @message = 'VOICE - BUSINESS';
 select @period AS period, clientcode, clientclass, package, subscriptions
 from 
@@ -423,22 +450,6 @@ where 0=0
 -- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
 ;
 
-set @message = 'VOICE - RESIDENTIAL';
-select @period AS period, clientcode, clientclass, package, subscriptions
-from 
-(
-	select clientcode, clientclass, group_concat(package order by package separator '|') as package, count(*) as subscriptions
-    from rcbill_my.customercontractactivity 
-    where period=@period and REPORTED='Y'
-	and clientclass in ('Residential','VIP','Standing Order','Employee','Prepaid','Corporate Bundle','Corporate Bulk','Corporate')
-	and servicecategory='VOICE'
-    group by clientcode, clientclass
-	order by 4 desc
-
-) a 
-where 0=0 
--- upper(package) like '%EXTRAVAGANCE%' and upper(package) like '%FRENCH%' and upper(package) like '%INDIAN%'
-;
 
 
 ##################################################
