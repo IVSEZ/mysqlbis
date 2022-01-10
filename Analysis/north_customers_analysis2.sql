@@ -37,7 +37,7 @@ where
 ## only hfc customers
 
 select 
--- a.*,
+ a.*,
 a.reportdate, a.clientcode, a.clientname, a.IsAccountActive as AccountStatus, a.AccountActivityStage
 , a.dayssincelastactive
 , a.activeservices
@@ -48,6 +48,7 @@ a.reportdate, a.clientcode, a.clientname, a.IsAccountActive as AccountStatus, a.
 , a.clientemail, a.clientphone
 , a.clientclass, a.clientaddress, a.clientarea as island, a.clientlocation as district, a.subdistrict
 , a.clientparcel, a.latitude, a.longitude
+
 , case when a.clientparcel is null then 'Not Present'
 		else 'Present' end as `ParcelStatus`
 , a.TotalPaymentAmount
