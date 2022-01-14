@@ -59,6 +59,56 @@ select *
 , TIMESTAMPDIFF(SECOND, ASSGN_OPENDATE, ASSGN_CLOSEDATE) as SECONDS_OPEN
 , TIMESTAMPDIFF(MINUTE, ASSGN_OPENDATE, ASSGN_CLOSEDATE) as MINUTES_OPEN
 
+/*
+
+## https://stackoverflow.com/questions/35760696/mysql-average-difference-between-timestamps-excluding-weekends-and-out-of-bus
+
+SELECT 
+  clients.name
+, AVG(45 * (DATEDIFF(jobs.time_updated, jobs.time_created) DIV 7) + 
+          9 * MID('0123455501234445012333450122234501101234000123450', 
+                  7 * WEEKDAY(jobs.time_created) + WEEKDAY(jobs.time_updated) + 1, 1) + 
+          TIMESTAMPDIFF(HOUR, DATE(jobs.time_updated), jobs.time_updated) - 
+          TIMESTAMPDIFF(HOUR, DATE(jobs.time_created), jobs.time_created)) AS average_response
+, AVG(45 * (DATEDIFF(jobs.time_closed, jobs.time_created) DIV 7) + 
+          9 * MID('0123455501234445012333450122234501101234000123450', 
+                  7 * WEEKDAY(jobs.time_created) + WEEKDAY(jobs.time_closed) + 1, 1) + 
+          TIMESTAMPDIFF(HOUR, DATE(jobs.time_closed), jobs.time_closed) - 
+          TIMESTAMPDIFF(HOUR, DATE(jobs.time_created), jobs.time_created)) AS average_closure
+, COUNT(jobs.id) AS ticket_count 
+, SUM(time_total) AS time_spent 
+FROM jobs
+LEFT JOIN clients ON jobs.client = clients.id 
+WHERE jobs.status = 'closed' 
+GROUP BY jobs.client
+
+*/
+
+/*
+## code in ticket analysis
+			, (5 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123444401233334012222340111123400001234000123440', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays
+			-- , (5 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345000123450', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2
+
+			## commented on 11/01/2022 and updated with new code
+			-- , (6 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345011234560', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2
+            , (6 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345000123450', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2
+
+
+
+*/
+
+, AVG(45 * (DATEDIFF(ASSGN_CLOSEDATE, ASSGN_OPENDATE) DIV 7) + 
+          9 * MID('0123444401233334012222340111123400001234000123440', 
+                  7 * WEEKDAY(ASSGN_OPENDATE) + WEEKDAY(ASSGN_CLOSEDATE) + 1, 1) + 
+          TIMESTAMPDIFF(HOUR, DATE(ASSGN_CLOSEDATE), ASSGN_CLOSEDATE) - 
+          TIMESTAMPDIFF(HOUR, DATE(ASSGN_OPENDATE), ASSGN_OPENDATE)) AS average_response5DayWeek
+, AVG(45 * (DATEDIFF(ASSGN_CLOSEDATE, ASSGN_OPENDATE) DIV 7) + 
+          9 * MID('0123455501234445012333450122234501112345000123450', 
+                  7 * WEEKDAY(ASSGN_OPENDATE) + WEEKDAY(ASSGN_CLOSEDATE) + 1, 1) + 
+          TIMESTAMPDIFF(HOUR, DATE(ASSGN_CLOSEDATE), ASSGN_CLOSEDATE) - 
+          TIMESTAMPDIFF(HOUR, DATE(ASSGN_OPENDATE), ASSGN_OPENDATE)) AS average_response6DayWeek
+
+
 
 from rcbill_my.clientticket_assgnjourney 
 where 0=0

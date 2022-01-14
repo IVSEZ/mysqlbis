@@ -131,7 +131,12 @@ as
 			, datediff(a.closedate,a.opendate) as tkt_alldays
 			, (5 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123444401233334012222340111123400001234000123440', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays
 			-- , (5 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345000123450', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2
-			, (6 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345011234560', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2
+
+			## commented on 11/01/2022 and updated with new code
+			-- , (6 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345011234560', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2
+            , (6 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345000123450', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2
+
+
 	from 
 	(
 		select distinct ticketid, clientcode, contractcode, trim(upper(tickettype)) as TicketType, trim(upper(openreason)) as OpenReason
@@ -295,8 +300,14 @@ select @rundate as ReportDate, a.*
 		, datediff(a.closedate,a.opendate) as tkt_alldays
 		, (5 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123444401233334012222340111123400001234000123440', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays
 		-- , (5 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345000123450', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2
-		, (6 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345011234560', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2
+
+        ## commented on 11/01/2022 and updated with new code
+		-- , (6 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345011234560', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2
+		, (6 * (DATEDIFF(a.closedate,a.opendate) DIV 7) + MID('0123455501234445012333450122234501112345000123450', 7 * WEEKDAY(a.opendate) + WEEKDAY(a.closedate) + 1, 1)) as tkt_workdays2
 		-- , ((DATEDIFF(a.closedate, a.opendate)) - ((WEEK(a.closedate) - WEEK(a.opendate)) * 2) - (case when weekday(a.closedate) = 6 then 1 else 0 end) - (case when weekday(a.opendate) = 5 then 1 else 0 end))-- - (SELECT COUNT(*) FROM holidays WHERE holiday>=a.opendate and holiday<=a.closedate))
+		
+
+
 
 from a
 left join
@@ -422,8 +433,11 @@ create table rcbill_my.clientticket_assgnjourney as
 	, datediff(a.ASSGN_CLOSEDATE,a.ASSGN_OPENDATE) as tkt_alldays
 	, (5 * (DATEDIFF(a.ASSGN_CLOSEDATE,a.ASSGN_OPENDATE) DIV 7) + MID('0123444401233334012222340111123400001234000123440', 7 * WEEKDAY(a.ASSGN_OPENDATE) + WEEKDAY(a.ASSGN_CLOSEDATE) + 1, 1)) as tkt_workdays
 	-- , (5 * (DATEDIFF(a.ASSGN_CLOSEDATE,a.ASSGN_OPENDATE) DIV 7) + MID('0123455501234445012333450122234501112345000123450', 7 * WEEKDAY(a.ASSGN_OPENDATE) + WEEKDAY(a.ASSGN_CLOSEDATE) + 1, 1)) as tkt_workdays2
-	, (6 * (DATEDIFF(a.ASSGN_CLOSEDATE,a.ASSGN_OPENDATE) DIV 7) + MID('0123455501234445012333450122234501112345011234560', 7 * WEEKDAY(a.ASSGN_OPENDATE) + WEEKDAY(a.ASSGN_CLOSEDATE) + 1, 1)) as tkt_workdays2
-	
+
+    ## commented on 11/01/2022 and updated with new code
+	-- , (6 * (DATEDIFF(a.ASSGN_CLOSEDATE,a.ASSGN_OPENDATE) DIV 7) + MID('0123455501234445012333450122234501112345011234560', 7 * WEEKDAY(a.ASSGN_OPENDATE) + WEEKDAY(a.ASSGN_CLOSEDATE) + 1, 1)) as tkt_workdays2
+	, (6 * (DATEDIFF(a.ASSGN_CLOSEDATE,a.ASSGN_OPENDATE) DIV 7) + MID('0123455501234445012333450122234501112345000123450', 7 * WEEKDAY(a.ASSGN_OPENDATE) + WEEKDAY(a.ASSGN_CLOSEDATE) + 1, 1)) as tkt_workdays2
+
     -- , ((DATEDIFF(a.ASSGN_CLOSEDATE, a.ASSGN_OPENDATE)) - ((WEEK(a.ASSGN_CLOSEDATE) - WEEK(a.ASSGN_OPENDATE)) * 2) - (case when weekday(a.ASSGN_CLOSEDATE) = 6 then 1 else 0 end) - (case when weekday(a.ASSGN_OPENDATE) = 5 then 1 else 0 end)) as tkt_workdays3-- - (SELECT COUNT(*) FROM holidays WHERE holiday>=a.opendate and holiday<=a.closedate))
 	
     
