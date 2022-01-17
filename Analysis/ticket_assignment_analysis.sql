@@ -2,10 +2,12 @@ select *, `name` from rcbill.rcb_tickettechregions where TECHDEPTID is not null 
 
 select * from rcbill.rcb_tickettechusers;
 
-set @dept = 'Approvals';
+-- set @dept = 'Approvals';
 -- set @dept = 'Technical - New Installations';
-set @mth = 01;
-set @yr = 2022;
+set @dept = 'Call Center';
+-- set @dept = 'NOC';
+set @mth = 12;
+set @yr = 2021;
 set @workinghours = 8;
 
 
@@ -56,10 +58,19 @@ order by 4 desc, 3 desc
 ;
 
 
-Select rcbill_my.workday_time_diff_holidays('SC','2021-06-10 12:00:00','2021-06-14 14:00:00','09:00','16:00');
+Select rcbill_my.workday_time_diff_holidays('SC','2021-06-10 12:00:00','2021-06-10 14:00:00','09:00','16:00');
 
 select *
-, rcbill_my.workday_time_diff_holidays('SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,'08:00','17:00')
+, rcbill_my.workday_time_diff_holidays('SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,'08:00','17:00') AS working_minutes
+, (rcbill_my.workday_time_diff_holidays('SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,'08:00','17:00')/60) AS working_hours
+, rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)) as shift_timings
+, rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',1) as start_time
+, rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',2) as end_time
+
+, rcbill_my.workday_time_diff_holidays('SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',1),rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',2)) AS working_minutes
+, (rcbill_my.workday_time_diff_holidays('SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',1),rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',2))/60) AS working_hours
+
+
 
 from 
 rcbill_my.clientticket_assgnjourney 

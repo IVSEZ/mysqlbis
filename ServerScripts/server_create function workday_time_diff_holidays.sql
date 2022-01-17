@@ -1,3 +1,21 @@
+/*
+
+## https://mgw.dumatics.com/mysql-function-to-calculate-elapsed-working-time/
+
+
+## To get number of minutes
+Select `WORKDAY_TIME_DIFF_HOLIDAY_TABLE`('UK','2016-06-10 12:00:00','2016-06-14 14:00:00','09:00','16:00');
+
+## To get number of hours
+Select `WORKDAY_TIME_DIFF_HOLIDAY_TABLE`('UK','2016-06-10 12:00:00','2016-06-14 14:00:00','09:00','16:00')/60;
+
+## To get in number of working days
+Select (`WORKDAY_TIME_DIFF_HOLIDAY_TABLE`('UK','2016-06-10 12:00:00','2016-06-14 14:00:00','09:00','16:00')/60)/(substring_index('16:00',':',1)-substring_index('09:00',':',1));
+
+
+*/
+
+
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `workday_time_diff_holidays`(
 `param_country` varchar(10), 
