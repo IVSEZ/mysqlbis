@@ -56,10 +56,11 @@ order by 4 desc, 3 desc
 ;
 
 
+Select rcbill_my.workday_time_diff_holidays('SC','2021-06-10 12:00:00','2021-06-14 14:00:00','09:00','16:00');
+
 select *
-, (DATEDIFF(ASSGN_CLOSEDATE, ASSGN_OPENDATE) DIV 7)
-, WEEKDAY(ASSGN_OPENDATE)
-, WEEKDAY(ASSGN_CLOSEDATE)
+, rcbill_my.workday_time_diff_holidays('SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,'08:00','17:00')
+
 from 
 rcbill_my.clientticket_assgnjourney 
 where 0=0
