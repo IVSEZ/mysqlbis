@@ -59,6 +59,8 @@ select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(inserte
 select * from rcbill.rcb_clientparcelcoords where latitude = 0 and date(insertedon)=((select max(date(insertedon)) from rcbill.rcb_clientparcelcoords));
 
 
+-- SElect * from rcbill_my.rep
+
 ####### parcel extract for maps
 select a.latitude as lat, a.longitude as lng
 -- , concat(a.clientcode, ':', a.clientname, '[',a.clientparcel,']') as `name`
