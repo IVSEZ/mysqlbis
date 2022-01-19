@@ -2854,6 +2854,8 @@ create table rcbill_extract.IV_BALANCE(index idxbal1(SERVICEINSTANCENUMBER),inde
 -- REP_EXTRACT TABLE NEEDS TO BE READY
 -- BILLING ACCOUNT TABLE NEEDS TO BE READY
 -- rcbill.clientcontractinvpmt NEEDS TO BE READY
+-- CUSTOMERDEBT
+select 'CUSTOMERDEBT' AS TABLENAME;
 
 drop table if exists rcbill_extract.CUSTOMERDEBT;
 
@@ -2915,6 +2917,8 @@ create table rcbill_extract.CUSTOMERDEBT
 
 
 -- CREDIT NOTE
+select 'IV_CREDITNOTE' AS TABLENAME;
+
 drop table if exists rcbill_extract.IV_CREDITNOTE;
 
 create table rcbill_extract.IV_CREDITNOTE
@@ -2927,6 +2931,8 @@ create table rcbill_extract.IV_CREDITNOTE
 
 
 -- DEBIT NOTE
+
+select 'IV_DEBITNOTE' AS TABLENAME;
 
 drop table if exists rcbill_extract.IV_DEBITNOTE;
 
