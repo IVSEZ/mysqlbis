@@ -99,9 +99,15 @@ is a holiday and set the holiday flag*/
 				Select concat(@nextdate,' ',@starttime) into @timevar1;
 				SELECT CONCAT(@nextdate, ' ', @endtime) INTO @timevar2;
 			end if;
-		#raw code - 19012022
-        else
-			if (@count = @fixcount) then #Check if it is first run.ie. if nextdate is assigneddate
+
+			SELECT 
+				LEAST(Greatest(((TIME_TO_SEC(TIMEDIFF(@timevar2, @timevar1))) / 3600),0),@maxhoursaday) 
+				INTO @timecounttemp;
+					
+					Set @timecount = @timecounttemp + @timecount;
+		
+        elseif(@dept_flag=1) then
+ 			if (@count = @fixcount) then #Check if it is first run.ie. if nextdate is assigneddate
 				Set @timevar1 = @assigneddate; #assign assigndate to variable timevar1
 				SELECT CONCAT(SUBSTRING_INDEX(@assigneddate, ' ', 1), ' ',@endtime) INTO @timevar2;#get site closing time on assigned date and store it on to timevar2
 			elseif (@count = 0) then #if the date in nextdate variable is closeddate then do the following otherwise proceed
@@ -111,13 +117,14 @@ is a holiday and set the holiday flag*/
 				Select concat(@nextdate,' ',@starttime) into @timevar1;
 				SELECT CONCAT(@nextdate, ' ', @endtime) INTO @timevar2;
 			end if;
-		end if;
-	SELECT 
-        LEAST(Greatest(((TIME_TO_SEC(TIMEDIFF(@timevar2, @timevar1))) / 3600),0),@maxhoursaday) 
-        INTO @timecounttemp;
-            
-			Set @timecount = @timecounttemp + @timecount;
-		end if;
+
+			SELECT 
+				LEAST(Greatest(((TIME_TO_SEC(TIMEDIFF(@timevar2, @timevar1))) / 3600),0),@maxhoursaday) 
+				INTO @timecounttemp;
+					
+					Set @timecount = @timecounttemp + @timecount;       
+        
+        end if;
         Set @timevar1 = @nextdate;
         SELECT 
         ADDDATE(SUBSTRING_INDEX(@timevar1, ' ', 1),1) 
@@ -131,7 +138,7 @@ else
     if (@dept_flag=0 and @weekday<5 and @holidayflag=0) then #Proceed if the date in assigneddate variable is neither weekend nor a holiday
         SELECT Least(Greatest(((TIME_TO_SEC(TIMEDIFF(@closeddate, @assigneddate))) / 3600),0),@maxhoursaday) INTO @timecount;
 	#raw code - 19012022
-	else if (@dept_flag=1) then 
+	elseif(@dept_flag=1) then 
 		SELECT Least(Greatest(((TIME_TO_SEC(TIMEDIFF(@closeddate, @assigneddate))) / 3600),0),@maxhoursaday) INTO @timecount;
 	else
         Set @timecount = 0;
