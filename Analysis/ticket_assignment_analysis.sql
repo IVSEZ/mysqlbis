@@ -2,11 +2,12 @@ select *, `name` from rcbill.rcb_tickettechregions where TECHDEPTID is not null 
 
 select * from rcbill.rcb_tickettechusers;
 
-select * from rcbill_my.holidays;
+select * from rcbill_my.holidays order by HOLIDAY_DATE desc;
 
 -- set @dept = 'Approvals';
 -- set @dept = 'Technical - New Installations';
- set @dept = 'Call Center';
+set @dept = 'Tech Support';
+-- set @dept = 'Call Center';
 -- set @dept = 'NOC';
 set @mth = 12;
 set @yr = 2021;
@@ -35,8 +36,8 @@ ticketid, OPENDATE, openuser, openreason, CLOSEDATE, closeuser, closereason, cli
 
 , dayname(ASSGN_OPENDATE) as OPEN_DAY
 , dayname(ASSGN_CLOSEDATE) as CLOSE_DAY
-, (select HOLIDAY_NAME from rcbill_my.holidays where COUNTRY_CODE='SC' and date(HOLIDAY_DATE)=date(ASSGN_OPENDATE) ) as OPEN_HOLIDAY
-, (select HOLIDAY_NAME from rcbill_my.holidays where COUNTRY_CODE='SC' and date(HOLIDAY_DATE)=date(ASSGN_CLOSEDATE) ) as CLOSE_HOLIDAY
+, (select HOLIDAY_NAME from rcbill_my.holidays where COUNTRY_CODE='SC' and (HOLIDAY_DATE)=date(ASSGN_OPENDATE) ) as OPEN_HOLIDAY
+, (select HOLIDAY_NAME from rcbill_my.holidays where COUNTRY_CODE='SC' and (HOLIDAY_DATE)=date(ASSGN_CLOSEDATE) ) as CLOSE_HOLIDAY
 
 from 
 rcbill_my.clientticket_assgnjourney 
