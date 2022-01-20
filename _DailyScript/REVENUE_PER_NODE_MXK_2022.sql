@@ -412,7 +412,7 @@ create table rcbill_my.tempcustcmts1 as
 );
 
 select 'created rcbill_my.tempcustcmts1' as message;
--- select * from a
+-- select * from a\
 -- select * from c
 -- select * from rcbill_my.tempcustcmts1;
 

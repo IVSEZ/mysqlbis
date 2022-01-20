@@ -12,7 +12,7 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@#mysql 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20220118_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20220119_1.out
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
@@ -53,9 +53,6 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-CREATE-LOAD.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\ticket_analysis.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
-
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\load_DailyCalls.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
@@ -92,6 +89,8 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\housing-estate-analysis.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\ticket_analysis.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\Analysis\service_tickets_assignments2022.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
