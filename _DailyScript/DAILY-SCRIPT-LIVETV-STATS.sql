@@ -10,15 +10,28 @@ use rcbill;
 -- select max(date(sessionstart)) from rcbill.rcb_livetvtelemetry;
 -- select max(date(sessionstart)) from rcbill.clientlivetvstats;
 
+/*
+set sql_safe_updates=0;
+
+delete from rcbill.clientlivetvstats where sessionstart>'2022-01-15 23:59:59';
+delete from rcbill_my.rep_livetvhourlystats where sessiondate>'2022-01-15';
+delete from rcbill_my.rep_livetvhourlypivot where sessiondate>'2022-01-15';
+delete from rcbill_my.rep_livetvstats where view_date>'2022-01-15';
+
+*/
+
+
+
+
 
 -- FIRST TIME
 
 
 drop table if exists rcbill.templivetv;
 CREATE TABLE rcbill.templivetv 
-(INDEX idxtv1 (device), index idxtv2(sessionstart)) as 
+(INDEX idxtv1 (device), index idxtv2(sessionstart), index idxtv3(sessiondate)) as 
 (
-	select a.device,a.duration,trim(upper(a.resource)) as resource,a.sessionstart,a.subscriber
+	select a.device,a.duration,trim(upper(a.resource)) as resource,a.sessionstart, a.subscriber, date(a.SESSIONSTART) as sessiondate
 	-- ,b.originaltitle,b.imdbtitleref
 	from
 	rcbill.rcb_livetvtelemetry a 
@@ -95,6 +108,11 @@ create index IDXclts4 on rcbill.clientlivetvstats(sessionstart);
 drop index IDXclts4 on rcbill.clientlivetvstats;
 
 
+create index IDXclts3 on rcbill.clientlivetvstats(sessiondate);
+
+
+drop index IDXclts3 on rcbill.clientlivetvstats;
+
 ALTER TABLE rcbill.clientlivetvstats
 ADD COLUMN sessiondate DATE NULL;
 
@@ -118,13 +136,18 @@ set sql_safe_updates=0;
 UPDATE  rcbill.clientlivetvstats
 SET sessionyear = year(sessiondate);
 
+delete from rcbill.clientlivetvstats where sessionstart>'2022-01-19 23:59:59';
 
+show index from  rcbill.clientlivetvstats;
 
+show columns from rcbill.templivetv;
+show columns from rcbill.clientlivetvstats;
 */
+
 
 insert into rcbill.clientlivetvstats
 (
-	select a.*, date(a.sessionstart) as sessiondate, year(a.sessionstart) as sessionyear, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
+	select a.*, year(a.sessionstart) as sessionyear, b.clientcode, b.clientname, b.contractcode, b.mac , b.phoneno
 	from 
 	rcbill.templivetv a 
 	inner join 
@@ -140,7 +163,7 @@ insert into rcbill.clientlivetvstats
 -- select * from rcbill.clientlivetvstats where date(sessionstart)='2020-12-31'
 
 -- select *, year(sessionstart) from rcbill.clientlivetvstats order by sessionstart desc limit 100;
--- select * from rcbill.clientlivetvstats order by sessionstart desc limit 100;
+-- select * from rcbill.clientlivetvstats order by sessionstart desc limit 200000;
 
 
 -- order by insertedon desc limit 10000
@@ -240,8 +263,8 @@ insert into rcbill_my.rep_livetvhourlystats
 	, count(DISTINCT DEVICE) as SUBSCRIBERS
     from rcbill.templivetv
     where 
-    (date(SESSIONSTART) > (select max(SESSIONDATE) from rcbill_my.rep_livetvhourlystats))
-    and (date(SESSIONSTART) is not null)
+    (sessiondate > (select max(SESSIONDATE) from rcbill_my.rep_livetvhourlystats))
+    and (sessiondate is not null)
     group by 1,2,3
 );
 
@@ -395,12 +418,16 @@ create table rcbill_my.rep_livetvstats2019 as
 
 select * from rcbill_my.rep_livetvstats2019;
 
+show index from rcbill.clientlivetvstats;
+select sessionstart from rcbill.clientlivetvstats where year(sessionstart)=2019;
 */
 
 
 
-
 -- MOST WATCHED TS CHANNELS PER DAY
+/*
+## first time
+
 drop table if exists rcbill_my.rep_livetvstats;
 
 create table rcbill_my.rep_livetvstats as
@@ -412,12 +439,46 @@ create table rcbill_my.rep_livetvstats as
 	-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
 	from rcbill.clientlivetvstats
     -- where year(sessionstart)=year(now())
+    -- where sessiondate >(select max(view_date) from rcbill_my.rep_livetvstats)
     where year(sessionstart)>2019
+    -- where sessionstart>='2019-01-01 00:00:00'
 	group by 1,2,3,4,5
 	-- order by 3 desc,2 desc,1 desc,5 desc
     order by 1 asc
 )
 ;
+
+show index from rcbill_my.rep_livetvstats;
+create index IDXrlts1 on rcbill_my.rep_livetvstats(view_date);
+-- view_date
+
+*/
+-- show columns from rcbill.clientlivetvstats;
+-- show columns from rcbill_my.rep_livetvstats;
+
+-- select * from rcbill.clientlivetvstats where sessiondate>(select max(view_date) as view_date from rcbill_my.rep_livetvstats );
+
+
+
+
+insert into rcbill_my.rep_livetvstats
+(
+
+	select date(sessionstart) as view_date, day(sessionstart) as view_day, month(sessionstart) as view_month, year(sessionstart) as view_year
+    , upper(trim(resource)) as resource, count(*) as sessions
+	, sum(duration) as duration_sec
+	-- , (sum(duration))/60 as duration_min, (sum(duration))/120 as duration_hour  
+	-- , TIME_FORMAT(SEC_TO_TIME(sum(duration)),'%Hh %im') as timespent
+	from rcbill.clientlivetvstats
+    -- where year(sessionstart)=year(now())
+    where sessiondate >(select max(view_date) from rcbill_my.rep_livetvstats)
+    -- where year(sessionstart)>2019
+    -- where sessionstart>='2019-01-01 00:00:00'
+	group by 1,2,3,4,5
+	-- order by 3 desc,2 desc,1 desc,5 desc
+    order by 1 asc
+    
+);
 
 select count(*) as rep_livetvstats from rcbill_my.rep_livetvstats;
 -- select * from rcbill_my.rep_livetvstats where view_month=7 and view_year=2018;

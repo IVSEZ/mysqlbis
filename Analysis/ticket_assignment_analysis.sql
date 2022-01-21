@@ -6,13 +6,108 @@ select * from rcbill_my.holidays order by HOLIDAY_DATE desc;
 
 -- set @dept = 'Approvals';
 -- set @dept = 'Technical - New Installations';
-set @dept = 'Tech Support';
+-- set @dept = 'Tech Support';
 -- set @dept = 'Call Center';
 -- set @dept = 'NOC';
+-- set @dept = 'Praslin - Installations';
+-- set @dept = 'Technical - New Service';
+-- set @dept = 'Accounts & Finance';
 set @mth = 12;
 set @yr = 2021;
 set @workinghours = 8;
 
+select * 
+from rcbill_my.clientticket_assgnjourney
+where 0=0
+and assgntechregion in (@dept)
+-- and date(OPENDATE)='2022-01-05'
+and month(ASSGN_OPENDATE)=@mth
+and year(ASSGN_OPENDATE)=@yr
+;
+
+select 
+assgntechregion as ASSGN_DEPT, assgnclosereason as CLOSE_REASON, month(ASSGN_OPENDATE) as ASSGN_MTH, year(ASSGN_OPENDATE) as ASSGN_YR
+
+, count(ticketid) as ASSIGNMENTS
+, count(distinct ticketid) as D_TICKETS
+
+, round(avg(working_minutes),2) as `AVG_WORKINGMINS`
+, sec_to_time(round(avg(working_minutes))*60) as `AVG_TIME`
+, (round(avg(working_minutes)/60)/@workinghours) as `AVG_DAYS`
+, max(working_minutes) as `MAX_WORKINGMINS`
+, min(working_minutes) as `MIN_WORKINGMINS`
+
+
+/*
+, round(avg(tkt_workdays),2) as `5DayWeek_AVGDAYS`
+, (round(avg(tkt_workdays),2)*@workinghours) as `5DayWeek_AVGHRS`
+
+, max(tkt_workdays) as `5DayWeek_MAXDAYS`
+-- , (max(tkt_workdays)*@workinghours) as `5DayWeek_MAXHRS`
+
+, min(tkt_workdays) as `5DayWeek_MINDAYS`
+-- , (min(tkt_workdays)*@workinghours) as `5DayWeek_MINHRS`
+
+, round(avg(tkt_workdays2),2) as `6DayWeek_AVGDAYS`
+, (round(avg(tkt_workdays2),2)*@workinghours) as `6DayWeek_AVGHRS`
+
+, max(tkt_workdays2) as `6DayWeek_MAXDAYS`
+-- , (max(tkt_workdays2)*@workinghours) as `6DayWeek_MAXHRS`
+
+, min(tkt_workdays2) as `6DayWeek_MINDAYS`
+-- , (min(tkt_workdays2)*@workinghours) as `6DayWeek_MINHRS`
+
+, round(avg(tkt_alldays),2) as `7DayWeek_AVGDAYS`
+, (round(avg(tkt_alldays),2)*@workinghours) as `7DayWeek_AVGHRS`
+
+, max(tkt_alldays) as `7DayWeek_MAXDAYS`
+-- , (max(tkt_alldays)*@workinghours) as `7DayWeek_MAXHRS`
+
+, min(tkt_alldays) as `7DayWeek_MINDAYS`
+-- , (min(tkt_alldays)*@workinghours) as `7DayWeek_MINHRS`
+
+*/
+from rcbill_my.clientticket_assgnjourney
+where 0=0
+and assgntechregion in (@dept)
+-- and date(OPENDATE)='2022-01-05'
+and month(ASSGN_OPENDATE)=@mth
+and year(ASSGN_OPENDATE)=@yr
+ 
+group by 1,2,3,4
+order by 4 desc, 3 desc
+
+
+;
+
+
+
+select 
+assgntechregion as ASSGN_DEPT
+, month(ASSGN_OPENDATE) as ASSGN_MTH, year(ASSGN_OPENDATE) as ASSGN_YR
+
+, count(ticketid) as ASSIGNMENTS
+, count(distinct ticketid) as D_TICKETS
+
+, round(avg(working_minutes),2) as `AVG_WORKINGMINS`
+, sec_to_time(round(avg(working_minutes))*60) as `AVG_TIME`
+, (round(avg(working_minutes)/60)/@workinghours) as `AVG_DAYS`
+, max(working_minutes) as `MAX_WORKINGMINS`
+, min(working_minutes) as `MIN_WORKINGMINS`
+
+
+from rcbill_my.clientticket_assgnjourney
+where 0=0
+and assgntechregion in (@dept)
+-- and date(OPENDATE)='2022-01-05'
+and month(ASSGN_OPENDATE)=@mth
+and year(ASSGN_OPENDATE)=@yr
+ 
+group by 1,2,3
+order by 3 desc, 2 desc
+
+
+;
 
 
 
@@ -51,53 +146,6 @@ order by ASSGN_OPENDATE desc
 ;
 
 
-/*
-select 
-assgntechregion as ASSGN_DEPT, assgnclosereason as CLOSE_REASON, month(ASSGN_OPENDATE) as ASSGN_MTH, year(ASSGN_OPENDATE) as ASSGN_YR
-, count(ticketid) as ASSIGNMENTS
-, count(distinct ticketid) as D_TICKETS
-
-, round(avg(tkt_workdays),2) as `5DayWeek_AVGDAYS`
-, (round(avg(tkt_workdays),2)*@workinghours) as `5DayWeek_AVGHRS`
-
-, max(tkt_workdays) as `5DayWeek_MAXDAYS`
--- , (max(tkt_workdays)*@workinghours) as `5DayWeek_MAXHRS`
-
-, min(tkt_workdays) as `5DayWeek_MINDAYS`
--- , (min(tkt_workdays)*@workinghours) as `5DayWeek_MINHRS`
-
-, round(avg(tkt_workdays2),2) as `6DayWeek_AVGDAYS`
-, (round(avg(tkt_workdays2),2)*@workinghours) as `6DayWeek_AVGHRS`
-
-, max(tkt_workdays2) as `6DayWeek_MAXDAYS`
--- , (max(tkt_workdays2)*@workinghours) as `6DayWeek_MAXHRS`
-
-, min(tkt_workdays2) as `6DayWeek_MINDAYS`
--- , (min(tkt_workdays2)*@workinghours) as `6DayWeek_MINHRS`
-
-, round(avg(tkt_alldays),2) as `7DayWeek_AVGDAYS`
-, (round(avg(tkt_alldays),2)*@workinghours) as `7DayWeek_AVGHRS`
-
-, max(tkt_alldays) as `7DayWeek_MAXDAYS`
--- , (max(tkt_alldays)*@workinghours) as `7DayWeek_MAXHRS`
-
-, min(tkt_alldays) as `7DayWeek_MINDAYS`
--- , (min(tkt_alldays)*@workinghours) as `7DayWeek_MINHRS`
-
-
-from rcbill_my.clientticket_assgnjourney
-where 0=0
-and assgntechregion in (@dept)
--- and date(OPENDATE)='2022-01-05'
-and month(ASSGN_OPENDATE)=@mth
-and year(ASSGN_OPENDATE)=@yr
- 
-group by 1,2,3,4
-order by 4 desc, 3 desc
-
-
-;
-*/
 
 -- Select rcbill_my.workday_time_diff_holidays('SC','2021-06-10 12:00:00','2021-06-10 14:00:00','09:00','16:00');
 

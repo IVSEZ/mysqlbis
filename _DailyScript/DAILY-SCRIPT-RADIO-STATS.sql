@@ -11,6 +11,13 @@ use rcbill;
 -- select max(date(sessionstart)) from rcbill.clientlivetvstats;
 
 
+/*
+set sql_safe_updates=0;
+
+delete from rcbill.clientradiostats where sessionstart>'2022-01-15 23:59:59';
+
+*/
+
 -- FIRST TIME
 
 

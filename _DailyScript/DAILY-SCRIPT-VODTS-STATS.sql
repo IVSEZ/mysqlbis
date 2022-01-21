@@ -12,6 +12,16 @@ use rcbill;
 
 -- create temporary table vodstats as 
 
+/*
+set sql_safe_updates=0;
+
+delete from rcbill.clientvodstats where sessionstart>'2022-01-15 23:59:59';
+delete from rcbill_my.rep_vodstats where view_date>'2022-01-15';
+
+delete from rcbill.clienttsstats where sessionstart>'2022-01-15 23:59:59';
+delete from rcbill_my.rep_tsstats where view_date>'2022-01-15';
+*/
+
 
 drop table if exists rcbill.tempvod;
 CREATE TABLE rcbill.tempvod 
