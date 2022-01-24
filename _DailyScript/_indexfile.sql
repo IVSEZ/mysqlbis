@@ -20,35 +20,6 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\load_RCB_VODTITLES.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-LIVETV-STATS.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
-
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-VODTS-STATS.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
-
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-RADIO-STATS.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
-
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY_SCRIPT_TELEMETRY_PIVOT_2022.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
-
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_livetv_ranking2022.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
-
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_radio_ranking2022.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
-
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_ts_ranking2022.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
-
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2022.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
-
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2022_1.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
-
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2022_2.sql
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-CREATE-LOAD.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
@@ -101,6 +72,35 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\GIS\GetParcelExtract.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-LIVETV-STATS.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-VODTS-STATS.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-RADIO-STATS.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY_SCRIPT_TELEMETRY_PIVOT_2022.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_livetv_ranking2022.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_radio_ranking2022.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_ts_ranking2022.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2022.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2022_1.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2022_2.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 
 exit
