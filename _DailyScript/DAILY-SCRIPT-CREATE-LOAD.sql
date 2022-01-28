@@ -705,6 +705,105 @@ select count(*) as contracts from rcbill.rcb_contracts;
 select count(*) as contractaddress from rcbill.rcb_contractaddress;
 
 
+
+
+#######################################################
+
+
+
+# CONTRACT SERVICES
+
+use rcbill;
+
+drop table if exists rcb_contractservices;
+
+
+
+CREATE TABLE `rcb_contractservices` (
+`ID` int(11) DEFAULT NULL ,
+`CID` int(11) DEFAULT NULL ,
+`ServiceID` int(11) DEFAULT NULL ,
+`ServiceRateID` int(11) DEFAULT NULL ,
+`StartDate` datetime DEFAULT NULL ,
+`EndDate` datetime DEFAULT NULL ,
+`Number` int(11) DEFAULT NULL ,
+`csCredit` decimal(12,5) DEFAULT NULL ,
+`manualPrice` decimal(12,5) DEFAULT NULL ,
+`Active` int(11) DEFAULT NULL ,
+`ActivatedDate` datetime DEFAULT NULL ,
+`ID_OLD` varchar(255) DEFAULT NULL ,
+`UpdDate` datetime DEFAULT NULL ,
+`USERID` int(11) DEFAULT NULL ,
+`NoTrigger` int(4) DEFAULT NULL ,
+`INSERTEDON` datetime DEFAULT NULL	,
+`REPORTDATE` date DEFAULT NULL	
+
+) ENGINE=InnoDB CHARSET UTF8;
+
+
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractServices-27012022.csv' 
+-- REPLACE INTO TABLE `rcbill`.`rcb_contractservices` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
+REPLACE INTO TABLE `rcbill`.`rcb_contractservices` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
+OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
+-- IGNORE 1 LINES 
+IGNORE 2 LINES 
+(
+@ID ,
+@CID ,
+@ServiceID ,
+@ServiceRateID ,
+@StartDate ,
+@EndDate ,
+@Number ,
+@csCredit ,
+@manualPrice ,
+@Active ,
+@ActivatedDate ,
+@ID_OLD ,
+@UpdDate ,
+@USERID ,
+@NoTrigger 
+) 
+set 
+ID=@ID ,
+CID=@CID ,
+ServiceID=@ServiceID ,
+ServiceRateID=@ServiceRateID ,
+StartDate=@StartDate ,
+EndDate=@EndDate ,
+Number=@Number ,
+csCredit=@csCredit ,
+manualPrice=@manualPrice ,
+Active=@Active ,
+ActivatedDate=@ActivatedDate ,
+ID_OLD=@ID_OLD ,
+UpdDate=@UpdDate ,
+USERID=@USERID ,
+NoTrigger=@NoTrigger ,
+INSERTEDON=now(),
+REPORTDATE=@REPORTDATE
+
+;
+
+
+CREATE INDEX IDXContractServices
+ON rcb_contractservices (CID);
+
+CREATE INDEX IDXContractServices2
+ON rcb_contractservices (ServiceRateID);
+
+CREATE INDEX IDXContractServices3
+ON rcb_contractservices (ServiceID);
+
+
+CREATE INDEX IDXContractServices4
+ON rcb_contractservices (ID);
+
+select count(*) as contractservices from rcb_contractservices;
+-- select * from rcbill.rcb_contractservices;
+
+########################################################
+
 #######################################################
 
 # CONTRACT DISCOUNTS
@@ -1821,95 +1920,6 @@ select count(*) as devicesold from rcb_devicesold;
 
 #################################################################################
 
-# CONTRACT SERVICES
-
-use rcbill;
-
-drop table if exists rcb_contractservices;
-
-
-
-CREATE TABLE `rcb_contractservices` (
-`ID` int(11) DEFAULT NULL ,
-`CID` int(11) DEFAULT NULL ,
-`ServiceID` int(11) DEFAULT NULL ,
-`ServiceRateID` int(11) DEFAULT NULL ,
-`StartDate` datetime DEFAULT NULL ,
-`EndDate` datetime DEFAULT NULL ,
-`Number` int(11) DEFAULT NULL ,
-`csCredit` decimal(12,5) DEFAULT NULL ,
-`manualPrice` decimal(12,5) DEFAULT NULL ,
-`Active` int(11) DEFAULT NULL ,
-`ActivatedDate` datetime DEFAULT NULL ,
-`ID_OLD` varchar(255) DEFAULT NULL ,
-`UpdDate` datetime DEFAULT NULL ,
-`USERID` int(11) DEFAULT NULL ,
-`NoTrigger` int(4) DEFAULT NULL ,
-`INSERTEDON` datetime DEFAULT NULL	,
-`REPORTDATE` date DEFAULT NULL	
-
-) ENGINE=InnoDB CHARSET UTF8;
-
-
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractServices-27012022.csv' 
--- REPLACE INTO TABLE `rcbill`.`rcb_contractservices` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
-REPLACE INTO TABLE `rcbill`.`rcb_contractservices` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
-OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
--- IGNORE 1 LINES 
-IGNORE 2 LINES 
-(
-@ID ,
-@CID ,
-@ServiceID ,
-@ServiceRateID ,
-@StartDate ,
-@EndDate ,
-@Number ,
-@csCredit ,
-@manualPrice ,
-@Active ,
-@ActivatedDate ,
-@ID_OLD ,
-@UpdDate ,
-@USERID ,
-@NoTrigger 
-) 
-set 
-ID=@ID ,
-CID=@CID ,
-ServiceID=@ServiceID ,
-ServiceRateID=@ServiceRateID ,
-StartDate=@StartDate ,
-EndDate=@EndDate ,
-Number=@Number ,
-csCredit=@csCredit ,
-manualPrice=@manualPrice ,
-Active=@Active ,
-ActivatedDate=@ActivatedDate ,
-ID_OLD=@ID_OLD ,
-UpdDate=@UpdDate ,
-USERID=@USERID ,
-NoTrigger=@NoTrigger ,
-INSERTEDON=now(),
-REPORTDATE=@REPORTDATE
-
-;
-
-
-CREATE INDEX IDXContractServices
-ON rcb_contractservices (CID);
-
-CREATE INDEX IDXContractServices2
-ON rcb_contractservices (ServiceRateID);
-
-CREATE INDEX IDXContractServices3
-ON rcb_contractservices (ServiceID);
-
-
-select count(*) as contractservices from rcb_contractservices;
--- select * from rcbill.rcb_contractservices;
-
-########################################################
 
 # INVOICE CONTENTS
 
