@@ -241,6 +241,44 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
         
         -- select * from rcbill.rcb_casa;
         ### CLIENT CONTRACT PAYMENT INVOICE STAGING TABLE
+   
+   drop table if exists b;
+   create table b (index idx1(clid), index idx2(cid))
+   (
+   
+	select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
+			from rcb_invoicesheader
+			where
+			-- (hard not in (100, 101, 102) or hard is null)
+			(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
+			-- and clid=@clientid1
+			group by clid, cid   
+
+
+   );
+        
+        
+    drop table if exists c;
+   create table c (index idx1(c_clid), index idx2(c_cid))
+   (
+		select clid as c_clid
+		 , cid as c_cid
+		, COALESCE(sum(money),0) as TotalPaymentAmount  
+		-- , sum(money) as LastPaidAmount
+		-- , (select sum(ac.money) from rcbill.rcb_casa ac where ac.clid=clid and date(ac.enterdate)=date(max(EnterDate))) as LastPaidAmount  
+		, COALESCE(count(*),0) as TotalPayments, date(min(ENTERDATE)) as FirstPaymentDate, date(max(ENTERDATE)) as LastPaymentDate
+		from rcb_casa
+		where
+		-- (hard not in (100, 101, 102) or hard is null)
+		(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
+		 
+		-- and clid=@clientid1
+		group by clid, cid   
+
+   );
+               
+        
+        
  		drop table if exists rcbill.clientcontractinvpmt_stg;
         
         create table rcbill.clientcontractinvpmt_stg
@@ -255,8 +293,10 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 			*/
 			   select  
                 
-				rcbill.GetClientCode( COALESCE(clid, c_clid) ) as CLIENTCODE,
-				rcbill.GetContractCode( COALESCE(cid, c_cid)) as CONTRACTCODE,
+				-- rcbill.GetClientCode( COALESCE(clid, c_clid) ) as CLIENTCODE,
+                (select kod from rcbill.rcb_tclients where id=COALESCE(clid, c_clid) ) as CLIENTCODE,
+				-- rcbill.GetContractCode( COALESCE(cid, c_cid)) as CONTRACTCODE,
+                (select kod from rcbill.rcb_contracts where id=COALESCE(cid, c_cid)) as CONTRACTCODE,
             
                 COALESCE(clid, c_clid) AS clid
 				, COALESCE(cid, c_cid) AS cid
@@ -266,7 +306,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 					(
 						select b.*, c.*
 						from 
-						(
+						/*(
 
 							select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
 									from rcb_invoicesheader
@@ -275,10 +315,10 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 									(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
 									-- and clid=@clientid1
 									group by clid, cid
-						) b 
+						)*/ b 
 						
 						left join 
-						(
+						/*(
 								select clid as c_clid
 								 , cid as c_cid
 								, COALESCE(sum(money),0) as TotalPaymentAmount  
@@ -292,14 +332,14 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 								 
 								-- and clid=@clientid1
 								group by clid, cid
-						) c
+						)*/ c
 						on b.clid=c.c_clid and b.cid=c.c_cid
 					)
 					union 
 					(
 						select b.*, c.*
 						from 
-						(
+						/*(
 
 							select clid, cid, COALESCE(sum(total),0) as TotalInvoiceAmount , COALESCE(max(total),0) as LastInvoiceAmount, COALESCE(count(*),0) as TotalInvoices, min(DATA) as FirstInvoiceDate, max(DATA) as LastInvoiceDate
 									from rcb_invoicesheader
@@ -308,10 +348,10 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 									(hard not in (100, 101, 102, 201, 999, 9999) or hard is null)
 									-- and clid=@clientid1
 									group by clid, cid
-						) b 
+						)*/ b 
 						
 						right join 
-						(
+						/*(
 								select clid as c_clid
 								 , cid as c_cid
 								, COALESCE(sum(money),0) as TotalPaymentAmount  
@@ -325,7 +365,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 								 
 								-- and clid=@clientid1
 								group by clid, cid
-						) c
+						) */ c
 						on b.clid=c.c_clid and b.cid=c.c_cid
 					
 					
@@ -336,7 +376,10 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
             
 		)
 		;
-        
+ 
+		drop table if exists b;
+		drop table if exists c;    
+ 
 		CREATE INDEX IDXccipstg2
 		ON rcbill.clientcontractinvpmt_stg (CLIENTCODE);
 		CREATE INDEX IDXccipstg3
@@ -588,7 +631,34 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
 		-- select * from rcbill.clientextendedreport;
         select count(*) as clientextendedreport from rcbill.clientextendedreport;
-        
+      
+      
+      
+		drop table if exists a;
+        create table a (index idx1(clientcode))
+        (
+						select 
+							REPORTDATE as reportdate, CLIENTDEBT_REPORTDATE as currentdebt, CL_CLIENTCODE as clientcode, cl_clientname as clientname
+							, ActiveContracts as activecontracts, ActiveSubscriptions as activesubscriptions, firstcontractdate, FirstInvoiceDate as firstinvoicedate, LastInvoiceDate as lastinvoicedate
+							, FirstPaymentDate as firstpaymentdate, LastPaymentDate as lastpaymentdate, LastPaidAmount as lastpaidamount, TotalPayments as totalpayments, TotalPaymentAmount as totalpaymentamount
+							, ClassName as clientclass, CL_NIN as clientnin, CL_PassNo as clientpassport, CL_MPhone as clientphone, CL_MEMAIL as clientemail
+							, clientaddress as clientaddress, cl_location as clientlocation, cl_area as clientarea
+                            , cl_subdistrict as subdistrict 
+                            , clientparcel, coord_x, coord_y, latitude, longitude
+							
+						from rcbill.clientextendedreport        
+        );
+
+		drop table if exists b;
+        create table b (index idx1(clientcode))
+        (
+							select clientcode, min(period) as firstactivedate, max(period) as lastactivedate
+							from 
+							rcbill_my.customercontractactivity 
+							group by clientcode     
+        );
+      
+      
         drop table if exists rcbill_my.rep_allcust;
         create table rcbill_my.rep_allcust (index `idxrac1`(clientcode) ) as 
         (
@@ -621,7 +691,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 			(            
 					select a.*, b.firstactivedate, b.lastactivedate, datediff(@REPORTDATE,b.lastactivedate) as dayssincelastactive
 					from 
-					(
+					/*(
 						select 
 							REPORTDATE as reportdate, CLIENTDEBT_REPORTDATE as currentdebt, CL_CLIENTCODE as clientcode, cl_clientname as clientname
 							, ActiveContracts as activecontracts, ActiveSubscriptions as activesubscriptions, firstcontractdate, FirstInvoiceDate as firstinvoicedate, LastInvoiceDate as lastinvoicedate
@@ -632,17 +702,20 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
                             , clientparcel, coord_x, coord_y, latitude, longitude
 							
 						from rcbill.clientextendedreport
-					) a
+					)*/ a
 					left join
-					(
+					/*(
 							select clientcode, min(period) as firstactivedate, max(period) as lastactivedate
 							from 
 							rcbill_my.customercontractactivity 
 							group by clientcode
-					) b
+					)*/ b
 					on a.clientcode=b.clientcode
 			) a 
         );
+
+		drop table if exists a;
+		drop table if exists b;
         
         select count(*) as allcust from rcbill_my.rep_allcust;
         -- select * from rcbill_my.rep_allcust;
