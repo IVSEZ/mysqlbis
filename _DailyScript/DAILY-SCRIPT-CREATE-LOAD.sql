@@ -1708,7 +1708,7 @@ CREATE INDEX IDXtick5
 ON rcb_ticketcomments (CID);
 */
 
-select count(*) as ticketcomments from rcb_ticketcomments;
+select count(*) as rcb_ticketcomments from rcb_ticketcomments;
 -- select * from rcb_ticketcomments;
 ####################################################################
 
@@ -1789,7 +1789,7 @@ drop index IDXtc4 on rcb_comments;
 */
 -- show index from rcb_comments;
 
-select count(*) as comments from rcb_comments;
+select count(*) as rcb_comments from rcb_comments;
 
 
 ###########################################################
@@ -2048,6 +2048,8 @@ REPORTDATE=@REPORTDATE
 ;
 
 
+-- select * from rcb_invoicescontents where clid in (717788);
+ select count(*) as invoicescontents from rcb_invoicescontents;
 
 -- drop index IDXinvoicescontents on rcb_invoicescontents;
 CREATE INDEX IDXinvoicescontents1
@@ -2068,8 +2070,6 @@ CREATE INDEX IDXinvoicescontents5
 ON rcb_invoicescontents (InvoiceID);
 
 
--- select * from rcb_invoicescontents where clid in (717788);
- select count(*) as invoicescontents from rcb_invoicescontents;
 
 ############################################################
 
@@ -2264,7 +2264,8 @@ REPORTDATE=@REPORTDATE
 
 ;
 
-
+-- select * from rcb_invoicesheader where clid in (717788) limit 10000;
+select count(*) as invoicesheader from rcb_invoicesheader;
 
 CREATE INDEX IDXinvoiceheader1
 ON rcb_invoicesheader (ID,INVOICENO);
@@ -2287,8 +2288,7 @@ ON rcb_invoicesheader (PaymentID);
 CREATE INDEX IDXinvoiceheader7
 ON rcb_invoicesheader (ORDERID);
 
--- select * from rcb_invoicesheader where clid in (717788) limit 10000;
-select count(*) as invoicesheader from rcb_invoicesheader;
+
 
 #####################################################
 
@@ -2838,8 +2838,8 @@ drop table if exists rcbill.contractsservicepackageprice;
 create table rcbill.contractsservicepackageprice as 
 (
 	select a.kod as contractcode -- , b.servicerateid
-	, c.id as servicerateid, c.`name` as package, c.`price`
-	, d.`name` as service
+	, c.id as servicerateid, upper(c.`name`) as package, c.`price`
+	, upper(d.`name`) as service
 	from 
 	rcbill.rcb_contracts a 
 	inner join 
@@ -2863,7 +2863,7 @@ create table rcbill.contractsservicepackageprice as
 create index IDXcspp1 on rcbill.contractsservicepackageprice (contractcode);
 create index IDXcspp3 on rcbill.contractsservicepackageprice (servicerateid);
 create index IDXcspp4 on rcbill.contractsservicepackageprice (service);
--- create index IDXcspp2 on rcbill.contractsservicepackageprice (package);
+create index IDXcspp2 on rcbill.contractsservicepackageprice (package);
 -- create index IDXcspp5 on rcbill.contractsservicepackageprice (USAGE_YR);
 
 select count(*) as contractsservicepackageprice from rcbill.contractsservicepackageprice;

@@ -309,7 +309,7 @@ a.period, a.periodday, a.periodmth, a.periodyear, a.clientcode, a.clientname, a.
 , a.contractcode
 , c.contractaddress, c.con_location , c.con_area
 , e.areaname as con_areaname, e.latitude as con_latitude, e.longitude as con_longitude
-, a.SERVICE
+, upper(a.SERVICE) as SERVICE
 , a.servicecategory
 , GetServiceCategory2(a.service) as servicecategory2
 , a.servicesubcategory, upper(a.servicetype) as package 
@@ -425,7 +425,7 @@ delete from rcbill_my.customercontractactivity where period in ('2020-09-29')
 
 -- select *, rcbill_my.GetServiceCategory2(service) from rcbill_my.activeccl where clientcode='I.000011750';
 
-select * from rcbill_my.customercontractactivity where clientcode='I.000011750';
+select * from rcbill_my.customercontractactivity where clientcode='I.000011751';
 
 select * from rcbill_my.customercontractactivity where 
 period='2020-09-28' and 
@@ -434,8 +434,10 @@ servicecategory2 is null;
 
 show index from rcbill_my.customercontractactivity;
 
+SET SQL_SAFE_UPDATES = 0;
 
 update rcbill_my.customercontractactivity set package=UPPER(PACKAGE) where clientcode='I.000011750';
+update rcbill_my.customercontractactivity set service=UPPER(SERVICE) where clientcode='I.000011750';
 
 */
 
@@ -457,11 +459,43 @@ limit 5
 -- select * from rcbill.contractsservicepackageprice where  contractcode in ();
 
 -- CREATE A CUSTOMER CONTRACT SNAPSHOT TABLE
+drop table if exists a;
+
+create temporary table a (index idx1(contractcode), index idx2(service), index idx3(package) )
+(
+
+		select distinct clientcode, clientname, clientclass, clienttype, contractcode
+        , upper(service) as service, upper(servicecategory) as servicecategory, upper(servicecategory2) as servicecategory2, upper(package) as package, region, network
+		, min(period) as firstcontractdate, max(period) as lastcontractdate 
+		-- , (sum(ACTIVECOUNT)/count(period)) as activecount
+		, (datediff(max(period),min(period))+1) as DurationForContract
+        , count(*) as ActiveDaysForContract
+		-- , count(distinct a.period) as activedays 
+		-- , rcbill_my.GetActiveDaysForContract(a.clientcode,a.contractcode,a.package) as ActiveDaysForContract
+        -- , DEVICESCOUNT
+		,
+        case when servicesubcategory='ADDON' then 'ADDON'
+			else 'STANDALONE'
+        end as `PackageType`    
+        ,
+		case when max(period) = @rundate then 'Active' 
+				else 'Not Active'
+		end as `CurrentStatus`    
+		
+		from rcbill_my.customercontractactivity
+		group by clientcode, clientname, clientclass, clienttype, contractcode, service, servicecategory, servicecategory2, package, region, network 
+		order by clientcode, firstcontractdate
+)        ;
+
+select 'table A created' as message;
+  
+
 drop table if exists rcbill_my.customercontractsnapshot;
 -- duration 125.046 sec
 
 create table rcbill_my.customercontractsnapshot as
 (   
+/*
 
 	select @rundate as ReportDate, a.*
     ,  (a.DurationForContract-a.ActiveDaysForContract) as InActiveDaysForContract 
@@ -501,8 +535,31 @@ create table rcbill_my.customercontractsnapshot as
     upper(a.service)=upper(b.service)
     and
     upper(a.package)=upper(b.package)
+*/
+
+	select @rundate as ReportDate, a.*
+    ,  (a.DurationForContract-a.ActiveDaysForContract) as InActiveDaysForContract 
+    -- ,  rcbill_my.GetActiveDaysForContract(a.clientcode,a.contractcode,a.package) as ActiveDaysForContract
+    -- ,  rcbill_my.GetActiveDaysForClient(a.clientcode) as ActiveDaysForClient 
+    , b.price
+    from 
+	a
+    -- inner join
+    left join
+    rcbill.contractsservicepackageprice b 
+    on 
+    a.contractcode=b.contractcode
+    and 
+    upper(a.service)=upper(b.service)
+    and
+    upper(a.package)=upper(b.package)
+	
 
 );
+
+select count(1) as customercontractsnapshot from rcbill_my.customercontractsnapshot;
+
+drop table if exists a;
 
 CREATE INDEX IDXccs1
 ON rcbill_my.customercontractsnapshot (clientcode);
