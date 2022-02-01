@@ -197,7 +197,7 @@ select * from rcbill_my.rep_activenumberavg3 where lastday='2020-06-30';
 ## MONTHLY AVERAGE REPORT FOR SUBMISSION
 select * from rcbill_my.rep_activenumberavg3;
 ## MONTH ACTIVE NUMBER REPORT
-use rcbill_my;
+-- use rcbill_my;
 call sp_GetActiveNumberFromTo('2022-01-01','2022-01-31');
 
 ## BUDGET VS ACTUAL ANALYSIS
