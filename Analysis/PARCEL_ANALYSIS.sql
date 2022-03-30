@@ -10,6 +10,9 @@ delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)=date(now());
 delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2020-05-18';
 delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2020-05-19';
 
+delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-03-02';
+delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-03-16';
+
 */
 
 
