@@ -1,1 +1,1 @@
-psftp -b C:\workspace\cloud\code\sql\_psftp_mget_script2.txt root@192.168.1.166 -pw l3tm31n!@#
+psftp -b C:\workspace\cloud\code\sql\_psftp_mget_script2.txt root@192.168.100.165 -pw l3tm31n!@#
