@@ -21,6 +21,8 @@ select period
 from rcbill_my.anreport
 where reported='Y' and decommissioned='N'
 and package in ('Extravagance','Extravagance Corporate')
+and clientclass in ('Residential','Corporate','Corporate Bulk')
+and periodyear>=2022
 group by 
 period
 -- , package
@@ -42,6 +44,8 @@ create table tempperiod as
 		from rcbill_my.anreport
 		where reported='Y' and decommissioned='N'
 		and package in ('Extravagance','Extravagance Corporate')
+        and clientclass in ('Residential','Corporate','Corporate Bulk')
+        and periodyear>=2022
 		group by 
 		period
 		-- , package
@@ -72,6 +76,7 @@ create table tempextract1 as
         )
 
 		and package in ('Extravagance','Extravagance Corporate')
+        and clientclass in ('Residential','Corporate','Corporate Bulk')
 		and REPORTED='Y'
 		order by  activecount desc, clientcode asc
 );
@@ -106,6 +111,34 @@ as
 	(
 
 		select clientcode as client_code, package, servicesubcategory,
+        /*
+		ifnull(sum(`202101`),0) as `202101`,
+		ifnull(sum(`202102`),0) as `202102`,
+		ifnull(sum(`202103`),0) as `202103`,
+		ifnull(sum(`202104`),0) as `202104`,
+		ifnull(sum(`202105`),0) as `202105`,
+		ifnull(sum(`202106`),0) as `202106`,
+		ifnull(sum(`202107`),0) as `202107`,
+		ifnull(sum(`202108`),0) as `202108`,
+		ifnull(sum(`202109`),0) as `202109`,
+		ifnull(sum(`202110`),0) as `202110`,
+		ifnull(sum(`202111`),0) as `202111`,
+		ifnull(sum(`202112`),0) as `202112`,
+        */
+		ifnull(sum(`202201`),0) as `202201`,
+		ifnull(sum(`202202`),0) as `202202`,
+		ifnull(sum(`202203`),0) as `202203`,
+		ifnull(sum(`202204`),0) as `202204`,
+		ifnull(sum(`202205`),0) as `202205`,
+		ifnull(sum(`202206`),0) as `202206`,
+		ifnull(sum(`202207`),0) as `202207`,
+		ifnull(sum(`202208`),0) as `202208`,
+		ifnull(sum(`202209`),0) as `202209`,
+		ifnull(sum(`202210`),0) as `202210`,
+		ifnull(sum(`202211`),0) as `202211`,
+		ifnull(sum(`202212`),0) as `202212`
+        
+        /*
 		ifnull(sum(`201601`),0) as `201601`,
 		ifnull(sum(`201602`),0) as `201602`,
 		ifnull(sum(`201603`),0) as `201603`,
@@ -144,6 +177,8 @@ as
 		ifnull(sum(`201810`),0) as `201810`,
 		ifnull(sum(`201811`),0) as `201811`,
 		ifnull(sum(`201812`),0) as `201812`
+        */
+        
         /*
         ,
         
@@ -164,6 +199,34 @@ as
 		from 
 		(
 			select clientcode, package, servicesubcategory,
+			/*
+			case when periodmth = 1 and periodyear=2021 then activecount end as `202101`,
+			case when periodmth = 2 and periodyear=2021 then activecount end as `202102`,
+			case when periodmth = 3 and periodyear=2021 then activecount end as `202103`,
+			case when periodmth = 4 and periodyear=2021 then activecount end as `202104`,
+			case when periodmth = 5 and periodyear=2021 then activecount end as `202105`,
+			case when periodmth = 6 and periodyear=2021 then activecount end as `202106`,
+			case when periodmth = 7 and periodyear=2021 then activecount end as `202107`,
+			case when periodmth = 8 and periodyear=2021 then activecount end as `202108`,
+			case when periodmth = 9 and periodyear=2021 then activecount end as `202109`,
+			case when periodmth = 10 and periodyear=2021 then activecount end as `202110`,
+			case when periodmth = 11 and periodyear=2021 then activecount end as `202111`,
+			case when periodmth = 12 and periodyear=2021 then activecount end as `202112`,
+			*/
+			case when periodmth = 1 and periodyear=2022 then activecount end as `202201`,
+			case when periodmth = 2 and periodyear=2022 then activecount end as `202202`,
+			case when periodmth = 3 and periodyear=2022 then activecount end as `202203`,
+			case when periodmth = 4 and periodyear=2022 then activecount end as `202204`,
+			case when periodmth = 5 and periodyear=2022 then activecount end as `202205`,
+			case when periodmth = 6 and periodyear=2022 then activecount end as `202206`,
+			case when periodmth = 7 and periodyear=2022 then activecount end as `202207`,
+			case when periodmth = 8 and periodyear=2022 then activecount end as `202208`,
+			case when periodmth = 9 and periodyear=2022 then activecount end as `202209`,
+			case when periodmth = 10 and periodyear=2022 then activecount end as `202210`,
+			case when periodmth = 11 and periodyear=2022 then activecount end as `202211`,
+			case when periodmth = 12 and periodyear=2022 then activecount end as `202212`
+            
+            /*
 			case when periodmth = 1 and periodyear=2016 then activecount end as `201601`,
 			case when periodmth = 2 and periodyear=2016 then activecount end as `201602`,
 			case when periodmth = 3 and periodyear=2016 then activecount end as `201603`,
@@ -202,6 +265,8 @@ as
 			case when periodmth = 10 and periodyear=2018 then activecount end as `201810`,
 			case when periodmth = 11 and periodyear=2018 then activecount end as `201811`,
 			case when periodmth = 12 and periodyear=2018 then activecount end as `201812`
+            */
+            
             /*
             ,
             case when periodmth = 1 and periodyear=2019 then activecount end as `201901`,
@@ -236,6 +301,7 @@ as
                     )
 
 					and package in ('Extravagance','Extravagance Corporate')
+                    and clientclass in ('Residential','Corporate','Corporate Bulk')
 					and REPORTED='Y'
 					order by  activecount desc, clientcode asc
                     
@@ -244,6 +310,7 @@ as
 				-- and package in ('Extravagance','Extravagance Corporate')
 				and servicecategory in ('TV')
                 and REPORTED='Y'
+                and PERIODYEAR>=2022
 				group by periodmth, periodyear, clientcode, package, servicesubcategory
 				order by periodmth, periodyear
 			) a
@@ -261,6 +328,13 @@ as
 ;
 
 select * from rcbill_my.rep_extravagance_peakcustomer_activity;
+
+select reportdate, clientcode, currentdebt, IsAccountActive, AccountActivityStage, clientname, clientclass, activenetwork, activeservices, activecontracts, activesubscriptions, clientaddress, clientlocation
+, firstactivedate, lastactivedate, dayssincelastactive
+, firstcontractdate, firstinvoicedate, firstpaymentdate, lastinvoicedate, lastpaidamount, lastpaymentdate, totalpayments, totalpaymentamount
+, clientarea, subdistrict, clientparcel, coord_x, coord_y, latitude, longitude, clientemail, clientnin, clientpassport, clientphone
+
+from rcbill_my.rep_custconsolidated where clientcode in (select clientcode from rcbill_my.rep_extravagance_peakcustomer_activity);
 
 
 -- select * from rcbill_my.rep_extravagance_activity;

@@ -5,7 +5,7 @@ use rcbill_my;
 -- SET @date1='2021-10-09';
 -- SET @date2='2021-10-10';  ### to be one day later
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-30032022.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-23052022.csv'
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-24082019-02092019.csv'  
  
@@ -44,6 +44,15 @@ INSERTEDON=now()
 
 -- select * from rcbill_my.dailycalls where date(calldate)>='2018-05-13' order by calldate;
 -- select * from rcbill_my.dailycalls order by calldate desc limit 10000;
+/*
+select date(calldate), CALLQUEUENAME, count(*)
+from rcbill_my.dailycalls
+group by 1,2
+order by 1 desc
+limit 20
+;
+
+*/
 -- select * from rcbill_my.dailycalls where callnumber=2719841;
 -- select date(CALLDATE), count(*) from rcbill_my.dailycalls group by 1 order by 1 desc;
 
@@ -439,6 +448,13 @@ as
 select count(*) as rep_cccallreport from rcbill_my.rep_cccallreport;
 
 drop temporary table if exists tempccl1; 
+
+select * from rcbill_my.rep_cccallreport order by calldate desc limit 1000;
+SET SQL_SAFE_UPDATES = 0;
+
+
+delete from rcbill_my.rep_cccallreport where calldate>'2021-01-01 00:00:00';
+
 */
 drop temporary table if exists tempccl1; 
 create temporary table tempccl1

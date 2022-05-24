@@ -13,6 +13,14 @@ delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2020-05-19';
 delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-03-02';
 delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-03-16';
 
+delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-04-16';
+delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-04-02';
+delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-04-30';
+delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-05-07';
+
+explain 
+select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)='2022-05-14' 
+
 */
 
 
