@@ -232,6 +232,8 @@ select count(*) as clientcontractipmonth from rcbill.clientcontractipmonth;
 ######################################################################
 
 -- select * from rcbill.clientcontractipusage where processedclientip='154.70.178.123' limit 1000;
+-- select * from rcbill.clientcontractipmonth where processedclientip='154.70.178.123' limit 1000;
+-- select * from rcbill.clientcontractipusage where clientcode='I.000023021' limit 1000;
 
 
 drop table if exists rcbill_my.rep_dailypackageusage2022;
