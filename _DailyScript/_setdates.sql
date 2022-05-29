@@ -1,6 +1,6 @@
 
 call rcbill_my.sp_filllastdates('2016-05-31',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
-call rcbill_my.sp_fillalldates('2016-05-25',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
+call rcbill_my.sp_fillalldates('2016-05-28',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
 -- select * from rcbill_my.month_last_date order by 1 desc;
 -- select * from rcbill_my.month_all_date order by 1 desc;
 
@@ -10,22 +10,22 @@ use rcbill;
 set @lastdate = (select max(month_all_date) from rcbill_my.month_all_date);
 
 #SET DATE
-SET @REPORTDATE=str_to_date('2022-05-25','%Y-%m-%d');
+SET @REPORTDATE=str_to_date('2022-05-28','%Y-%m-%d');
 
 
-SET @rundate='2022-05-25';
+SET @rundate='2022-05-28';
 
 SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
-set @periodstart='2022-05-25';
-set @periodend='2022-05-25';	
+set @periodstart='2022-05-28';
+set @periodend='2022-05-28';	
 
 
-SET @rundate='2022-05-25';
+SET @rundate='2022-05-28';
 
 #FOR Daily calls script
-SET @date1='2022-05-25';
-SET @date2='2022-05-26';  ### to be one day later
+SET @date1='2022-05-28';
+SET @date2='2022-05-29';  ### to be one day later
 
 
 ## FOR BUDGET ACTUAL ANALYSIS SCRIPT
@@ -36,7 +36,7 @@ set @m2='2022-02-28';
 set @m3='2022-03-31';
 set @m4='2022-04-30';
 
-set @m5='2022-05-25';
+set @m5='2022-05-28';
 
 set @m6='2022-06-30';
 set @m7='2022-07-31';
