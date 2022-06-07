@@ -331,7 +331,7 @@ order by a.opendate
 )
 ;
 
--- select * from rcbill_my.clientticketsnapshot_f;
+-- select * from rcbill_my.clientticketsnapshot_f where stageregion='Approvals';
 
 #TICKET ASSIGNMENTS & COMMENTS JOURNEY
 use rcbill;

@@ -4,7 +4,7 @@ select * from rcbill.rcb_tickettechusers;
 
 select * from rcbill_my.holidays order by HOLIDAY_DATE desc;
 
--- set @dept = 'Approvals';
+ set @dept = 'Approvals';
 -- set @dept = 'Technical - New Installations';
 -- set @dept = 'Tech Support';
 -- set @dept = 'Call Center';
@@ -12,8 +12,8 @@ select * from rcbill_my.holidays order by HOLIDAY_DATE desc;
 -- set @dept = 'Praslin - Installations';
 -- set @dept = 'Technical - New Service';
 -- set @dept = 'Accounts & Finance';
-set @mth = 12;
-set @yr = 2021;
+set @mth = 05;
+set @yr = 2022;
 set @workinghours = 8;
 
 select * 
@@ -149,6 +149,33 @@ order by ASSGN_OPENDATE desc
 
 -- Select rcbill_my.workday_time_diff_holidays('SC','2021-06-10 12:00:00','2021-06-10 14:00:00','09:00','16:00');
 
+
+
+
+select 
+assgntechregion as ASSGN_DEPT
+, month(ASSGN_OPENDATE) as ASSGN_MTH, year(ASSGN_OPENDATE) as ASSGN_YR
+
+, count(ticketid) as ASSIGNMENTS
+, count(distinct ticketid) as D_TICKETS
+
+, round(avg(working_minutes),2) as `AVG_WORKINGMINS`
+, sec_to_time(round(avg(working_minutes))*60) as `AVG_TIME`
+, (round(avg(working_minutes)/60)/@workinghours) as `AVG_DAYS`
+, max(working_minutes) as `MAX_WORKINGMINS`
+, min(working_minutes) as `MIN_WORKINGMINS`
+
+
+from rcbill_my.clientticket_assgnjourney
+where 0=0
+-- and assgntechregion in (@dept)
+-- and date(OPENDATE)='2022-01-05'
+-- and month(ASSGN_OPENDATE)=@mth
+-- and year(ASSGN_OPENDATE)=@yr
+ 
+group by 1,2,3
+order by 3 desc, 2 desc
+;
 
 
 

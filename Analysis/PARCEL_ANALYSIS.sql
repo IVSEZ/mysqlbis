@@ -5,6 +5,9 @@ select * from rcbill.rcb_clientparcels;
 
 /*
 set SQL_SAFE_UPDATES=0;
+delete from rcbill.rcb_clientparcelcoords where INSERTEDON is null;
+
+
 delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)=date(now());
 
 delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2020-05-18';
@@ -21,6 +24,10 @@ delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-05-07';
 explain 
 select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)='2022-05-14' 
 
+
+select * from rcbill.rcb_clientparcelcoords order by insertedon desc limit 10000;
+
+select * from rcbill.rcb_clientparcelcoords limit 10000;
 */
 
 

@@ -37,3 +37,19 @@ ADD COLUMN geo_district VARCHAR(255) NOT NULL AFTER longitude,
 ADD COLUMN geo_address VARCHAR(255) NOT NULL AFTER geo_district;
 
 */
+
+describe  rcbill.rcb_clientparcelcoords ;
+show create rcbill.rcb_clientparcelcoords ;
+
+SHOW COLUMNS FROM rcbill.rcb_clientparcelcoords;
+
+
+ALTER TABLE rcbill.rcb_clientparcelcoords MODIFY COLUMN INSERTEDON date not null DEFAULT CURRENT_DATE;
+use rcbill;
+
+DELIMITER ;;
+CREATE TRIGGER `inserted_date` BEFORE INSERT ON `rcb_clientparcelcoords` FOR EACH ROW
+BEGIN
+    SET NEW.INSERTEDON = date(NOW());
+END;;
+DELIMITER ;
