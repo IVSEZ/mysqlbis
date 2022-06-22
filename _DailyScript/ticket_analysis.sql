@@ -110,6 +110,8 @@ ON rcbill_my.clientticketjourney (opendate);
 CREATE INDEX IDXctj3
 ON rcbill_my.clientticketjourney (ticketid);
 
+select count(*) as clientticketjourney from rcbill_my.clientticketjourney;
+
 -- select * from  rcbill_my.clientticketjourney;
 
 -- CREATE TABLE FOR CLIENTTICKET SNAPSHOT FOR INSTALLATION , RELOCATION, SURVEY
@@ -218,7 +220,7 @@ as
 
 -- select * from  rcbill_my.clientticketjourney;
 -- select * from  rcbill_my.clientticketsnapshot_irs ;
-
+select count(*) as clientticketsnapshot_irs from rcbill_my.clientticketsnapshot_irs;
 
 
 -- CREATE SNAPSHOT TABLE FOR FAULT TICKETS
@@ -331,6 +333,7 @@ order by a.opendate
 )
 ;
 
+select count(*) as clientticketsnapshot_f from rcbill_my.clientticketsnapshot_f;
 -- select * from rcbill_my.clientticketsnapshot_f where stageregion='Approvals';
 
 #TICKET ASSIGNMENTS & COMMENTS JOURNEY
@@ -393,7 +396,7 @@ create table rcbill_my.clientticket_cmmtjourney as
 ; 
 
 
-    
+select count(*) as clientticket_cmmtjourney from rcbill_my.clientticket_cmmtjourney;    
 
 drop table if exists rcbill_my.clientticket_assgnjourney;
 
@@ -424,6 +427,7 @@ create table rcbill_my.clientticket_assgnjourney as
 			-- , sec_to_time((rcbill_my.workday_time_diff_holidays('SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',1),rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',2)))*60) AS working_hours
 			
 			, rcbill_my.workday_time_diff_holidays2(a.dept_flag, 'SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,a.start_time,a.end_time) AS working_minutes
+            , TIMESTAMPDIFF(MINUTE, ASSGN_OPENDATE, ASSGN_CLOSEDATE) as actual_minutes
 			-- , (rcbill_my.workday_time_diff_holidays2(rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',3), 'SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',1),rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',2))/60) AS working_hours2
 			-- , sec_to_time((rcbill_my.workday_time_diff_holidays2(a.dept_flag, 'SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,a.start_time,a.end_time))*60) AS working_hours2
 
@@ -459,7 +463,8 @@ create table rcbill_my.clientticket_assgnjourney as
 			, (select name from rcb_tickettechregions where id in (a.ASSGN_TECHREGIONID)) as assgntechregion
 			, (select name from rcb_tickettechlevels where ID in (a.ASSGN_TECHLEVELID)) as assgntechlevel
 			, (select name from rcb_tickettechusers where id in (a.ASSGN_TECHUSERID)) as assgntechuser
-			, a.ASSGN_OPENDATE 
+			, a.ASSGN_OPENDATE
+            , a.ASSGN_STATE
 			, a.ASSGN_CLOSEDATE
 
 			, datediff(a.ASSGN_CLOSEDATE,a.ASSGN_OPENDATE) as tkt_alldays
@@ -499,6 +504,7 @@ create table rcbill_my.clientticket_assgnjourney as
 				, c.USERID AS ASSGN_USERID
 				, c.WORKTIME AS ASSGN_WORKTIME
 				, c.UPDDATE AS ASSGN_UPDDATE
+                , c.STATE AS ASSGN_STATE
 				from 
 				rcbill.rcb_tickets a 
 				inner join 
@@ -517,6 +523,8 @@ create table rcbill_my.clientticket_assgnjourney as
 		) a 
 	) a
 );
+
+select count(*) as clientticket_assgnjourney from rcbill_my.clientticket_assgnjourney;   
 
 ### commented on 19 Jan 2022
 /*
@@ -605,8 +613,8 @@ create table rcbill_my.clientticket_assgnjourney as
 
 
 
-select COUNT(*) as clientticket_cmmtjourney  from rcbill_my.clientticket_cmmtjourney;
-select COUNT(*) as clientticket_assgnjourney from rcbill_my.clientticket_assgnjourney;
+-- select COUNT(*) as clientticket_cmmtjourney  from rcbill_my.clientticket_cmmtjourney;
+-- select COUNT(*) as clientticket_assgnjourney from rcbill_my.clientticket_assgnjourney;
 
 
 -- select *  from rcbill_my.clientticket_cmmtjourney;
@@ -704,6 +712,8 @@ create table rcbill_my.rep_surveytickets as
 	) A
 
 );
+
+select count(*) as rep_surveytickets  from rcbill_my.rep_surveytickets;
 
 -- select * from rcbill_my.rep_surveytickets;
 
