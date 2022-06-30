@@ -20,7 +20,7 @@ delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-04-16';
 delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-04-02';
 delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-04-30';
 delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-05-07';
-delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-06-18';
+delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-06-25';
 
 
 explain 
