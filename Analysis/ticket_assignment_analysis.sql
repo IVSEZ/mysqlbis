@@ -150,10 +150,10 @@ order by ASSGN_OPENDATE desc
 -- Select rcbill_my.workday_time_diff_holidays('SC','2021-06-10 12:00:00','2021-06-10 14:00:00','09:00','16:00');
 
 
--- set @dept = 'Approvals';
+ set @dept = 'Approvals';
 -- set @dept = 'Technical - New Installations';
 -- set @dept = 'Tech Support';
- set @dept = 'Call Center';
+-- set @dept = 'Call Center';
 -- set @dept = 'NOC';
 -- set @dept = 'Praslin - Installations';
 -- set @dept = 'Technical - InHouse Service';
