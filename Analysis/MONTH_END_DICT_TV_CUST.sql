@@ -57,8 +57,11 @@
 
 -- set @period='2022-01-31';
 -- set @period='2022-02-28';
- set @period='2022-03-31';
+-- set @period='2022-03-31';
 
+-- set @period='2022-04-30';
+-- set @period='2022-05-31';
+-- set @period='2022-06-30';
 
 
 call rcbill_my.sp_filllastdates('2016-05-31',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
@@ -129,8 +132,9 @@ select servicecategory, package
 -- , `20210131`, `20210228`, `20210331`
 -- , `20210430`, `20210531`, `20210630`
 -- , `20210731`, `20210831`, `20210930`
-, `20211031`, `20211130`, `20211231`
+-- , `20211031`, `20211130`, `20211231`
 , `20220131`, `20220228`, `20220331`
+, `20220430`, `20220531`, `20220630`
 
  from rcbill_my.rep_activenumberlastday_pv;
 
@@ -150,16 +154,26 @@ select servicecategory
 , sum(`20210731`)
 , sum(`20210831`)
 , sum(`20210930`)
-*/
 , sum(`20211031`)
 , sum(`20211130`)
 , sum(`20211231`)
+*/
 , sum(`20220131`)
 , sum(`20220228`)
 , sum(`20220331`)
+, sum(`20220430`)
+, sum(`20220531`)
+, sum(`20220630`)
  from rcbill_my.rep_activenumberlastday_pv
  group by servicecategory
  ;
+
+
+-- set @period='2022-04-30';
+-- set @period='2022-05-31';
+-- set @period='2022-06-30';
+
+
 
 
 set @message = 'EXTRA + INDIAN';
