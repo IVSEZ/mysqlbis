@@ -327,8 +327,11 @@ as
 )
 ;
 
+
+-- 
 select * from rcbill_my.rep_extravagance_peakcustomer_activity;
 
+-- peak customer status
 select reportdate, clientcode, currentdebt, IsAccountActive, AccountActivityStage, clientname, clientclass, activenetwork, activeservices, activecontracts, activesubscriptions, clientaddress, clientlocation
 , firstactivedate, lastactivedate, dayssincelastactive
 , firstcontractdate, firstinvoicedate, firstpaymentdate, lastinvoicedate, lastpaidamount, lastpaymentdate, totalpayments, totalpaymentamount
@@ -336,6 +339,8 @@ select reportdate, clientcode, currentdebt, IsAccountActive, AccountActivityStag
 
 from rcbill_my.rep_custconsolidated where clientcode in (select clientcode from rcbill_my.rep_extravagance_peakcustomer_activity);
 
+use rcbill_my;
+call sp_GetActiveNumberFromTo('2022-01-01','2022-06-30');
 
 -- select * from rcbill_my.rep_extravagance_activity;
 
