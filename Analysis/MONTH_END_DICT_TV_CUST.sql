@@ -169,9 +169,9 @@ select servicecategory
  ;
 
 
- set @period='2022-04-30';
+-- set @period='2022-04-30';
 -- set @period='2022-05-31';
--- set @period='2022-06-30';
+ set @period='2022-06-30';
 
 
 
