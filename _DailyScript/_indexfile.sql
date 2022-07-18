@@ -12,7 +12,7 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 
 
 mysql -h 192.168.1.166 -u root -pl3tm31n!@#mysql 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20220711_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20220717_1.out
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
@@ -136,9 +136,18 @@ select * from rcbill_my.clientstats where VOD>0 and DualView>0
 and clientclass not in ('Employee','Intelvision Office')
 ;
 
-
-select * from rcbill_my.clientstats where VOD>0 and MultiView>0
+select * from rcbill_my.clientstats where VOD>0 and DualView>0
 and clientclass not in ('Employee','Intelvision Office')
+;
+
+select * from rcbill_my.clientstats where VOD>0 and DualView>0
+and clientclass not in ('Employee','Intelvision Office')
+;
+
+
+
+select * from rcbill_my.clientstats where (VOD>0 or MultiView>0 or DualView>0)
+and clientclass  in ('Employee','Intelvision Office')
 ;
 ######################################################################################
 
