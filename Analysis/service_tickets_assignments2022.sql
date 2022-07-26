@@ -48,6 +48,11 @@ create table rcbill_my.rep_servicetickets_2022 as
 				-- , date(ASSGN_OPENDATE) as assgnopendate, date(ASSGN_CLOSEDATE) as assgnclosedate
 				, opendate as opendate, CLOSEDATE as closedate
 				, ASSGN_OPENDATE as assgnopendate, ASSGN_CLOSEDATE as assgnclosedate
+				, WORKING_MINUTES, WORKING_HOURS
+                , ACTUAL_MINUTES, ACTUAL_HOURS
+
+				, OPEN_DAY, CLOSE_DAY, OPEN_HOLIDAY, CLOSE_HOLIDAY                
+                
                 -- , (select package from rcbill_my.customercontractsnapshot where contractcode=contractcode) as package
 
 				, sum(tkt_alldays) as service_alldays, sum(tkt_workdays) as service_workdays
@@ -66,7 +71,7 @@ create table rcbill_my.rep_servicetickets_2022 as
                 order by opendate, ASSGN_OPENDATE
 
 		) a
-		inner join
+		left join
 		(
 
 		-- select * from rcbill_my.rep_cust_cont_payment_cmts_mxk;
@@ -157,6 +162,14 @@ create table rcbill_my.rep_servicetickets_2022 as
 	) a order by a.opendate, a.assgnopendate
 )
 ;
+
+-- show index from rcbill_my.rep_servicetickets_2022;
+
+-- drop index idx1 on rcbill_my.rep_servicetickets_2022;
+-- drop index idx2 on rcbill_my.rep_servicetickets_2022;
+
+CREATE INDEX IDXrst1 ON rcbill_my.rep_servicetickets_2022 (assgntechregion);
+CREATE INDEX IDXrst2 ON rcbill_my.rep_servicetickets_2022 (assgnopendate);
 
 select count(*) as rep_servicetickets_2022 from rcbill_my.rep_servicetickets_2022;
 -- select * from rcbill_my.rep_servicetickets_2022;

@@ -16,3 +16,4 @@ CREATE TABLE `rcb_tickettechdepts` (
   `INSERTEDON` datetime DEFAULT NULL	
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
+create index IDXttd1 on rcbill.rcb_tickettechdepts (ID);

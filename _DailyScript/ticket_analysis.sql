@@ -406,7 +406,8 @@ create table rcbill_my.clientticket_assgnjourney as
 (
 	select a.*
 		-- , sec_to_time((a.working_minutesall)*60) AS working_hoursall
-		, sec_to_time((a.working_minutes)*60) AS working_hours
+		, sec_to_time((a.WORKING_MINUTES)*60) AS WORKING_HOURS
+		, sec_to_time((a.ACTUAL_MINUTES)*60) AS ACTUAL_HOURS
 
 		, dayname(a.ASSGN_OPENDATE) as OPEN_DAY
 		, dayname(a.ASSGN_CLOSEDATE) as CLOSE_DAY
@@ -425,9 +426,11 @@ create table rcbill_my.clientticket_assgnjourney as
 			
 			-- , (rcbill_my.workday_time_diff_holidays('SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',1),rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',2))/60) AS working_hours
 			-- , sec_to_time((rcbill_my.workday_time_diff_holidays('SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',1),rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',2)))*60) AS working_hours
-			
-			, rcbill_my.workday_time_diff_holidays2(a.dept_flag, 'SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,a.start_time,a.end_time) AS working_minutes
-            , TIMESTAMPDIFF(MINUTE, ASSGN_OPENDATE, ASSGN_CLOSEDATE) as actual_minutes
+			-- commented on 22/7/22, rcbill_my.workday_time_diff_holidays2(rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',3), 'SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',1),rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',2)) AS WORKING_MINUTES			
+			, ceiling(rcbill_my.workday_time_diff_holidays2(a.DEPT_FLAG, 'SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,a.WORK_START,a.WORK_END)) AS WORKING_MINUTES
+            -- commented on 22/7/22 , ceiling( TIMESTAMPDIFF(MINUTE, ASSGN_OPENDATE, ASSGN_CLOSEDATE)) as ACTUAL_MINUTES
+            , ceiling( TIMESTAMPDIFF(SECOND, ASSGN_OPENDATE, ASSGN_CLOSEDATE)/60) as ACTUAL_MINUTES
+            
 			-- , (rcbill_my.workday_time_diff_holidays2(rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',3), 'SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',1),rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',2))/60) AS working_hours2
 			-- , sec_to_time((rcbill_my.workday_time_diff_holidays2(a.dept_flag, 'SC',ASSGN_OPENDATE,ASSGN_CLOSEDATE,a.start_time,a.end_time))*60) AS working_hours2
 
@@ -482,11 +485,11 @@ create table rcbill_my.clientticket_assgnjourney as
 			, a.ASSGN_UPDDATE
 
 
-			, rcbill_my.GetShiftTimingsForDept(upper((select name from rcb_tickettechregions where id in (a.ASSGN_TECHREGIONID)))) as shift_timings
-			, rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper((select name from rcb_tickettechregions where id in (a.ASSGN_TECHREGIONID)))),'|',1) as start_time
-			, rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper((select name from rcb_tickettechregions where id in (a.ASSGN_TECHREGIONID)))),'|',2) as end_time
-			, rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper((select name from rcb_tickettechregions where id in (a.ASSGN_TECHREGIONID)))),'|',3) as dept_flag
-			
+			, rcbill_my.GetShiftTimingsForDept(upper((select name from rcb_tickettechregions where id in (a.ASSGN_TECHREGIONID)))) as SHIFT_TIMINGS
+			, rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper((select name from rcb_tickettechregions where id in (a.ASSGN_TECHREGIONID)))),'|',1) as WORK_START
+			, rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper((select name from rcb_tickettechregions where id in (a.ASSGN_TECHREGIONID)))),'|',2) as WORK_END
+			, rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper((select name from rcb_tickettechregions where id in (a.ASSGN_TECHREGIONID)))),'|',3) as DEPT_FLAG
+			, rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper((select name from rcb_tickettechregions where id in (a.ASSGN_TECHREGIONID)))),'|',4) as WORK_BREAKS
 
 			from 
 			(
@@ -506,16 +509,19 @@ create table rcbill_my.clientticket_assgnjourney as
 				, c.UPDDATE AS ASSGN_UPDDATE
                 , c.STATE AS ASSGN_STATE
 				from 
-				rcbill.rcb_tickets a 
+				-- rcbill.rcb_tickets a 
+                (select * from rcbill.rcb_tickets a1 where a1.OPEN_D>=@startdate) a 
 				inner join 
 				rcbill.rcb_ticketassignments c
 				on 
 				a.ID=c.TICKETID
 			 
-				where 
+				-- where 
 				-- a.id in (865626)
 				-- and 
-				date(a.OPENDATE)>=@startdate
+				-- date(a.OPENDATE)>=@startdate
+                -- added on 26/07/2022
+               --  a.OPEN_D>=@startdate
 				order by a.id, c.OPENDATE
 				-- limit 100000
 			) a
@@ -525,6 +531,86 @@ create table rcbill_my.clientticket_assgnjourney as
 );
 
 select count(*) as clientticket_assgnjourney from rcbill_my.clientticket_assgnjourney;   
+
+create index idxctaj1 on rcbill_my.clientticket_assgnjourney(assgntechregion,ASSGN_OPENDATE);
+create index idxctaj2 on rcbill_my.clientticket_assgnjourney(ticketid);
+create index idxctaj3 on rcbill_my.clientticket_assgnjourney(clientcode);
+
+
+#### created on 22/7/22
+#### SUMMARIZE THE ASSIGNMENT JOURNEY
+
+drop table if exists rcbill_my.rep_clientticket_assgnjourney;
+
+create table rcbill_my.rep_clientticket_assgnjourney(index idx1(ASSIGNED_DEPT), index idx2(ASSGN_YR), index idx3(ASSGN_MTH), index idx4(ASSIGNED_DEPT,ASSGN_MTH,ASSGN_YR))
+(
+	select 
+	assgntechregion as ASSIGNED_DEPT
+	, month(ASSGN_OPENDATE) as ASSGN_MTH, year(ASSGN_OPENDATE) as ASSGN_YR
+
+
+	, count(ticketid) as ASSIGNMENTS
+	, count(distinct ticketid) as D_TICKETS
+
+	, min(actual_minutes) as `MIN_ACTUALMINS`
+	, max(actual_minutes) as `MAX_ACTUALMINS`
+	, round(AVG(NULLIF(actual_minutes,0)),2) as  `AVG_ACTUALMINS`
+	,  sec_to_time(round(AVG(NULLIF(actual_minutes,0)))*60) as `AVG_ACTUALTIME`
+	, (round(AVG(NULLIF(actual_minutes,0))/60)/24) as `AVG_ACTUALDAYS`
+
+
+
+	, SHIFT_TIMINGS
+	, WORK_START
+	, WORK_END
+	, WORK_BREAKS
+    , IF(DEPT_FLAG=0,'NO','YES') as WORK_WEEKENDS
+    
+
+	-- , rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)) as shift_timings
+	-- , rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',1) as WORK_START
+	-- , rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',2) as WORK_END
+	-- , IF((rcbill_my.SPLIT_STR(rcbill_my.GetShiftTimingsForDept(upper(assgntechregion)),'|',3))=0,'NO','YES') as WORK_WEEKENDS
+
+
+	, min(working_minutes) as `MIN_WORKINGMINS`
+	, max(working_minutes) as `MAX_WORKINGMINS`
+	-- , round(avg(working_minutes),2) as `AVG_WORKINGMINS1`
+	, round(AVG(NULLIF(working_minutes,0)),2) as  `AVG_WORKINGMINS`
+
+	-- , sec_to_time(round(avg(working_minutes))*60) as `AVG_WORKINGTIME1`
+	, sec_to_time(round(AVG(NULLIF(working_minutes,0)))*60) as `AVG_WORKINGTIME`
+
+	-- , (round(avg(working_minutes)/60)/@workinghours) as `AVG_WORKINGDAYS1`
+    
+    
+    ## working hours is WORK_END - WORK_START - WORK_BREAKS
+    -- TIME_TO_SEC(TIMEDIFF(WORK_END,WORK_START) - INTERVAL WORK_BREAKS HOUR)/3600
+    
+	, (round(AVG(NULLIF(working_minutes,0))/60)/(TIME_TO_SEC(TIMEDIFF(WORK_END,WORK_START) - INTERVAL WORK_BREAKS HOUR)/3600)) as `AVG_WORKINGDAYS`
+
+
+
+	from rcbill_my.clientticket_assgnjourney
+	where 0=0
+	-- and assgntechregion in (@dept)
+	-- and date(OPENDATE)='2022-01-05'
+	-- and month(ASSGN_OPENDATE)=@mth
+	-- and year(ASSGN_OPENDATE)=@yr
+	 
+	group by 1,2,3
+	order by 3 desc, 2 desc
+)
+;
+
+-- select * from rcbill_my.rep_clientticket_assgnjourney;
+select count(*) as rep_clientticket_assgnjourney from rcbill_my.rep_clientticket_assgnjourney;  
+
+
+
+
+
+
 
 ### commented on 19 Jan 2022
 /*

@@ -16,3 +16,5 @@ CREATE TABLE `rcb_tickettypes` (
 -- 	,
 -- `REPORTDATE` date DEFAULT NULL	
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+create index IDXtt1 on rcbill.rcb_tickettypes (ID);

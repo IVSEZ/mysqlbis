@@ -20,3 +20,5 @@ CREATE TABLE `rcb_tickettechservices` (
 -- 	,
 -- `REPORTDATE` date DEFAULT NULL	
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+create index IDXts1 on rcbill.rcb_tickettechservices (ID);

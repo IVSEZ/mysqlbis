@@ -14,9 +14,9 @@ BEGIN
     
 	set shift = (select
 						case
-						   when upper(dept)='CALL CENTER' then '08:15|22:45|1'
-						   when upper(dept)='NOC' then '00:01|23:59|1'
-						   else '08:15|16:45|0'
+						   when upper(dept)='CALL CENTER' then '08:15|22:45|1|2'
+						   when upper(dept)='NOC' then '00:01|23:59|1|3'
+						   else '08:15|16:45|0|1'
 						end as `SHIFT` 
     );
 

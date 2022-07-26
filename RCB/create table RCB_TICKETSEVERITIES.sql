@@ -12,3 +12,9 @@ CREATE TABLE `rcb_ticketseverities` (
 `INSERTEDON` datetime DEFAULT NULL	,
 `REPORTDATE` date DEFAULT NULL	
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+create index IDXts1 on rcbill.rcb_ticketseverities(ID);
+show index from rcbill.rcb_ticketseverities;
+-- select * from  rcbill.rcb_ticketseverities;
+
+-- drop index IDXts1 on rcbill.rcb_ticketseverities;

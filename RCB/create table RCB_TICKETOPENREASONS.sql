@@ -17,3 +17,6 @@ CREATE TABLE `rcb_ticketopenreasons` (
 `INSERTEDON` datetime DEFAULT NULL	,
 `REPORTDATE` date DEFAULT NULL	
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+
+create index IDXtor1 on rcbill.rcb_ticketopenreasons (TORID);

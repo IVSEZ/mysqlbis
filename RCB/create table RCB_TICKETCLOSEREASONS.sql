@@ -19,3 +19,5 @@ CREATE TABLE `rcb_ticketclosereasons` (
 -- 	,
 -- `REPORTDATE` date DEFAULT NULL	
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+create index IDXtcr1 on rcbill.rcb_ticketclosereasons (TCRID);

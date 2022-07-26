@@ -14,6 +14,10 @@ ENGINE=InnoDB DEFAULT CHARSET UTF8
 ;
 
 
+create index IDXhol2 on rcbill_my.holidays (COUNTRY_CODE);
+create index IDXhol3 on rcbill_my.holidays (HOLIDAY_DATE);
+
+
 select * from rcbill_my.holidays;
 
 /*
