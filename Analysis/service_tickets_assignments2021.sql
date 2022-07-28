@@ -55,6 +55,8 @@ create table rcbill_my.rep_servicetickets_2021 as
 
 				, OPEN_DAY, CLOSE_DAY, OPEN_HOLIDAY, CLOSE_HOLIDAY    
                -- , (select package from rcbill_my.customercontractsnapshot where contractcode=contractcode) as package
+                , ticketstate, ASSGN_STATE
+
 
 				, sum(tkt_alldays) as service_alldays, sum(tkt_workdays) as service_workdays
                 , sum(tkt_workdays2) as service_workdays2
