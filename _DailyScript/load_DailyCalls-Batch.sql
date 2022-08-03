@@ -2,10 +2,10 @@ use rcbill_my;
 
 
 #FOR Daily calls script
- SET @date1='2022-07-22';
- SET @date2='2022-07-25';  ### to be one day later
+ SET @date1='2022-08-01';
+ SET @date2='2022-08-03';  ### to be one day later
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-22072022-24072022.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-01082022-02082022.csv'
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CC\\distribution_detail-CC-24082019-02092019.csv'  
  
