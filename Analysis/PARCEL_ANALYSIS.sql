@@ -22,6 +22,8 @@ delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-04-30';
 delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-05-07';
 delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)='2022-06-25';
 
+delete from rcbill.rcb_clientparcelcoords where date(INSERTEDON)>'2022-08-20';
+
 
 explain 
 select * from rcbill.rcb_clientparcelcoords where latitude <> 0 and date(insertedon)='2022-05-14' 

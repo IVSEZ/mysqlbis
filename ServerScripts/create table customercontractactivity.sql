@@ -172,6 +172,8 @@ ON rcbill_my.customercontractactivity (clientcode, contractcode, package);
 CREATE INDEX IDXcca5
 ON rcbill_my.customercontractactivity (clientcode, contractcode, period);
 
+CREATE INDEX IDXcca6
+ON rcbill_my.customercontractactivity (clientcode, servicecategory);
 
 DROP INDEX `IDXcca3` ON rcbill_my.customercontractactivity;
 

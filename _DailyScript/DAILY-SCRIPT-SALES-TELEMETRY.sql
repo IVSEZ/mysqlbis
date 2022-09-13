@@ -10,7 +10,7 @@ use rcbill_my;
 ## change all csv dates 6 files
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\SalesReport-25082019-02092019-1.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\SalesReport2-08082022-1.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\SalesReport2-12092022-1.csv' 
  
 REPLACE INTO TABLE `rcbill_my`.`dailysales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -265,98 +265,6 @@ order by orderday desc, region, salestype
 */
 #####################################################################
 
-# DAILY SINGLE SALES
-
-use rcbill_my;
-
--- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\PrepaidCardSales-25082019-02092019-P1.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\PrepaidCardSales-08082022-P1.csv' 
-
-REPLACE INTO TABLE `rcbill_my`.`dailysinglesales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
-OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
-IGNORE 1 LINES 
-(
-@ssalesid ,
-@ClientId ,
-@ID ,
-@ExternalReference ,
-@EntryDate ,
-@User ,
-@CASHPOINT ,
-@ClientCode ,
-@ClientName ,
-@SerialNo ,
-@UserName ,
-@Amount ,
-@Place ,
-@SalesType ,
-@Debtperiod ,
-@SalesComment
-) 
-set 
-SSALESID=@ssalesid ,
-CLIENTID=@ClientId ,
-EXTERNALREFERENCE=@ExternalReference ,
-ENTRYDATE=str_to_date(@EntryDate,'%m/%d/%Y %H:%i') ,
-USER=@User ,
-CASHPOINT=@CASHPOINT ,
-CLIENTCODE=@ClientCode ,
-CLIENTNAME=@ClientName ,
-SERIALNO=@SerialNo ,
-USERNAME=@UserName ,
-AMOUNT=@Amount ,
-PLACE=@Place ,
-SALESTYPE=@SalesType ,
-DEBTPERIOD=@Debtperiod,
-SALESCOMMENT=@SalesComment ,
-INSERTEDON=now()
-
-;
-
-
-
-select count(1) as dailysinglesales from rcbill_my.dailysinglesales;
-
--- select * from rcbill_my.dailysinglesales order by insertedon desc;
--- delete from rcbill_my.dailysinglesales where insertedon='2021-12-01 09:51:30';
--- delete from rcbill_my.dailysinglesales where insertedon>'2021-10-18 00:00:00';
-/*
-
-set sql_safe_updates=0;
-select distinct date(entrydate) as entrydate, rcbill_my.GetWeekdayName(weekday(entrydate)) as weekday
-, clientname
-, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 1),'/',-1)) as PrepaidType
-, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 2),',',-1)) as ValidityPeriod
-, place
-, count(1) as salescount, sum(amount) as salesamount
-from rcbill_my.dailysinglesales 
-group by 1,2,3,4,5,6
-order by 1 desc;
-*/
-
--- PREPAID AND CAMERA REPORT FOR LYNSEY
-/*
-select distinct date(entrydate) as entrydate, rcbill_my.GetWeekdayName(weekday(entrydate)) as weekday
-, clientname
-, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 1),'/',-1)) as PrepaidType
-, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 2),',',-1)) as ValidityPeriod
-, place
-, cashpoint
-, count(1) as salescount, sum(amount) as salesamount
-
-from rcbill_my.dailysinglesales 
-group by 1,2,3,4,5,6, 7
-order by 1 desc;
-*/
-
-
-/*
-SELECT trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 1),'/',-1)) as PrepaidType,
-trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 2),',',-1)) as ValidityPeriod
-from dailysinglesales where date(entrydate)>='2017-06-01' and date(entrydate)<='2017-06-30';
-*/
-
-#####################################################################
 
 # DAILY ADDON SALES
 
@@ -364,7 +272,7 @@ use rcbill_my;
 
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\Sales-Addon-25082019-02092019.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\Sales-Addon-08082022.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\Sales-Addon-12092022.csv'
 
 REPLACE INTO TABLE `rcbill_my`.`dailyaddonsales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -468,7 +376,7 @@ order by 3 desc
 # ONLINE PAYMENTS
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\eBarclays-PaymentsList-25082019-02092019.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\eBarclays-PaymentsList-08082022.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\eBarclays-PaymentsList-12092022.csv' 
 REPLACE INTO TABLE `rcbill_my`.`onlinepayments` CHARACTER SET Latin1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 1 LINES 
@@ -567,3 +475,97 @@ order by 1 desc, 2 desc
 limit 5
 ;
 
+#####################################################################
+
+# DAILY SINGLE SALES
+
+use rcbill_my;
+
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\PrepaidCardSales-25082019-02092019-P1.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\PrepaidCardSales-12092022-P1.csv' 
+
+REPLACE INTO TABLE `rcbill_my`.`dailysinglesales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
+IGNORE 1 LINES 
+(
+@ssalesid ,
+@ClientId ,
+@ID ,
+@ExternalReference ,
+@EntryDate ,
+@User ,
+@CASHPOINT ,
+@ClientCode ,
+@ClientName ,
+@SerialNo ,
+@UserName ,
+@Amount ,
+@Place ,
+@SalesType ,
+@Debtperiod ,
+@SalesComment
+) 
+set 
+SSALESID=@ssalesid ,
+CLIENTID=@ClientId ,
+EXTERNALREFERENCE=@ExternalReference ,
+ENTRYDATE=str_to_date(@EntryDate,'%m/%d/%Y %H:%i') ,
+USER=@User ,
+CASHPOINT=@CASHPOINT ,
+CLIENTCODE=@ClientCode ,
+CLIENTNAME=@ClientName ,
+SERIALNO=@SerialNo ,
+USERNAME=@UserName ,
+AMOUNT=@Amount ,
+PLACE=@Place ,
+SALESTYPE=@SalesType ,
+DEBTPERIOD=@Debtperiod,
+SALESCOMMENT=@SalesComment ,
+INSERTEDON=now()
+
+;
+
+
+
+select count(1) as dailysinglesales from rcbill_my.dailysinglesales;
+
+-- select * from rcbill_my.dailysinglesales order by insertedon desc;
+-- delete from rcbill_my.dailysinglesales where insertedon='2021-12-01 09:51:30';
+-- delete from rcbill_my.dailysinglesales where insertedon>'2021-10-18 00:00:00';
+/*
+
+set sql_safe_updates=0;
+select distinct date(entrydate) as entrydate, rcbill_my.GetWeekdayName(weekday(entrydate)) as weekday
+, clientname
+, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 1),'/',-1)) as PrepaidType
+, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 2),',',-1)) as ValidityPeriod
+, place
+, count(1) as salescount, sum(amount) as salesamount
+from rcbill_my.dailysinglesales 
+group by 1,2,3,4,5,6
+order by 1 desc;
+*/
+
+-- PREPAID AND CAMERA REPORT FOR LYNSEY
+/*
+select distinct date(entrydate) as entrydate, rcbill_my.GetWeekdayName(weekday(entrydate)) as weekday
+, clientname
+, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 1),'/',-1)) as PrepaidType
+, trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 2),',',-1)) as ValidityPeriod
+, place
+, cashpoint
+, count(1) as salescount, sum(amount) as salesamount
+
+from rcbill_my.dailysinglesales 
+group by 1,2,3,4,5,6, 7
+order by 1 desc;
+*/
+
+
+/*
+SELECT trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 1),'/',-1)) as PrepaidType,
+trim(SUBSTRING_INDEX(SUBSTRING_INDEX(salescomment, ',', 2),',',-1)) as ValidityPeriod
+from dailysinglesales where date(entrydate)>='2017-06-01' and date(entrydate)<='2017-06-30';
+*/
+
+#####################################################################

@@ -202,6 +202,8 @@ select * from rcbill_my.dedupe_clients;
 
 select * from rcbill_my.dedupe_clients where match_name=1 and match_nin=1 and match_phone=1 and match_parcel=1;
 
+select distinct CLIENT_CODE, CLIENT_NAME, M_CLIENT_CODE, M_CLIENT_NAME from rcbill_my.matched_clients where MATCH_NAME=1;
+
 -- select * from rcbill_my.dedupe_clients where dedupe_client_code like '%[I.000011750]%';
 -- select * from rcbill_my.matched_clients where dedupe_client_code like '%[I.000011750]%' -- client_code in ('I22376') order by m_client_code;
 /*

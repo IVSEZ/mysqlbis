@@ -57,6 +57,14 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 						,S.NAME as S_SERVICENAME
 						,CS.ServiceRateID as CS_SERVICERATEID
 						,CS.Number as CS_SUBSCRIPTIONCOUNT
+						
+                        ## added on 17/08/2022
+   						, CS.Active as CS_ACTIVESTATUS
+                        , CS.StartDate as CS_STARTDATE
+                        , CS.EndDate as CS_ENDDATE
+
+
+                        
 						,VPNR.Name as VPNR_SERVICETYPE
 						,VPNR.Price as VPNR_SERVICEPRICE
 
@@ -159,7 +167,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
 		-- active subscriptions table
 		drop table if exists clientcontractssubs;
-		CREATE TABLE clientcontractssubs AS (
+		CREATE TABLE clientcontractssubs(index idxccs1(CL_CLIENTID),index idxccs2(cl_clientcode)) AS (
 			/*
             select distinct cl_clientid, cl_clientname, cl_clientcode, cl_clclassname, CON_CONTRACTCODE, S_SERVICENAME, VPNR_SERVICETYPE, CS_SUBSCRIPTIONCOUNT
 			from clientcontracts 
@@ -179,7 +187,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 			where 
             -- CL_CLCLASSNAME='CORPORATE LARGE'
 			-- and 
-            CONTRACTCURRENTSTATUS not in ('INACTIVE')
+            CONTRACTCURRENTSTATUS not in ('INACTIVE')  and CS_ACTIVESTATUS=1 -- (added on 17/08/2022)
 			and S_SERVICENAME like '%subscription%'
 			group by cl_clientid, cl_clientname, cl_clientcode, cl_clclassname, CON_CONTRACTCODE 
             ,S_SERVICENAME, VPNR_SERVICETYPE, CONTRACTCURRENTSTATUS
@@ -201,7 +209,9 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 		, (select count(distinct(b.CON_CONTRACTID)) from clientcontracts b where b.CONTRACTCURRENTSTATUS in ('INACTIVE') and b.CL_CLIENTID in (a.CL_CLIENTID)) as InActiveContracts
         , (select count(distinct(b.CON_CONTRACTID)) from clientcontracts b where b.CONTRACTCURRENTSTATUS not in ('INACTIVE') and b.CL_CLIENTID in (a.CL_CLIENTID)) as ActiveContracts
         , (select COALESCE(sum(CS_SUBSCRIPTIONCOUNT),0) from clientcontractssubs b where b.CL_CLIENTID in (a.CL_CLIENTID)) as ActiveSubscriptions
-		, (select count(*) from clientcontracts b where b.CONTRACTCURRENTSTATUS not in ('INACTIVE') and b.CL_CLIENTID in (a.CL_CLIENTID) and b.S_SERVICENAME like '%subscription%') as DevicesCount
+		-- , (select count(*) from clientcontracts b where b.CONTRACTCURRENTSTATUS not in ('INACTIVE') and b.CL_CLIENTID in (a.CL_CLIENTID) and b.S_SERVICENAME like '%subscription%') as DevicesCount
+        -- (added on 17/08/2022)
+        , (select count(*) from clientcontracts b where 0=0 and b.CL_CLIENTID in (a.CL_CLIENTID) and b.S_SERVICENAME = 'MATERIALS') as DevicesCount
 		, count(distinct(a.RD_CONTRACTID)) as TotalContractsWithDevices
 		, min(a.CON_STARTDATE) as firstcontractdate
 		, sum(a.CONPERIOD) as CombinedSubscriptionContractPeriod
@@ -527,7 +537,7 @@ SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
 		#for file clientreport-ddmmyyyy-n.csv
 		DROP TABLE IF EXISTS clientreport;
-		create table clientreport as (
+		create table clientreport(INDEX idxcer1 (CL_CLIENTCODE), INDEX idxcer2 (CL_CLIENTNAME), INDEX idxcer3 (CL_CLIENTID)) as (
         select a.*
   				,(select sum(cciv.LastPaidAmount) from clientcontractinvpmt cciv where cciv.CL_CLIENTID=a.CL_CLIENTID and date(cciv.LastPaymentDate)=date(a.LastPaymentDate)) as LastPaidAmount
 			from

@@ -2054,6 +2054,12 @@ select reportdate, clientcode, currentdebt, IsAccountActive, AccountActivityStag
 , clientemail, clientnin, clientpassport, clientphone
 , activecontracts, activesubscriptions
 , lastactivedate, dayssincelastactive
+, SUBSTRING_INDEX(rcbill_my.GetLastPackageDateFromSnapshot(clientcode, 'INTERNET'),'|',1) as LASTINTERNETPACKAGE
+, SUBSTRING_INDEX(rcbill_my.GetLastPackageDateFromSnapshot(clientcode, 'INTERNET'),'|',-1) as LASTINTERNETPACKAGEDATE
+, SUBSTRING_INDEX(rcbill_my.GetLastPackageDateFromSnapshot(clientcode, 'TV'),'|',1) as LASTTVPACKAGE
+, SUBSTRING_INDEX(rcbill_my.GetLastPackageDateFromSnapshot(clientcode, 'TV'),'|',-1) as LASTTVPACKAGEDATE
+-- , rcbill_my.GetLastPackageFromSnapshot(clientcode, 'INTERNET') as LASTINTERNETPACKAGE
+-- , rcbill_my.GetLastPackageFromSnapshot(clientcode, 'TV') as LASTTVPACKAGE
 , lastinvoicedate, lastpaidamount, lastpaymentdate
 , TotalPaymentAmount2022, AvgMonthlyPayment2022
 , TotalPaymentAmount2021, AvgMonthlyPayment2021

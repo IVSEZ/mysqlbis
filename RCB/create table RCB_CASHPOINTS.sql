@@ -29,4 +29,7 @@ CREATE TABLE `rcb_cashpoints` (
  
 ) ENGINE=InnoDB CHARSET UTF8;
 
+CREATE INDEX IDXcp1
+ON rcb_cashpoints (ID);
+
 

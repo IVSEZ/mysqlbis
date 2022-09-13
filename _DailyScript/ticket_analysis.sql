@@ -30,7 +30,7 @@ order by a.id, b.UPDDATE
 ;
 
 
-
+select distinct UPPER(tickettype) from rcbill_my.clientticketjourney
 
 
 
@@ -110,7 +110,120 @@ ON rcbill_my.clientticketjourney (opendate);
 CREATE INDEX IDXctj3
 ON rcbill_my.clientticketjourney (ticketid);
 
+-- select * from rcbill_my.clientticketjourney;
 select count(*) as clientticketjourney from rcbill_my.clientticketjourney;
+
+
+##############################################
+
+## make ticket table for reporting (with distinct tickets)
+
+drop table if exists rcbill_my.rep_clienttickets;
+
+create table rcbill_my.rep_clienttickets
+(
+select distinct ticketid AS TICKET_ID, OPENDATE
+, if(isnull(CLOSEDATE),'OPEN','CLOSED') as TICKET_STATUS
+, UPPER(ticketseverity) AS TICKET_SEVERITY, UPPER(service) AS SERVICE, UPPER(tickettype) AS TICKET_TYPE, UPPER(ticketstate) AS TICKET_STATE
+, date(opendate) as OPEN_DATE
+			, week(a.opendate) as OPEN_WEEK
+			, month(a.opendate) as OPEN_MTH
+			, year(a.opendate) as OPEN_YEAR
+, UPPER(OPENUSER) AS OPENUSER, UPPER(OPENREASON) AS OPENREASON
+, UPPER(opentechdept) AS OPENTECHDEPT, UPPER(opentechregion) AS OPENTECHREGION, UPPER(stagetechregion) AS STAGETECHREGION
+, CLOSEDATE, date(CLOSEDATE) as CLOSE_DATE
+			, week(a.closedate) as CLOSE_WEEK
+            , month(a.closedate) as CLOSE_MTH
+            , year(a.closedate) as CLOSE_YEAR
+
+, UPPER(closeuser) AS CLOSEUSER, UPPER(closereason) AS CLOSEREASON, UPPER(closetechdept) AS CLOSETECHDEPT, UPPER(closetechregion) AS CLOSETECHREGION
+
+        , (ceiling( TIMESTAMPDIFF(SECOND, a.OPENDATE, (a.CLOSEDATE))/60)) as TOTAL_TIME_MINUTES
+        -- , (ceiling( TIMESTAMPDIFF(SECOND, a.OPENDATE, ifnull(a.CLOSEDATE,now()))/60)) as AVG_TIME_MINUTES
+        , (ceiling( TIMESTAMPDIFF(HOUR, a.OPENDATE, (a.CLOSEDATE)))) as TOTAL_TIME_HOUR
+        -- , (ceiling( TIMESTAMPDIFF(HOUR, a.OPENDATE, ifnull(a.CLOSEDATE,now())))) as AVG_TIME_HOUR
+
+
+, a.clientname AS CLIENTNAME, a.clientcode AS CLIENTCODE, a.contractcode AS CONTRACTCODE
+, b.clientclass AS CLIENT_CLASS, b.clientarea as CLIENT_ISLAND, b.clientlocation as CLIENT_DISTRICT, b.subdistrict as CLIENT_SUBDISTRICT 
+from rcbill_my.clientticketjourney a 
+left join 
+rcbill_my.rep_custconsolidated b 
+on a.clientcode=b.clientcode
+where year(OPENDATE)>=2017
+group by ticketid -- , OPENDATE, date(opendate), openuser, openreason, opentechdept, opentechregion, stagetechregion, CLOSEDATE, closeuser, closereason, closetechdept, closetechregion, a.clientname, a.clientcode, a.contractcode, ticketseverity, service, tickettype, ticketstate
+order by opendate desc 
+);
+
+-- show index from rcbill_my.rep_clienttickets;
+CREATE INDEX IDXctj1
+ON rcbill_my.rep_clienttickets (clientcode);
+CREATE INDEX IDXctj2
+ON rcbill_my.rep_clienttickets (OPEN_DATE);
+CREATE INDEX IDXctj3
+ON rcbill_my.rep_clienttickets (contractcode);
+CREATE INDEX IDXctj4
+ON rcbill_my.rep_clienttickets (CLOSE_DATE);
+
+-- select * from rcbill_my.rep_clienttickets;
+select count(*) as rep_clienttickets from rcbill_my.rep_clienttickets;
+
+##############################################
+
+drop table if exists rcbill_my.rep_clientticket_summary;
+create table rcbill_my.rep_clientticket_summary
+(
+		/*
+		select OPEN_DATE, TICKET_TYPE, SERVICE
+		, OPENREASON
+		, OpenTechRegion AS OPENEDFROM, StageTechRegion AS OPENEDTO
+		, CLIENT_CLASS, CLIENT_ISLAND, CLIENT_DISTRICT, CLIENT_SUBDISTRICT
+        , CloseTechRegion as CLOSEDFROM, CLOSE_DATE
+		, count(TICKET_ID) as tkts, count(distinct clientcode) as accts, count(distinct contractcode) as conts
+		from rcbill_my.rep_clienttickets
+		group by 1,2,3,4,5,6,7,8,9,10,11,12
+		order by open_date desc
+		*/
+        
+         select TICKET_STATUS, OPEN_WEEK, OPEN_MTH, OPEN_YEAR
+         , SERVICE, TICKET_TYPE, OPENREASON -- , STAGETECHREGION
+         , CLIENT_CLASS, CLIENT_ISLAND, CLIENT_DISTRICT -- , CLIENT_SUBDISTRICT
+         , count(TICKET_ID) as TICKETS
+         , count(distinct CLIENTCODE) as CLIENTS
+         , sum(TOTAL_TIME_MINUTES) as TOTAL_TIME_MINUTES
+         , sum(TOTAL_TIME_HOUR) as TOTAL_TIME_HOUR
+         , avg(TOTAL_TIME_MINUTES) as AVG_TIME_MINUTES
+         , avg(TOTAL_TIME_HOUR) as AVG_TIME_HOUR
+         
+         from rcbill_my.rep_clienttickets
+         -- where OPEN_YEAR=year(now())
+         group by 1,2,3,4,5,6,7,8,9, 10 -- ,11 -- ,12
+         order by opendate desc        
+
+)
+;
+
+-- show index from rcbill_my.rep_clienttickets;
+-- CREATE INDEX IDXctj1 ON rcbill_my.rep_clientticket_summary (OPEN_DATE);
+CREATE INDEX IDXctj1 ON rcbill_my.rep_clientticket_summary (OPEN_WEEK);
+-- CREATE INDEX IDXctj4 ON rcbill_my.rep_clientticket_summary (CLOSE_DATE);
+
+-- select * from rcbill_my.rep_clientticket_summary;
+select count(*) as rep_clientticket_summary from rcbill_my.rep_clientticket_summary;
+
+##############################################
+
+/*
+
+FAULT
+CREDITNOTE
+INSTALLATION
+HARDWARE
+RELOCATION
+AUDIT
+SURVEY
+
+*/
 
 -- select * from  rcbill_my.clientticketjourney;
 
@@ -125,6 +238,8 @@ as
 	select @rundate as ReportDate, a.*
 			, date(a.opendate) as open_d
             , date(a.closedate) as close_d
+			, week(a.opendate) as open_w
+			, week(a.closedate) as close_w
 			, month(a.opendate) as open_m
             , month(a.closedate) as close_m
 			, year(a.opendate) as open_y
@@ -240,7 +355,7 @@ create temporary table a
     , min(commentdate) as firstcommentdate, max(commentdate) as lastcommentdate
 	from rcbill_my.clientticketjourney 
 	where
-	trim(upper(tickettype)) in ('FAULT') 
+	trim(upper(tickettype)) in ('FAULT','CREDITNOTE','AUDIT','HARDWARE') 
 	group by 
 	ticketid, clientcode, contractcode, 4, 5, 6, 7, 8, 9
 )
@@ -258,7 +373,7 @@ create temporary table b
     , comment, commentdate
 	from rcbill_my.clientticketjourney 
 	where
-	trim(upper(tickettype)) in ('FAULT') 
+	trim(upper(tickettype)) in ('FAULT','CREDITNOTE','AUDIT','HARDWARE') 
 	group by ticketid
     -- , clientcode, contractcode
     , comment, commentdate
@@ -276,7 +391,7 @@ create temporary table c
     , comment, commentdate
 	from rcbill_my.clientticketjourney 
 	where
-	trim(upper(tickettype)) in ('FAULT') 
+	trim(upper(tickettype)) in ('FAULT','CREDITNOTE','AUDIT','HARDWARE') 
 	group by ticketid
     -- , clientcode, contractcode
     , comment, commentdate
@@ -293,6 +408,8 @@ as
 select @rundate as ReportDate, a.*
 		, date(a.opendate) as open_d
 		, date(a.closedate) as close_d
+		, week(a.opendate) as open_w
+		, week(a.closedate) as close_w
 		, month(a.opendate) as open_m
 		, month(a.closedate) as close_m
 		, year(a.opendate) as open_y

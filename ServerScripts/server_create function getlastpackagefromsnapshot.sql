@@ -8,7 +8,7 @@ BEGIN
 								and
 								ClientCode=ccode 
                                 -- and CurrentStatus='Active'
-                                order by contractcode desc
+                                order by contractcode desc, lastcontractdate desc
                                 limit 1
 							);
 

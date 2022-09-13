@@ -142,6 +142,19 @@
 -- set @mxk_name='MXK-PRASLIN-GRANDANSE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Praslin-1_20211217_1.csv' 
 -- set @mxk_name='MXK-PRASLIN-BAIESTEANNE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Praslin-2_20200727_1.csv' 
 
+-- set @mxk_name='MXK-MAHE-PROVIDENCE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Providence_20220907_1.csv'
+-- set @mxk_name='MXK-MAHE-ANSEAUXPINS'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_AnseAuxPins_20220907_1.csv'
+-- set @mxk_name='MXK-MAHE-ANSEETOILE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_AnseEtoile_20220907_1.csv'
+-- set @mxk_name='MXK-MAHE-ANSEROYALE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_AnseRoyale_20220907_1.csv'
+-- set @mxk_name='MXK-MAHE-BAIELAZARE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_BaieLazare_20220907_1.csv'
+-- set @mxk_name='MXK-MAHE-PERSEVERANCE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Perseverance_20220907_1.csv'
+-- set @mxk_name='MXK-MAHE-MONTFLEURI'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_MtFleuri_20220907_1.csv'
+ set @mxk_name='MXK-MAHE-BEAUVALLON-1'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_BeauVallon-1_20220907_1.csv'
+-- set @mxk_name='MXK-MAHE-BEAUVALLON-2'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_BeauVallon-2_20220907_1.csv'
+-- set @mxk_name='MXK-MAHE-GRANDANSE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_MaheGrandeAnse_20220907_1.csv' 
+-- set @mxk_name='MXK-PRASLIN-GRANDANSE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Praslin-1_20220907_1.csv' 
+-- set @mxk_name='MXK-PRASLIN-BAIESTEANNE'; LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\CMTSMXK\\MXK_List_Praslin-2_20220907_1.csv' 
+
 
 
 REPLACE INTO TABLE `rcbill`.`rcb_mxk` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 

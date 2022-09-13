@@ -18,3 +18,5 @@ CREATE TABLE `rcb_payobjects` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
+CREATE INDEX IDXpo1
+ON rcb_payobjects (ID);

@@ -77,7 +77,7 @@ CREATE TABLE `rcb_tclients` (
 use rcbill;
 -- SET SESSION sql_mode = '';
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTClients-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTClients-12092022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_tclients` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_tclients` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 -- OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' 
@@ -548,7 +548,7 @@ CREATE TABLE `rcb_contracts` (
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContracts-08082022.csv'
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContracts-12092022.csv'
 -- REPLACE INTO TABLE `rcbill`.`rcb_contracts` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_contracts` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 -- OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' 
@@ -741,7 +741,7 @@ CREATE TABLE `rcb_contractservices` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractServices-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractServices-12092022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_contractservices` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_contractservices` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -842,7 +842,7 @@ CREATE TABLE `rcb_contractdiscounts` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractDiscounts-08082022.csv'
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractDiscounts-12092022.csv'
 -- REPLACE INTO TABLE `rcbill`.`rcb_contractdiscounts` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_contractdiscounts` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 -- OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' 
@@ -1001,7 +1001,7 @@ CREATE TABLE `rcb_devices` (
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevices-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevices-12092022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_devices` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_devices` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 -- OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' 
@@ -1332,7 +1332,7 @@ CREATE TABLE `rcb_tickets` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTickets-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTickets-12092022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1485,7 +1485,7 @@ create index IDXttu1 on rcbill.rcb_tickettechusers (RCBUSERID);
 create index IDXttu2 on rcbill.rcb_tickettechusers (ID);
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketTechUsers-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketTechUsers-12092022.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_tickettechusers` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 2 LINES 
@@ -1572,7 +1572,7 @@ CREATE INDEX IDXtxtass1
 ON rcb_ticketassignments (TICKETID);
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketAssignments-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketAssignments-12092022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_ticketassignments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1663,7 +1663,7 @@ CREATE TABLE `rcb_ticketcomments` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketComments-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketComments-12092022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_ticketcomments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_ticketcomments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 -- OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' 
@@ -1746,7 +1746,7 @@ CREATE TABLE `rcb_comments` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllComments-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllComments-12092022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1840,7 +1840,7 @@ CREATE TABLE `rcb_devicesold` (
 
 ) ENGINE=InnoDB CHARSET UTF8;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevicesOld-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevicesOld-12092022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_devicesold` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_devicesold` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1974,7 +1974,7 @@ CREATE TABLE `rcb_invoicescontents` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesContents-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesContents-12092022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_invoicescontents` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_invoicescontents` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2150,7 +2150,7 @@ CREATE TABLE `rcb_invoicesheader` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesHeader-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesHeader-12092022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_invoicesheader` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_invoicesheader` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2296,221 +2296,8 @@ CREATE INDEX IDXinvoiceheader7
 ON rcb_invoicesheader (ORDERID);
 
 
-
 #####################################################
 
-
-# CASA
-
-use rcbill;
-
-drop table if exists rcb_casa;
-
-
-
-CREATE TABLE `rcb_casa` (
-`ID` int(11) DEFAULT NULL ,
-`PAYOBJECTID` int(11) DEFAULT NULL ,
-`PAYTYPE` int(11) DEFAULT NULL ,
-`CashPointID` int(11) DEFAULT NULL ,
-`CLID` int(11) DEFAULT NULL ,
-`toCLID` int(11) DEFAULT NULL ,
-`PAYDATE` datetime DEFAULT NULL ,
-`MONEY` decimal(12,5) DEFAULT NULL ,
-`BankReference` varchar(255) DEFAULT NULL ,
-`ZAB` varchar(500) DEFAULT NULL ,
-`INVID` int(11) DEFAULT NULL ,
-`ENTERDATE` datetime DEFAULT NULL ,
-`CONFIRMED` int(11) DEFAULT NULL ,
-`ID_OLD` int(11) DEFAULT NULL ,
-`UPDDATE` datetime DEFAULT NULL ,
-`USERID` int(11) DEFAULT NULL ,
-`PRN_COUNT` int(11) DEFAULT NULL ,
-`ExternalReference` text DEFAULT NULL ,
-`CID` int(11) DEFAULT NULL ,
-`BegDate` datetime DEFAULT NULL ,
-`EndDate` datetime DEFAULT NULL ,
-`hard` int(11) DEFAULT NULL ,
-`InternalReference` text DEFAULT NULL ,
-`RSID` int(11) DEFAULT NULL ,
-`DiscountMoney` decimal(12,5) DEFAULT NULL ,
-`INSERTEDON` datetime DEFAULT NULL	,
-`REPORTDATE` date DEFAULT NULL	
-
-) ENGINE=InnoDB CHARSET UTF8;
-
-#NOTE: PAYTYPE in CASA is the same as negative of ID in rcb_services 
-
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllCASA-08082022.csv' 
--- REPLACE INTO TABLE `rcbill`.`rcb_casa` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
-REPLACE INTO TABLE `rcbill`.`rcb_casa` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
-OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
--- IGNORE 1 LINES 
-IGNORE 2 LINES 
-(
-@ID ,
-@PAYOBJECTID ,
-@PAYTYPE ,
-@CashPointID ,
-@CLID ,
-@toCLID ,
-@PAYDATE ,
-@MONEY ,
-@BankReference ,
-@ZAB ,
-@INVID ,
-@ENTERDATE ,
-@CONFIRMED ,
-@ID_OLD ,
-@UPDDATE ,
-@USERID ,
-@PRN_COUNT ,
-@ExternalReference ,
-@CID ,
-@BegDate ,
-@EndDate ,
-@hard ,
-@InternalReference ,
-@RSID ,
-@DiscountMoney
-) 
-set 
-ID=@ID ,
-PAYOBJECTID=@PAYOBJECTID ,
-PAYTYPE=@PAYTYPE ,
-CashPointID=@CashPointID ,
-CLID=@CLID ,
-toCLID=@toCLID ,
-PAYDATE=@PAYDATE ,
-MONEY=@MONEY ,
-BankReference=@BankReference ,
-ZAB=upper(trim(@ZAB)) ,
-INVID=@INVID ,
-ENTERDATE=@ENTERDATE ,
-CONFIRMED=@CONFIRMED ,
-ID_OLD=@ID_OLD ,
-UPDDATE=@UPDDATE ,
-USERID=@USERID ,
-PRN_COUNT=@PRN_COUNT ,
--- ExternalReference=upper(trim(@ExternalReference)) ,
-ExternalReference=null ,
-CID=@CID ,
-BegDate=@BegDate ,
-EndDate=@EndDate ,
-hard=@hard ,
-InternalReference=@InternalReference ,
-RSID=@RSID ,
-DiscountMoney=@DiscountMoney ,
-INSERTEDON=now(),
-REPORTDATE=@REPORTDATE 
-
-
-;
-
-CREATE INDEX IDXCASA1
-ON rcb_casa (ID);
-
-CREATE INDEX IDXCASA2
-ON rcb_casa (CLID);
-
-CREATE INDEX IDXCASA3
-ON rcb_casa (CID);
-
-CREATE INDEX IDXCASA4
-ON rcb_casa (INVID);
-
-
--- drop index IDXCASA5 ON rcb_casa;
-CREATE INDEX IDXCASA5
-ON rcb_casa (CLID, CID, RSID);
-
--- select * from rcbill.rcb_casa where clid=717788;
-select count(*) as casa from rcbill.rcb_casa;
-
-###################################################
-
-### UPDATE CASA TO CHANGE THE DATES OF THE RECORDS WHICH HAVE BEGDATE AS 3001-01-01
-
-set sql_safe_updates=0;
-update rcbill.rcb_casa 
-set BegDate=EndDate
-where year(BegDate)=3001
-;
-
-
-
-
-#PAYMENT COLLECTIONS
-drop table if exists rcbill_my.rep_paycol_channel;
-create table rcbill_my.rep_paycol_channel as 
-(
-	select date(PAYDATE) as paydate,day(PAYDATE) as payday, month(PAYDATE) as paymth, year(PAYDATE) as payyear, weeknum, weekday, payobjectname as pay_channel, sum(money) as pay_amount
-	from 
-	(
-		select paydate, week(PAYDATE,1) as weeknum, rcbill_my.GetWeekdayName(weekday(paydate)) as weekday, money
-        , (select name from rcbill.rcb_payobjects where id=payobjectid) as PayObjectName
-		-- , (select name from rcbill.rcb_services where id=(paytype*-1)) as PayTypeName 
-		-- , (select name from rcbill.rcb_cashpoints where id=cashpointid) as CashPointName
-		from rcbill.rcb_casa 
-		where
-		(hard not in (100, 101, 102) or hard is null)
-		-- and date(PAYDATE)>=@startdate and date(PAYDATE)<=@enddate
-		-- limit 100
-	) a 
-	group by 1,2,3,4,5,6,7
-    order by 1 desc
-)
-; 
-select count(*) as rep_paycol_channel from rcbill_my.rep_paycol_channel;
-
-drop table if exists rcbill_my.rep_paycol_pos;
-create table rcbill_my.rep_paycol_pos as 
-(
-	select date(PAYDATE) as paydate, day(PAYDATE) as payday, month(PAYDATE) as paymth, year(PAYDATE) as payyear, weeknum, weekday, cashpointname as pay_pos, sum(money) as pay_amount
-	from 
-	(
-		select paydate, week(PAYDATE,1) as weeknum, rcbill_my.GetWeekdayName(weekday(paydate)) as weekday, money
-        -- , (select name from rcbill.rcb_payobjects where id=payobjectid) as PayObjectName
-		-- , (select name from rcbill.rcb_services where id=(paytype*-1)) as PayTypeName 
-		, (select name from rcbill.rcb_cashpoints where id=cashpointid) as CashPointName
-		from rcbill.rcb_casa 
-		where
-		(hard not in (100, 101, 102) or hard is null)
-		-- and date(PAYDATE)>=@startdate and date(PAYDATE)<=@enddate
-		-- limit 100
-	) a 
-	group by 1,2,3,4,5,6,7
-    order by 1 desc
-)
-; 
-select count(*) as rep_paycol_pos from rcbill_my.rep_paycol_pos;
-
-
-drop table if exists rcbill_my.rep_paycol_usr;
-create table rcbill_my.rep_paycol_usr as 
-(
-	select date(PAYDATE) as paydate, day(PAYDATE) as payday, month(PAYDATE) as paymth, year(PAYDATE) as payyear, weeknum, weekday, UserName, sum(money) as pay_amount
-	from 
-	(
-		select paydate, week(PAYDATE,1) as weeknum, rcbill_my.GetWeekdayName(weekday(paydate)) as weekday, money
-        -- , (select name from rcbill.rcb_payobjects where id=payobjectid) as PayObjectName
-		-- , (select name from rcbill.rcb_services where id=(paytype*-1)) as PayTypeName 
-		-- , (select name from rcbill.rcb_cashpoints where id=cashpointid) as CashPointName
-        , (select a.name from rcbill.rcb_users a  where a.ID=c.USERID limit 1) as UserName
-		from rcbill.rcb_casa c
-		where
-		(hard not in (100, 101, 102) or hard is null)
-		-- and date(PAYDATE)>=@startdate and date(PAYDATE)<=@enddate
-		-- limit 100
-	) a 
-	group by 1,2,3,4,5,6,7
-    order by 1 desc
-)
-; 
-select count(*) as rep_paycol_usr from rcbill_my.rep_paycol_usr;
-
-
-###################################################
 
 
 
@@ -2561,7 +2348,7 @@ CREATE TABLE `rcb_users` (
 use rcbill;
 -- SET SESSION sql_mode = '';
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUsers-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUsers-12092022.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_users` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 -- IGNORE 1 LINES 
@@ -2691,7 +2478,7 @@ CREATE TABLE `rcb_useractions` (
 
 
 -- SET SESSION sql_mode = '';
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUserActions2019-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUserActions2019-12092022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_useractions` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_useractions` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2791,7 +2578,7 @@ CREATE TABLE `rcb_ipusage1` (
 
 use rcbill;
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-14052018.csv' 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-08082022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-12092022.csv' 
 
 -- REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_ipusage1` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
@@ -2863,6 +2650,340 @@ select count(*) as ipusage1 from rcbill.rcb_ipusage1;
 ###################################
 -- show index from rcbill.rcb_ipusage1
 -- show index from rcbill.clientcontractdevices
+
+
+
+#####################################################
+
+
+# CASA
+
+use rcbill;
+
+drop table if exists rcb_casa;
+
+
+
+CREATE TABLE `rcb_casa` (
+`ID` int(11) DEFAULT NULL ,
+`PAYOBJECTID` int(11) DEFAULT NULL ,
+`PAYTYPE` int(11) DEFAULT NULL ,
+`CashPointID` int(11) DEFAULT NULL ,
+`CLID` int(11) DEFAULT NULL ,
+`toCLID` int(11) DEFAULT NULL ,
+`PAYDATE` datetime DEFAULT NULL ,
+`MONEY` decimal(12,5) DEFAULT NULL ,
+`BankReference` varchar(255) DEFAULT NULL ,
+`ZAB` varchar(500) DEFAULT NULL ,
+`INVID` int(11) DEFAULT NULL ,
+`ENTERDATE` datetime DEFAULT NULL ,
+`CONFIRMED` int(11) DEFAULT NULL ,
+`ID_OLD` int(11) DEFAULT NULL ,
+`UPDDATE` datetime DEFAULT NULL ,
+`USERID` int(11) DEFAULT NULL ,
+`PRN_COUNT` int(11) DEFAULT NULL ,
+`ExternalReference` text DEFAULT NULL ,
+`CID` int(11) DEFAULT NULL ,
+`BegDate` datetime DEFAULT NULL ,
+`EndDate` datetime DEFAULT NULL ,
+`hard` int(11) DEFAULT NULL ,
+`InternalReference` text DEFAULT NULL ,
+`RSID` int(11) DEFAULT NULL ,
+`DiscountMoney` decimal(12,5) DEFAULT NULL ,
+`INSERTEDON` datetime DEFAULT NULL	,
+`REPORTDATE` date DEFAULT NULL	
+
+) ENGINE=InnoDB CHARSET UTF8;
+
+#NOTE: PAYTYPE in CASA is the same as negative of ID in rcb_services 
+
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllCASA-12092022.csv' 
+-- REPLACE INTO TABLE `rcbill`.`rcb_casa` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
+REPLACE INTO TABLE `rcbill`.`rcb_casa` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
+OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
+-- IGNORE 1 LINES 
+IGNORE 2 LINES 
+(
+@ID ,
+@PAYOBJECTID ,
+@PAYTYPE ,
+@CashPointID ,
+@CLID ,
+@toCLID ,
+@PAYDATE ,
+@MONEY ,
+@BankReference ,
+@ZAB ,
+@INVID ,
+@ENTERDATE ,
+@CONFIRMED ,
+@ID_OLD ,
+@UPDDATE ,
+@USERID ,
+@PRN_COUNT ,
+@ExternalReference ,
+@CID ,
+@BegDate ,
+@EndDate ,
+@hard ,
+@InternalReference ,
+@RSID ,
+@DiscountMoney
+) 
+set 
+ID=@ID ,
+PAYOBJECTID=@PAYOBJECTID ,
+PAYTYPE=@PAYTYPE ,
+CashPointID=@CashPointID ,
+CLID=@CLID ,
+toCLID=@toCLID ,
+PAYDATE=@PAYDATE ,
+MONEY=@MONEY ,
+BankReference=@BankReference ,
+ZAB=upper(trim(@ZAB)) ,
+INVID=@INVID ,
+ENTERDATE=@ENTERDATE ,
+CONFIRMED=@CONFIRMED ,
+ID_OLD=@ID_OLD ,
+UPDDATE=@UPDDATE ,
+USERID=@USERID ,
+PRN_COUNT=@PRN_COUNT ,
+-- ExternalReference=upper(trim(@ExternalReference)) ,
+ExternalReference=null ,
+CID=@CID ,
+BegDate=@BegDate ,
+EndDate=@EndDate ,
+hard=@hard ,
+InternalReference=@InternalReference ,
+RSID=@RSID ,
+DiscountMoney=@DiscountMoney ,
+INSERTEDON=now(),
+REPORTDATE=@REPORTDATE 
+
+
+;
+
+CREATE INDEX IDXCASA1
+ON rcb_casa (ID);
+
+CREATE INDEX IDXCASA2
+ON rcb_casa (CLID);
+
+CREATE INDEX IDXCASA3
+ON rcb_casa (CID);
+
+CREATE INDEX IDXCASA4
+ON rcb_casa (INVID);
+
+
+-- drop index IDXCASA5 ON rcb_casa;
+CREATE INDEX IDXCASA5
+ON rcb_casa (CLID, CID, RSID);
+
+
+CREATE INDEX IDXCASA6
+ON rcb_casa (PAYDATE, USERID);
+CREATE INDEX IDXCASA7
+ON rcb_casa (PAYDATE, PAYOBJECTID);
+CREATE INDEX IDXCASA8
+ON rcb_casa (PAYDATE, CashPointID);
+
+
+-- select * from rcbill.rcb_casa where clid=717788;
+select count(*) as casa from rcbill.rcb_casa;
+
+###################################################
+
+### UPDATE CASA TO CHANGE THE DATES OF THE RECORDS WHICH HAVE BEGDATE AS 3001-01-01
+
+set sql_safe_updates=0;
+update rcbill.rcb_casa 
+set BegDate=EndDate
+where year(BegDate)=3001
+;
+
+
+################## MAKE CASA 2 ####################
+
+
+USE rcbill;
+drop table if exists rcbill.rcb_casa_2;
+
+create table rcbill.rcb_casa_2 as 
+(
+select a.*, date(a.paydate) as PAY_DATE, week(a.PAYDATE,1) as WEEKNUM, rcbill_my.GetWeekdayName(weekday(a.paydate)) as WEEKDAY
+-- , (select name from rcbill.rcb_payobjects where id=payobjectid) as PayObjectName
+-- , (select name from rcbill.rcb_services where id=(paytype*-1)) as PayTypeName 
+-- , (select name from rcbill.rcb_cashpoints where id=cashpointid) as CashPointName
+-- , (select a.name from rcbill.rcb_users a  where a.ID=c.USERID limit 1) as UserName
+, b.name as PAYOBJECTNAME 
+, c.name as PAYTYPENAME
+, d.name as CASHPOINTNAME
+, e.name as USERNAME
+from rcbill.rcb_casa a
+left join rcbill.rcb_payobjects b on b.id=a.payobjectid
+left join rcbill.rcb_services c on c.id=(a.paytype*-1)
+left join rcbill.rcb_cashpoints d on d.id=a.cashpointid
+left join rcbill.rcb_users e on e.id=a.USERID
+where
+(a.hard not in (100, 101, 102) or a.hard is null)
+)
+;
+
+
+CREATE INDEX IDXCASA1
+ON rcb_casa_2 (ID);
+
+CREATE INDEX IDXCASA2
+ON rcb_casa_2 (CLID);
+
+CREATE INDEX IDXCASA3
+ON rcb_casa_2 (CID);
+
+CREATE INDEX IDXCASA4
+ON rcb_casa_2 (INVID);
+
+
+-- drop index IDXCASA5 ON rcb_casa;
+CREATE INDEX IDXCASA5
+ON rcb_casa_2 (CLID, CID, RSID);
+
+
+CREATE INDEX IDXCASA6
+ON rcb_casa_2 (PAY_DATE, USERID, USERNAME);
+CREATE INDEX IDXCASA7
+ON rcb_casa_2 (PAY_DATE, PAYOBJECTID, PAYOBJECTNAME);
+CREATE INDEX IDXCASA8
+ON rcb_casa_2 (PAY_DATE, CashPointID, CASHPOINTNAME);
+CREATE INDEX IDXCASA9
+ON rcb_casa_2 (PAY_DATE, PAYTYPE, PAYTYPENAME);
+
+###########################################################
+
+
+-- UPDATED ON 05/09/2022
+
+#PAYMENT COLLECTIONS
+drop table if exists rcbill_my.rep_paycol_channel;
+create table rcbill_my.rep_paycol_channel as 
+(
+	select PAY_DATE, day(PAY_DATE) as PAYDAY, month(PAY_DATE) as PAYMTH, year(PAY_DATE) as PAYYEAR, WEEKNUM, WEEKDAY, PAYOBJECTID, PAYOBJECTNAME as PAY_CHANNEL, sum(money) as PAY_AMOUNT, count(*) as PAYMENTS
+	from 
+	rcbill.rcb_casa_2 
+	group by 1,2,3,4,5,6,7,8
+    order by 1 desc
+)
+; 
+select count(*) as rep_paycol_channel from rcbill_my.rep_paycol_channel;
+
+drop table if exists rcbill_my.rep_paycol_pos;
+create table rcbill_my.rep_paycol_pos as 
+(
+	select PAY_DATE, day(PAY_DATE) as PAYDAY, month(PAY_DATE) as PAYMTH, year(PAY_DATE) as PAYYEAR, WEEKNUM, WEEKDAY, CashPointID as CASHPOINTID, CASHPOINTNAME as PAY_POS, sum(money) as PAY_AMOUNT, count(*) as PAYMENTS
+	from 
+	rcbill.rcb_casa_2 
+	group by 1,2,3,4,5,6,7,8
+    order by 1 desc
+)
+; 
+select count(*) as rep_paycol_pos from rcbill_my.rep_paycol_pos;
+
+
+drop table if exists rcbill_my.rep_paycol_usr;
+create table rcbill_my.rep_paycol_usr as 
+(
+	select PAY_DATE, day(PAY_DATE) as PAYDAY, month(PAY_DATE) as PAYMTH, year(PAY_DATE) as PAYYEAR, WEEKNUM, WEEKDAY, USERID, USERNAME, sum(money) as PAY_AMOUNT, count(*) as PAYMENTS
+	from 
+	rcbill.rcb_casa_2 
+	group by 1,2,3,4,5,6,7,8
+    order by 1 desc
+)
+; 
+select count(*) as rep_paycol_usr from rcbill_my.rep_paycol_usr;
+
+/*
+
+#PAYMENT COLLECTIONS
+drop table if exists rcbill_my.rep_paycol_channel;
+create table rcbill_my.rep_paycol_channel as 
+(
+	select date(PAYDATE) as paydate,day(PAYDATE) as payday, month(PAYDATE) as paymth, year(PAYDATE) as payyear, weeknum, weekday, payobjectid, payobjectname as pay_channel, sum(money) as pay_amount, count(*) as payments
+	from 
+	(
+		select paydate, week(PAYDATE,1) as weeknum, rcbill_my.GetWeekdayName(weekday(paydate)) as weekday, money
+        , PAYOBJECTID
+        , (select name from rcbill.rcb_payobjects where id=payobjectid) as PayObjectName
+		-- , (select name from rcbill.rcb_services where id=(paytype*-1)) as PayTypeName 
+		-- , (select name from rcbill.rcb_cashpoints where id=cashpointid) as CashPointName
+		from rcbill.rcb_casa 
+		where
+		(hard not in (100, 101, 102) or hard is null)
+		-- and date(PAYDATE)>=@startdate and date(PAYDATE)<=@enddate
+		-- limit 100
+	) a 
+	group by 1,2,3,4,5,6,7,8
+    order by 1 desc
+)
+; 
+select count(*) as rep_paycol_channel from rcbill_my.rep_paycol_channel;
+
+drop table if exists rcbill_my.rep_paycol_pos;
+create table rcbill_my.rep_paycol_pos as 
+(
+	select date(PAYDATE) as paydate, day(PAYDATE) as payday, month(PAYDATE) as paymth, year(PAYDATE) as payyear, weeknum, weekday,cashpointid, cashpointname as pay_pos, sum(money) as pay_amount, count(*) as payments
+	from 
+	(
+		select paydate, week(PAYDATE,1) as weeknum, rcbill_my.GetWeekdayName(weekday(paydate)) as weekday, money
+        , CashPointID
+        -- , (select name from rcbill.rcb_payobjects where id=payobjectid) as PayObjectName
+		-- , (select name from rcbill.rcb_services where id=(paytype*-1)) as PayTypeName 
+		, (select name from rcbill.rcb_cashpoints where id=cashpointid) as CashPointName
+		from rcbill.rcb_casa 
+		where
+		(hard not in (100, 101, 102) or hard is null)
+		-- and date(PAYDATE)>=@startdate and date(PAYDATE)<=@enddate
+		-- limit 100
+	) a 
+	group by 1,2,3,4,5,6,7,8
+    order by 1 desc
+)
+; 
+select count(*) as rep_paycol_pos from rcbill_my.rep_paycol_pos;
+
+
+drop table if exists rcbill_my.rep_paycol_usr;
+create table rcbill_my.rep_paycol_usr as 
+(
+	select date(PAYDATE) as paydate, day(PAYDATE) as payday, month(PAYDATE) as paymth, year(PAYDATE) as payyear, weeknum, weekday, USERID, UserName, sum(money) as pay_amount, count(*) as payments
+	from 
+	(
+		select paydate, week(PAYDATE,1) as weeknum, rcbill_my.GetWeekdayName(weekday(paydate)) as weekday, money
+        , USERID
+        -- , (select name from rcbill.rcb_payobjects where id=payobjectid) as PayObjectName
+		-- , (select name from rcbill.rcb_services where id=(paytype*-1)) as PayTypeName 
+		-- , (select name from rcbill.rcb_cashpoints where id=cashpointid) as CashPointName
+        , (select a.name from rcbill.rcb_users a  where a.ID=c.USERID limit 1) as UserName
+		from rcbill.rcb_casa c
+		where
+		(hard not in (100, 101, 102) or hard is null)
+		-- and date(PAYDATE)>=@startdate and date(PAYDATE)<=@enddate
+		-- limit 100
+	) a 
+	group by 1,2,3,4,5,6,7,8
+    order by 1 desc
+)
+; 
+select count(*) as rep_paycol_usr from rcbill_my.rep_paycol_usr;
+
+*/
+
+
+
+###################################################
+
+
+
+
 
 
 ######################################################################

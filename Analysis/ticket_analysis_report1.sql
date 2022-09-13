@@ -14,6 +14,7 @@ select date(opendate) as opendate
 , count(*) as tkts, count(distinct clientcode) as accts, count(distinct contractcode) as conts
 from rcbill_my.clientticketsnapshot_f
 group by 1,2,3,4
+order by opendate desc
 ;
 
 select date(opendate) as opendate
@@ -21,6 +22,7 @@ select date(opendate) as opendate
 , count(*) as tkts, count(distinct clientcode) as accts, count(distinct contractcode) as conts
 from rcbill_my.clientticketsnapshot_irs
 group by 1,2
+order by opendate desc
 ;
 
 select date(opendate) as opendate
@@ -28,6 +30,7 @@ select date(opendate) as opendate
 , count(*) as tkts, count(distinct clientcode) as accts, count(distinct contractcode) as conts
 from rcbill_my.clientticketsnapshot_f
 group by 1,2
+order by opendate desc
 ;
 
 select date(opendate) as opendate
@@ -35,6 +38,7 @@ select date(opendate) as opendate
 , count(*) as tkts, count(distinct clientcode) as accts, count(distinct contractcode) as conts
 from rcbill_my.clientticketsnapshot_f
 group by 1,2
+order by opendate desc
 ;
 
 select date(opendate) as opendate
@@ -42,6 +46,7 @@ select date(opendate) as opendate
 , count(*) as tkts, count(distinct clientcode) as accts, count(distinct contractcode) as conts
 from rcbill_my.clientticketsnapshot_f
 group by 1,2
+order by opendate desc
 ;
 
 

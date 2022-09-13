@@ -60,7 +60,9 @@ create table rcbill_my.rep_servicetickets_2022 as
                 , sum(tkt_workdays2) as service_workdays2
 				from rcbill_my.clientticket_assgnjourney
 				-- where assgntechregion in ('TECHNICAL - NEW SERVICE','TECHNICAL - WORK ORDER MANAGEMENT')
-				where year(OPENDATE)=2022
+				-- where year(OPENDATE)=2022
+                where year(ASSGN_OPENDATE)=2022
+                
 				group by ticketid, service, clientcode, contractcode, tickettype, openreason
                 , opentechregion
                 , openuser
@@ -174,7 +176,7 @@ CREATE INDEX IDXrst1 ON rcbill_my.rep_servicetickets_2022 (assgntechregion);
 CREATE INDEX IDXrst2 ON rcbill_my.rep_servicetickets_2022 (assgnopendate);
 
 select count(*) as rep_servicetickets_2022 from rcbill_my.rep_servicetickets_2022;
--- select * from rcbill_my.rep_servicetickets_2022;
+-- select * from rcbill_my.rep_servicetickets_2022 limit 100;
 
 
 

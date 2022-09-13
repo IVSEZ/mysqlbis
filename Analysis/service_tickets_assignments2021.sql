@@ -62,7 +62,9 @@ create table rcbill_my.rep_servicetickets_2021 as
                 , sum(tkt_workdays2) as service_workdays2
 				from rcbill_my.clientticket_assgnjourney
 				-- where assgntechregion in ('TECHNICAL - NEW SERVICE','TECHNICAL - WORK ORDER MANAGEMENT')
-				where year(OPENDATE)=2021
+				-- where year(OPENDATE)=2021
+                where year(ASSGN_OPENDATE)=2021                
+                
 				group by ticketid, service, clientcode, contractcode, tickettype, openreason
                 , opentechregion
                 , openuser
