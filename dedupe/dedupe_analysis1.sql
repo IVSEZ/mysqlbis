@@ -1,7 +1,7 @@
-select * from rcbill.client_match_phone;
-select * from rcbill.client_match_nin;
-select * from rcbill.client_match_name;
-select * from rcbill.client_match_parcel;
+select * from rcbill.client_match_phone where date(insertedon) in (select max(date(INSERTEDON)) from rcbill.client_match_phone);
+select * from rcbill.client_match_nin where date(insertedon) in (select max(date(INSERTEDON)) from rcbill.client_match_nin);
+select * from rcbill.client_match_name where date(insertedon) in (select max(date(INSERTEDON)) from rcbill.client_match_name);
+select * from rcbill.client_match_parcel where date(insertedon) in (select max(date(INSERTEDON)) from rcbill.client_match_parcel);
 /*
 show columns from rcbill.client_match_name;
 show columns from rcbill.client_match_nin;

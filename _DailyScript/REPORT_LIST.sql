@@ -198,10 +198,10 @@ select * from rcbill_my.rep_activenumberavg3 where lastday<='2022-02-28';
 select lastday, count(*) from rcbill_my.rep_activenumberavg3 group by lastday;
 
 
-select * from rcbill_my.rep_activenumberavg3; -- where lastday not in ('2022-05-02');
+select * from rcbill_my.rep_activenumberavg3 where lastday not in ('2022-10-02');
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2022-08-01','2022-08-31');
+call sp_GetActiveNumberFromTo('2022-09-01','2022-09-30');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;
@@ -285,6 +285,8 @@ group by lastday
 
 select * from rcbill.clientcontractip  where CLIENTCODE='I.000011750' order by USAGEDATE desc;
 select * from rcbill.clientcontractipmonth where CLIENTCODE='I.000011750' order by USAGE_YR desc, USAGE_MTH desc;
+
+select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='197.234.1.153' and USAGEDATE='2022-09-22';
 
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.187.241' and USAGEDATE='2018-12-31';
 select * from rcbill.clientcontractip where PROCESSEDCLIENTIP='154.70.186.118' and USAGEDATE='2018-12-31';

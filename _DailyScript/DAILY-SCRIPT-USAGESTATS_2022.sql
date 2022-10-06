@@ -99,6 +99,8 @@ insert into rcbill.clientcontractipusage
 	, ifnull(sum(MB_UL),0) as MB_UL, ifnull(sum(MB_DL),0) as MB_DL, (ifnull(sum(MB_UL),0) + ifnull(sum(MB_DL),0)) as MB_TOTAL
     -- , (rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE)) as PACKAGE 
     , ifnull(rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE),rcbill_my.GetPackageFromSnapshot(CLIENTCODE, CONTRACTCODE)) as PACKAGE 
+    , 0 as OCTETS, 0 as OCTETS_ADDON, 0 as MB_ADDON
+   
 	from 
 	(
 		select a.*
@@ -131,8 +133,9 @@ insert into rcbill.clientcontractipusage
 
 
 
-
 /*
+show columns from rcbill.clientcontractipusage;
+
 drop table if exists rcbill.clientcontractipusage;
 create table rcbill.clientcontractipusage(index idxcciu1(clientcode),index idxcciu2(contractcode),index idxcciu3(CLIENT_ID),index idxcciu4(CONTRACT_ID), index idxcciu5(PROCESSEDCLIENTIP) , index idxcciu6(USAGEDATE)) as 
 (
@@ -165,6 +168,10 @@ create index idxcciu7 on rcbill.clientcontractipusage (PACKAGE);
 
 ALTER TABLE rcbill.clientcontractipusage ADD COLUMN PACKAGE varchar(255);
 
+ALTER TABLE rcbill.clientcontractipusage ADD COLUMN OCTETS bigint(25);
+ALTER TABLE rcbill.clientcontractipusage ADD COLUMN OCTETS_ADDON bigint(25);
+ALTER TABLE rcbill.clientcontractipusage ADD COLUMN MB_ADDON decimal(65,4);
+
 
 ####update all null packages
 -- select * from rcbill.clientcontractipusage where package is null;
@@ -173,6 +180,19 @@ set sql_safe_updates=0;
 update rcbill.clientcontractipusage
 set Package=ifnull(rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE),rcbill_my.GetPackageFromSnapshot(CLIENTCODE, CONTRACTCODE))
 where package is null;
+
+### 21/09/2022
+##### update all negative octets and MB_TOTAL and move them to MB_ADDON
+
+### first make a copy
+-- create table rcbill.clientcontractipusage1 LIKE rcbill.clientcontractipusage;
+-- INSERT INTO rcbill.clientcontractipusage1 SELECT * FROM rcbill.clientcontractipusage;
+
+update rcbill.clientcontractipusage set MB_ADDON=MB_TOTAL where MB_TOTAL<0;
+update rcbill.clientcontractipusage set MB_TOTAL=0 where MB_TOTAL<0;
+update rcbill.clientcontractipusage set MB_DL=0 where MB_DL<0;
+
+-- select * from rcbill.clientcontractipusage where clientcode='I.000011750' order by usagedate desc limit 100;
 
 */
 -- create index idxcciu6 on rcbill.clientcontractipusage(USAGEDATE);
@@ -187,6 +207,11 @@ select 'updating null packages' as info;
 update rcbill.clientcontractipusage
 set Package=ifnull(rcbill_my.GetPackageForClientContractDate(CLIENTCODE, CONTRACTCODE, USAGEDATE),rcbill_my.GetPackageFromSnapshot(CLIENTCODE, CONTRACTCODE))
 where package is null;
+
+select 'moving and updating addon information' as info;
+update rcbill.clientcontractipusage set MB_ADDON=MB_TOTAL where MB_TOTAL<0;
+update rcbill.clientcontractipusage set MB_TOTAL=0 where MB_TOTAL<0;
+update rcbill.clientcontractipusage set MB_DL=0 where MB_DL<0;
 
 
 select usagedate, count(*) from rcbill.clientcontractipusage
@@ -306,6 +331,8 @@ insert into rcbill_my.rep_dailypackageusage
 		, sum(MB_DL_TEMP) as MB_DL_TEMP
 		, sum(MB_TOTAL_TEMP) as MB_TOTAL_TEMP
 
+		, sum(MB_ADDON) as MB_ADDON
+
 		##GB TOTAL	
 		, ifnull(round((sum(MB_UL_DEFAULT))/1024,2),0) as GB_UL_DEFAULT
 		, ifnull(round((sum(MB_DL_DEFAULT))/1024,2),0) as GB_DL_DEFAULT
@@ -326,6 +353,8 @@ insert into rcbill_my.rep_dailypackageusage
 		, ifnull(round((sum(MB_UL_TEMP))/1024,2),0) as GB_UL_TEMP
 		, ifnull(round((sum(MB_DL_TEMP))/1024,2),0) as GB_DL_TEMP
 		, ifnull(round((sum(MB_TOTAL_TEMP))/1024,2),0) as GB_TOTAL_TEMP
+
+		, ifnull(round((sum(MB_ADDON))/1024,2),0) as GB_ADDON
 
 
 
@@ -363,6 +392,9 @@ insert into rcbill_my.rep_dailypackageusage
 					, case when upper(TRAFFICTYPE)='TEMPORARY_SPEED' then ifnull(round(sum(MB_DL),2),0) end as MB_DL_TEMP
 					, case when upper(TRAFFICTYPE)='TEMPORARY_SPEED' then ifnull(round(sum(MB_TOTAL),2),0) end as MB_TOTAL_TEMP
 
+
+					, ifnull(round(sum(MB_ADDON),2),0) as MB_ADDON
+
 					-- , upper(TRAFFICTYPE) as TRAFFICTYPE
 					-- , round(sum(MB_UL),2) as MB_UL, round(sum(MB_DL),2) as MB_DL, round(sum(MB_TOTAL),2) as MB_TOTAL 
 					-- , round((sum(MB_UL)/1024),2) as GB_UL, round((sum(MB_DL)/1024),2) as GB_DL, round((sum(MB_TOTAL)/1024),2) as GB_TOTAL 
@@ -379,6 +411,8 @@ insert into rcbill_my.rep_dailypackageusage
 
 
 select count(*) as rep_dailypackageusage from rcbill_my.rep_dailypackageusage;
+
+-- select * from rcbill_my.rep_dailypackageusage order by usagedate desc limit 1000;
 
 
 ######################################################################

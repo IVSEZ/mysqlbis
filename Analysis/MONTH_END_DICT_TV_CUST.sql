@@ -135,6 +135,7 @@ select servicecategory, package
 -- , `20211031`, `20211130`, `20211231`
 , `20220131`, `20220228`, `20220331`
 , `20220430`, `20220531`, `20220630`
+, `20220731`, `20220831`, `20220930`
 
  from rcbill_my.rep_activenumberlastday_pv;
 
@@ -164,6 +165,9 @@ select servicecategory
 , sum(`20220430`)
 , sum(`20220531`)
 , sum(`20220630`)
+, sum(`20220731`)
+, sum(`20220831`)
+, sum(`20220930`)
  from rcbill_my.rep_activenumberlastday_pv
  group by servicecategory
  ;
@@ -171,8 +175,10 @@ select servicecategory
 
 -- set @period='2022-04-30';
 -- set @period='2022-05-31';
- set @period='2022-06-30';
-
+-- set @period='2022-06-30';
+-- set @period='2022-07-31';
+-- set @period='2022-08-31';
+ set @period='2022-09-30';
 
 
 

@@ -179,6 +179,7 @@ CREATE INDEX IDXrst2 ON rcbill_my.rep_servicetickets_2021 (assgnopendate);
 
 ########### TICKET REPORTS
 
+/*
 
 drop table if exists rcbill_my.rep_tkt_f_level1;
 
@@ -414,7 +415,7 @@ select count(*) as rep_tkt_irs_level3 from rcbill_my.rep_tkt_irs_level3;
 #########################################################
 
 
-
+*/
 
 
 

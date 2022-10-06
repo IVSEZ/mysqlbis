@@ -30,9 +30,10 @@ create table rcbill_my.rep_servicetickets_2019 as
 		, round((select sum(price) from rcbill_my.customercontractsnapshot where contractcode=a.contractcode),2) as packageprice
 		, round(((select sum(price) from rcbill_my.customercontractsnapshot where contractcode=a.contractcode)/30),2) as priceperday
         , case 
-			when year(a.assgnopendate)=2019 and month(a.assgnopendate) in (1,2) then 0
-			when year(a.assgnopendate)=2019 and month(a.assgnopendate) in (3) then 3
-			when year(a.assgnopendate)=2019 and month(a.assgnopendate) not in (1,2,3) then 2 
+			-- when year(a.assgnopendate)=2019 and month(a.assgnopendate) in (1,2) then 0
+			-- when year(a.assgnopendate)=2019 and month(a.assgnopendate) in (3) then 3
+			-- when year(a.assgnopendate)=2019 and month(a.assgnopendate) not in (1,2,3) then 2
+            when year(a.assgnopendate)=2019 then 2 
             end as agreeddays
         
 		from 

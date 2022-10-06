@@ -12,9 +12,9 @@
 
 
 
-drop table if exists rcbill_my.rep_servicetickets_2021;
+drop table if exists rcbill_my.rep_servicetickets;
 
-create table rcbill_my.rep_servicetickets_2021 as 
+create table rcbill_my.rep_servicetickets as 
 (
 	select a.*
     -- , (a.priceperday * a.penaltydays) as penaltyamount
@@ -30,10 +30,11 @@ create table rcbill_my.rep_servicetickets_2021 as
 		, round((select sum(price) from rcbill_my.customercontractsnapshot where contractcode=a.contractcode),2) as packageprice
 		, round(((select sum(price) from rcbill_my.customercontractsnapshot where contractcode=a.contractcode)/30),2) as priceperday
         , case 
-			-- when year(a.assgnopendate)=2021 and month(a.assgnopendate) in (1,2) then 0
-			-- when year(a.assgnopendate)=2021 and month(a.assgnopendate) in (3) then 3
-			-- when year(a.assgnopendate)=2021 and month(a.assgnopendate) not in (1,2,3) then 2 
-            when year(a.assgnopendate)=2021 then 2 
+			when year(a.assgnopendate)=2018 and month(a.assgnopendate) in (1,2) then 0
+			when year(a.assgnopendate)=2018 and month(a.assgnopendate) in (3) then 3
+			when year(a.assgnopendate)=2018 and month(a.assgnopendate) not in (1,2,3) then 2 
+            
+            else 2 
             end as agreeddays
         
 		from 
@@ -50,13 +51,22 @@ create table rcbill_my.rep_servicetickets_2021 as
 				-- , date(ASSGN_OPENDATE) as assgnopendate, date(ASSGN_CLOSEDATE) as assgnclosedate
 				, opendate as opendate, CLOSEDATE as closedate
 				, ASSGN_OPENDATE as assgnopendate, ASSGN_CLOSEDATE as assgnclosedate
+				, date(opendate) as open_d, date(CLOSEDATE) as close_d
+				, date(ASSGN_OPENDATE) as assgnopen_d, date(ASSGN_CLOSEDATE) as assgnclose_d
+
+				, WORKING_MINUTES, WORKING_HOURS
+                , ACTUAL_MINUTES, ACTUAL_HOURS
+
+				, OPEN_DAY, CLOSE_DAY, OPEN_HOLIDAY, CLOSE_HOLIDAY                
+                
                 -- , (select package from rcbill_my.customercontractsnapshot where contractcode=contractcode) as package
+                , ticketstate, ASSGN_STATE
 
 				, sum(tkt_alldays) as service_alldays, sum(tkt_workdays) as service_workdays
                 , sum(tkt_workdays2) as service_workdays2
 				from rcbill_my.clientticket_assgnjourney
 				-- where assgntechregion in ('TECHNICAL - NEW SERVICE','TECHNICAL - WORK ORDER MANAGEMENT')
-				where year(OPENDATE)=2021
+				where year(OPENDATE)>=2018
 				group by ticketid, service, clientcode, contractcode, tickettype, openreason
                 , opentechregion
                 , openuser
@@ -68,7 +78,7 @@ create table rcbill_my.rep_servicetickets_2021 as
                 order by opendate, ASSGN_OPENDATE
 
 		) a
-		inner join
+		left join
 		(
 
 		-- select * from rcbill_my.rep_cust_cont_payment_cmts_mxk;
@@ -160,9 +170,17 @@ create table rcbill_my.rep_servicetickets_2021 as
 )
 ;
 
-select count(*) as rep_servicetickets_2021 from rcbill_my.rep_servicetickets_2021;
+select count(*) as rep_servicetickets from rcbill_my.rep_servicetickets;
 -- select * from rcbill_my.rep_servicetickets_2021;
 
+CREATE INDEX IDXrst1 ON rcbill_my.rep_servicetickets (assgntechregion);
+CREATE INDEX IDXrst2 ON rcbill_my.rep_servicetickets (assgnopendate);
+CREATE INDEX IDXrst3 ON rcbill_my.rep_servicetickets (assgnopen_d);
+CREATE INDEX IDXrst4 ON rcbill_my.rep_servicetickets (assgnclose_d);
+CREATE INDEX IDXrst5 ON rcbill_my.rep_servicetickets (open_d);
+CREATE INDEX IDXrst6 ON rcbill_my.rep_servicetickets (close_d);
+
+-- select count(*) as rep_servicetickets_2022 from rcbill_my.rep_servicetickets_2022;
 
 
 ########### TICKET REPORTS

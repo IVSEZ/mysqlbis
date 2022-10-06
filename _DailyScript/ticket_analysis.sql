@@ -131,6 +131,7 @@ select distinct ticketid AS TICKET_ID, OPENDATE
 			, year(a.opendate) as OPEN_YEAR
 , UPPER(OPENUSER) AS OPENUSER, UPPER(OPENREASON) AS OPENREASON
 , UPPER(opentechdept) AS OPENTECHDEPT, UPPER(opentechregion) AS OPENTECHREGION, UPPER(stagetechregion) AS STAGETECHREGION
+, UPPER(TRIM(COMMENT)) AS COMMENT
 , CLOSEDATE, date(CLOSEDATE) as CLOSE_DATE
 			, week(a.closedate) as CLOSE_WEEK
             , month(a.closedate) as CLOSE_MTH
@@ -164,7 +165,10 @@ CREATE INDEX IDXctj3
 ON rcbill_my.rep_clienttickets (contractcode);
 CREATE INDEX IDXctj4
 ON rcbill_my.rep_clienttickets (CLOSE_DATE);
-
+CREATE INDEX IDXctj5
+ON rcbill_my.rep_clienttickets (OPEN_WEEK,OPEN_MTH,OPEN_YEAR);
+CREATE INDEX IDXctj6
+ON rcbill_my.rep_clienttickets (CLOSE_WEEK,CLOSE_MTH,CLOSE_YEAR);
 -- select * from rcbill_my.rep_clienttickets;
 select count(*) as rep_clienttickets from rcbill_my.rep_clienttickets;
 

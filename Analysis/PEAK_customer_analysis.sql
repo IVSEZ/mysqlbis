@@ -40,11 +40,12 @@ create table tempperiod as
 		, sum(activecount) as activeno
         
         ### comment one depending on the report 
-		 from rcbill_my.rep_anreport_i
-		-- from rcbill_my.rep_anreport_t
+		-- from rcbill_my.rep_anreport_i
+		 from rcbill_my.rep_anreport_t
         
         where 0=0
         and periodyear>=year(now())
+        and periodmth=8
 		group by 
 		period
 		-- , package
@@ -55,8 +56,11 @@ create table tempperiod as
 
 
 SET @peakdate = (select period from tempperiod);
+select @peakdate;
+SET @peakdate = '2022-08-25';
 SET @enddate = (select max(month_all_date) from rcbill_my.month_all_date);
-
+-- SET @enddate = '2022-10-02';
+select @enddate;
 
 
 

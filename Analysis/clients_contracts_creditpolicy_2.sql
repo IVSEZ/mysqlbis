@@ -6,8 +6,8 @@ use rcbill_my;
 
 #set @period = '2021-07-21';
 
--- select * from rcbill.clientcontracts limit 1000;
--- select * from rcbill.clientcontractsservicepackageprice where clientcode='I10952';
+-- select * from rcbill.clientcontracts where cl_clientcode='I.000011750' limit 1000;
+-- select * from rcbill.clientcontractsservicepackageprice where clientcode='I.000011750';
 -- show index from rcbill.clientcontractsservicepackageprice ;
 
 drop temporary table if exists a;
@@ -17,14 +17,14 @@ create temporary table a (INDEX idxa1 (clientcode), INDEX idxa2 (contractcode), 
 	upper(clientcode) as clientcode, upper(clientname) as clientname, upper(contractcode) as contractcode, currency
     , upper(RatingPlanName) as RatingPlanName, upper(CreditPolicyName) as CreditPolicyName
     , upper(package) as package, price, upper(service) as service
-    , LASTACTION, contractstartdate, contractenddate, contractstatus, serviceinstancenumber
+    , LASTACTION, contractstartdate, contractenddate, InvoicingDate, contractstatus, serviceinstancenumber
     , servicestartdate, serviceenddate, StatusChangedDate, serviceid, servicerateid
     , CLIENT_ID, CONTRACT_ID
 	from 
 	rcbill.clientcontractsservicepackageprice
 );
 
--- select * from a where clientcode='I10952';
+-- select * from a where clientcode='I.000023718';
 
 drop temporary table if exists b;
 create temporary table b (INDEX idxb1 (clientcode), INDEX idxb2 (contractcode), INDEX idxb3 (service), INDEX idxb4 (package) ) as 
@@ -56,7 +56,7 @@ AS
 	, b.representative AS REPRESENTATIVE, b.clientaddress AS CLIENTADDRESS, b.cl_location, b.cl_area, b.cl_areaname, b.cl_latitude, b.cl_longitude
 	, b.contractaddress AS CONTRACTADDRESS, b.con_location, b.con_area, b.con_areaname, b.con_latitude, b.con_longitude
 
-	, a.CLIENT_ID, a.CONTRACT_ID
+	, a.CLIENT_ID, a.CONTRACT_ID, a.InvoicingDate
 	from 
 	 b
 	left join 

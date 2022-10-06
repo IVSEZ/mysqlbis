@@ -3,7 +3,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `GetCurrentStatusOfCustomer`(ccode te
 BEGIN
     DECLARE currentstatus VARCHAR(255);
 
-    SET currentstatus=(select concat(ifnull(IsAccountActive,""),"|",ifnull(AccountActivityStage,""),"|", ifnull(lastactivedate,"")) from rcbill_my.rep_custconsolidated where clientcode=ccode);
+    SET currentstatus=(select concat(ifnull(IsAccountActive,""),"|",ifnull(AccountActivityStage,""),"|", ifnull(lastactivedate,""),"|", ifnull(activeservices,"")) from rcbill_my.rep_custconsolidated where clientcode=ccode);
 
 	-- RETURN isactive;
 	-- RETURN IF(isactive=0, 'NO', 'YES'); 

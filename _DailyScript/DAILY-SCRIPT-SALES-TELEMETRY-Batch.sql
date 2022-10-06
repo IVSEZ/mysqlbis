@@ -10,7 +10,7 @@ use rcbill_my;
 ## change all csv dates 6 files
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\SalesReport-25082019-02092019-1.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\SalesReport2-09092022-11092022-1.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\SalesReport2-30092022-02102022-1.csv' 
  
 REPLACE INTO TABLE `rcbill_my`.`dailysales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -115,7 +115,7 @@ Address Change::87
 
 drop table if exists rcbill_my.sales;
 
-create table rcbill_my.sales(index idxs1(orderid), index idxs2(clientcode), index idxs3(contractcode)) as 
+create table rcbill_my.sales(index idxs1(orderid), index idxs2(clientcode), index idxs3(contractcode), index idxs4(orderday), index idxs5(orderyr, ordermth, orderweek)) as 
 (
 		select rcbill_my.GetCleanString(SALESCHANNEL) as saleschannel
 		, rcbill_my.GetCleanString(SALESCENTER) as salescenter
@@ -148,13 +148,14 @@ create table rcbill_my.sales(index idxs1(orderid), index idxs2(clientcode), inde
 			when rcbill_my.GetCleanString(STATE) = "Rejected" then "Rejected" 
 			when rcbill_my.GetCleanString(STATE) = "Double" then "Double" 
 		  end as `orderstatus`
-		, orderid, dayname(orderdate) as weekday, monthname(ORDERDATE) as ordermonth, date(orderdate) as orderday, orderdate, clientcode, clientclass, contract as contractcode, contracttype, service, servicetype, cost, price, num, originalcontract, ORIGINALSERVICE, ORIGINALSERVICETYPE, ORIGINALPRICE, CLEANORIGCOST, CLEANORIGPRICE, insertedon
+		, orderid, dayname(orderdate) as weekday, year(ORDERDATE) as orderyr, month(ORDERDATE) as ordermth, week(ORDERDATE) as orderweek, monthname(ORDERDATE) as ordermonth, date(orderdate) as orderday, orderdate, clientcode, clientclass, contract as contractcode, contracttype, service, servicetype, cost, price, num, originalcontract, ORIGINALSERVICE, ORIGINALSERVICETYPE, ORIGINALPRICE, CLEANORIGCOST, CLEANORIGPRICE, insertedon
 
 		from rcbill_my.dailysales order by orderdate desc
 )
 ;
 
 select count(1) as sales from rcbill_my.sales;
+-- select * from rcbill_my.sales;
 
 ################################################################################################
 #REPORTS FOR SALES
@@ -272,7 +273,7 @@ use rcbill_my;
 
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\Sales-Addon-25082019-02092019.csv'
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\Sales-Addon-09092022-11092022.csv'
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\Sales-Addon-30092022-02102022.csv'
 
 REPLACE INTO TABLE `rcbill_my`.`dailyaddonsales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -376,7 +377,7 @@ order by 3 desc
 # ONLINE PAYMENTS
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\eBarclays-PaymentsList-25082019-02092019.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\eBarclays-PaymentsList-09092022-11092022.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\eBarclays-PaymentsList-30092022-02102022.csv' 
 REPLACE INTO TABLE `rcbill_my`.`onlinepayments` CHARACTER SET Latin1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 1 LINES 
@@ -482,7 +483,7 @@ limit 5
 use rcbill_my;
 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\PrepaidCardSales-25082019-02092019-P1.csv' 
- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\PrepaidCardSales-09092022-11092022-P1.csv' 
+ LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\_csv\\PrepaidCardSales-30092022-02102022-P1.csv' 
 
 REPLACE INTO TABLE `rcbill_my`.`dailysinglesales` CHARACTER SET LATIN1 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 

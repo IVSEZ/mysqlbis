@@ -269,6 +269,8 @@ create table rcbill_my.rep_dailypackageusage(index idxrdpu1(usagedate), index id
 		, sum(MB_DL_TEMP) as MB_DL_TEMP
 		, sum(MB_TOTAL_TEMP) as MB_TOTAL_TEMP
 
+		, sum(MB_ADDON) as MB_ADDON
+
 		##GB TOTAL	
 		, ifnull(round((sum(MB_UL_DEFAULT))/1024,2),0) as GB_UL_DEFAULT
 		, ifnull(round((sum(MB_DL_DEFAULT))/1024,2),0) as GB_DL_DEFAULT
@@ -290,6 +292,7 @@ create table rcbill_my.rep_dailypackageusage(index idxrdpu1(usagedate), index id
 		, ifnull(round((sum(MB_DL_TEMP))/1024,2),0) as GB_DL_TEMP
 		, ifnull(round((sum(MB_TOTAL_TEMP))/1024,2),0) as GB_TOTAL_TEMP
 
+		, ifnull(round((sum(MB_ADDON))/1024,2),0) as GB_ADDON
 
 
 		from 
@@ -325,6 +328,9 @@ create table rcbill_my.rep_dailypackageusage(index idxrdpu1(usagedate), index id
 					, case when upper(TRAFFICTYPE)='TEMPORARY_SPEED' then ifnull(round(sum(MB_UL),2),0) end as MB_UL_TEMP
 					, case when upper(TRAFFICTYPE)='TEMPORARY_SPEED' then ifnull(round(sum(MB_DL),2),0) end as MB_DL_TEMP
 					, case when upper(TRAFFICTYPE)='TEMPORARY_SPEED' then ifnull(round(sum(MB_TOTAL),2),0) end as MB_TOTAL_TEMP
+                    
+                    
+					, ifnull(round(sum(MB_ADDON),2),0) as MB_ADDON
 
 					-- , upper(TRAFFICTYPE) as TRAFFICTYPE
 					-- , round(sum(MB_UL),2) as MB_UL, round(sum(MB_DL),2) as MB_DL, round(sum(MB_TOTAL),2) as MB_TOTAL 
