@@ -23,14 +23,6 @@ SELECT * FROM rcbill.rcb_paid_subscriptions where ClientCode=@clcode and ( (SUB_
 
 
 
-
-
-
-
-
-
-
-
 	select a.ID as CASA_ID
 	,a.ENTERDATE as PAYMENT_DATE
 	, a.clid as CLIENT_ID, a.cid as CONTRACT_ID
