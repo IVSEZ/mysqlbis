@@ -21,8 +21,10 @@ SELECT * FROM rcbill.rcb_paid_subscriptions where ClientCode=@clcode and ( (SUB_
 
 
 
+drop table if exists rcbill.clientpayments;
 
-
+create table rcbill.clientpayments(index idxcp1(CASA_ID), index idxcp2(CLIENT_ID), index idxcp3(CONTRACT_ID), index idxcp4(ClientCode), index idxcp5(ContractCode), index idxcp6(INVOICEID), index idxcp7(INVOICENO), index idxcp8(SUB_TYPE))
+(
 	select a.ID as CASA_ID
 	,a.ENTERDATE as PAYMENT_DATE
 	, a.clid as CLIENT_ID, a.cid as CONTRACT_ID
@@ -34,12 +36,26 @@ SELECT * FROM rcbill.rcb_paid_subscriptions where ClientCode=@clcode and ( (SUB_
 	, date(a.EndDate) as SUB_END_DATE
     
     , date(d.BEGDATE) as SUB_START_DATE_FPA, date(d.ENDDATE) as SUB_END_DATE_FPA, d.ID_OLD, d.ORDERID, d.SRCNO, d.DKINO
+    , d.ID as INVOICEID
+    , d.INVOICENO as INVOICENO
+    -- , d.SUMA as COST
+    -- , d.DDS as TAX
+    -- , d.TOTAL as TOTALPAYMENT
+    , e.CSID, e.RID, e.RSID, e.ServiceID, e.TEXT
+    , e.COST, e.CostVAT, e.DiscountCost, e.CostTotal
+    
     
 	from rcbill.rcb_casa a 
     
     left join 
 	rcbill.rcb_invoicesheader d 
 	on a.ID=d.PaymentID and a.CID=d.CID
+    
+    left join 
+    rcbill.rcb_invoicescontents e
+    on d.ID=e.InvoiceID
+    and (a.PAYTYPE*-1)=e.ServiceID
+    
     
 	where 0=0 
     -- and a.CLID=718302
@@ -48,11 +64,11 @@ SELECT * FROM rcbill.rcb_paid_subscriptions where ClientCode=@clcode and ( (SUB_
 	and d.SRCNO=0 and d.DKINO=0
 
 	order by a.ENTERDATE desc, a.clid asc
-    ;
+)    ;
 
+SELECT * FROM rcbill.clientpayments order by CASA_ID desc limit 1000;
 
-
-
+select * from rcbill.clientpayments where clientcode='I15881';
 
 
 

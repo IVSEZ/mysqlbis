@@ -3,9 +3,15 @@ set @clcode='I.000011750'; -- Rahul
 set @clcode='I21695';
 set @clcode='I.000024581';
 set @clcode='I.000020021';
-set @clid = (select rcbill.GetClientID(@clcode));
+set @clcode='I.000014455';
+set @clcode='I.000024537';
+set @clcode='I10006';
+set @clcode='I15881';
 
-select concat(@clcode,'|', @clid) as CLIENT;
+set @clid = (select rcbill.GetClientID(@clcode));
+set @clname = (select rcbill.GetClientName(@clcode));
+
+select concat(@clcode,'|', @clid,'|', @clname) as CLIENT;
 
 SELECT * FROM rcbill.rcb_paid_subscriptions where ClientCode=@clcode;
 SELECT * FROM rcbill_my.rep_custconsolidated where clientcode=@clcode;
@@ -18,7 +24,7 @@ SELECT * FROM rcbill.clientcontractsservicepackageprice where clientcode=@clcode
 SELECT * FROM rcbill.rcb_tclients where ID=@clid;
 SELECT * FROM rcbill.rcb_contracts where CLID=@clid;
 SELECT * from rcbill.clientcontracts where CL_CLIENTCODE=@clcode;
-SELECT * FROM rcbill.rcb_contractservices where CID=(2295275);
+SELECT * FROM rcbill.rcb_contractservices where CID=(2120059);
 SELECT * FROM rcbill.rcb_contractslastaction;
 
 SELECT * FROM rcbill_my.customercontractsnapshot where clientcode=@clcode;
@@ -32,7 +38,28 @@ SELECT * FROM rcbill.rcb_paid_subscriptions where ClientCode=@clcode order by CA
 SELECT * FROM rcbill.rcb_casa where CLID=@clid order by id desc;
 SELECT * FROM rcbill.rcb_invoicesheader where CLID=@clid order by id desc;
 SELECT * FROM rcbill.rcb_invoicescontents where CLID=@clid order by id desc;
-SELECT * FROM rcbill.clientcontractinvpmt where CL_CLIENTCODE=@clcode order by LastPaymentDate desc; 
+SELECT * FROM rcbill.clientpayments where CLIENT_ID=@clid order by CASA_ID desc;
+-- SELECT * FROM rcbill.rcb_contractservices where CID=2245531;
+
+
+-- SELECT * FROM rcbill.clientcontractinvpmt where CL_CLIENTCODE=@clcode order by LastPaymentDate desc; 
+
+select * from rcbill_my.customercontractactivity a where a.period='2022-10-06'; -- and a.clientcode=@clcode;
+
+select a.* , b.*
+from 
+rcbill_my.customercontractactivity a 
+left join 
+rcbill.clientpayments b
+on a.clientcode=b.clientcode and a.contractcode=b.contractcode and a.service=b.SUB_TYPE
+and (a.period>=b.SUB_START_DATE_FPA and a.period<=SUB_END_DATE_FPA)
+where a.period='2022-10-12'
+
+and a.clientcode=@clcode
+;
+
+
+
 -- SELECT * FROM rcbill.rcb_contractservices limit 100;
 
 -- select distinct type, hard from rcbill.rcb_invoicesheader where clid=@clid;

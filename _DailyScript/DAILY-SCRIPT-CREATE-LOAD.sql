@@ -77,7 +77,7 @@ CREATE TABLE `rcb_tclients` (
 use rcbill;
 -- SET SESSION sql_mode = '';
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTClients-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTClients-13102022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_tclients` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_tclients` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 -- OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' 
@@ -548,7 +548,7 @@ CREATE TABLE `rcb_contracts` (
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContracts-06102022.csv'
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContracts-13102022.csv'
 -- REPLACE INTO TABLE `rcbill`.`rcb_contracts` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_contracts` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 -- OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' 
@@ -741,7 +741,7 @@ CREATE TABLE `rcb_contractservices` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractServices-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractServices-13102022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_contractservices` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_contractservices` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -842,7 +842,7 @@ CREATE TABLE `rcb_contractdiscounts` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractDiscounts-06102022.csv'
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllContractDiscounts-13102022.csv'
 -- REPLACE INTO TABLE `rcbill`.`rcb_contractdiscounts` CHARACTER SET latin1 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_contractdiscounts` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 -- OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' 
@@ -1001,7 +1001,7 @@ CREATE TABLE `rcb_devices` (
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevices-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevices-13102022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_devices` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_devices` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 -- OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' 
@@ -1332,7 +1332,7 @@ CREATE TABLE `rcb_tickets` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTickets-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTickets-13102022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1485,7 +1485,7 @@ create index IDXttu1 on rcbill.rcb_tickettechusers (RCBUSERID);
 create index IDXttu2 on rcbill.rcb_tickettechusers (ID);
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketTechUsers-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketTechUsers-13102022.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_tickettechusers` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 IGNORE 2 LINES 
@@ -1572,7 +1572,7 @@ CREATE INDEX IDXtxtass1
 ON rcb_ticketassignments (TICKETID);
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketAssignments-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketAssignments-13102022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_tickets` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_ticketassignments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1663,7 +1663,7 @@ CREATE TABLE `rcb_ticketcomments` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketComments-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTicketComments-13102022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_ticketcomments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_ticketcomments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 -- OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' 
@@ -1746,7 +1746,7 @@ CREATE TABLE `rcb_comments` (
 
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllComments-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllComments-13102022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1840,7 +1840,7 @@ CREATE TABLE `rcb_devicesold` (
 
 ) ENGINE=InnoDB CHARSET UTF8;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevicesOld-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllDevicesOld-13102022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_devicesold` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_devicesold` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -1974,7 +1974,7 @@ CREATE TABLE `rcb_invoicescontents` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesContents-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesContents-13102022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_invoicescontents` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_invoicescontents` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2150,7 +2150,7 @@ CREATE TABLE `rcb_invoicesheader` (
 ) ENGINE=InnoDB CHARSET UTF8;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesHeader-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllInvoicesHeader-13102022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_invoicesheader` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_invoicesheader` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2348,7 +2348,7 @@ CREATE TABLE `rcb_users` (
 use rcbill;
 -- SET SESSION sql_mode = '';
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUsers-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUsers-13102022.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_users` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
 -- IGNORE 1 LINES 
@@ -2478,7 +2478,7 @@ CREATE TABLE `rcb_useractions` (
 
 
 -- SET SESSION sql_mode = '';
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUserActions2019-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllUserActions2019-13102022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_useractions` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_useractions` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2578,7 +2578,7 @@ CREATE TABLE `rcb_ipusage1` (
 
 use rcbill;
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-14052018.csv' 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllIPUSAGE-13102022.csv' 
 
 -- REPLACE INTO TABLE `rcbill`.`rcb_comments` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_ipusage1` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
@@ -2697,7 +2697,7 @@ CREATE TABLE `rcb_casa` (
 
 #NOTE: PAYTYPE in CASA is the same as negative of ID in rcb_services 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllCASA-06102022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllCASA-13102022.csv' 
 -- REPLACE INTO TABLE `rcbill`.`rcb_casa` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
 REPLACE INTO TABLE `rcbill`.`rcb_casa` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -2870,7 +2870,55 @@ insert into rcbill.rcb_paid_subscriptions
 select count(*) as rcb_paid_subscriptions from rcbill.rcb_paid_subscriptions;
 
 
+###################################################
 
+drop table if exists rcbill.clientpayments;
+
+create table rcbill.clientpayments(index idxcp1(CASA_ID), index idxcp2(CLIENT_ID), index idxcp3(CONTRACT_ID), index idxcp4(ClientCode), index idxcp5(ContractCode), index idxcp6(INVOICEID), index idxcp7(INVOICENO), index idxcp8(SUB_TYPE))
+(
+	select a.ID as CASA_ID
+	,a.ENTERDATE as PAYMENT_DATE
+	, a.clid as CLIENT_ID, a.cid as CONTRACT_ID
+    , rcbill.GetClientCode(a.clid) as ClientCode, rcbill.GetContractCode(a.cid) as ContractCode
+	, a.MONEY as PAYMENT_AMOUNT
+	, a.PAYTYPE
+	, rcbill.GetPayType(a.PAYTYPE*-1) as SUB_TYPE
+	, date(a.BegDate) as SUB_START_DATE
+	, date(a.EndDate) as SUB_END_DATE
+    
+    , date(d.BEGDATE) as SUB_START_DATE_FPA, date(d.ENDDATE) as SUB_END_DATE_FPA, d.ID_OLD, d.ORDERID, d.SRCNO, d.DKINO
+    , d.ID as INVOICEID
+    , d.INVOICENO as INVOICENO
+    -- , d.SUMA as COST
+    -- , d.DDS as TAX
+    -- , d.TOTAL as TOTALPAYMENT
+    , e.CSID, e.RID, e.RSID, e.ServiceID, e.TEXT
+    , e.COST, e.CostVAT, e.DiscountCost, e.CostTotal
+    
+    
+	from rcbill.rcb_casa a 
+    
+    left join 
+	rcbill.rcb_invoicesheader d 
+	on a.ID=d.PaymentID and a.CID=d.CID
+    
+    left join 
+    rcbill.rcb_invoicescontents e
+    on d.ID=e.InvoiceID
+    and (a.PAYTYPE*-1)=e.ServiceID
+    
+    
+	where 0=0 
+    -- and a.CLID=718302
+    -- and a.id>(select max(CASA_ID) from rcbill.rcb_paid_subscriptions)
+	and (a.hard not in (100, 101, 102) or a.hard is null)
+	and d.SRCNO=0 and d.DKINO=0
+
+	order by a.ENTERDATE desc, a.clid asc
+)    ;
+
+
+select count(*) as clientpayments from rcbill.clientpayments;
 
 
 ################## MAKE CASA 2 ####################

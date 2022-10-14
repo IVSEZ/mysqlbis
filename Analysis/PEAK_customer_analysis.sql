@@ -25,8 +25,10 @@ select * from rcbill_my.customercontractactivity WHERE CLIENTCODE='I9658'; limit
 
 
 
- SET @servicecategory='Internet';
--- SET @servicecategory='TV';
+-- SET @servicecategory='Internet';
+ SET @servicecategory='TV';
+
+select @servicecategory;
 
 ## CHANGE THE TABLE NAME
 drop table if exists tempperiod;
@@ -45,7 +47,7 @@ create table tempperiod as
         
         where 0=0
         and periodyear>=year(now())
-        and periodmth=8
+        and periodmth>=8
 		group by 
 		period
 		-- , package
@@ -57,7 +59,7 @@ create table tempperiod as
 
 SET @peakdate = (select period from tempperiod);
 select @peakdate;
-SET @peakdate = '2022-08-25';
+-- SET @peakdate = '2022-08-25';
 SET @enddate = (select max(month_all_date) from rcbill_my.month_all_date);
 -- SET @enddate = '2022-10-02';
 select @enddate;
@@ -114,6 +116,10 @@ select a.clientcode, t1.PEAK_DATE, t1.PEAK_CLIENTNAME, t1.PEAK_CLIENTCLASS, t1.P
 , (select min(b.firstcontractdate) from rcbill_my.customercontractsnapshot  b where b.clientcode=a.clientcode and b.servicecategory=@servicecategory) as FIRST_ACTIVE_DATE
 , (select max(b.lastcontractdate) from rcbill_my.customercontractsnapshot b where b.clientcode=a.clientcode and b.servicecategory=@servicecategory) as LAST_ACTIVE_DATE
 
+, SUBSTRING_INDEX(rcbill_my.GetCurrentStatusOfCustomer(a.clientcode),'|',1) as CUST_STATUS
+, SUBSTRING_INDEX(SUBSTRING_INDEX(rcbill_my.GetCurrentStatusOfCustomer(a.clientcode),'|',2),'|',-1) as CUST_STATE
+, SUBSTRING_INDEX(SUBSTRING_INDEX(rcbill_my.GetCurrentStatusOfCustomer(a.clientcode),'|',3),'|',-1) as CUST_LAST_ACTIVE
+, SUBSTRING_INDEX(SUBSTRING_INDEX(rcbill_my.GetCurrentStatusOfCustomer(a.clientcode),'|',4),'|',-1) as CUST_CURR_SERVICES
 -- , (select min(b.firstcontractdate) from rcbill_my.customercontractsnapshot  b where b.clientcode=a.clientcode and b.contractcode=t1.PEAK_CONTRACTCODE) as FIRST_ACTIVE_DATE
 -- , (select max(b.lastcontractdate) from rcbill_my.customercontractsnapshot b where b.clientcode=a.clientcode and b.contractcode=t2.LAST_CONTRACTCODE) as LAST_ACTIVE_DATE
                 
