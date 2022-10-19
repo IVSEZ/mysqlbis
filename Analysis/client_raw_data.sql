@@ -8,6 +8,9 @@ set @clcode='I.000024537';
 set @clcode='I10006';
 set @clcode='I15881';
 
+set @clcode='I.000014653';
+
+
 set @clid = (select rcbill.GetClientID(@clcode));
 set @clname = (select rcbill.GetClientName(@clcode));
 
@@ -44,7 +47,22 @@ SELECT * FROM rcbill.clientpayments where CLIENT_ID=@clid order by CASA_ID desc;
 
 -- SELECT * FROM rcbill.clientcontractinvpmt where CL_CLIENTCODE=@clcode order by LastPaymentDate desc; 
 
-select * from rcbill_my.customercontractactivity a where a.period='2022-10-06'; -- and a.clientcode=@clcode;
+select * from rcbill_my.customercontractactivity a where a.period='2022-10-16' and a.clientcode=@clcode;
+
+select a.* , b.*
+from 
+rcbill_my.customercontractactivity a 
+left join 
+rcbill.rcb_casa b
+on a.clientcode=b.clientcode and a.contractcode=b.contractcode and a.service=b.SUB_TYPE
+and (a.period>=b.SUB_START_DATE_FPA and a.period<=SUB_END_DATE_FPA)
+where a.period='2022-10-12'
+
+and a.clientcode=@clcode
+;
+
+
+
 
 select a.* , b.*
 from 
