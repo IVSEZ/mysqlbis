@@ -52,7 +52,15 @@ rcbill_my.customercontractactivity a
 left join 
 rcbill.clientpayments b
 on a.clientcode=b.clientcode and a.contractcode=b.contractcode and a.service=b.SUB_TYPE
-and (a.period>=b.SUB_START_DATE_FPA and a.period<=SUB_END_DATE_FPA)
+and 
+(
+(a.period>=b.SUB_START_DATE_FPA and a.period<=SUB_END_DATE_FPA)
+
+or
+
+(a.period>=b.SUB_START_DATE and a.period<=SUB_END_DATE)
+
+)
 where a.period='2022-10-12'
 
 and a.clientcode=@clcode
