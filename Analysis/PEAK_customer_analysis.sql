@@ -25,8 +25,8 @@ select * from rcbill_my.customercontractactivity WHERE CLIENTCODE='I9658'; limit
 
 
 
--- SET @servicecategory='Internet';
- SET @servicecategory='TV';
+ SET @servicecategory='Internet';
+-- SET @servicecategory='TV';
 
 select @servicecategory;
 
@@ -42,8 +42,8 @@ create table tempperiod as
 		, sum(activecount) as activeno
         
         ### comment one depending on the report 
-		-- from rcbill_my.rep_anreport_i
-		 from rcbill_my.rep_anreport_t
+		 from rcbill_my.rep_anreport_i
+		-- from rcbill_my.rep_anreport_t
         
         where 0=0
         and periodyear>=year(now())
