@@ -10,6 +10,8 @@ set @clcode='I15881';
 
 set @clcode='I.000014653';
 
+set @clcode='I.000004778'; -- charles backlund
+
 
 set @clid = (select rcbill.GetClientID(@clcode));
 set @clname = (select rcbill.GetClientName(@clcode));
