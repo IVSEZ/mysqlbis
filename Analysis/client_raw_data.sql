@@ -12,6 +12,8 @@ set @clcode='I.000014653';
 
 set @clcode='I.000004778'; -- charles backlund
 
+set @clcode='I4147'; -- Hugh Albert
+
 
 set @clid = (select rcbill.GetClientID(@clcode));
 set @clname = (select rcbill.GetClientName(@clcode));
@@ -20,6 +22,10 @@ select concat(@clcode,'|', @clid,'|', @clname) as CLIENT;
 
 SELECT * FROM rcbill.rcb_paid_subscriptions where ClientCode=@clcode;
 SELECT * FROM rcbill_my.rep_custconsolidated where clientcode=@clcode;
+
+
+select rcbill_my.GetLastPackageDateFromSnapshot(@clcode, 'TV');
+select rcbill_my.GetLastActiveDateForClient(@clcode);
 
 SELECT * FROM rcbill.clientcontractsservicepackageprice where clientcode=@clcode;
 

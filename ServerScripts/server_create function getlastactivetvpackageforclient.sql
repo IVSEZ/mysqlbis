@@ -6,7 +6,7 @@ BEGIN
     SET lastactivetvpackage=(select package from rcbill_my.customercontractactivity where 
 								servicecategory='TV' and servicesubcategory<>'ADDON'
 								and
-								ClientCode=ccode and period=GetLastActiveDateForClient(ccode)
+								ClientCode=ccode and period=rcbill_my.GetLastActiveDateForClient(ccode)
 							);
 
 	RETURN lastactivetvpackage;
@@ -24,6 +24,8 @@ BEGIN
   END$$
 DELIMITER ;
 
+
+/*
 select package from rcbill_my.customercontractactivity where ClientCode='I977' and period=GetLastActiveDateForClient('I977') ;
 
 
@@ -31,3 +33,5 @@ select package from rcbill_my.customercontractactivity where
 servicecategory='TV' and servicesubcategory<>'ADDON'
 and
 ClientCode='I977' and period=GetLastActiveDateForClient('I977') ;
+
+*/

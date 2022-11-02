@@ -10,22 +10,22 @@ use rcbill;
 set @lastdate = (select max(month_all_date) from rcbill_my.month_all_date);
 
 #SET DATE
-SET @REPORTDATE=str_to_date('2022-10-27','%Y-%m-%d');
+SET @REPORTDATE=str_to_date('2022-11-01','%Y-%m-%d');
 
 
-SET @rundate='2022-10-27';
+SET @rundate='2022-11-01';
 
 SET @COLNAME1='CLIENTDEBT_REPORTDATE';
 
-set @periodstart='2022-10-27';
-set @periodend='2022-10-27';	
+set @periodstart='2022-11-01';
+set @periodend='2022-11-01';	
 
 
-SET @rundate='2022-10-27';
+SET @rundate='2022-11-01';
 
 #FOR Daily calls script
-SET @date1='2022-10-27';
-SET @date2='2022-10-28';  ### to be one day later
+SET @date1='2022-11-01';
+SET @date2='2022-11-02';  ### to be one day later
 
 
 ## FOR BUDGET ACTUAL ANALYSIS SCRIPT
@@ -40,8 +40,8 @@ set @m6='2022-06-31';
 set @m7='2022-07-31';
 set @m8='2022-08-31';
 set @m9='2022-09-30';
+set @m10='2022-10-31';
 
-set @m10='2022-10-27';
+set @m11='2022-11-01';
 
-set @m11='2022-11-30';
 set @m12='2022-12-31';
