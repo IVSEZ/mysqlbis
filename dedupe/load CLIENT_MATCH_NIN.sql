@@ -18,6 +18,7 @@
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_nin_score_20221001.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_nin_score_20221008.csv' 
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_nin_score_20221022.csv' 
+-- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\_out\\cust_nin_score_20221105.csv' 
 
 
 REPLACE INTO TABLE `rcbill`.`client_match_nin` CHARACTER SET UTF8 FIELDS TERMINATED BY ',' 
