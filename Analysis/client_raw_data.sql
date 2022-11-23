@@ -14,6 +14,10 @@ set @clcode='I.000004778'; -- charles backlund
 
 set @clcode='I4147'; -- Hugh Albert
 
+set @clcode='I.000017281'; -- Eden Self Catering Apartment 2 
+
+set @clcode='I.000012178'; 
+
 
 set @clid = (select rcbill.GetClientID(@clcode));
 set @clname = (select rcbill.GetClientName(@clcode));
@@ -28,7 +32,7 @@ select rcbill_my.GetLastPackageDateFromSnapshot(@clcode, 'TV');
 select rcbill_my.GetLastActiveDateForClient(@clcode);
 
 SELECT * FROM rcbill.clientcontractsservicepackageprice where clientcode=@clcode;
-
+-- SELECT * FROM rcbill.contractsservicepackageprice where contractcode='I.000309941';
 
 
 
@@ -52,6 +56,7 @@ SELECT * FROM rcbill.rcb_invoicescontents where CLID=@clid order by id desc;
 SELECT * FROM rcbill.clientpayments where CLIENT_ID=@clid order by CASA_ID desc;
 -- SELECT * FROM rcbill.rcb_contractservices where CID=2245531;
 
+SELECT * FROM rcbill_my.clientstats where clientcode=@clcode;
 
 -- SELECT * FROM rcbill.clientcontractinvpmt where CL_CLIENTCODE=@clcode order by LastPaymentDate desc; 
 
