@@ -1,3 +1,5 @@
+##SECTION 1 BEGINS
+
 use rcbill_my;
 
 -- SET GLOBAL innodb_buffer_pool_size=268435456;
@@ -11,7 +13,7 @@ use rcbill_my;
 -- SET @rundate='2020-03-01';
 -- LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-25082019-02092019.csv'
 
-  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-18112022-20112022.csv'
+  LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/DailySubscriptionStats-13012023-15012023.csv'
 
 INTO TABLE rcbill_my.activenumber 
 FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' 
@@ -137,45 +139,47 @@ select count(*) as packagelist from rcbill_my.packagelist;
 -- select * from rcbill_my.activenumber where period='2020-09-29' and reported='Y';
 -- delete from rcbill_my.activenumber where period='2020-09-29';
 
+##SECTION 1 ENDS
 
 ################################################################################
 
+##SECTION 2 BEGINS
 
 use rcbill_my;
 SET @@SESSION.sql_mode='ALLOW_INVALID_DATES';
 SET SQL_SAFE_UPDATES = 0;
 
--- 	SET @rundate='2022-11-01'; SET @perioddate=str_to_date('2022-11-01','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-01;2022-11-01.csv'
--- 	SET @rundate='2022-11-02'; SET @perioddate=str_to_date('2022-11-02','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-02;2022-11-02.csv'
--- 	SET @rundate='2022-11-03'; SET @perioddate=str_to_date('2022-11-03','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-03;2022-11-03.csv'
--- 	SET @rundate='2022-11-04'; SET @perioddate=str_to_date('2022-11-04','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-04;2022-11-04.csv'
--- 	SET @rundate='2022-11-05'; SET @perioddate=str_to_date('2022-11-05','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-05;2022-11-05.csv'
--- 	SET @rundate='2022-11-06'; SET @perioddate=str_to_date('2022-11-06','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-06;2022-11-06.csv'
--- 	SET @rundate='2022-11-07'; SET @perioddate=str_to_date('2022-11-07','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-07;2022-11-07.csv'
--- 	SET @rundate='2022-11-08'; SET @perioddate=str_to_date('2022-11-08','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-08;2022-11-08.csv'
--- 	SET @rundate='2022-11-09'; SET @perioddate=str_to_date('2022-11-09','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-09;2022-11-09.csv'
--- 	SET @rundate='2022-11-10'; SET @perioddate=str_to_date('2022-11-10','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-10;2022-11-10.csv'
--- 	SET @rundate='2022-11-11'; SET @perioddate=str_to_date('2022-11-11','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-11;2022-11-11.csv'
--- 	SET @rundate='2022-11-12'; SET @perioddate=str_to_date('2022-11-12','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-12;2022-11-12.csv'
--- 	SET @rundate='2022-11-13'; SET @perioddate=str_to_date('2022-11-13','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-13;2022-11-13.csv'
--- 	SET @rundate='2022-11-14'; SET @perioddate=str_to_date('2022-11-14','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-14;2022-11-14.csv'
--- 	SET @rundate='2022-11-15'; SET @perioddate=str_to_date('2022-11-15','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-15;2022-11-15.csv'
--- 	SET @rundate='2022-11-16'; SET @perioddate=str_to_date('2022-11-16','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-16;2022-11-16.csv'
--- 	SET @rundate='2022-11-17'; SET @perioddate=str_to_date('2022-11-17','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-17;2022-11-17.csv'
--- 	SET @rundate='2022-11-18'; SET @perioddate=str_to_date('2022-11-18','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-18;2022-11-18.csv'
--- 	SET @rundate='2022-11-19'; SET @perioddate=str_to_date('2022-11-19','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-19;2022-11-19.csv'
- 	SET @rundate='2022-11-20'; SET @perioddate=str_to_date('2022-11-20','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-20;2022-11-20.csv'
--- 	SET @rundate='2022-11-21'; SET @perioddate=str_to_date('2022-11-21','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-21;2022-11-21.csv'
--- 	SET @rundate='2022-11-22'; SET @perioddate=str_to_date('2022-11-22','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-22;2022-11-22.csv'
--- 	SET @rundate='2022-11-23'; SET @perioddate=str_to_date('2022-11-23','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-23;2022-11-23.csv'
--- 	SET @rundate='2022-11-24'; SET @perioddate=str_to_date('2022-11-24','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-24;2022-11-24.csv'
--- 	SET @rundate='2022-11-25'; SET @perioddate=str_to_date('2022-11-25','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-25;2022-11-25.csv'
--- 	SET @rundate='2022-11-26'; SET @perioddate=str_to_date('2022-11-26','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-26;2022-11-26.csv'
--- 	SET @rundate='2022-11-27'; SET @perioddate=str_to_date('2022-11-27','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-27;2022-11-27.csv'
--- 	SET @rundate='2022-11-28'; SET @perioddate=str_to_date('2022-11-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-28;2022-11-28.csv'
--- 	SET @rundate='2022-11-29'; SET @perioddate=str_to_date('2022-11-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-29;2022-11-29.csv'
--- 	SET @rundate='2022-11-30'; SET @perioddate=str_to_date('2022-11-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-30;2022-11-30.csv'
--- 	SET @rundate='2022-11-31'; SET @perioddate=str_to_date('2022-11-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2022-11-31;2022-11-31.csv'
+-- 	SET @rundate='2023-01-01'; SET @perioddate=str_to_date('2023-01-01','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-01;2023-01-01.csv'
+-- 	SET @rundate='2023-01-02'; SET @perioddate=str_to_date('2023-01-02','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-02;2023-01-02.csv'
+-- 	SET @rundate='2023-01-03'; SET @perioddate=str_to_date('2023-01-03','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-03;2023-01-03.csv'
+-- 	SET @rundate='2023-01-04'; SET @perioddate=str_to_date('2023-01-04','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-04;2023-01-04.csv'
+-- 	SET @rundate='2023-01-05'; SET @perioddate=str_to_date('2023-01-05','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-05;2023-01-05.csv'
+-- 	SET @rundate='2023-01-06'; SET @perioddate=str_to_date('2023-01-06','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-06;2023-01-06.csv'
+-- 	SET @rundate='2023-01-07'; SET @perioddate=str_to_date('2023-01-07','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-07;2023-01-07.csv'
+-- 	SET @rundate='2023-01-08'; SET @perioddate=str_to_date('2023-01-08','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-08;2023-01-08.csv'
+-- 	SET @rundate='2023-01-09'; SET @perioddate=str_to_date('2023-01-09','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-09;2023-01-09.csv'
+--  SET @rundate='2023-01-10'; SET @perioddate=str_to_date('2023-01-10','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-10;2023-01-10.csv'
+-- 	SET @rundate='2023-01-11'; SET @perioddate=str_to_date('2023-01-11','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-11;2023-01-11.csv'
+-- 	SET @rundate='2023-01-12'; SET @perioddate=str_to_date('2023-01-12','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-12;2023-01-12.csv'
+-- 	SET @rundate='2023-01-13'; SET @perioddate=str_to_date('2023-01-13','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-13;2023-01-13.csv'
+-- 	SET @rundate='2023-01-14'; SET @perioddate=str_to_date('2023-01-14','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-14;2023-01-14.csv'
+ 	SET @rundate='2023-01-15'; SET @perioddate=str_to_date('2023-01-15','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-15;2023-01-15.csv'
+-- 	SET @rundate='2023-01-16'; SET @perioddate=str_to_date('2023-01-16','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-16;2023-01-16.csv'
+-- 	SET @rundate='2023-01-17'; SET @perioddate=str_to_date('2023-01-17','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-17;2023-01-17.csv'
+-- 	SET @rundate='2023-01-18'; SET @perioddate=str_to_date('2023-01-18','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-18;2023-01-18.csv'
+-- 	SET @rundate='2023-01-19'; SET @perioddate=str_to_date('2023-01-19','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-19;2023-01-19.csv'
+-- 	SET @rundate='2023-01-20'; SET @perioddate=str_to_date('2023-01-20','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-20;2023-01-20.csv'
+-- 	SET @rundate='2023-01-21'; SET @perioddate=str_to_date('2023-01-21','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-21;2023-01-21.csv'
+-- 	SET @rundate='2023-01-22'; SET @perioddate=str_to_date('2023-01-22','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-22;2023-01-22.csv'
+-- 	SET @rundate='2023-01-23'; SET @perioddate=str_to_date('2023-01-23','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-23;2023-01-23.csv'
+-- 	SET @rundate='2023-01-24'; SET @perioddate=str_to_date('2023-01-24','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-24;2023-01-24.csv'
+-- 	SET @rundate='2023-01-25'; SET @perioddate=str_to_date('2023-01-25','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-25;2023-01-25.csv'
+-- 	SET @rundate='2023-01-26'; SET @perioddate=str_to_date('2023-01-26','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-26;2023-01-26.csv'
+-- 	SET @rundate='2023-01-27'; SET @perioddate=str_to_date('2023-01-27','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-27;2023-01-27.csv'
+-- 	SET @rundate='2023-01-28'; SET @perioddate=str_to_date('2023-01-28','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-28;2023-01-28.csv'
+-- 	SET @rundate='2023-01-29'; SET @perioddate=str_to_date('2023-01-29','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-29;2023-01-29.csv'
+-- 	SET @rundate='2023-01-30'; SET @perioddate=str_to_date('2023-01-30','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-30;2023-01-30.csv'
+-- 	SET @rundate='2023-01-31'; SET @perioddate=str_to_date('2023-01-31','%Y-%m-%d');	LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/_csv/2023-01-31;2023-01-31.csv'
 
 
 
@@ -451,10 +455,16 @@ limit 5
 ;
 
 
+##SECTION 2 ENDS
+
 #################################################################################################################
 #################################################################################################################
 #################################################################################################################
 #################################################################################################################
+
+
+##SECTION 3 BEGINS
+
 -- select * from rcbill.contractsservicepackageprice where  contractcode='I.000197138';
 -- select * from rcbill.contractsservicepackageprice where  contractcode in ();
 
@@ -1179,4 +1189,4 @@ call sp_GetActiveNumberFromTo('2018-04-02','2018-04-08');
 
 #####################################################################
 
-
+##SECTION 3 ENDS

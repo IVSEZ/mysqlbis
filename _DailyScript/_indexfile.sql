@@ -9,10 +9,8 @@ mysql \T C:\workspace\cloud\code\sql\_log\output_20180712.out
 #RUN DAILY-SCRIPT-TELEMETRY.sql first#
 
 
-
-
 mysql -h 192.168.100.165 -u root -pl3tm31n!@#mysql 
-mysql \T C:\workspace\cloud\code\sql\_log\output_20221122_1.out
+mysql \T C:\workspace\cloud\code\sql\_log\output_20230115_1.out
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\_setdates.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
@@ -54,13 +52,16 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\RCB_ClientAnalyticsReport_Script.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\REVENUE_PER_NODE_MXK_2022.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\REVENUE_PER_NODE_MXK_2023.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\housing-estate-analysis.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\ticket_analysis.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
+mysql \. C:\workspace\cloud\code\sql\Analysis\service_tickets_assignments2023.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\Analysis\service_tickets_assignments2022.sql
@@ -78,7 +79,7 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\Analysis\service_tickets_assignments2018.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-USAGESTATS_2022.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-USAGESTATS_2023.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
 mysql \. C:\workspace\cloud\code\sql\GIS\GetParcelExtract.sql
@@ -93,26 +94,27 @@ mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY-SCRIPT-RADIO-STATS.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY_SCRIPT_TELEMETRY_PIVOT_2022.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\DAILY_SCRIPT_TELEMETRY_PIVOT_2023.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_livetv_ranking2022.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_livetv_ranking2023.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_radio_ranking2022.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_radio_ranking2023.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_ts_ranking2022.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_ts_ranking2023.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2022.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2023.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2022_1.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2023_1.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
 
-mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2022_2.sql
+mysql \. C:\workspace\cloud\code\sql\_DailyScript\telemetry_vod_ranking2023_2.sql
 mysql \. C:\workspace\cloud\code\sql\_DailyScript\currenttime.sql
+
 
 
 exit

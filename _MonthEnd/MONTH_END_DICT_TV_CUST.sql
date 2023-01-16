@@ -1,120 +1,14 @@
 
 
 
-
-
--- select distinct period from rcbill_my.rep_activenumberlastday;
--- select * from rcbill_my.rep_activenumberlastday;
--- select * from rcbill_my.rep_activenumberlastday_pv;
--- set @period='2018-01-31';
--- set @period='2018-02-28';
--- set @period='2018-03-31';
--- set @period='2018-04-30';
--- set @period='2018-05-31';
--- set @period='2018-06-30';
--- set @period='2018-07-31';
--- set @period='2018-08-31';
--- set @period='2018-09-30';
--- set @period='2018-10-31';
--- set @period='2018-11-30';
--- set @period='2018-12-31';
--- set @period='2019-01-31';
--- set @period='2019-02-28';
--- set @period='2019-03-31';
--- set @period='2019-04-30';
--- set @period='2019-05-31';
--- set @period='2019-06-30';
--- set @period='2019-07-31';
--- set @period='2019-08-31';
--- set @period='2019-09-30';
--- set @period='2019-10-31';
--- set @period='2019-11-30';
--- set @period='2019-12-31';
--- set @period='2020-01-31';
--- set @period='2020-02-29';
--- set @period='2020-03-31';
--- set @period='2020-04-30';
--- set @period='2020-05-31';
--- set @period='2020-06-30';
--- set @period='2020-07-31';
--- set @period='2020-08-31';
--- set @period='2020-09-30';
--- set @period='2020-10-31';
--- set @period='2020-11-30';
--- set @period='2020-12-31';
--- set @period='2021-01-31';
--- set @period='2021-02-28';
--- set @period='2021-03-31';
--- set @period='2021-04-30';
--- set @period='2021-05-31';
--- set @period='2021-06-30';
--- set @period='2021-07-31';
--- set @period='2021-08-31';
--- set @period='2021-09-30';
--- set @period='2021-10-31';
--- set @period='2021-11-30';
--- set @period='2021-12-31';
-
--- set @period='2022-01-31';
--- set @period='2022-02-28';
--- set @period='2022-03-31';
-
--- set @period='2022-04-30';
--- set @period='2022-05-31';
--- set @period='2022-06-30';
-
-
 call rcbill_my.sp_filllastdates('2016-05-31',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
 call rcbill_my.sp_fillalldates('2016-05-01',DATE_SUB(date(NOW()), INTERVAL 1 DAY));
 
-/*
-select * from rcbill_my.month_last_date;
-select * from rcbill_my.customercontractactivity 
-where period in ('2020-07-31','2020-08-31','2020-09-30') and REPORTED='Y'
--- and Network='GPON'
-order by clientcode
-;
 
 
-select period, network, count(distinct clientcode) as d_client, sum(activecount) as active from rcbill_my.customercontractactivity 
-where period in ('2020-07-31','2020-08-31','2020-09-30') and REPORTED='Y'
--- and Network='GPON'
-group by period, network
-order by period, network
-;
-
-
-select * from rcbill_my.customercontractactivity 
-where period=@period and REPORTED='Y'
-and package in ('Extravagance','Extravagance Corporate','French')
-order by clientcode
-;
-
-select clientcode, clientclass, group_concat(package separator '|') as package, count(*) 
-from rcbill_my.customercontractactivity 
-where period=@period and REPORTED='Y'
-and package in ('Extravagance','Extravagance Corporate','French')
-group by clientcode, clientclass
-order by 4 desc
-;
-*/
-
-
-/*
-select * from rcbill_my.customercontractactivity 
-where period=@period and REPORTED='Y'
-and package in ('Extravagance','Extravagance Corporate','Indian','Indian Corporate')
-order by clientcode
-;
-
-select clientcode, clientclass, group_concat(package separator '|') as package, count(*) 
-from rcbill_my.customercontractactivity 
-where period=@period and REPORTED='Y'
-and package in ('Extravagance','Extravagance Corporate','Indian','Indian Corporate')
-group by clientcode, clientclass
-order by 4 desc
-;
-*/
+##################
+##### PART 1 #####
+##################
 
 
 select servicecategory, package
@@ -133,9 +27,11 @@ select servicecategory, package
 -- , `20210430`, `20210531`, `20210630`
 -- , `20210731`, `20210831`, `20210930`
 -- , `20211031`, `20211130`, `20211231`
-, `20220131`, `20220228`, `20220331`
-, `20220430`, `20220531`, `20220630`
-, `20220731`, `20220831`, `20220930`
+-- , `20220131`, `20220228`, `20220331`
+-- , `20220430`, `20220531`, `20220630`
+-- , `20220731`, `20220831`, `20220930`
+, `20221031`, `20221130`, `20221231`
+, `20230131`, `20230228`, `20230331`
 
  from rcbill_my.rep_activenumberlastday_pv;
 
@@ -158,7 +54,6 @@ select servicecategory
 , sum(`20211031`)
 , sum(`20211130`)
 , sum(`20211231`)
-*/
 , sum(`20220131`)
 , sum(`20220228`)
 , sum(`20220331`)
@@ -168,9 +63,25 @@ select servicecategory
 , sum(`20220731`)
 , sum(`20220831`)
 , sum(`20220930`)
+*/
+, sum(`20221031`)
+, sum(`20221130`)
+, sum(`20221231`)
+
+, sum(`20230131`)
+, sum(`20230228`)
+, sum(`20230331`)
+
+
  from rcbill_my.rep_activenumberlastday_pv
  group by servicecategory
  ;
+
+
+##################
+##### PART 2 #####
+##################
+
 
 
 -- set @period='2022-04-30';
@@ -178,8 +89,13 @@ select servicecategory
 -- set @period='2022-06-30';
 -- set @period='2022-07-31';
 -- set @period='2022-08-31';
- set @period='2022-09-30';
-
+-- set @period='2022-09-30';
+-- set @period='2022-10-31';
+-- set @period='2022-11-30';
+-- set @period='2022-12-31';
+ set @period='2023-01-31';
+-- set @period='2023-02-28';
+-- set @period='2023-03-31';
 
 
 set @message = 'EXTRA + INDIAN';

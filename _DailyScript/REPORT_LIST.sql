@@ -201,7 +201,7 @@ select lastday, count(*) from rcbill_my.rep_activenumberavg3 group by lastday;
 select * from rcbill_my.rep_activenumberavg3 where lastday not in ('2022-11-01');
 ## MONTH ACTIVE NUMBER REPORT
 use rcbill_my;
-call sp_GetActiveNumberFromTo('2022-10-01','2022-10-31');
+call sp_GetActiveNumberFromTo('2022-11-01','2022-11-30');
 
 ## BUDGET VS ACTUAL ANALYSIS
 select * from rcbill_my.rep_budget_actual_2019_pv;

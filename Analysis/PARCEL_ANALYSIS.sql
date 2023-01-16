@@ -34,6 +34,7 @@ select * from rcbill.rcb_clientparcelcoords order by insertedon desc limit 10000
 select * from rcbill.rcb_clientparcelcoords limit 10000;
 */
 
+select upper(clientcode) as clientcode, upper(clientname) as clientname, upper(trim(clientparcel)) as clientparcel from rcbill.rcb_clientparcels;
 
 
 select a.*, b.valid_parcels, c.invalid_parcels

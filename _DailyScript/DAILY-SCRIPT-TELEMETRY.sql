@@ -5,7 +5,7 @@
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-22112022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-15012023.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_vodtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -76,7 +76,7 @@ show index from rcbill.rcb_vodtelemetry;
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-Missing-Daily-22112022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllVODTelemetry-Missing-Daily-15012023.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_vodtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -128,6 +128,10 @@ set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2020-10-01';
 delete from rcbill.rcb_vodtelemetry where date(InsertedOn) = '2022-10-31';
 delete from rcbill.rcb_vodtelemetry where date(SESSIONSTART) = '2022-10-31';
+
+
+set SQL_SAFE_UPDATES=0;
+delete from rcbill.rcb_vodtelemetry where date(SESSIONSTART) = '2023-01-12';
 */
 
 ########################################################
@@ -136,7 +140,7 @@ delete from rcbill.rcb_vodtelemetry where date(SESSIONSTART) = '2022-10-31';
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-22112022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllTSTelemetry-15012023.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_tstelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -180,6 +184,9 @@ delete from rcbill.rcb_tstelemetry where date(InsertedOn) = '2020-10-01';
 delete from rcbill.rcb_tstelemetry where date(InsertedOn) = '2022-10-31';
 delete from rcbill.rcb_tstelemetry where date(SESSIONSTART) = '2022-10-31';
 
+set SQL_SAFE_UPDATES=0;
+delete from rcbill.rcb_tstelemetry where date(SESSIONSTART) = '2023-01-12';
+
 
 */
 /*
@@ -198,7 +205,7 @@ limit 15
 
 use rcbill;
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllLIVETVTelemetry-22112022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllLIVETVTelemetry-15012023.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_livetvtelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -264,7 +271,7 @@ delete from rcbill.rcb_livetvtelemetry where date(SESSIONSTART) = '2022-10-31';
 use rcbill;
 
 
-LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllRADIOTelemetry-22112022.csv' 
+LOAD DATA LOW_PRIORITY LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Uploads\\rcbill\\AllRADIOTelemetry-15012023.csv' 
 REPLACE INTO TABLE `rcbill`.`rcb_radiotelemetry` CHARACTER SET latin1 FIELDS TERMINATED BY '|' 
 /*OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\n' */
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' 
@@ -314,35 +321,46 @@ set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_radiotelemetry where date(InsertedOn) = '2020-10-01';
 delete from rcbill.rcb_radiotelemetry where date(SESSIONSTART) = '2022-10-31';
 */
+
+
 ##############################################################################
-select 'Radio' as message;
-select date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) 
-from rcbill.rcb_radiotelemetry
-group by 1
-order by 1 desc
-limit 5
-;
-select 'TS' as message;
-select date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) 
-from rcbill.rcb_tstelemetry
-group by 1
-order by 1 desc
-limit 5
-;
-select 'VOD' as message;
-select date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) 
-from rcbill.rcb_vodtelemetry
-group by 1
-order by 1 desc
-limit 5
-;
-select 'TV' as message;
-select date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) 
-from rcbill.rcb_livetvtelemetry
-group by 1
-order by 1 desc
-limit 5
-;
+
+
+		-- select 'Radio' as message;
+		select 'Radio' as message, date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) 
+		from rcbill.rcb_radiotelemetry
+		group by 1,2
+		order by 2 desc
+		limit 5
+		;
+        
+		-- select 'TS' as message;
+		select 'TS' as message, date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) 
+		from rcbill.rcb_tstelemetry
+		group by 1,2
+		order by 2 desc
+		limit 5
+		;
+        
+		-- select 'VOD' as message;
+		select 'VOD' as message, date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) 
+		from rcbill.rcb_vodtelemetry
+		group by 1,2
+		order by 2 desc
+		limit 5
+		;
+        
+		-- select 'TV' as message;
+		select 'TV' as message, date(SESSIONSTART) as sessiondate, rcbill_my.GetWeekdayName(weekday(date(SESSIONSTART))) as weekday, count(1) 
+		from rcbill.rcb_livetvtelemetry
+		group by 1,2
+		order by 2 desc
+		limit 5
+		;
+        
+##############################################################################
+
+
 /*
 set SQL_SAFE_UPDATES=0;
 delete from rcbill.rcb_radiotelemetry where SESSIONSTART = '2022-09-27';
